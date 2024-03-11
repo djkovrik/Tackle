@@ -1,4 +1,4 @@
-rootProject.name = "Tackle"
+@file:Suppress("UnstableApiUsage")
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {
@@ -18,4 +18,6 @@ dependencyResolutionManagement {
     }
 }
 
+rootProject.name = "Tackle"
 include(":composeApp")
+includeBuild("build-logic")
