@@ -24,4 +24,4 @@ include(
     ":shared:compose",
     ":shared:domain",
 )
-includeBuild("build-logic")
+includeBuild("gradle/build-logic")
