@@ -1,8 +1,8 @@
 [versions]
 
-# Constants
-android-compileSdk = "34"
+# Android constants
 android-minSdk = "24"
+android-compileSdk = "34"
 android-targetSdk = "34"
 
 # Core
@@ -31,7 +31,7 @@ kotlinx-serialization = "1.6.2"
 kotlinx-datetime = "0.5.0"
 composeImageLoader = "1.7.1"
 multiplatformSettings = "1.1.1"
-napier = "2.7.0"
+napier = "2.7.1"
 ktor = "2.3.8"
 sqlDelight = "2.0.1"
 
@@ -40,12 +40,13 @@ junit = "4.13.2"
 
 [libraries]
 
+kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
+compose-gradlePlugin = { group = "org.jetbrains.compose", name = "org.jetbrains.compose.gradle.plugin", version.ref = "compose-plugin" }
+
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidx-core-ktx" }
-androidx-test-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-junit" }
-androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "androidx-espresso-core" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidx-appcompat" }
 androidx-material = { group = "com.google.android.material", name = "material", version.ref = "androidx-material" }
-androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "androidx-constraintlayout" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
 
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }

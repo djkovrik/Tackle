@@ -7,6 +7,8 @@ plugins {
 }
 
 kotlin {
+    task("testClasses")
+
     androidTarget {
         compilations.all {
             kotlinOptions {
@@ -30,18 +32,19 @@ kotlin {
     
     sourceSets {
         val desktopMain by getting
-        
-        androidMain.dependencies {
-            implementation(libs.compose.ui.tooling.preview)
-            implementation(libs.androidx.activity.compose)
-        }
+
         commonMain.dependencies {
+            implementation(project(":shared:compose"))
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material)
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
+        }
+        androidMain.dependencies {
+            implementation(libs.compose.ui.tooling.preview)
+            implementation(libs.androidx.activity.compose)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
