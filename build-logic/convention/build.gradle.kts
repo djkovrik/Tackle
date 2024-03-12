@@ -14,15 +14,15 @@ gradlePlugin {
     plugins {
         register("configureAndroid") {
             id = "tackle.config.android"
-            implementationClass = "ConfigureAndroidPlugin"
+            implementationClass = "com.sedsoftware.tackle.convention.ConfigureAndroidPlugin"
         }
         register("configureCompose") {
             id = "tackle.config.compose"
-            implementationClass = "ConfigureComposePlugin"
+            implementationClass = "com.sedsoftware.tackle.convention.ConfigureComposePlugin"
         }
         register("configureMultiplatform") {
             id = "tackle.config.multiplatform"
-            implementationClass = "ConfigureMultiplatformPlugin"
+            implementationClass = "com.sedsoftware.tackle.convention.ConfigureMultiplatformPlugin"
         }
     }
 }

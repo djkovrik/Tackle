@@ -1,5 +1,5 @@
-import com.sedsoftware.tackle.convention.libs
-import com.sedsoftware.tackle.convention.preconfigure
+package com.sedsoftware.tackle.convention
+
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
@@ -7,9 +7,13 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 
 class ConfigureMultiplatformPlugin : Plugin<Project> {
-    override fun apply(target: Project) = with(target) {
-        configureKotlinMultiplatform()
-    }
+    override fun apply(target: Project) =
+        with(target) {
+            with(pluginManager) {
+                apply(libs.findPlugin("multiplatform").get().get().pluginId)
+            }
+            configureKotlinMultiplatform()
+        }
 }
 
 internal fun Project.configureKotlinMultiplatform() {
@@ -37,7 +41,7 @@ internal fun Project.configureKotlinMultiplatform() {
                     implementation(libs.findLibrary("kotlinx.coroutines.core").get())
                     implementation(libs.findLibrary("kotlinx.datetime").get())
                     implementation(libs.findLibrary("kotlinx.serialization.json").get())
-                    implementation(libs.findLibrary("napier").get())
+                    implementation(libs.findLibrary("lib.napier").get())
                 }
             }
 
