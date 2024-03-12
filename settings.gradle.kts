@@ -21,6 +21,7 @@ dependencyResolutionManagement {
 rootProject.name = "Tackle"
 include(
     ":composeApp",
-    ":shared:domain"
+    ":shared:compose",
+    ":shared:domain",
 )
 includeBuild("build-logic")
