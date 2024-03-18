@@ -10,6 +10,8 @@ kotlin {
         val desktopMain by getting
 
         commonMain.dependencies {
+            implementation(project(":shared:component:auth"))
+
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material)

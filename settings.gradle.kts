@@ -22,6 +22,10 @@ rootProject.name = "Tackle"
 include(
     ":composeApp",
     ":shared:compose",
+    ":shared:component:root",
+    ":shared:component:auth",
     ":shared:domain",
+    ":shared:settings",
+    ":shared:utils",
 )
 includeBuild("gradle/build-logic")
