@@ -23,6 +23,7 @@ include(
     ":composeApp",
     ":shared:compose",
     ":shared:domain",
+    ":shared:settings",
     ":shared:utils",
 )
 includeBuild("gradle/build-logic")
