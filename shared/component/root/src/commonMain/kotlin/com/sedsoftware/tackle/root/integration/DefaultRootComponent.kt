@@ -7,6 +7,7 @@ import com.sedsoftware.tackle.root.RootComponent
 import com.sedsoftware.tackle.root.RootComponent.Child
 import kotlinx.serialization.Serializable
 
+@Suppress("UnusedPrivateClass")
 class DefaultRootComponent(
     componentContext: ComponentContext,
 ) : RootComponent, ComponentContext by componentContext {
@@ -16,6 +17,6 @@ class DefaultRootComponent(
 
     @Serializable
     private sealed interface Config {
-
+        // empty
     }
 }

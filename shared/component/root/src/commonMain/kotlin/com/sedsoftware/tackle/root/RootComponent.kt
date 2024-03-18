@@ -8,6 +8,6 @@ interface RootComponent {
     val childStack: Value<ChildStack<*, Child>>
 
     sealed class Child {
-
+        // empty
     }
 }
