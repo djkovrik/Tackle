@@ -7,6 +7,9 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
+                implementation(project(":shared:network"))
+                implementation(project(":shared:settings"))
+
                 implementation(libs.ark.decompose.core)
                 implementation(libs.ark.decompose.extensions)
                 implementation(libs.ark.mvikotlin.core)
