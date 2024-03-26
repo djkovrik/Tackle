@@ -26,6 +26,7 @@ include(
     ":shared:component:auth",
     ":shared:domain",
     ":shared:settings",
+    ":shared:network",
     ":shared:utils",
 )
 includeBuild("gradle/build-logic")

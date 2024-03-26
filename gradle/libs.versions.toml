@@ -59,11 +59,12 @@ kotlinx-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
 
-lib-ktor-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
-lib-ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
-lib-ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
-lib-ktor-client-curl = { module = "io.ktor:ktor-client-curl", version.ref = "ktor" }
-lib-ktor-client-winhttp = { module = "io.ktor:ktor-client-winhttp", version.ref = "ktor" }
+ktor-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
+ktor-serialization = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
+ktor-client-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-client-android = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
+ktor-client-ios = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
+ktor-client-desktop = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
 
 ark-mvikotlin-core = { module = "com.arkivanov.mvikotlin:mvikotlin", version.ref = "mviKotlin" }
 ark-mvikotlin-main = { module = "com.arkivanov.mvikotlin:mvikotlin-main", version.ref = "mviKotlin" }

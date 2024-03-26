@@ -1,4 +1,4 @@
-package com.sedsoftware.tackle.settings
+package com.sedsoftware.tackle.settings.api
 
 interface TackleSettings {
     var testOption: String

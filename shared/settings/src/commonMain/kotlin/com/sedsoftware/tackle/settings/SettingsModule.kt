@@ -1,7 +1,7 @@
 package com.sedsoftware.tackle.settings
 
-import com.russhwolf.settings.MapSettings
 import com.russhwolf.settings.Settings
+import com.sedsoftware.tackle.settings.api.TackleSettings
 import com.sedsoftware.tackle.settings.internal.TackleSettingsInternal
 
 interface SettingsModule {
@@ -16,15 +16,6 @@ fun SettingsModule(dependencies: SettingsModuleDependencies): SettingsModule {
     return object : SettingsModule {
         override val settings: TackleSettings by lazy {
             TackleSettingsInternal(dependencies.settings)
-        }
-    }
-}
-
-@Suppress("FunctionName")
-fun SettingsModuleMock(): SettingsModule {
-    return object : SettingsModule {
-        override val settings: TackleSettings by lazy {
-            TackleSettingsInternal(MapSettings())
         }
     }
 }
