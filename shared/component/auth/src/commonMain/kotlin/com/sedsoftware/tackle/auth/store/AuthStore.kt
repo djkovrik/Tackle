@@ -8,13 +8,17 @@ internal interface AuthStore {
         data class OnTextInput(val text: String) : Intent()
         data object OnDefaultServerButtonClick : Intent()
         data object OnAuthenticateButtonClick : Intent()
+        data object OAuthFlowCompleted : Intent()
+        data object OAuthFlowFailed : Intent()
     }
 
     data class State(
-        val textInput: String = "",
-        val isCheckingActive: Boolean = false,
-        val isOauthFlowActive: Boolean = false,
+        val lastUserInput: String = "",
+        val lastUserInputTimestamp: Long = -1L,
+        val retrievingServerInfo: Boolean = false,
         val currentServer: InstanceInfo = InstanceInfo.empty(),
+        val awaitingForOauth: Boolean = false,
+        val authenticationCompleted: Boolean = false,
     )
 
     sealed class Label {

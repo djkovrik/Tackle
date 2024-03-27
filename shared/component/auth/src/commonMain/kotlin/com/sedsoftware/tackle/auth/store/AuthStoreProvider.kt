@@ -11,6 +11,9 @@ import com.sedsoftware.tackle.auth.model.InstanceInfo
 import com.sedsoftware.tackle.auth.store.AuthStore.Intent
 import com.sedsoftware.tackle.auth.store.AuthStore.Label
 import com.sedsoftware.tackle.auth.store.AuthStore.State
+import com.sedsoftware.tackle.utils.unwrap
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.coroutines.CoroutineContext
@@ -29,44 +32,87 @@ internal class AuthStoreProvider(
             initialState = State(),
             autoInit = autoInit,
             executorFactory = coroutineExecutorFactory(mainContext) {
+                var job: Job? = null
+
                 onIntent<Intent.OnTextInput> {
                     dispatch(Msg.OnTextInput(it.text))
-                }
+                    job?.cancel()
+                    job = launch {
+                        delay(INPUT_ENDED_DELAY)
 
-                onIntent<Intent.OnDefaultServerButtonClick> {
-                    dispatch(Msg.OnTextInput(DEFAULT_SERVER))
-                }
+                        val url = state.lastUserInput
+                        val trimmedUrl = url.trimInput()
+                        val normalizedUrl = url.normalizeInput()
 
-                onIntent<Intent.OnAuthenticateButtonClick> {
-                    val url = state.textInput
-                    val trimmedUrl = url.trimInput()
-                    val normalizedUrl = url.normalizeInput()
+                        dispatch(Msg.OnTextInput(trimmedUrl))
+                        dispatch(Msg.ServerInfoLoadingStarted)
 
-                    dispatch(Msg.OnTextInput(trimmedUrl))
-                    dispatch(Msg.ServerInfoLoadStarted(true))
-
-                    launch {
                         unwrap(
                             result = withContext(ioContext) { checker.getInstanceInfo(normalizedUrl) },
-                            onSuccess = {
-                                dispatch(Msg.ServerInfoLoaded(this))
+                            onSuccess = { info ->
+                                dispatch(Msg.ServerInfoLoaded(info))
                             },
-                            onError = {
+                            onError = { throwable ->
                                 dispatch(Msg.ServerInfoLoadingFailed)
-                                publish(Label.ErrorCaught(this))
+                                publish(Label.ErrorCaught(throwable))
                             },
                         )
                     }
                 }
+
+                onIntent<Intent.OnDefaultServerButtonClick> {
+                    dispatch(Msg.OnDefaultServerClick)
+                }
+
+                onIntent<Intent.OnAuthenticateButtonClick> {
+                    dispatch(Msg.OnAuthenticateClick)
+                }
+
+                onIntent<Intent.OAuthFlowCompleted> {
+                    dispatch(Msg.OAuthFlowCompleted)
+                }
+
+                onIntent<Intent.OAuthFlowFailed> {
+                    dispatch(Msg.OAuthFlowFailed)
+                }
             },
             reducer = { msg ->
                 when (msg) {
-                    is Msg.OnTextInput -> TODO()
-                    is Msg.OnDefaultServerClick -> TODO()
-                    is Msg.OnAuthenticateClick -> TODO()
-                    is Msg.ServerInfoLoadStarted -> TODO()
-                    is Msg.ServerInfoLoaded -> TODO()
-                    is Msg.ServerInfoLoadingFailed -> TODO()
+                    is Msg.OnTextInput -> copy(
+                        lastUserInput = msg.text,
+                    )
+
+                    is Msg.OnDefaultServerClick -> copy(
+                        lastUserInput = DEFAULT_SERVER,
+                    )
+
+                    is Msg.OnAuthenticateClick -> copy(
+                        awaitingForOauth = true,
+                    )
+
+                    is Msg.ServerInfoLoadingStarted -> copy(
+                        retrievingServerInfo = true,
+                    )
+
+                    is Msg.ServerInfoLoaded -> copy(
+                        retrievingServerInfo = false,
+                        currentServer = msg.info,
+                    )
+
+                    is Msg.ServerInfoLoadingFailed -> copy(
+                        retrievingServerInfo = false,
+                        currentServer = InstanceInfo.empty(),
+                    )
+
+                    is Msg.OAuthFlowCompleted -> copy(
+                        awaitingForOauth = false,
+                        authenticationCompleted = true,
+                    )
+
+                    is Msg.OAuthFlowFailed -> copy(
+                        awaitingForOauth = false,
+                        authenticationCompleted = false,
+                    )
                 }
             }
         ) {}
@@ -77,23 +123,15 @@ internal class AuthStoreProvider(
         data class OnTextInput(val text: String) : Msg
         data object OnDefaultServerClick : Msg
         data object OnAuthenticateClick : Msg
-        data class ServerInfoLoadStarted(val active: Boolean) : Msg
+        data object ServerInfoLoadingStarted : Msg
         data class ServerInfoLoaded(val info: InstanceInfo) : Msg
         data object ServerInfoLoadingFailed : Msg
+        data object OAuthFlowCompleted : Msg
+        data object OAuthFlowFailed : Msg
     }
 
     private companion object {
         const val DEFAULT_SERVER = "mastodon.social"
+        const val INPUT_ENDED_DELAY = 2000L
     }
-}
-
-fun <T> unwrap(result: Result<T>, onSuccess: T.() -> Unit, onError: Throwable.() -> Unit) {
-    with(result) {
-        getOrNull()?.let { onSuccess(it) }
-        exceptionOrNull()?.let { onError(it) }
-    }
-}
-
-fun <T> ifError(result: Result<T>, block: Throwable.() -> Unit) {
-
 }

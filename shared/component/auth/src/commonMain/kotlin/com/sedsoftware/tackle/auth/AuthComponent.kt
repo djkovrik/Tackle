@@ -12,11 +12,12 @@ interface AuthComponent {
 
     data class Model(
         val textInput: String,
-        val isCheckingActive: Boolean,
-        val isOauthFlowActive: Boolean,
+        val isRetrievingServerInfo: Boolean,
         val serverPreviewVisible: Boolean,
         val serverName: String,
         val serverDescription: String,
         val serverUsers: Long,
+        val isOauthFlowActive: Boolean,
+        val isAuthenticated: Boolean,
     )
 }
