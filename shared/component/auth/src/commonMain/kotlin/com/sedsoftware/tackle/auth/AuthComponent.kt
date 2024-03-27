@@ -10,6 +10,10 @@ interface AuthComponent {
 
     fun onPopulateDefaultServerClicked()
 
+    fun authFlowCompleted()
+
+    fun authFlowFailed()
+
     data class Model(
         val textInput: String,
         val isRetrievingServerInfo: Boolean,
@@ -20,4 +24,8 @@ interface AuthComponent {
         val isOauthFlowActive: Boolean,
         val isAuthenticated: Boolean,
     )
+
+    sealed class Output {
+        data class ErrorCaught(val throwable: Throwable) : Output()
+    }
 }

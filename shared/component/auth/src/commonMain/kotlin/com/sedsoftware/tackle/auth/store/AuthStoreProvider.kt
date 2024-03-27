@@ -4,7 +4,7 @@ import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.core.utils.ExperimentalMviKotlinApi
 import com.arkivanov.mvikotlin.extensions.coroutines.coroutineExecutorFactory
-import com.sedsoftware.tackle.auth.domain.InstanceInfoChecker
+import com.sedsoftware.tackle.auth.domain.InstanceInfoManager
 import com.sedsoftware.tackle.auth.extension.normalizeInput
 import com.sedsoftware.tackle.auth.extension.trimInput
 import com.sedsoftware.tackle.auth.model.InstanceInfo
@@ -20,7 +20,7 @@ import kotlin.coroutines.CoroutineContext
 
 internal class AuthStoreProvider(
     private val storeFactory: StoreFactory,
-    private val checker: InstanceInfoChecker,
+    private val manager: InstanceInfoManager,
     private val mainContext: CoroutineContext,
     private val ioContext: CoroutineContext,
 ) {
@@ -40,7 +40,7 @@ internal class AuthStoreProvider(
                     job = launch {
                         delay(INPUT_ENDED_DELAY)
 
-                        val url = state.lastUserInput
+                        val url = state.userInput
                         val trimmedUrl = url.trimInput()
                         val normalizedUrl = url.normalizeInput()
 
@@ -48,7 +48,7 @@ internal class AuthStoreProvider(
                         dispatch(Msg.ServerInfoLoadingStarted)
 
                         unwrap(
-                            result = withContext(ioContext) { checker.getInstanceInfo(normalizedUrl) },
+                            result = withContext(ioContext) { manager.getInstanceInfo(normalizedUrl) },
                             onSuccess = { info ->
                                 dispatch(Msg.ServerInfoLoaded(info))
                             },
@@ -60,11 +60,11 @@ internal class AuthStoreProvider(
                     }
                 }
 
-                onIntent<Intent.OnDefaultServerButtonClick> {
+                onIntent<Intent.OnDefaultServerClick> {
                     dispatch(Msg.OnDefaultServerClick)
                 }
 
-                onIntent<Intent.OnAuthenticateButtonClick> {
+                onIntent<Intent.OnAuthenticateClick> {
                     dispatch(Msg.OnAuthenticateClick)
                 }
 
@@ -79,11 +79,11 @@ internal class AuthStoreProvider(
             reducer = { msg ->
                 when (msg) {
                     is Msg.OnTextInput -> copy(
-                        lastUserInput = msg.text,
+                        userInput = msg.text,
                     )
 
                     is Msg.OnDefaultServerClick -> copy(
-                        lastUserInput = DEFAULT_SERVER,
+                        userInput = DEFAULT_SERVER,
                     )
 
                     is Msg.OnAuthenticateClick -> copy(
@@ -91,27 +91,27 @@ internal class AuthStoreProvider(
                     )
 
                     is Msg.ServerInfoLoadingStarted -> copy(
-                        retrievingServerInfo = true,
+                        loadingServerInfo = true,
                     )
 
                     is Msg.ServerInfoLoaded -> copy(
-                        retrievingServerInfo = false,
-                        currentServer = msg.info,
+                        loadingServerInfo = false,
+                        serverInfo = msg.info,
                     )
 
                     is Msg.ServerInfoLoadingFailed -> copy(
-                        retrievingServerInfo = false,
-                        currentServer = InstanceInfo.empty(),
+                        loadingServerInfo = false,
+                        serverInfo = InstanceInfo.empty(),
                     )
 
                     is Msg.OAuthFlowCompleted -> copy(
                         awaitingForOauth = false,
-                        authenticationCompleted = true,
+                        authenticated = true,
                     )
 
                     is Msg.OAuthFlowFailed -> copy(
                         awaitingForOauth = false,
-                        authenticationCompleted = false,
+                        authenticated = false,
                     )
                 }
             }

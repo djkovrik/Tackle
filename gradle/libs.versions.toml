@@ -68,6 +68,7 @@ ktor-client-desktop = { module = "io.ktor:ktor-client-cio", version.ref = "ktor"
 
 ark-mvikotlin-core = { module = "com.arkivanov.mvikotlin:mvikotlin", version.ref = "mviKotlin" }
 ark-mvikotlin-main = { module = "com.arkivanov.mvikotlin:mvikotlin-main", version.ref = "mviKotlin" }
+ark-mvikotlin-rx = { module = "com.arkivanov.mvikotlin:rx", version.ref = "mviKotlin" }
 ark-mvikotlin-extensions = { module = "com.arkivanov.mvikotlin:mvikotlin-extensions-coroutines", version.ref = "mviKotlin" }
 ark-decompose-core = { module = "com.arkivanov.decompose:decompose", version.ref = "decompose" }
 ark-decompose-extensions = { module = "com.arkivanov.decompose:extensions-compose-jetbrains", version.ref = "decompose" }

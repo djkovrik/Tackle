@@ -35,6 +35,7 @@ kotlin {
 
         commonMain.dependencies {
             implementation(project(":shared:compose"))
+            implementation(project(":shared:utils"))
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material)
@@ -48,6 +49,7 @@ kotlin {
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
+            implementation(libs.kotlinx.coroutines.swing)
         }
     }
 }
