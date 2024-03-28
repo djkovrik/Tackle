@@ -17,7 +17,7 @@ import com.sedsoftware.tackle.settings.api.TackleSettings
 import com.sedsoftware.tackle.utils.TackleDispatchers
 import kotlinx.serialization.Serializable
 
-class DefaultRootComponent internal constructor(
+class RootComponentDefault internal constructor(
     componentContext: ComponentContext,
     private val authComponent: (ComponentContext, (AuthComponent.Output) -> Unit) -> AuthComponent,
 ) : RootComponent, ComponentContext by componentContext {
