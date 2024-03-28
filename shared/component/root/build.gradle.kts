@@ -8,6 +8,9 @@ kotlin {
         commonMain {
             dependencies {
                 implementation(project(":shared:component:auth"))
+                implementation(project(":shared:network"))
+                implementation(project(":shared:settings"))
+                implementation(project(":shared:utils"))
 
                 implementation(libs.ark.decompose.core)
                 implementation(libs.ark.decompose.extensions)

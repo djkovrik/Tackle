@@ -25,8 +25,8 @@ import kotlinx.coroutines.launch
 class AuthComponentDefault(
     private val componentContext: ComponentContext,
     private val storeFactory: StoreFactory,
-    private val dispatchers: TackleDispatchers,
     private val api: UnauthorizedApi,
+    private val dispatchers: TackleDispatchers,
     private val output: (AuthComponent.Output) -> Unit,
 ) : AuthComponent, ComponentContext by componentContext {
 

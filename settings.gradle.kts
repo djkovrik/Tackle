@@ -24,7 +24,6 @@ include(
     ":shared:compose",
     ":shared:component:root",
     ":shared:component:auth",
-    ":shared:domain",
     ":shared:settings",
     ":shared:network",
     ":shared:utils",
