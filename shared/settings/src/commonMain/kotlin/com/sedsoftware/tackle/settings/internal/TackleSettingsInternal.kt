@@ -1,7 +1,7 @@
 package com.sedsoftware.tackle.settings.internal
 
 import com.russhwolf.settings.Settings
-import com.sedsoftware.tackle.settings.TackleSettings
+import com.sedsoftware.tackle.settings.api.TackleSettings
 
 internal class TackleSettingsInternal(
     private val settings: Settings,

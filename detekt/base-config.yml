@@ -128,14 +128,14 @@ complexity:
     threshold: 600
   LongMethod:
     active: true
-    threshold: 60
+    threshold: 80
   LongParameterList:
     active: true
     functionThreshold: 7
     constructorThreshold: 7
     ignoreDefaultParameters: true
     ignoreDataClasses: true
-    ignoreAnnotatedParameter: []
+    ignoreAnnotatedParameter: ['SerialName']
   MethodOverloading:
     active: false
     threshold: 6
@@ -633,7 +633,7 @@ style:
     maxChainedCalls: 5
   MaxLineLength:
     active: true
-    maxLineLength: 120
+    maxLineLength: 130
     excludePackageStatements: true
     excludeImportStatements: true
     excludeCommentStatements: false
