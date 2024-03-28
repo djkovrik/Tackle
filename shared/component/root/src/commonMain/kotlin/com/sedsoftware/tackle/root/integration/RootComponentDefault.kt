@@ -22,6 +22,7 @@ class RootComponentDefault internal constructor(
     private val authComponent: (ComponentContext, (AuthComponent.Output) -> Unit) -> AuthComponent,
 ) : RootComponent, ComponentContext by componentContext {
 
+    @Suppress("UnusedPrivateProperty") // remove on settings usage
     constructor(
         componentContext: ComponentContext,
         storeFactory: StoreFactory,
@@ -60,7 +61,9 @@ class RootComponentDefault internal constructor(
         }
 
     private fun onAuthComponentOutput(output: AuthComponent.Output) {
-        // TODO Error handler
+        when (output) {
+            is AuthComponent.Output.ErrorCaught -> TODO()
+        }
     }
 
     @Serializable

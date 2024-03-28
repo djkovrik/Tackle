@@ -12,6 +12,7 @@ interface NetworkModule {
 
 interface NetworkModuleDependencies
 
+@Suppress("UnusedParameter") // remove on dependencies or remove dependencies
 fun NetworkModule(dependencies: NetworkModuleDependencies): NetworkModule {
     return object : NetworkModule {
         override val unauthorized: UnauthorizedApi by lazy {
