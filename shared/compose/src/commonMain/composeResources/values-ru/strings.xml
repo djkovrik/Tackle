@@ -1,0 +1,10 @@
+<resources>
+    <!-- Russian translation by djkovrik -->
+
+    <!-- Non-translatable -->
+    <string name="auth_default_server">mastodon.social</string>
+    <!-- Common -->
+    <string name="common_next">Далее</string>
+    <!-- Auth component -->
+    <string name="auth_select_server">Введите адрес сервера, к которому вы хотите присоединиться:</string>
+</resources>

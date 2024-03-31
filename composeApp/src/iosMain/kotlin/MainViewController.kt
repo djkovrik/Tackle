@@ -1,4 +1,20 @@
 import androidx.compose.ui.window.ComposeUIViewController
-import com.sedsoftware.tackle.compose.App
+import com.arkivanov.decompose.DefaultComponentContext
+import com.arkivanov.essenty.lifecycle.LifecycleRegistry
+import com.sedsoftware.tackle.DefaultDispatchers
+import com.sedsoftware.tackle.compose.ui.RootContent
+import com.sedsoftware.tackle.root.RootComponent
+import com.sedsoftware.tackle.root.RootComponentFactory
+import platform.UIKit.UIViewController
 
-fun MainViewController() = ComposeUIViewController { App() }
+private val lifecycle: LifecycleRegistry = LifecycleRegistry()
+private val root: RootComponent = RootComponentFactory(
+    componentContext = DefaultComponentContext(lifecycle),
+    dispatchers = DefaultDispatchers,
+)
+
+@Suppress("FunctionName")
+fun MainViewController(): UIViewController =
+    ComposeUIViewController {
+        RootContent(component = root)
+    }

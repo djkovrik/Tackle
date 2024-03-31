@@ -3,22 +3,23 @@ package com.sedsoftware.tackle
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
-import com.sedsoftware.tackle.compose.App
+import com.arkivanov.decompose.defaultComponentContext
+import com.sedsoftware.tackle.compose.ui.RootContent
+import com.sedsoftware.tackle.root.RootComponent
+import com.sedsoftware.tackle.root.RootComponentFactory
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val root: RootComponent = RootComponentFactory(
+            componentContext = defaultComponentContext(),
+            context = applicationContext,
+            dispatchers = DefaultDispatchers,
+        )
+
         setContent {
-            App()
+            RootContent(component = root)
         }
     }
-}
-
-@Preview
-@Composable
-fun AppAndroidPreview() {
-    App()
 }

@@ -1,0 +1,13 @@
+<resources>
+    <!--
+    The language is defined by a two-letter ISO 639-1 language code
+    https://en.wikipedia.org/wiki/List_of_ISO_639_language_codes
+    -->
+
+    <!-- Non-translatable -->
+    <string name="auth_default_server">mastodon.social</string>
+    <!-- Common -->
+    <string name="common_next">Next</string>
+    <!-- Auth component -->
+    <string name="auth_select_server">Enter the address of the server you want to connect to:</string>
+</resources>
