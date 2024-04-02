@@ -6,11 +6,11 @@ import com.sedsoftware.tackle.auth.AuthComponent
 import com.sedsoftware.tackle.auth.AuthComponent.Model
 
 class AuthComponentPreview(
-    textInput: String,
-    isRetrievingServerInfo: Boolean,
-    serverPreviewVisible: Boolean,
-    isOauthFlowActive: Boolean,
-    isAuthenticated: Boolean,
+    textInput: String = "",
+    isRetrievingServerInfo: Boolean = false,
+    serverPreviewVisible: Boolean = false,
+    isOauthFlowActive: Boolean = false,
+    isAuthenticated: Boolean = false,
 ) : AuthComponent {
 
     override val model: Value<Model> =
@@ -21,7 +21,7 @@ class AuthComponentPreview(
                 serverPreviewVisible = serverPreviewVisible,
                 serverName = "Mastodon",
                 serverDescription = "The original server operated by the Mastodon gGmbH non-profit",
-                serverUsers = 123123,
+                serverUsers = 123123123,
                 isOauthFlowActive = isOauthFlowActive,
                 isAuthenticated = isAuthenticated,
             )

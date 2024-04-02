@@ -7,9 +7,7 @@ import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.extensions.compose.jetbrains.stack.Children
@@ -27,27 +25,22 @@ fun RootContent(
     modifier: Modifier = Modifier
 ) {
     TackleTheme {
-        Surface(
-            modifier = modifier,
-            color = MaterialTheme.colorScheme.background
-        ) {
-            Scaffold(
-                modifier = modifier
-                    .fillMaxSize()
-                    .windowInsetsPadding(
-                        insets = WindowInsets.systemBars.only(
-                            sides = WindowInsetsSides.Top + WindowInsetsSides.Horizontal,
-                        )
+        Scaffold(
+            modifier = modifier
+                .fillMaxSize()
+                .windowInsetsPadding(
+                    insets = WindowInsets.systemBars.only(
+                        sides = WindowInsetsSides.Top + WindowInsetsSides.Horizontal,
                     )
-            ) { paddingValues ->
-                Children(
-                    stack = component.childStack,
-                    animation = stackAnimation(animator = fade() + scale()),
-                    modifier = modifier.padding(paddingValues = paddingValues)
-                ) {
-                    when (val child = it.instance) {
-                        is Child.Auth -> AuthContent(component = child.component)
-                    }
+                )
+        ) { paddingValues ->
+            Children(
+                stack = component.childStack,
+                animation = stackAnimation(animator = fade() + scale()),
+                modifier = modifier.padding(paddingValues = paddingValues)
+            ) {
+                when (val child = it.instance) {
+                    is Child.Auth -> AuthContent(component = child.component)
                 }
             }
         }

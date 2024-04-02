@@ -2,12 +2,12 @@ package com.sedsoftware.tackle.compose.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.lightColorScheme
-import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Shapes
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Typography
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
@@ -104,9 +104,9 @@ internal val LocalThemeIsDark = compositionLocalOf { mutableStateOf(true) }
 
 @Composable
 internal fun TackleTheme(
+    systemIsDark: Boolean = isSystemInDarkTheme(),
     content: @Composable() () -> Unit
 ) {
-    val systemIsDark = isSystemInDarkTheme()
     val isDarkState = remember { mutableStateOf(systemIsDark) }
     CompositionLocalProvider(
         LocalThemeIsDark provides isDarkState
@@ -118,8 +118,20 @@ internal fun TackleTheme(
             typography = TackleTypography,
             shapes = TackleShapes,
             content = {
-                Surface(content = content)
+                Surface(color = MaterialTheme.colorScheme.background) {
+                    content()
+                }
             }
         )
+    }
+}
+
+@Composable
+internal fun TackleScreenPreview(
+    darkTheme: Boolean = false,
+    content: @Composable () -> Unit,
+) {
+    TackleTheme(systemIsDark = darkTheme) {
+        content()
     }
 }
