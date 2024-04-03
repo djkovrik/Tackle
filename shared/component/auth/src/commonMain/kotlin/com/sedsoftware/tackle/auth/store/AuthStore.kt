@@ -10,7 +10,6 @@ internal interface AuthStore : Store<Intent, State, Label> {
 
     sealed class Intent {
         data class OnTextInput(val text: String) : Intent()
-        data object OnDefaultServerClick : Intent()
         data object OnAuthenticateClick : Intent()
         data object OAuthFlowCompleted : Intent()
         data object OAuthFlowFailed : Intent()

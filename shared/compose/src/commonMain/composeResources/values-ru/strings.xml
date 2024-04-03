@@ -6,5 +6,6 @@
     <!-- Common -->
     <string name="common_next">Далее</string>
     <!-- Auth component -->
-    <string name="auth_select_server">Введите адрес сервера, к которому вы хотите присоединиться:</string>
+    <string name="auth_select_server">Введите адрес сервера, к которому вы хотите присоединиться</string>
+    <string name="auth_server_suggested">Рекомендуемые:</string>
 </resources>

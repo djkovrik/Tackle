@@ -60,10 +60,6 @@ internal class AuthStoreProvider(
                     }
                 }
 
-                onIntent<Intent.OnDefaultServerClick> {
-                    dispatch(Msg.OnDefaultServerClick)
-                }
-
                 onIntent<Intent.OnAuthenticateClick> {
                     dispatch(Msg.OnAuthenticateClick)
                 }
@@ -80,10 +76,6 @@ internal class AuthStoreProvider(
                 when (msg) {
                     is Msg.OnTextInput -> copy(
                         userInput = msg.text,
-                    )
-
-                    is Msg.OnDefaultServerClick -> copy(
-                        userInput = DEFAULT_SERVER,
                     )
 
                     is Msg.OnAuthenticateClick -> copy(
@@ -121,7 +113,6 @@ internal class AuthStoreProvider(
 
     private sealed interface Msg {
         data class OnTextInput(val text: String) : Msg
-        data object OnDefaultServerClick : Msg
         data object OnAuthenticateClick : Msg
         data object ServerInfoLoadingStarted : Msg
         data class ServerInfoLoaded(val info: InstanceInfo) : Msg
@@ -131,7 +122,6 @@ internal class AuthStoreProvider(
     }
 
     private companion object {
-        const val DEFAULT_SERVER = "mastodon.social"
         const val INPUT_ENDED_DELAY = 2000L
     }
 }

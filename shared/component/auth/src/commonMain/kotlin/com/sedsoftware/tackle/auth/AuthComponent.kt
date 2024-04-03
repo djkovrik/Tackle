@@ -6,9 +6,9 @@ interface AuthComponent {
 
     val model: Value<Model>
 
-    fun onAuthenticateClicked()
+    fun onTextInput(text: String)
 
-    fun onPopulateDefaultServerClicked()
+    fun onAuthenticateClick()
 
     fun authFlowCompleted()
 

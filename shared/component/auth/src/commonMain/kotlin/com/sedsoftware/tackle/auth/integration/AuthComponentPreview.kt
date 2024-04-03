@@ -27,8 +27,8 @@ class AuthComponentPreview(
             )
         )
 
-    override fun onAuthenticateClicked() = Unit
-    override fun onPopulateDefaultServerClicked() = Unit
+    override fun onTextInput(text: String) = Unit
+    override fun onAuthenticateClick() = Unit
     override fun authFlowCompleted() = Unit
     override fun authFlowFailed() = Unit
 }
