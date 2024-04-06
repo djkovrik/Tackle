@@ -30,8 +30,7 @@ internal fun TackleTheme(
         SystemAppearance(!isDark)
         MaterialTheme(
             colorScheme = if (isDark) DarkColorScheme else LightColorScheme,
-            // FIXME disabled until multimodule resources support
-            // typography = TackleFonts.Typography(),
+            typography = TackleFonts.Typography(),
             shapes = Shapes(
                 extraSmall = RoundedCornerShape(4.dp),
                 small = RoundedCornerShape(6.dp),
