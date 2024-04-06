@@ -2,10 +2,16 @@
     <!-- Russian translation by djkovrik -->
 
     <!-- Non-translatable -->
+    <string name="auth_app_label">Tackle</string>
+    <string name="auth_mastodon_title">Mastodon</string>
     <string name="auth_default_server">mastodon.social</string>
     <!-- Common -->
-    <string name="common_next">Далее</string>
+    <string name="common_continue">Продолжить</string>
     <!-- Auth component -->
     <string name="auth_select_server">Введите адрес сервера, к которому вы хотите присоединиться</string>
-    <string name="auth_server_suggested">Рекомендуемые:</string>
+    <string name="auth_server_suggested">Рекомендуемый</string>
+    <string name="auth_learn_more">Узнать больше</string>
+    <string name="auth_no_account">Еще не зарегистрированы?</string>=
+    <string name="auth_mastodon_description">Mastodon это децентрализованная социальная и медиа платформа, которая не зависит от какой-то одной конкретной компании и ее сервера. Каждый сервер Mastodon это полностью независимая единица, способная взаимодействовать с другими серверами, что в итоге формирует одну общую глобальную сеть.</string>
+    <string name="auth_server_description">Каждый пользовательский аккаунт относится к определенному серверу Mastodon со своими правилами, администраторами и ограничениями, но пользователи каждого сервера могут бесшовно взаимодействовать с остальными пользователями на любом другом сервере.</string>
 </resources>

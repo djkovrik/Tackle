@@ -1,6 +1,4 @@
-@file:OptIn(ExperimentalResourceApi::class)
-
-package com.sedsoftware.tackle.compose.ui
+package com.sedsoftware.tackle.compose.ui.auth
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.layout.Arrangement
@@ -27,13 +25,12 @@ import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import com.sedsoftware.tackle.auth.AuthComponent
 import com.sedsoftware.tackle.auth.integration.AuthComponentPreview
 import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
-import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.stringResource
 import tackle.shared.compose.generated.resources.Res
 import tackle.shared.compose.generated.resources.auth_default_server
 import tackle.shared.compose.generated.resources.auth_select_server
 import tackle.shared.compose.generated.resources.auth_server_suggested
-import tackle.shared.compose.generated.resources.common_next
+import tackle.shared.compose.generated.resources.common_continue
 
 // TODO Design
 @Composable
@@ -110,7 +107,7 @@ internal fun AuthContent(
             modifier = modifier.padding(all = 32.dp)
         ) {
             Text(
-                text = stringResource(Res.string.common_next)
+                text = stringResource(Res.string.common_continue)
             )
         }
     }

@@ -7,7 +7,6 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.Font
 import tackle.shared.compose.generated.resources.Res
 import tackle.shared.compose.generated.resources.open_sans_bold
@@ -19,7 +18,6 @@ import tackle.shared.compose.generated.resources.open_sans_medium
 import tackle.shared.compose.generated.resources.open_sans_medium_italic
 import tackle.shared.compose.generated.resources.open_sans_regular
 
-@OptIn(ExperimentalResourceApi::class)
 internal object TackleFonts {
 
     @Composable
