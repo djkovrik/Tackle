@@ -9,6 +9,12 @@ kotlin {
     task("testClasses")
 
     sourceSets {
+        all {
+            languageSettings {
+                optIn("org.jetbrains.compose.resources.ExperimentalResourceApi")
+            }
+        }
+
         val desktopMain by getting
 
         commonMain.dependencies {
