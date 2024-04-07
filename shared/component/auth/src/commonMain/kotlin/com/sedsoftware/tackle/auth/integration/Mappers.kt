@@ -13,5 +13,6 @@ internal val stateToModel: (State) -> Model = {
         serverUsers = it.serverInfo.users,
         isOauthFlowActive = it.awaitingForOauth,
         isAuthenticated = it.authenticated,
+        isLearnMoreVisible = it.learnMoreVisible,
     )
 }

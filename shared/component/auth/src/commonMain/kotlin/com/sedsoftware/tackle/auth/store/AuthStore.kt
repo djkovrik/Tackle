@@ -13,6 +13,7 @@ internal interface AuthStore : Store<Intent, State, Label> {
         data object OnAuthenticateClick : Intent()
         data object OAuthFlowCompleted : Intent()
         data object OAuthFlowFailed : Intent()
+        data class ShowLearnMore(val show: Boolean) : Intent()
     }
 
     data class State(
@@ -21,6 +22,7 @@ internal interface AuthStore : Store<Intent, State, Label> {
         val serverInfo: InstanceInfo = InstanceInfo.empty(),
         val awaitingForOauth: Boolean = false,
         val authenticated: Boolean = false,
+        val learnMoreVisible: Boolean = false,
     )
 
     sealed class Label {

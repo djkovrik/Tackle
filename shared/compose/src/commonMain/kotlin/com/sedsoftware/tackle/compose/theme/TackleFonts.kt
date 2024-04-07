@@ -24,12 +24,12 @@ internal object TackleFonts {
     fun OpenSans() = FontFamily(
         Font(Res.font.open_sans_bold, FontWeight.Bold, FontStyle.Normal),
         Font(Res.font.open_sans_bold_italic, FontWeight.Bold, FontStyle.Italic),
-        Font(Res.font.open_sans_italic, FontWeight.Normal, FontStyle.Italic),
-        Font(Res.font.open_sans_light, FontWeight.Light, FontStyle.Normal),
-        Font(Res.font.open_sans_light_italic, FontWeight.Light, FontStyle.Italic),
         Font(Res.font.open_sans_medium, FontWeight.Medium, FontStyle.Normal),
         Font(Res.font.open_sans_medium_italic, FontWeight.Medium, FontStyle.Italic),
         Font(Res.font.open_sans_regular, FontWeight.Normal, FontStyle.Normal),
+        Font(Res.font.open_sans_italic, FontWeight.Normal, FontStyle.Italic),
+        Font(Res.font.open_sans_light, FontWeight.Light, FontStyle.Normal),
+        Font(Res.font.open_sans_light_italic, FontWeight.Light, FontStyle.Italic),
     )
 
     @Composable
@@ -38,14 +38,16 @@ internal object TackleFonts {
         Typography(
             headlineLarge = TextStyle(
                 fontFamily = OpenSans(),
-                fontWeight = FontWeight.Normal,
+                fontWeight = FontWeight.Bold,
+                fontStyle = FontStyle.Normal,
                 fontSize = 32.sp,
                 lineHeight = 40.sp,
                 letterSpacing = 0.0.sp,
             ),
             headlineMedium = TextStyle(
                 fontFamily = OpenSans(),
-                fontWeight = FontWeight.Normal,
+                fontWeight = FontWeight.Medium,
+                fontStyle = FontStyle.Normal,
                 fontSize = 28.sp,
                 lineHeight = 36.sp,
                 letterSpacing = 0.0.sp,
@@ -53,13 +55,15 @@ internal object TackleFonts {
             headlineSmall = TextStyle(
                 fontFamily = OpenSans(),
                 fontWeight = FontWeight.Normal,
+                fontStyle = FontStyle.Normal,
                 fontSize = 24.sp,
                 lineHeight = 32.sp,
                 letterSpacing = 0.0.sp,
             ),
             titleLarge = TextStyle(
                 fontFamily = OpenSans(),
-                fontWeight = FontWeight.Bold,
+                fontWeight = FontWeight.Medium,
+                fontStyle = FontStyle.Normal,
                 fontSize = 22.sp,
                 lineHeight = 28.sp,
                 letterSpacing = 0.0.sp,
@@ -67,13 +71,15 @@ internal object TackleFonts {
             titleMedium = TextStyle(
                 fontFamily = OpenSans(),
                 fontWeight = FontWeight.Normal,
+                fontStyle = FontStyle.Normal,
                 fontSize = 16.sp,
                 lineHeight = 24.sp,
                 letterSpacing = 0.2.sp,
             ),
             titleSmall = TextStyle(
                 fontFamily = OpenSans(),
-                fontWeight = FontWeight.Bold,
+                fontWeight = FontWeight.Normal,
+                fontStyle = FontStyle.Normal,
                 fontSize = 14.sp,
                 lineHeight = 20.sp,
                 letterSpacing = 0.1.sp,
@@ -81,6 +87,7 @@ internal object TackleFonts {
             bodyLarge = TextStyle(
                 fontFamily = OpenSans(),
                 fontWeight = FontWeight.Normal,
+                fontStyle = FontStyle.Normal,
                 fontSize = 16.sp,
                 lineHeight = 24.sp,
                 letterSpacing = 0.5.sp,
@@ -88,6 +95,7 @@ internal object TackleFonts {
             bodyMedium = TextStyle(
                 fontFamily = OpenSans(),
                 fontWeight = FontWeight.Normal,
+                fontStyle = FontStyle.Normal,
                 fontSize = 14.sp,
                 lineHeight = 20.sp,
                 letterSpacing = 0.2.sp,
@@ -95,29 +103,33 @@ internal object TackleFonts {
             bodySmall = TextStyle(
                 fontFamily = OpenSans(),
                 fontWeight = FontWeight.Normal,
+                fontStyle = FontStyle.Normal,
                 fontSize = 12.sp,
                 lineHeight = 16.sp,
                 letterSpacing = 0.4.sp,
             ),
             labelLarge = TextStyle(
                 fontFamily = OpenSans(),
-                fontWeight = FontWeight.Normal,
-                fontSize = 14.sp,
+                fontWeight = FontWeight.Medium,
+                fontStyle = FontStyle.Normal,
+                fontSize = 16.sp,
                 lineHeight = 20.sp,
                 letterSpacing = 0.1.sp,
             ),
             labelMedium = TextStyle(
                 fontFamily = OpenSans(),
                 fontWeight = FontWeight.Normal,
-                fontSize = 12.sp,
-                lineHeight = 16.sp,
+                fontStyle = FontStyle.Normal,
+                fontSize = 14.sp,
+                lineHeight = 18.sp,
                 letterSpacing = 0.5.sp,
             ),
             labelSmall = TextStyle(
                 fontFamily = OpenSans(),
                 fontWeight = FontWeight.Normal,
-                fontSize = 11.sp,
-                lineHeight = 16.sp,
+                fontStyle = FontStyle.Normal,
+                fontSize = 13.sp,
+                lineHeight = 17.sp,
                 letterSpacing = 0.5.sp,
             )
         )

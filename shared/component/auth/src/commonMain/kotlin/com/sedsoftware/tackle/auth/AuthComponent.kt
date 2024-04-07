@@ -1,8 +1,9 @@
 package com.sedsoftware.tackle.auth
 
 import com.arkivanov.decompose.value.Value
+import com.arkivanov.essenty.backhandler.BackHandlerOwner
 
-interface AuthComponent {
+interface AuthComponent : BackHandlerOwner {
 
     val model: Value<Model>
 
@@ -14,6 +15,10 @@ interface AuthComponent {
 
     fun authFlowFailed()
 
+    fun onShowLearnMore()
+
+    fun onHideLearnMore()
+
     data class Model(
         val textInput: String,
         val isRetrievingServerInfo: Boolean,
@@ -23,6 +28,7 @@ interface AuthComponent {
         val serverUsers: Long,
         val isOauthFlowActive: Boolean,
         val isAuthenticated: Boolean,
+        val isLearnMoreVisible: Boolean,
     )
 
     sealed class Output {

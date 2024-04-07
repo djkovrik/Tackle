@@ -1,38 +1,46 @@
 package com.sedsoftware.tackle.compose.ui.auth
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.desktop.ui.tooling.preview.Preview
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.SheetState
 import androidx.compose.material3.SuggestionChip
+import androidx.compose.material3.SuggestionChipDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import com.sedsoftware.tackle.auth.AuthComponent
 import com.sedsoftware.tackle.auth.integration.AuthComponentPreview
+import com.sedsoftware.tackle.compose.BackHandler
 import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
+import com.sedsoftware.tackle.compose.ui.base.CustomOutlinedTextField
+import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import tackle.shared.compose.generated.resources.Res
+import tackle.shared.compose.generated.resources.auth_app_label
 import tackle.shared.compose.generated.resources.auth_default_server
+import tackle.shared.compose.generated.resources.auth_learn_more
+import tackle.shared.compose.generated.resources.auth_logo
 import tackle.shared.compose.generated.resources.auth_select_server
 import tackle.shared.compose.generated.resources.auth_server_suggested
-import tackle.shared.compose.generated.resources.common_continue
 
-// TODO Design
 @Composable
 internal fun AuthContent(
     component: AuthComponent,
@@ -40,98 +48,112 @@ internal fun AuthContent(
 ) {
     val model: AuthComponent.Model by component.model.subscribeAsState()
     val keyboardController: SoftwareKeyboardController? = LocalSoftwareKeyboardController.current
+    val bottomSheetState: SheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val defaultServer = stringResource(Res.string.auth_default_server)
 
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-        modifier = modifier.fillMaxSize(),
-    ) {
+    BackHandler(backHandler = component.backHandler, isEnabled = model.isLearnMoreVisible) {
+        component.onHideLearnMore()
+    }
+
+    Column(modifier = modifier.fillMaxSize()) {
         Text(
-            text = stringResource(Res.string.auth_select_server),
-            textAlign = TextAlign.Center,
-            color = MaterialTheme.colorScheme.onSurface,
-            style = MaterialTheme.typography.bodyMedium,
-            modifier = modifier.padding(horizontal = 32.dp),
+            text = stringResource(Res.string.auth_app_label),
+            color = MaterialTheme.colorScheme.primary,
+            style = MaterialTheme.typography.headlineLarge,
+            modifier = modifier,
         )
 
-        OutlinedTextField(
+        Image(
+            painter = painterResource(Res.drawable.auth_logo),
+            contentDescription = null,
+            contentScale = ContentScale.FillBounds,
+            modifier = modifier.size(size = 128.dp),
+        )
+
+        Text(
+            text = stringResource(Res.string.auth_select_server),
+            color = MaterialTheme.colorScheme.onBackground,
+            style = MaterialTheme.typography.bodyLarge,
+            modifier = modifier
+        )
+
+        CustomOutlinedTextField(
             value = model.textInput,
             onValueChange = component::onTextInput,
+            textStyle = MaterialTheme.typography.bodyLarge,
+            shape = MaterialTheme.shapes.large,
             maxLines = 1,
             singleLine = true,
             keyboardOptions = KeyboardOptions(
-                imeAction = ImeAction.Done,
                 autoCorrect = false,
+                imeAction = ImeAction.Done,
             ),
             keyboardActions = KeyboardActions(
                 onDone = { keyboardController?.hide() }
             ),
             modifier = modifier
+                .width(width = 220.dp)
+                .height(height = 40.dp)
         )
 
-        Column(modifier = modifier.padding(all = 32.dp)) {
-            Text(
-                text = "Name: ${model.serverName}",
-                style = MaterialTheme.typography.bodySmall,
-            )
-
-            Text(
-                text = "Description: ${model.serverDescription}",
-                style = MaterialTheme.typography.bodySmall,
+        AnimatedVisibility(visible = model.serverPreviewVisible) {
+            ServerInfo(
+                name = model.serverName,
+                description = model.serverDescription,
+                modifier = modifier,
             )
         }
 
         Text(
             text = stringResource(Res.string.auth_server_suggested),
-            color = MaterialTheme.colorScheme.onSurface,
-            style = MaterialTheme.typography.labelLarge,
-            modifier = modifier.padding(top = 16.dp),
+            color = MaterialTheme.colorScheme.secondary,
+            style = MaterialTheme.typography.titleMedium,
+            modifier = modifier,
         )
 
-        val defaultServer = stringResource(Res.string.auth_default_server)
         SuggestionChip(
             label = {
                 Text(
                     text = defaultServer,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = MaterialTheme.colorScheme.onSecondaryContainer,
+                    style = MaterialTheme.typography.bodyMedium,
                 )
             },
-            onClick = {
-                component.onTextInput(defaultServer)
-            }
+            colors = SuggestionChipDefaults.suggestionChipColors(
+                containerColor = MaterialTheme.colorScheme.secondaryContainer,
+            ),
+            onClick = { component.onTextInput(defaultServer) },
+            modifier = modifier,
         )
 
+        Text(
+            text = stringResource(Res.string.auth_learn_more),
+            color = MaterialTheme.colorScheme.primary,
+            style = MaterialTheme.typography.labelLarge,
+            modifier = modifier,
+        )
 
-        Button(
-            onClick = component::onAuthenticateClick,
-            modifier = modifier.padding(all = 32.dp)
+    }
+
+    if (model.isLearnMoreVisible) {
+        ModalBottomSheet(
+            onDismissRequest = { component.onHideLearnMore() },
+            sheetState = bottomSheetState,
         ) {
-            Text(
-                text = stringResource(Res.string.common_continue)
-            )
+            LearnMoreBottomSheet()
         }
     }
 }
 
 @Composable
 @Preview
-internal fun AuthContentPreviewIdle() {
-    TackleScreenPreview(darkTheme = false) {
-        AuthContent(
-            component = AuthComponentPreview()
-        )
-    }
-}
-
-@Composable
-@Preview
-internal fun AuthContentPreviewWithText() {
-    TackleScreenPreview(darkTheme = false) {
+private fun PreviewAuthContentWithInput() {
+    TackleScreenPreview {
         AuthContent(
             component = AuthComponentPreview(
-                textInput = "mastodon.social"
+                textInput = "Abracadabra",
+                serverPreviewVisible = true,
             )
         )
     }
 }
-

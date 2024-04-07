@@ -78,4 +78,12 @@ class AuthComponentDefault(
     override fun authFlowFailed() {
         store.accept(AuthStore.Intent.OAuthFlowFailed)
     }
+
+    override fun onShowLearnMore() {
+        store.accept(AuthStore.Intent.ShowLearnMore(true))
+    }
+
+    override fun onHideLearnMore() {
+        store.accept(AuthStore.Intent.ShowLearnMore(false))
+    }
 }

@@ -12,6 +12,7 @@ kotlin {
         all {
             languageSettings {
                 optIn("org.jetbrains.compose.resources.ExperimentalResourceApi")
+                optIn("androidx.compose.material3.ExperimentalMaterial3Api")
             }
         }
 

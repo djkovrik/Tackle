@@ -71,6 +71,10 @@ internal class AuthStoreProvider(
                 onIntent<Intent.OAuthFlowFailed> {
                     dispatch(Msg.OAuthFlowFailed)
                 }
+
+                onIntent<Intent.ShowLearnMore> {
+                    dispatch(Msg.LearnMoreVisibilityChanged(it.show))
+                }
             },
             reducer = { msg ->
                 when (msg) {
@@ -105,6 +109,10 @@ internal class AuthStoreProvider(
                         awaitingForOauth = false,
                         authenticated = false,
                     )
+
+                    is Msg.LearnMoreVisibilityChanged -> copy(
+                        learnMoreVisible = msg.visible,
+                    )
                 }
             }
         ) {}
@@ -119,6 +127,7 @@ internal class AuthStoreProvider(
         data object ServerInfoLoadingFailed : Msg
         data object OAuthFlowCompleted : Msg
         data object OAuthFlowFailed : Msg
+        data class LearnMoreVisibilityChanged(val visible: Boolean) : Msg
     }
 
     private companion object {
