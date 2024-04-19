@@ -1,4 +1,4 @@
-package com.sedsoftware.tackle.compose.ui.base
+package com.sedsoftware.tackle.compose.widget
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.PaddingValues
@@ -17,7 +17,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun CustomOutlinedTextField(
+internal fun CustomOutlinedTextField(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
@@ -32,7 +32,8 @@ fun CustomOutlinedTextField(
     maxLines: Int = if (singleLine) 1 else Int.MAX_VALUE,
     minLines: Int = 1,
     shape: Shape = OutlinedTextFieldDefaults.shape,
-    colors: TextFieldColors = OutlinedTextFieldDefaults.colors()
+    colors: TextFieldColors = OutlinedTextFieldDefaults.colors(),
+    label: @Composable (() -> Unit)? = null,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
 
@@ -60,7 +61,8 @@ fun CustomOutlinedTextField(
                 isError = isError,
                 interactionSource = interactionSource,
                 colors = colors,
-                contentPadding = PaddingValues(horizontal = 8.dp, vertical = 2.dp),
+                label = label,
+                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 4.dp),
                 container = {
                     OutlinedTextFieldDefaults.ContainerBox(
                         enabled,

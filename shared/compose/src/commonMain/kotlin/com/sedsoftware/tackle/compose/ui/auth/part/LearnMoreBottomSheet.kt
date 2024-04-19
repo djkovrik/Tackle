@@ -1,4 +1,4 @@
-package com.sedsoftware.tackle.compose.ui.auth
+package com.sedsoftware.tackle.compose.ui.auth.part
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.clickable
@@ -11,7 +11,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.text.style.TextDecoration.Companion
 import androidx.compose.ui.unit.dp
 import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
 import org.jetbrains.compose.resources.stringResource
@@ -35,7 +34,7 @@ internal fun LearnMoreBottomSheet(
             text = stringResource(Res.string.auth_mastodon_title),
             color = MaterialTheme.colorScheme.primary,
             style = MaterialTheme.typography.headlineMedium,
-            modifier = modifier,
+            modifier = modifier.padding(bottom = 8.dp),
         )
 
         Text(
@@ -52,7 +51,11 @@ internal fun LearnMoreBottomSheet(
             modifier = modifier.padding(bottom = 8.dp),
         )
 
-        Row(modifier = modifier.fillMaxWidth()) {
+        Row(
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(bottom = 16.dp)
+        ) {
             Text(
                 text = stringResource(Res.string.auth_no_account),
                 color = MaterialTheme.colorScheme.onBackground,
@@ -68,7 +71,7 @@ internal fun LearnMoreBottomSheet(
                 style = MaterialTheme.typography.bodyLarge,
                 modifier = modifier
                     .padding(vertical = 8.dp)
-                    .clickable {  },
+                    .clickable { TODO("Open url") },
             )
         }
     }
@@ -76,8 +79,16 @@ internal fun LearnMoreBottomSheet(
 
 @Composable
 @Preview
-private fun PreviewLearnMoreBottomSheet() {
+private fun PreviewLearnMoreBottomSheetLight() {
     TackleScreenPreview {
+        LearnMoreBottomSheet()
+    }
+}
+
+@Composable
+@Preview
+private fun PreviewLearnMoreBottomSheetDark() {
+    TackleScreenPreview(darkTheme = true) {
         LearnMoreBottomSheet()
     }
 }

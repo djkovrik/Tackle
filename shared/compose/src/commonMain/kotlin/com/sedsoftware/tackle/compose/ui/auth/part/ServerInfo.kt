@@ -1,4 +1,4 @@
-package com.sedsoftware.tackle.compose.ui.auth
+package com.sedsoftware.tackle.compose.ui.auth.part
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.layout.padding
@@ -8,6 +8,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
 
@@ -36,6 +37,7 @@ internal fun ServerInfo(
             text = description,
             color = MaterialTheme.colorScheme.onPrimaryContainer,
             style = MaterialTheme.typography.bodyMedium,
+            overflow = TextOverflow.Ellipsis,
             maxLines = 3,
             modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
         )

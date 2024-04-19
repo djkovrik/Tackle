@@ -1,13 +1,10 @@
 package com.sedsoftware.tackle.compose.ui
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.only
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.extensions.compose.jetbrains.stack.Children
@@ -26,19 +23,15 @@ fun RootContent(
     modifier: Modifier = Modifier
 ) {
     TackleTheme {
-        Scaffold(
+        Box(
             modifier = modifier
                 .fillMaxSize()
-                .windowInsetsPadding(
-                    insets = WindowInsets.systemBars.only(
-                        sides = WindowInsetsSides.Top + WindowInsetsSides.Horizontal,
-                    )
-                )
-        ) { paddingValues ->
+                .windowInsetsPadding(insets = WindowInsets.safeDrawing)
+        ) {
             Children(
                 stack = component.childStack,
                 animation = stackAnimation(animator = fade() + scale()),
-                modifier = modifier.padding(paddingValues = paddingValues)
+                modifier = modifier.fillMaxSize(),
             ) {
                 when (val child = it.instance) {
                     is Child.Auth -> AuthContent(component = child.component)

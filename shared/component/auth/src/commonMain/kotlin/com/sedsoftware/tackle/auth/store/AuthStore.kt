@@ -18,11 +18,13 @@ internal interface AuthStore : Store<Intent, State, Label> {
 
     data class State(
         val userInput: String = "",
+        val serverInfoLoaded: Boolean = false,
         val loadingServerInfo: Boolean = false,
         val serverInfo: InstanceInfo = InstanceInfo.empty(),
         val awaitingForOauth: Boolean = false,
         val authenticated: Boolean = false,
         val learnMoreVisible: Boolean = false,
+        val instanceUrl: String = "",
     )
 
     sealed class Label {

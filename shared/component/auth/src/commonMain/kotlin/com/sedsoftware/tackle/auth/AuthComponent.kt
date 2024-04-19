@@ -22,10 +22,10 @@ interface AuthComponent : BackHandlerOwner {
     data class Model(
         val textInput: String,
         val isRetrievingServerInfo: Boolean,
-        val serverPreviewVisible: Boolean,
         val serverName: String,
         val serverDescription: String,
         val serverUsers: Long,
+        val isServerInfoLoaded: Boolean,
         val isOauthFlowActive: Boolean,
         val isAuthenticated: Boolean,
         val isLearnMoreVisible: Boolean,

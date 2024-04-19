@@ -5,8 +5,9 @@ import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.core.utils.ExperimentalMviKotlinApi
 import com.arkivanov.mvikotlin.extensions.coroutines.coroutineExecutorFactory
 import com.sedsoftware.tackle.auth.domain.InstanceInfoManager
-import com.sedsoftware.tackle.auth.extension.normalizeInput
-import com.sedsoftware.tackle.auth.extension.trimInput
+import com.sedsoftware.tackle.auth.extension.isValidUrl
+import com.sedsoftware.tackle.auth.extension.trimForDisplaying
+import com.sedsoftware.tackle.auth.extension.normalizeForRequest
 import com.sedsoftware.tackle.auth.model.InstanceInfo
 import com.sedsoftware.tackle.auth.store.AuthStore.Intent
 import com.sedsoftware.tackle.auth.store.AuthStore.Label
@@ -41,22 +42,26 @@ internal class AuthStoreProvider(
                         delay(INPUT_ENDED_DELAY)
 
                         val url = state.userInput
-                        val trimmedUrl = url.trimInput()
-                        val normalizedUrl = url.normalizeInput()
+                        val displayedUrl = url.trimForDisplaying()
 
-                        dispatch(Msg.OnTextInput(trimmedUrl))
-                        dispatch(Msg.ServerInfoLoadingStarted)
+                        dispatch(Msg.OnTextInput(displayedUrl))
 
-                        unwrap(
-                            result = withContext(ioContext) { manager.getInstanceInfo(normalizedUrl) },
-                            onSuccess = { info ->
-                                dispatch(Msg.ServerInfoLoaded(info))
-                            },
-                            onError = { throwable ->
-                                dispatch(Msg.ServerInfoLoadingFailed)
-                                publish(Label.ErrorCaught(throwable))
-                            },
-                        )
+                        if (displayedUrl.isValidUrl()) {
+                            dispatch(Msg.ServerInfoLoadingStarted)
+
+                            val normalizedUrl = url.normalizeForRequest()
+
+                            unwrap(
+                                result = withContext(ioContext) { manager.getInstanceInfo(normalizedUrl) },
+                                onSuccess = { info ->
+                                    dispatch(Msg.ServerInfoLoaded(info))
+                                },
+                                onError = { throwable ->
+                                    dispatch(Msg.ServerInfoLoadingFailed)
+                                    publish(Label.ErrorCaught(throwable))
+                                },
+                            )
+                        }
                     }
                 }
 
@@ -88,11 +93,13 @@ internal class AuthStoreProvider(
 
                     is Msg.ServerInfoLoadingStarted -> copy(
                         loadingServerInfo = true,
+                        serverInfoLoaded = false,
                     )
 
                     is Msg.ServerInfoLoaded -> copy(
                         loadingServerInfo = false,
                         serverInfo = msg.info,
+                        serverInfoLoaded = msg.info.name.isNotEmpty(),
                     )
 
                     is Msg.ServerInfoLoadingFailed -> copy(
