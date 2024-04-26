@@ -9,6 +9,7 @@
     <string name="common_continue">Продолжить</string>
     <!-- Auth component -->
     <string name="auth_server_address">Адрес сервера</string>
+    <string name="auth_server_address_wrong">Некорректный адрес</string>
     <string name="auth_server_recommended">Рекомендуемый</string>
     <string name="auth_learn_more">Узнать больше</string>
     <string name="auth_no_account">Еще нет аккаунта?</string>

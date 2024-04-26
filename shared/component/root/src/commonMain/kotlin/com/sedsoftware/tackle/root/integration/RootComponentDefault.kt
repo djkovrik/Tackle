@@ -62,7 +62,7 @@ class RootComponentDefault internal constructor(
 
     private fun onAuthComponentOutput(output: AuthComponent.Output) {
         when (output) {
-            is AuthComponent.Output.ErrorCaught -> TODO()
+            is AuthComponent.Output.ErrorCaught -> Unit // TODO
         }
     }
 

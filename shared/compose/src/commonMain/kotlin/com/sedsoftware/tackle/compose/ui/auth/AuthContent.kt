@@ -39,7 +39,7 @@ import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import com.sedsoftware.tackle.auth.AuthComponent
 import com.sedsoftware.tackle.auth.integration.AuthComponentPreview
-import com.sedsoftware.tackle.compose.BackHandler
+import com.sedsoftware.tackle.compose.core.BackHandler
 import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
 import com.sedsoftware.tackle.compose.ui.auth.part.LearnMoreBottomSheet
 import com.sedsoftware.tackle.compose.ui.auth.part.ServerInfo

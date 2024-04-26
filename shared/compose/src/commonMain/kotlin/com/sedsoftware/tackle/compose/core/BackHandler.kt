@@ -1,4 +1,4 @@
-package com.sedsoftware.tackle.compose
+package com.sedsoftware.tackle.compose.core
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect

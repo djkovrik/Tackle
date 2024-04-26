@@ -86,7 +86,7 @@ internal class AuthStoreProvider(
                 when (msg) {
                     is Msg.OnTextInput -> copy(
                         userInput = msg.text,
-                        instanceInfoState = InstanceInfoState.NOT_LOADED,
+                        instanceInfoState = InstanceInfoState.IDLE,
                     )
 
                     is Msg.ServerInfoLoadingStarted -> copy(

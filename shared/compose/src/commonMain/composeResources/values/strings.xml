@@ -12,6 +12,7 @@
     <string name="common_continue">Continue</string>
     <!-- Auth component -->
     <string name="auth_server_address">Server address</string>
+    <string name="auth_server_address_wrong">Incorrect address</string>
     <string name="auth_server_recommended">Recommended</string>
     <string name="auth_learn_more">Learn more</string>
     <string name="auth_no_account">Don't have an account?</string>

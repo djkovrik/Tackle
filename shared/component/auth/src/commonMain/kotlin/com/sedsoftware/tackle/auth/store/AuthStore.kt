@@ -20,7 +20,7 @@ internal interface AuthStore : Store<Intent, State, Label> {
     data class State(
         val userInput: String = "",
         val instanceInfo: InstanceInfo = InstanceInfo.empty(),
-        val instanceInfoState: InstanceInfoState = InstanceInfoState.NOT_LOADED,
+        val instanceInfoState: InstanceInfoState = InstanceInfoState.IDLE,
         val learnMoreVisible: Boolean = false,
         val instanceUrl: String = "",
         val awaitingForOauth: Boolean = false,
