@@ -19,4 +19,5 @@
     <string name="auth_join">Join now</string>
     <string name="auth_mastodon_description">Mastodon is a decentralized social media platform which does not rely on one single company and its server. Each Mastodon server is a completely independent entity, able to interoperate with others to form one global social network.</string>
     <string name="auth_server_description">Each user account belongs to a specific Mastodon server with it's own rules, admins and regulations, but users from each server can interact seamlessly with users in any other server.</string>
+    <string name="auth_server_info_fetch">Loading server info</string>
 </resources>

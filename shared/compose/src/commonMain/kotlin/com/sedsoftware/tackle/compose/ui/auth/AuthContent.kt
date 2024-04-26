@@ -44,6 +44,7 @@ import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
 import com.sedsoftware.tackle.compose.ui.auth.part.LearnMoreBottomSheet
 import com.sedsoftware.tackle.compose.ui.auth.part.ServerInfo
 import com.sedsoftware.tackle.compose.widget.CustomOutlinedTextField
+import com.sedsoftware.tackle.compose.widget.LoadingDotsText
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import tackle.shared.compose.generated.resources.Res
@@ -53,6 +54,7 @@ import tackle.shared.compose.generated.resources.auth_learn_more
 import tackle.shared.compose.generated.resources.auth_logo
 import tackle.shared.compose.generated.resources.auth_server_address
 import tackle.shared.compose.generated.resources.auth_server_address_wrong
+import tackle.shared.compose.generated.resources.auth_server_info_fetch
 import tackle.shared.compose.generated.resources.auth_server_recommended
 import tackle.shared.compose.generated.resources.common_continue
 
@@ -173,7 +175,18 @@ internal fun AuthContent(
                 }
             }
 
+            AnimatedVisibility(visible = model.isLoadingServerInfo) {
+                LoadingDotsText(
+                    text = stringResource(Res.string.auth_server_info_fetch),
+                    color = MaterialTheme.colorScheme.secondary,
+                    modifier = modifier
+                )
+            }
+
             AnimatedVisibility(visible = model.isServerInfoLoaded) {
+                hideKeyboard.invoke()
+                clearFocus.invoke()
+
                 ServerInfo(
                     name = model.serverName,
                     description = model.serverDescription,
