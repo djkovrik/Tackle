@@ -6,9 +6,10 @@ import com.arkivanov.mvikotlin.core.utils.ExperimentalMviKotlinApi
 import com.arkivanov.mvikotlin.extensions.coroutines.coroutineExecutorFactory
 import com.sedsoftware.tackle.auth.domain.InstanceInfoManager
 import com.sedsoftware.tackle.auth.extension.isValidUrl
-import com.sedsoftware.tackle.auth.extension.trimForDisplaying
 import com.sedsoftware.tackle.auth.extension.normalizeForRequest
+import com.sedsoftware.tackle.auth.extension.trimForDisplaying
 import com.sedsoftware.tackle.auth.model.InstanceInfo
+import com.sedsoftware.tackle.auth.model.InstanceInfoState
 import com.sedsoftware.tackle.auth.store.AuthStore.Intent
 import com.sedsoftware.tackle.auth.store.AuthStore.Label
 import com.sedsoftware.tackle.auth.store.AuthStore.State
@@ -85,36 +86,37 @@ internal class AuthStoreProvider(
                 when (msg) {
                     is Msg.OnTextInput -> copy(
                         userInput = msg.text,
+                        instanceInfoState = InstanceInfoState.NOT_LOADED,
+                    )
+
+                    is Msg.ServerInfoLoadingStarted -> copy(
+                        instanceInfoState = InstanceInfoState.LOADING,
+                    )
+
+                    is Msg.ServerInfoLoaded -> copy(
+                        instanceInfo = msg.info,
+                        instanceInfoState = if (msg.info.name.isNotEmpty()) {
+                            InstanceInfoState.LOADED
+                        } else {
+                            InstanceInfoState.ERROR
+                        },
+                    )
+
+                    is Msg.ServerInfoLoadingFailed -> copy(
+                        instanceInfoState = InstanceInfoState.ERROR,
+                        instanceInfo = InstanceInfo.empty(),
                     )
 
                     is Msg.OnAuthenticateClick -> copy(
                         awaitingForOauth = true,
                     )
 
-                    is Msg.ServerInfoLoadingStarted -> copy(
-                        loadingServerInfo = true,
-                        serverInfoLoaded = false,
-                    )
-
-                    is Msg.ServerInfoLoaded -> copy(
-                        loadingServerInfo = false,
-                        serverInfo = msg.info,
-                        serverInfoLoaded = msg.info.name.isNotEmpty(),
-                    )
-
-                    is Msg.ServerInfoLoadingFailed -> copy(
-                        loadingServerInfo = false,
-                        serverInfo = InstanceInfo.empty(),
-                    )
-
                     is Msg.OAuthFlowCompleted -> copy(
                         awaitingForOauth = false,
-                        authenticated = true,
                     )
 
                     is Msg.OAuthFlowFailed -> copy(
                         awaitingForOauth = false,
-                        authenticated = false,
                     )
 
                     is Msg.LearnMoreVisibilityChanged -> copy(
@@ -128,10 +130,10 @@ internal class AuthStoreProvider(
 
     private sealed interface Msg {
         data class OnTextInput(val text: String) : Msg
-        data object OnAuthenticateClick : Msg
         data object ServerInfoLoadingStarted : Msg
         data class ServerInfoLoaded(val info: InstanceInfo) : Msg
         data object ServerInfoLoadingFailed : Msg
+        data object OnAuthenticateClick : Msg
         data object OAuthFlowCompleted : Msg
         data object OAuthFlowFailed : Msg
         data class LearnMoreVisibilityChanged(val visible: Boolean) : Msg

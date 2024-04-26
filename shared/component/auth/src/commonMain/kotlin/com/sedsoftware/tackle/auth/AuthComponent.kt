@@ -21,13 +21,13 @@ interface AuthComponent : BackHandlerOwner {
 
     data class Model(
         val textInput: String,
-        val isRetrievingServerInfo: Boolean,
         val serverName: String,
         val serverDescription: String,
         val serverUsers: Long,
+        val isLoadingServerInfo: Boolean,
         val isServerInfoLoaded: Boolean,
+        val isServerInfoError: Boolean,
         val isOauthFlowActive: Boolean,
-        val isAuthenticated: Boolean,
         val isLearnMoreVisible: Boolean,
     )
 

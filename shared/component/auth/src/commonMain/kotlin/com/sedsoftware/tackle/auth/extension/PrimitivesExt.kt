@@ -11,5 +11,4 @@ internal fun String.normalizeForRequest(): String {
     return "https://$trimmed"
 }
 
-internal fun String.isValidUrl(): Boolean =
-    contains('.')
+internal fun String.isValidUrl(): Boolean = contains('.')

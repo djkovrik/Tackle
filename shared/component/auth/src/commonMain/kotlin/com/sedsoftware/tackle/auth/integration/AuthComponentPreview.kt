@@ -9,11 +9,11 @@ import com.sedsoftware.tackle.auth.AuthComponent.Model
 
 class AuthComponentPreview(
     textInput: String = "",
-    isRetrievingServerInfo: Boolean = false,
-    isOauthFlowActive: Boolean = false,
-    isAuthenticated: Boolean = false,
-    isLearnMoreVisible: Boolean = false,
+    isLoadingServerInfo: Boolean = false,
     isServerInfoLoaded: Boolean = false,
+    isServerInfoError: Boolean = false,
+    isOauthFlowActive: Boolean = false,
+    isLearnMoreVisible: Boolean = false,
 ) : AuthComponent {
 
     override val backHandler: BackHandler =
@@ -26,16 +26,16 @@ class AuthComponentPreview(
         MutableValue(
             Model(
                 textInput = textInput,
-                isRetrievingServerInfo = isRetrievingServerInfo,
+                isLoadingServerInfo = isLoadingServerInfo,
+                isServerInfoLoaded = isServerInfoLoaded,
+                isServerInfoError = isServerInfoError,
                 serverName = "Mastodon",
                 serverDescription = "The original server operated by the Mastodon gGmbH non-profit" +
                     "The original server operated by the Mastodon gGmbH non-profit" +
                     "The original server operated by the Mastodon gGmbH non-profit",
                 serverUsers = 123123123,
                 isOauthFlowActive = isOauthFlowActive,
-                isAuthenticated = isAuthenticated,
                 isLearnMoreVisible = isLearnMoreVisible,
-                isServerInfoLoaded = isServerInfoLoaded,
             )
         )
 
