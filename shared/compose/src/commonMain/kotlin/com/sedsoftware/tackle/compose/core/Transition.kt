@@ -1,3 +1,5 @@
+@file:Suppress("MagicNumber")
+
 package com.sedsoftware.tackle.compose.core
 
 import androidx.compose.animation.core.CubicBezierEasing

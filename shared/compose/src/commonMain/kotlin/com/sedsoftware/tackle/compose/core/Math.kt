@@ -3,7 +3,9 @@ package com.sedsoftware.tackle.compose.core
 import kotlin.math.PI
 
 internal object Math {
-    fun toRadians(deg: Double): Double = deg / 180.0 * PI
+    private const val MULT = 180.0
 
-    fun toDegrees(rad: Double): Double = rad * 180.0 / PI
+    fun toRadians(deg: Double): Double = deg / MULT * PI
+
+    fun toDegrees(rad: Double): Double = rad * MULT / PI
 }

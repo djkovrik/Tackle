@@ -52,6 +52,7 @@ import tackle.shared.compose.generated.resources.auth_default_server
 import tackle.shared.compose.generated.resources.auth_learn_more
 import tackle.shared.compose.generated.resources.auth_logo
 import tackle.shared.compose.generated.resources.auth_server_address
+import tackle.shared.compose.generated.resources.auth_server_address_wrong
 import tackle.shared.compose.generated.resources.auth_server_recommended
 import tackle.shared.compose.generated.resources.common_continue
 
@@ -74,7 +75,6 @@ internal fun AuthContent(
     val hideKeyboard = remember { { keyboardController?.hide() } }
 
     Column(modifier = modifier.fillMaxSize()) {
-
         Column(
             verticalArrangement = Arrangement.SpaceEvenly,
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -114,10 +114,19 @@ internal fun AuthContent(
                     shape = MaterialTheme.shapes.large,
                     maxLines = 1,
                     singleLine = true,
+                    isError = model.isServerInfoError,
                     label = {
                         Text(
-                            text = stringResource(Res.string.auth_server_address),
-                            color = MaterialTheme.colorScheme.outline,
+                            text = if (!model.isServerInfoError) {
+                                stringResource(Res.string.auth_server_address)
+                            } else {
+                                stringResource(Res.string.auth_server_address_wrong)
+                            },
+                            color = if (!model.isServerInfoError) {
+                                MaterialTheme.colorScheme.outline
+                            } else {
+                                MaterialTheme.colorScheme.error
+                            },
                             style = MaterialTheme.typography.labelMedium,
                             modifier = modifier
                                 .background(color = MaterialTheme.colorScheme.background)
