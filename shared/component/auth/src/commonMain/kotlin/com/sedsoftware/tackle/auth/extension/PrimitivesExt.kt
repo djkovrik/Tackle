@@ -1,12 +1,14 @@
 package com.sedsoftware.tackle.auth.extension
 
-internal fun String.trimInput(): String =
+internal fun String.trimForDisplaying(): String =
     replace(" ", "")
-        .replace("http", "")
-        .replace("https", "")
-        .trim('\\', '/', '.', ':')
+        .replace("http://", "")
+        .replace("https://", "")
+        .substringAfterLast('@')
 
-internal fun String.normalizeInput(): String {
-    val trimmed = trimInput()
+internal fun String.normalizeForRequest(): String {
+    val trimmed = trimForDisplaying()
     return "https://$trimmed"
 }
+
+internal fun String.isValidUrl(): Boolean = contains('.')

@@ -5,7 +5,6 @@ import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.value.Value
-import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.sedsoftware.tackle.auth.AuthComponent
 import com.sedsoftware.tackle.auth.integration.AuthComponentDefault
@@ -48,6 +47,7 @@ class RootComponentDefault internal constructor(
     private val stack: Value<ChildStack<Config, Child>> =
         childStack(
             source = navigation,
+            serializer = Config.serializer(),
             initialConfiguration = Config.Auth,
             handleBackButton = true,
             childFactory = ::createChild,
@@ -62,12 +62,12 @@ class RootComponentDefault internal constructor(
 
     private fun onAuthComponentOutput(output: AuthComponent.Output) {
         when (output) {
-            is AuthComponent.Output.ErrorCaught -> TODO()
+            is AuthComponent.Output.ErrorCaught -> Unit // TODO
         }
     }
 
     @Serializable
-    private sealed interface Config : Parcelable {
+    private sealed interface Config {
         @Serializable
         data object Auth : Config
     }

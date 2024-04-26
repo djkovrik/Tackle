@@ -34,14 +34,21 @@ kotlin {
         val desktopMain by getting
 
         commonMain.dependencies {
+            implementation(project(":shared:component:root"))
             implementation(project(":shared:compose"))
             implementation(project(":shared:utils"))
+
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material)
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
+
+            implementation(libs.ark.decompose.core)
+            implementation(libs.ark.decompose.extensions)
+            implementation(libs.ark.mvikotlin.core)
+            implementation(libs.ark.essenty)
         }
         androidMain.dependencies {
             implementation(libs.compose.ui.tooling.preview)

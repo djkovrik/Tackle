@@ -6,18 +6,31 @@ plugins {
 }
 
 kotlin {
+    task("testClasses")
+
     sourceSets {
+        all {
+            languageSettings {
+                optIn("org.jetbrains.compose.resources.ExperimentalResourceApi")
+                optIn("androidx.compose.material3.ExperimentalMaterial3Api")
+            }
+        }
+
         val desktopMain by getting
 
         commonMain.dependencies {
+            implementation(project(":shared:component:root"))
             implementation(project(":shared:component:auth"))
 
             implementation(compose.runtime)
             implementation(compose.foundation)
-            implementation(compose.material)
+            implementation(compose.material3)
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
+
+            implementation(libs.ark.decompose.core)
+            implementation(libs.ark.decompose.extensions)
         }
         androidMain.dependencies {
             implementation(libs.compose.ui.tooling.preview)

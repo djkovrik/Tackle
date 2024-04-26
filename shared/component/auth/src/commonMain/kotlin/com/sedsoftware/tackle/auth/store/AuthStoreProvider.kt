@@ -5,9 +5,11 @@ import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.core.utils.ExperimentalMviKotlinApi
 import com.arkivanov.mvikotlin.extensions.coroutines.coroutineExecutorFactory
 import com.sedsoftware.tackle.auth.domain.InstanceInfoManager
-import com.sedsoftware.tackle.auth.extension.normalizeInput
-import com.sedsoftware.tackle.auth.extension.trimInput
+import com.sedsoftware.tackle.auth.extension.isValidUrl
+import com.sedsoftware.tackle.auth.extension.normalizeForRequest
+import com.sedsoftware.tackle.auth.extension.trimForDisplaying
 import com.sedsoftware.tackle.auth.model.InstanceInfo
+import com.sedsoftware.tackle.auth.model.InstanceInfoState
 import com.sedsoftware.tackle.auth.store.AuthStore.Intent
 import com.sedsoftware.tackle.auth.store.AuthStore.Label
 import com.sedsoftware.tackle.auth.store.AuthStore.State
@@ -41,27 +43,27 @@ internal class AuthStoreProvider(
                         delay(INPUT_ENDED_DELAY)
 
                         val url = state.userInput
-                        val trimmedUrl = url.trimInput()
-                        val normalizedUrl = url.normalizeInput()
+                        val displayedUrl = url.trimForDisplaying()
 
-                        dispatch(Msg.OnTextInput(trimmedUrl))
-                        dispatch(Msg.ServerInfoLoadingStarted)
+                        dispatch(Msg.OnTextInput(displayedUrl))
 
-                        unwrap(
-                            result = withContext(ioContext) { manager.getInstanceInfo(normalizedUrl) },
-                            onSuccess = { info ->
-                                dispatch(Msg.ServerInfoLoaded(info))
-                            },
-                            onError = { throwable ->
-                                dispatch(Msg.ServerInfoLoadingFailed)
-                                publish(Label.ErrorCaught(throwable))
-                            },
-                        )
+                        if (displayedUrl.isValidUrl()) {
+                            dispatch(Msg.ServerInfoLoadingStarted)
+
+                            val normalizedUrl = url.normalizeForRequest()
+
+                            unwrap(
+                                result = withContext(ioContext) { manager.getInstanceInfo(normalizedUrl) },
+                                onSuccess = { info ->
+                                    dispatch(Msg.ServerInfoLoaded(info))
+                                },
+                                onError = { throwable ->
+                                    dispatch(Msg.ServerInfoLoadingFailed)
+                                    publish(Label.ErrorCaught(throwable))
+                                },
+                            )
+                        }
                     }
-                }
-
-                onIntent<Intent.OnDefaultServerClick> {
-                    dispatch(Msg.OnDefaultServerClick)
                 }
 
                 onIntent<Intent.OnAuthenticateClick> {
@@ -75,43 +77,50 @@ internal class AuthStoreProvider(
                 onIntent<Intent.OAuthFlowFailed> {
                     dispatch(Msg.OAuthFlowFailed)
                 }
+
+                onIntent<Intent.ShowLearnMore> {
+                    dispatch(Msg.LearnMoreVisibilityChanged(it.show))
+                }
             },
             reducer = { msg ->
                 when (msg) {
                     is Msg.OnTextInput -> copy(
                         userInput = msg.text,
+                        instanceInfoState = InstanceInfoState.IDLE,
                     )
 
-                    is Msg.OnDefaultServerClick -> copy(
-                        userInput = DEFAULT_SERVER,
+                    is Msg.ServerInfoLoadingStarted -> copy(
+                        instanceInfoState = InstanceInfoState.LOADING,
+                    )
+
+                    is Msg.ServerInfoLoaded -> copy(
+                        instanceInfo = msg.info,
+                        instanceInfoState = if (msg.info.name.isNotEmpty()) {
+                            InstanceInfoState.LOADED
+                        } else {
+                            InstanceInfoState.ERROR
+                        },
+                    )
+
+                    is Msg.ServerInfoLoadingFailed -> copy(
+                        instanceInfoState = InstanceInfoState.ERROR,
+                        instanceInfo = InstanceInfo.empty(),
                     )
 
                     is Msg.OnAuthenticateClick -> copy(
                         awaitingForOauth = true,
                     )
 
-                    is Msg.ServerInfoLoadingStarted -> copy(
-                        loadingServerInfo = true,
-                    )
-
-                    is Msg.ServerInfoLoaded -> copy(
-                        loadingServerInfo = false,
-                        serverInfo = msg.info,
-                    )
-
-                    is Msg.ServerInfoLoadingFailed -> copy(
-                        loadingServerInfo = false,
-                        serverInfo = InstanceInfo.empty(),
-                    )
-
                     is Msg.OAuthFlowCompleted -> copy(
                         awaitingForOauth = false,
-                        authenticated = true,
                     )
 
                     is Msg.OAuthFlowFailed -> copy(
                         awaitingForOauth = false,
-                        authenticated = false,
+                    )
+
+                    is Msg.LearnMoreVisibilityChanged -> copy(
+                        learnMoreVisible = msg.visible,
                     )
                 }
             }
@@ -121,17 +130,16 @@ internal class AuthStoreProvider(
 
     private sealed interface Msg {
         data class OnTextInput(val text: String) : Msg
-        data object OnDefaultServerClick : Msg
-        data object OnAuthenticateClick : Msg
         data object ServerInfoLoadingStarted : Msg
         data class ServerInfoLoaded(val info: InstanceInfo) : Msg
         data object ServerInfoLoadingFailed : Msg
+        data object OnAuthenticateClick : Msg
         data object OAuthFlowCompleted : Msg
         data object OAuthFlowFailed : Msg
+        data class LearnMoreVisibilityChanged(val visible: Boolean) : Msg
     }
 
     private companion object {
-        const val DEFAULT_SERVER = "mastodon.social"
         const val INPUT_ENDED_DELAY = 2000L
     }
 }

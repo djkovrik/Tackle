@@ -1,17 +1,19 @@
 package com.sedsoftware.tackle.auth.integration
 
 import com.sedsoftware.tackle.auth.AuthComponent.Model
+import com.sedsoftware.tackle.auth.model.InstanceInfoState
 import com.sedsoftware.tackle.auth.store.AuthStore.State
 
 internal val stateToModel: (State) -> Model = {
     Model(
         textInput = it.userInput,
-        isRetrievingServerInfo = it.loadingServerInfo,
-        serverPreviewVisible = it.serverInfo.name.isNotEmpty(),
-        serverName = it.serverInfo.name,
-        serverDescription = it.serverInfo.description,
-        serverUsers = it.serverInfo.users,
+        serverName = it.instanceInfo.name,
+        serverDescription = it.instanceInfo.description,
+        serverUsers = it.instanceInfo.users,
+        isLoadingServerInfo = it.instanceInfoState == InstanceInfoState.LOADING,
+        isServerInfoLoaded = it.instanceInfoState == InstanceInfoState.LOADED,
+        isServerInfoError = it.instanceInfoState == InstanceInfoState.ERROR,
         isOauthFlowActive = it.awaitingForOauth,
-        isAuthenticated = it.authenticated,
+        isLearnMoreVisible = it.learnMoreVisible,
     )
 }

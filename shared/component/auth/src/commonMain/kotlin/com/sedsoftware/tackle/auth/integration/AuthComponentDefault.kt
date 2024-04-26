@@ -63,12 +63,12 @@ class AuthComponentDefault(
 
     override val model: Value<Model> = store.asValue().map(stateToModel)
 
-    override fun onAuthenticateClicked() {
-        store.accept(AuthStore.Intent.OnAuthenticateClick)
+    override fun onTextInput(text: String) {
+        store.accept(AuthStore.Intent.OnTextInput(text))
     }
 
-    override fun onPopulateDefaultServerClicked() {
-        store.accept(AuthStore.Intent.OnDefaultServerClick)
+    override fun onAuthenticateClick() {
+        store.accept(AuthStore.Intent.OnAuthenticateClick)
     }
 
     override fun authFlowCompleted() {
@@ -77,5 +77,13 @@ class AuthComponentDefault(
 
     override fun authFlowFailed() {
         store.accept(AuthStore.Intent.OAuthFlowFailed)
+    }
+
+    override fun onShowLearnMore() {
+        store.accept(AuthStore.Intent.ShowLearnMore(true))
+    }
+
+    override fun onHideLearnMore() {
+        store.accept(AuthStore.Intent.ShowLearnMore(false))
     }
 }
