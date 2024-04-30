@@ -11,9 +11,15 @@ import com.sedsoftware.tackle.settings.SettingsModule
 import com.sedsoftware.tackle.settings.SettingsModuleDependencies
 import com.sedsoftware.tackle.settings.SharedSettingsFactory
 import com.sedsoftware.tackle.utils.TackleDispatchers
+import com.sedsoftware.tackle.utils.TacklePlatformTools
 
 @Suppress("FunctionName")
-fun RootComponentFactory(componentContext: ComponentContext, context: Context, dispatchers: TackleDispatchers): RootComponent {
+fun RootComponentFactory(
+    componentContext: ComponentContext,
+    context: Context,
+    platformTools: TacklePlatformTools,
+    dispatchers: TackleDispatchers,
+): RootComponent {
     val networkModule = NetworkModule(
         dependencies = object : NetworkModuleDependencies {}
     )
@@ -30,6 +36,7 @@ fun RootComponentFactory(componentContext: ComponentContext, context: Context, d
         unauthorizedApi = networkModule.unauthorized,
         authorizedApi = networkModule.authorized,
         settings = settingsModule.settings,
+        platformTools = platformTools,
         dispatchers = dispatchers,
     )
 }

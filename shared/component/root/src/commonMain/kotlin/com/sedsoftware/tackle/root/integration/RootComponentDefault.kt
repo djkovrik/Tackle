@@ -14,6 +14,7 @@ import com.sedsoftware.tackle.root.RootComponent
 import com.sedsoftware.tackle.root.RootComponent.Child
 import com.sedsoftware.tackle.settings.api.TackleSettings
 import com.sedsoftware.tackle.utils.TackleDispatchers
+import com.sedsoftware.tackle.utils.TacklePlatformTools
 import kotlinx.serialization.Serializable
 
 class RootComponentDefault internal constructor(
@@ -28,6 +29,7 @@ class RootComponentDefault internal constructor(
         unauthorizedApi: UnauthorizedApi,
         authorizedApi: AuthorizedApi,
         settings: TackleSettings,
+        platformTools: TacklePlatformTools,
         dispatchers: TackleDispatchers,
     ) : this(
         componentContext = componentContext,
@@ -36,6 +38,7 @@ class RootComponentDefault internal constructor(
                 componentContext = childContext,
                 storeFactory = storeFactory,
                 api = unauthorizedApi,
+                platformTools = platformTools,
                 dispatchers = dispatchers,
                 output = output,
             )

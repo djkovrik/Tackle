@@ -15,6 +15,7 @@ class MainActivity : ComponentActivity() {
         val root: RootComponent = RootComponentFactory(
             componentContext = defaultComponentContext(),
             context = applicationContext,
+            platformTools = PlatformToolsFactory(applicationContext),
             dispatchers = DefaultDispatchers,
         )
 

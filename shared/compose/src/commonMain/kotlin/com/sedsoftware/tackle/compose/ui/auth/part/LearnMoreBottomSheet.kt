@@ -24,6 +24,7 @@ import tackle.shared.compose.generated.resources.auth_server_description
 @Composable
 internal fun LearnMoreBottomSheet(
     modifier: Modifier = Modifier,
+    onJoinMastodonClick: () -> Unit = {},
 ) {
     Column(
         modifier = modifier
@@ -71,7 +72,7 @@ internal fun LearnMoreBottomSheet(
                 style = MaterialTheme.typography.bodyLarge,
                 modifier = modifier
                     .padding(vertical = 8.dp)
-                    .clickable { TODO("Open url") },
+                    .clickable(onClick = onJoinMastodonClick),
             )
         }
     }

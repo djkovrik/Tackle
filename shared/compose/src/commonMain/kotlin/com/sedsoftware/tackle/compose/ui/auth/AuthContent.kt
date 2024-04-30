@@ -218,7 +218,10 @@ internal fun AuthContent(
             onDismissRequest = { component.onHideLearnMore() },
             sheetState = bottomSheetState,
         ) {
-            LearnMoreBottomSheet()
+            LearnMoreBottomSheet(
+                onJoinMastodonClick = component::onJoinMastodonClick,
+                modifier = modifier,
+            )
         }
     }
 }

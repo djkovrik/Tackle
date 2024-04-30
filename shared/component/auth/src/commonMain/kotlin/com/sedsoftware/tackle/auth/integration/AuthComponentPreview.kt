@@ -45,4 +45,5 @@ class AuthComponentPreview(
     override fun authFlowFailed() = Unit
     override fun onShowLearnMore() = Unit
     override fun onHideLearnMore() = Unit
+    override fun onJoinMastodonClick() = Unit
 }

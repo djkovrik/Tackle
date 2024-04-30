@@ -19,6 +19,8 @@ interface AuthComponent : BackHandlerOwner {
 
     fun onHideLearnMore()
 
+    fun onJoinMastodonClick()
+
     data class Model(
         val textInput: String,
         val serverName: String,

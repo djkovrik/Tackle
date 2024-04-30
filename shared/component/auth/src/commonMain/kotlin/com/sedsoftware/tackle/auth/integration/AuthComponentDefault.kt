@@ -17,6 +17,7 @@ import com.sedsoftware.tackle.auth.store.AuthStoreProvider
 import com.sedsoftware.tackle.network.api.UnauthorizedApi
 import com.sedsoftware.tackle.network.response.InstanceDetails
 import com.sedsoftware.tackle.utils.TackleDispatchers
+import com.sedsoftware.tackle.utils.TacklePlatformTools
 import com.sedsoftware.tackle.utils.asValue
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
@@ -26,6 +27,7 @@ class AuthComponentDefault(
     private val componentContext: ComponentContext,
     private val storeFactory: StoreFactory,
     private val api: UnauthorizedApi,
+    private val platformTools: TacklePlatformTools,
     private val dispatchers: TackleDispatchers,
     private val output: (AuthComponent.Output) -> Unit,
 ) : AuthComponent, ComponentContext by componentContext {
@@ -85,5 +87,14 @@ class AuthComponentDefault(
 
     override fun onHideLearnMore() {
         store.accept(AuthStore.Intent.ShowLearnMore(false))
+    }
+
+    override fun onJoinMastodonClick() {
+        store.accept(AuthStore.Intent.ShowLearnMore(false))
+        platformTools.openUrl(JOIN_MASTODON_URL)
+    }
+
+    private companion object {
+        const val JOIN_MASTODON_URL = "https://joinmastodon.org/"
     }
 }
