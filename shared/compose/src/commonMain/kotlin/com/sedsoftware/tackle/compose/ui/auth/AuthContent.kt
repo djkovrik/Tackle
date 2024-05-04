@@ -36,7 +36,7 @@ import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
+import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.sedsoftware.tackle.auth.AuthComponent
 import com.sedsoftware.tackle.auth.integration.AuthComponentPreview
 import com.sedsoftware.tackle.compose.core.BackHandler

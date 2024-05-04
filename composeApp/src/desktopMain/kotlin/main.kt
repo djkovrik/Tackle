@@ -8,7 +8,6 @@ import com.sedsoftware.tackle.compose.ui.RootContent
 import com.sedsoftware.tackle.root.RootComponentFactory
 import com.sedsoftware.tackle.runOnUiThread
 
-
 fun main() {
     val lifecycle = LifecycleRegistry()
     val root = runOnUiThread {

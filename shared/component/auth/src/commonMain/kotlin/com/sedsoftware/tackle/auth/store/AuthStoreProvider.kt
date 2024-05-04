@@ -2,7 +2,6 @@ package com.sedsoftware.tackle.auth.store
 
 import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
-import com.arkivanov.mvikotlin.core.utils.ExperimentalMviKotlinApi
 import com.arkivanov.mvikotlin.extensions.coroutines.coroutineExecutorFactory
 import com.sedsoftware.tackle.auth.domain.InstanceInfoManager
 import com.sedsoftware.tackle.auth.extension.isValidUrl
@@ -27,7 +26,6 @@ internal class AuthStoreProvider(
     private val ioContext: CoroutineContext,
 ) {
 
-    @OptIn(ExperimentalMviKotlinApi::class)
     fun create(autoInit: Boolean = true): AuthStore =
         object : AuthStore, Store<Intent, State, Label> by storeFactory.create<Intent, Action, Msg, State, Label>(
             name = "AuthStore",
@@ -42,6 +40,7 @@ internal class AuthStoreProvider(
                     job = launch {
                         delay(INPUT_ENDED_DELAY)
 
+                        val state = state()
                         val url = state.userInput
                         val displayedUrl = url.trimForDisplaying()
 

@@ -18,6 +18,7 @@ class AuthComponentPreview(
 
     override val backHandler: BackHandler =
         object : BackHandler {
+            override fun isRegistered(callback: BackCallback): Boolean = true
             override fun register(callback: BackCallback) = Unit
             override fun unregister(callback: BackCallback) = Unit
         }
