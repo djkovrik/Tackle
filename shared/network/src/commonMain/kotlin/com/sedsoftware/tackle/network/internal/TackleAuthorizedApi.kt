@@ -6,7 +6,7 @@ import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 
-class TackleAuthorizedApi : AuthorizedApi {
+internal class TackleAuthorizedApi : AuthorizedApi {
 
     internal val httpClient: HttpClient = HttpClient() {
         install(ContentNegotiation) {
