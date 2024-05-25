@@ -1,5 +1,7 @@
 package com.sedsoftware.tackle.settings.api
 
 interface TackleSettings {
-    var testOption: String
+    var domain: String
+    var clientId: String
+    var clientSecret: String
 }
