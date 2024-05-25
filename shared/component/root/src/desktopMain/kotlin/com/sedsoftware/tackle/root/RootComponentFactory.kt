@@ -18,13 +18,21 @@ fun RootComponentFactory(
     platformTools: TacklePlatformTools,
     dispatchers: TackleDispatchers,
 ) : RootComponent {
-    val networkModule = NetworkModule(
-        dependencies = object : NetworkModuleDependencies {}
-    )
-
     val settingsModule = SettingsModule(
         dependencies = object : SettingsModuleDependencies {
             override val settings: Settings = SharedSettingsFactory()
+        }
+    )
+
+    val networkModule = NetworkModule(
+        dependencies = object : NetworkModuleDependencies {
+            override val domainProvider: () -> String = {
+                settingsModule.settings.domain
+            }
+
+            override val tokenProvider: () -> String = {
+                settingsModule.settings.token
+            }
         }
     )
 

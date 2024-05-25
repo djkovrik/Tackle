@@ -25,6 +25,12 @@ internal class TackleSettingsInternal(
             settings.setValue(PREF_KEY_CLIENS_SECRET, value)
         }
 
+    override var token: String
+        get() = settings.getValue(PREF_KEY_TOKEN, "")
+        set(value) {
+            settings.setValue(PREF_KEY_TOKEN, value)
+        }
+
     private fun Settings.setValue(key: String, value: Any) {
         when (value) {
             is String -> putString(key, value)
@@ -50,5 +56,6 @@ internal class TackleSettingsInternal(
         const val PREF_KEY_DOMAIN = "dn"
         const val PREF_KEY_CLIENT_ID = "ci"
         const val PREF_KEY_CLIENS_SECRET = "cs"
+        const val PREF_KEY_TOKEN = "tn"
     }
 }

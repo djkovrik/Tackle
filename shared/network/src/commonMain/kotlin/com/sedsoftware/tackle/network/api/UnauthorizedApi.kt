@@ -2,6 +2,7 @@ package com.sedsoftware.tackle.network.api
 
 import com.sedsoftware.tackle.network.response.ApplicationDetails
 import com.sedsoftware.tackle.network.response.InstanceDetails
+import com.sedsoftware.tackle.network.response.TokenDetails
 
 interface UnauthorizedApi {
 
@@ -17,13 +18,24 @@ interface UnauthorizedApi {
     /**
      * Creates a new application to obtain OAuth2 credentials.
      *
-     * @param url mastodon instance url
      * @param client application name
-     * @param uris where the user should be redirected after authorization
+     * @param uri where the user should be redirected after authorization
      * @param scopes space separated list of scopes
-     * @param site application website
+     * @param website application website
      *
      * @see <a href="https://docs.joinmastodon.org/methods/apps/#create">Create an application</a>
      */
-    suspend fun createApp(url: String, client: String, uris: String, scopes: String, site: String): ApplicationDetails
+    suspend fun createApp(client: String, uri: String, scopes: String, website: String): ApplicationDetails
+
+    /**
+     * Obtains an access token to be used during API calls that are not public.
+     *
+     * @param id client id received when app was created
+     * @param secret client secret received when app was created
+     * @param uri uri declared when app was created
+     * @param grantType credentials type
+     *
+     * @see <a href="https://docs.joinmastodon.org/methods/oauth/#token">Obtain a token</a>
+     */
+    suspend fun obtainToken(id: String, secret: String, uri: String, grantType: String): TokenDetails
 }

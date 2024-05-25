@@ -2,8 +2,10 @@ package com.sedsoftware.tackle.network.internal
 
 import com.sedsoftware.tackle.network.api.UnauthorizedApi
 import com.sedsoftware.tackle.network.request.ApplicationRequest
+import com.sedsoftware.tackle.network.request.TokenRequest
 import com.sedsoftware.tackle.network.response.ApplicationDetails
 import com.sedsoftware.tackle.network.response.InstanceDetails
+import com.sedsoftware.tackle.network.response.TokenDetails
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -17,9 +19,14 @@ import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 
-internal class TackleUnauthorizedApi : UnauthorizedApi {
+internal class TackleUnauthorizedApi(
+    private val domainProvider: () -> String,
+) : UnauthorizedApi {
 
-    internal val httpClient: HttpClient = HttpClient() {
+    private val instanceUrl: String
+        get() = domainProvider.invoke()
+
+    private val httpClient: HttpClient = HttpClient() {
         install(ContentNegotiation) {
             json(Json {
                 coerceInputValues = true
@@ -30,16 +37,33 @@ internal class TackleUnauthorizedApi : UnauthorizedApi {
     }
 
     override suspend fun getServerInfo(url: String): InstanceDetails =
-        doGet<InstanceDetails>("$url/api/v2/instance")
+        doGet<InstanceDetails>(url = "$url/api/v2/instance")
 
-    override suspend fun createApp(url: String, client: String, uris: String, scopes: String, site: String): ApplicationDetails =
+    override suspend fun createApp(client: String, uri: String, scopes: String, website: String): ApplicationDetails =
         doPost<ApplicationDetails>(
-            url = "$url/api/v1/apps",
-            body = ApplicationRequest(client, uris, scopes, site)
+            url = "$instanceUrl/api/v1/apps",
+            body = ApplicationRequest(
+                clientName = client,
+                redirectUris = uri,
+                scopes = scopes,
+                website = website
+            )
+        )
+
+    override suspend fun obtainToken(id: String, secret: String, uri: String, grantType: String): TokenDetails =
+        doPost<TokenDetails>(
+            url = "$instanceUrl/oauth/token",
+            body = TokenRequest(
+                clientId = id,
+                clientSecret = secret,
+                redirectUri = uri,
+                grantType = GRANT_TYPE,
+                scopes = DEFAULT_SCOPES,
+            )
         )
 
     @Throws(Exception::class)
-    internal suspend inline fun <reified T> TackleUnauthorizedApi.doGet(url: String): T =
+    private suspend inline fun <reified T> TackleUnauthorizedApi.doGet(url: String): T =
         httpClient
             .get(url) {
                 headers {
@@ -49,7 +73,7 @@ internal class TackleUnauthorizedApi : UnauthorizedApi {
             }
             .body()
 
-    internal suspend inline fun <reified T> TackleUnauthorizedApi.doPost(url: String, body: Any): T =
+    private suspend inline fun <reified T> TackleUnauthorizedApi.doPost(url: String, body: Any): T =
         httpClient
             .post(url) {
                 headers {
@@ -60,4 +84,9 @@ internal class TackleUnauthorizedApi : UnauthorizedApi {
                 setBody(body)
             }
             .body()
+
+    private companion object {
+        const val GRANT_TYPE = "client_credentials"
+        const val DEFAULT_SCOPES = "read write push"
+    }
 }
