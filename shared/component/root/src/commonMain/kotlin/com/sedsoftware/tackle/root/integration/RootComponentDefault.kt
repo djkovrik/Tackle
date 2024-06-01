@@ -4,6 +4,7 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.childStack
+import com.arkivanov.decompose.router.stack.replaceCurrent
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.sedsoftware.tackle.auth.AuthComponent
@@ -25,7 +26,6 @@ class RootComponentDefault internal constructor(
     private val homeComponent: (ComponentContext, (HomeComponent.Output) -> Unit) -> HomeComponent,
 ) : RootComponent, ComponentContext by componentContext {
 
-    @Suppress("UnusedPrivateProperty") // remove on settings usage
     constructor(
         componentContext: ComponentContext,
         storeFactory: StoreFactory,
@@ -40,7 +40,9 @@ class RootComponentDefault internal constructor(
             AuthComponentDefault(
                 componentContext = childContext,
                 storeFactory = storeFactory,
-                api = unauthorizedApi,
+                unauthorizedApi = unauthorizedApi,
+                authorizedApi = authorizedApi,
+                settings = settings,
                 platformTools = platformTools,
                 dispatchers = dispatchers,
                 output = output,
@@ -76,6 +78,7 @@ class RootComponentDefault internal constructor(
 
     private fun onAuthComponentOutput(output: AuthComponent.Output) {
         when (output) {
+            is AuthComponent.Output.NavigateToHomeScreen -> navigation.replaceCurrent(Config.Home)
             is AuthComponent.Output.ErrorCaught -> Unit // TODO
         }
     }

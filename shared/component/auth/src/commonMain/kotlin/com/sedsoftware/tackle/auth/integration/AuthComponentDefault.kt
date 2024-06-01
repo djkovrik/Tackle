@@ -9,13 +9,16 @@ import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.labels
 import com.sedsoftware.tackle.auth.AuthComponent
 import com.sedsoftware.tackle.auth.AuthComponent.Model
-import com.sedsoftware.tackle.auth.domain.InstanceInfoApi
-import com.sedsoftware.tackle.auth.domain.InstanceInfoManager
+import com.sedsoftware.tackle.auth.domain.AuthFlowApi
+import com.sedsoftware.tackle.auth.domain.AuthFlowManager
 import com.sedsoftware.tackle.auth.store.AuthStore
 import com.sedsoftware.tackle.auth.store.AuthStore.Label
 import com.sedsoftware.tackle.auth.store.AuthStoreProvider
+import com.sedsoftware.tackle.network.api.AuthorizedApi
 import com.sedsoftware.tackle.network.api.UnauthorizedApi
+import com.sedsoftware.tackle.network.response.ApplicationDetails
 import com.sedsoftware.tackle.network.response.InstanceDetails
+import com.sedsoftware.tackle.settings.api.TackleSettings
 import com.sedsoftware.tackle.utils.TackleDispatchers
 import com.sedsoftware.tackle.utils.TacklePlatformTools
 import com.sedsoftware.tackle.utils.asValue
@@ -26,7 +29,9 @@ import kotlinx.coroutines.launch
 class AuthComponentDefault(
     private val componentContext: ComponentContext,
     private val storeFactory: StoreFactory,
-    private val api: UnauthorizedApi,
+    private val unauthorizedApi: UnauthorizedApi,
+    private val authorizedApi: AuthorizedApi,
+    private val settings: TackleSettings,
     private val platformTools: TacklePlatformTools,
     private val dispatchers: TackleDispatchers,
     private val output: (AuthComponent.Output) -> Unit,
@@ -36,11 +41,15 @@ class AuthComponentDefault(
         instanceKeeper.getStore {
             AuthStoreProvider(
                 storeFactory = storeFactory,
-                manager = InstanceInfoManager(
-                    api = object : InstanceInfoApi {
+                manager = AuthFlowManager(
+                    api = object : AuthFlowApi {
                         override suspend fun getServerInfo(url: String): InstanceDetails =
-                            api.getServerInfo(url)
+                            unauthorizedApi.getServerInfo(url)
+
+                        override suspend fun verifyCredentials(): ApplicationDetails =
+                            authorizedApi.verifyCredentials()
                     },
+                    settings = settings,
                 ),
                 mainContext = dispatchers.main,
                 ioContext = dispatchers.io,
@@ -53,6 +62,7 @@ class AuthComponentDefault(
         scope.launch {
             store.labels.collect { label ->
                 when (label) {
+                    is Label.NavigateToHomeScreen -> output(AuthComponent.Output.NavigateToHomeScreen)
                     is Label.ErrorCaught -> output(AuthComponent.Output.ErrorCaught(label.throwable))
                 }
             }
@@ -69,16 +79,12 @@ class AuthComponentDefault(
         store.accept(AuthStore.Intent.OnTextInput(text))
     }
 
+    override fun onRetryButtonClick() {
+        store.accept(AuthStore.Intent.OnRetryButtonClick)
+    }
+
     override fun onAuthenticateClick() {
-        store.accept(AuthStore.Intent.OnAuthenticateClick)
-    }
-
-    override fun authFlowCompleted() {
-        store.accept(AuthStore.Intent.OAuthFlowCompleted)
-    }
-
-    override fun authFlowFailed() {
-        store.accept(AuthStore.Intent.OAuthFlowFailed)
+        TODO("Not yet implemented")
     }
 
     override fun onShowLearnMore() {

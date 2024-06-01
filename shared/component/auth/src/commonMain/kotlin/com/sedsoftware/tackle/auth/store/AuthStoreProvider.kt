@@ -2,16 +2,19 @@ package com.sedsoftware.tackle.auth.store
 
 import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
+import com.arkivanov.mvikotlin.extensions.coroutines.coroutineBootstrapper
 import com.arkivanov.mvikotlin.extensions.coroutines.coroutineExecutorFactory
-import com.sedsoftware.tackle.auth.domain.InstanceInfoManager
+import com.sedsoftware.tackle.auth.domain.AuthFlowManager
 import com.sedsoftware.tackle.auth.extension.isValidUrl
 import com.sedsoftware.tackle.auth.extension.normalizeForRequest
 import com.sedsoftware.tackle.auth.extension.trimForDisplaying
+import com.sedsoftware.tackle.auth.model.CredentialsState
 import com.sedsoftware.tackle.auth.model.InstanceInfo
 import com.sedsoftware.tackle.auth.model.InstanceInfoState
 import com.sedsoftware.tackle.auth.store.AuthStore.Intent
 import com.sedsoftware.tackle.auth.store.AuthStore.Label
 import com.sedsoftware.tackle.auth.store.AuthStore.State
+import com.sedsoftware.tackle.utils.MissedRegistrationDataException
 import com.sedsoftware.tackle.utils.unwrap
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -21,7 +24,7 @@ import kotlin.coroutines.CoroutineContext
 
 internal class AuthStoreProvider(
     private val storeFactory: StoreFactory,
-    private val manager: InstanceInfoManager,
+    private val manager: AuthFlowManager,
     private val mainContext: CoroutineContext,
     private val ioContext: CoroutineContext,
 ) {
@@ -31,8 +34,34 @@ internal class AuthStoreProvider(
             name = "AuthStore",
             initialState = State(),
             autoInit = autoInit,
+            bootstrapper = coroutineBootstrapper {
+                dispatch(Action.CheckCurrentCredentials)
+            },
             executorFactory = coroutineExecutorFactory(mainContext) {
                 var job: Job? = null
+
+                onAction<Action.CheckCurrentCredentials> {
+                    launch {
+                        unwrap(
+                            result = withContext(ioContext) { manager.verifyCredentials() },
+                            onSuccess = { isCredentialsValid ->
+                                if (isCredentialsValid) {
+                                    dispatch(Msg.CredentialsStateChanged(CredentialsState.AUTHORIZED))
+                                    publish(Label.NavigateToHomeScreen)
+                                } else {
+                                    dispatch(Msg.CredentialsStateChanged(CredentialsState.UNAUTHORIZED))
+                                }
+                            },
+                            onError = { throwable ->
+                                if (throwable is MissedRegistrationDataException) {
+                                    dispatch(Msg.CredentialsStateChanged(CredentialsState.UNAUTHORIZED))
+                                } else {
+                                    dispatch(Msg.CredentialsStateChanged(CredentialsState.EXISTING_USER_CHECK_FAILED))
+                                }
+                            }
+                        )
+                    }
+                }
 
                 onIntent<Intent.OnTextInput> {
                     dispatch(Msg.OnTextInput(it.text))
@@ -65,16 +94,9 @@ internal class AuthStoreProvider(
                     }
                 }
 
-                onIntent<Intent.OnAuthenticateClick> {
-                    dispatch(Msg.OnAuthenticateClick)
-                }
-
-                onIntent<Intent.OAuthFlowCompleted> {
-                    dispatch(Msg.OAuthFlowCompleted)
-                }
-
-                onIntent<Intent.OAuthFlowFailed> {
-                    dispatch(Msg.OAuthFlowFailed)
+                onIntent<Intent.OnRetryButtonClick> {
+                    dispatch(Msg.CredentialsStateChanged(CredentialsState.RETRYING))
+                    forward(Action.CheckCurrentCredentials)
                 }
 
                 onIntent<Intent.ShowLearnMore> {
@@ -106,36 +128,28 @@ internal class AuthStoreProvider(
                         instanceInfo = InstanceInfo.empty(),
                     )
 
-                    is Msg.OnAuthenticateClick -> copy(
-                        awaitingForOauth = true,
-                    )
-
-                    is Msg.OAuthFlowCompleted -> copy(
-                        awaitingForOauth = false,
-                    )
-
-                    is Msg.OAuthFlowFailed -> copy(
-                        awaitingForOauth = false,
-                    )
-
                     is Msg.LearnMoreVisibilityChanged -> copy(
                         learnMoreVisible = msg.visible,
+                    )
+
+                    is Msg.CredentialsStateChanged -> copy(
+                        credentialsState = msg.newState,
                     )
                 }
             }
         ) {}
 
-    private sealed interface Action
+    private sealed interface Action {
+        data object CheckCurrentCredentials : Action
+    }
 
     private sealed interface Msg {
         data class OnTextInput(val text: String) : Msg
         data object ServerInfoLoadingStarted : Msg
         data class ServerInfoLoaded(val info: InstanceInfo) : Msg
         data object ServerInfoLoadingFailed : Msg
-        data object OnAuthenticateClick : Msg
-        data object OAuthFlowCompleted : Msg
-        data object OAuthFlowFailed : Msg
         data class LearnMoreVisibilityChanged(val visible: Boolean) : Msg
+        data class CredentialsStateChanged(val newState: CredentialsState) : Msg
     }
 
     private companion object {

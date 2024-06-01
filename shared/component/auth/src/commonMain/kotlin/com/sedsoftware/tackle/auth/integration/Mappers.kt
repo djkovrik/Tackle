@@ -10,10 +10,11 @@ internal val stateToModel: (State) -> Model = {
         serverName = it.instanceInfo.name,
         serverDescription = it.instanceInfo.description,
         serverUsers = it.instanceInfo.users,
+        credentialsState = it.credentialsState,
         isLoadingServerInfo = it.instanceInfoState == InstanceInfoState.LOADING,
         isServerInfoLoaded = it.instanceInfoState == InstanceInfoState.LOADED,
         isServerInfoError = it.instanceInfoState == InstanceInfoState.ERROR,
-        isOauthFlowActive = it.awaitingForOauth,
+        isOauthFlowActive = it.oauthFlowActive,
         isLearnMoreVisible = it.learnMoreVisible,
     )
 }

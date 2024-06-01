@@ -7,6 +7,7 @@
     <string name="auth_default_server">mastodon.social</string>
     <!-- Common -->
     <string name="common_continue">Продолжить</string>
+    <string name="common_retry">Попробовать снова</string>
     <!-- Auth component -->
     <string name="auth_server_address">Адрес сервера</string>
     <string name="auth_server_address_wrong">Некорректный адрес</string>
@@ -17,4 +18,5 @@
     <string name="auth_mastodon_description">Mastodon это децентрализованная социальная и медиа платформа, которая не зависит от какой-то одной конкретной компании и ее сервера. Каждый сервер Mastodon это полностью независимая единица, способная взаимодействовать с другими серверами, что в итоге формирует одну общую глобальную сеть.</string>
     <string name="auth_server_description">Каждый пользовательский аккаунт относится к определенному серверу Mastodon со своими правилами, администраторами и ограничениями, но пользователи каждого сервера могут бесшовно взаимодействовать с остальными пользователями на любом другом сервере.</string>
     <string name="auth_server_info_fetch">Загрузка информации о сервере</string>
+    <string name="auth_failed_to_connect">Не удалось соединиться с сервером</string>
 </resources>
