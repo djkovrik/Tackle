@@ -6,7 +6,7 @@ import com.arkivanov.essenty.backhandler.BackCallback
 import com.arkivanov.essenty.backhandler.BackHandler
 import com.sedsoftware.tackle.auth.AuthComponent
 import com.sedsoftware.tackle.auth.AuthComponent.Model
-import com.sedsoftware.tackle.auth.model.CredentialsState
+import com.sedsoftware.tackle.auth.model.CredentialsInfoState
 
 class AuthComponentPreview(
     textInput: String = "",
@@ -15,7 +15,7 @@ class AuthComponentPreview(
     isServerInfoError: Boolean = false,
     isOauthFlowActive: Boolean = false,
     isLearnMoreVisible: Boolean = false,
-    credentialsState: CredentialsState = CredentialsState.UNAUTHORIZED,
+    credentialsState: CredentialsInfoState = CredentialsInfoState.UNAUTHORIZED,
 ) : AuthComponent {
 
     override val backHandler: BackHandler =

@@ -5,12 +5,14 @@
     -->
 
     <!-- Non-translatable -->
-    <string name="auth_app_label">Tackle</string>
-    <string name="auth_mastodon_title">Mastodon</string>
-    <string name="auth_default_server">mastodon.social</string>
+    <string name="app_label">Tackle</string>
+    <string name="mastodon_title">Mastodon</string>
+    <string name="default_server">mastodon.social</string>
     <!-- Common -->
     <string name="common_continue">Continue</string>
     <string name="common_retry">Retry</string>
+    <string name="common_retrying">Retrying</string>
+    <string name="common_redirecting">Redirecting...</string>
     <!-- Auth component -->
     <string name="auth_server_address">Server address</string>
     <string name="auth_server_address_wrong">Incorrect address</string>

@@ -10,7 +10,7 @@ internal val stateToModel: (State) -> Model = {
         serverName = it.instanceInfo.name,
         serverDescription = it.instanceInfo.description,
         serverUsers = it.instanceInfo.users,
-        credentialsState = it.credentialsState,
+        credentialsState = it.credentialsInfoState,
         isLoadingServerInfo = it.instanceInfoState == InstanceInfoState.LOADING,
         isServerInfoLoaded = it.instanceInfoState == InstanceInfoState.LOADED,
         isServerInfoError = it.instanceInfoState == InstanceInfoState.ERROR,

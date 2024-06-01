@@ -2,7 +2,7 @@ package com.sedsoftware.tackle.auth
 
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.backhandler.BackHandlerOwner
-import com.sedsoftware.tackle.auth.model.CredentialsState
+import com.sedsoftware.tackle.auth.model.CredentialsInfoState
 
 interface AuthComponent : BackHandlerOwner {
 
@@ -30,7 +30,7 @@ interface AuthComponent : BackHandlerOwner {
         val isServerInfoError: Boolean,
         val isOauthFlowActive: Boolean,
         val isLearnMoreVisible: Boolean,
-        val credentialsState: CredentialsState,
+        val credentialsState: CredentialsInfoState,
     )
 
     sealed class Output {

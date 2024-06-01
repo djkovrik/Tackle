@@ -1,4 +1,4 @@
-package com.sedsoftware.tackle.compose.ui.auth.part
+package com.sedsoftware.tackle.compose.ui.auth.content
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.layout.padding
@@ -46,8 +46,19 @@ internal fun ServerInfo(
 
 @Composable
 @Preview
-private fun PreviewServerInfo() {
+private fun PreviewServerInfoLight() {
     TackleScreenPreview {
+        ServerInfo(
+            name = "Mastodon",
+            description = "A general-purpose Mastodon server with a 500 character limit. All languages are welcome."
+        )
+    }
+}
+
+@Composable
+@Preview
+private fun PreviewServerInfoDark() {
+    TackleScreenPreview(darkTheme = true) {
         ServerInfo(
             name = "Mastodon",
             description = "A general-purpose Mastodon server with a 500 character limit. All languages are welcome."

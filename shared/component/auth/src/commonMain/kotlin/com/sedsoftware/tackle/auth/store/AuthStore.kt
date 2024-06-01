@@ -1,7 +1,7 @@
 package com.sedsoftware.tackle.auth.store
 
 import com.arkivanov.mvikotlin.core.store.Store
-import com.sedsoftware.tackle.auth.model.CredentialsState
+import com.sedsoftware.tackle.auth.model.CredentialsInfoState
 import com.sedsoftware.tackle.auth.model.InstanceInfo
 import com.sedsoftware.tackle.auth.model.InstanceInfoState
 import com.sedsoftware.tackle.auth.store.AuthStore.Intent
@@ -23,7 +23,7 @@ internal interface AuthStore : Store<Intent, State, Label> {
         val instanceUrl: String = "",
         val oauthFlowActive: Boolean = false,
         val instanceInfoState: InstanceInfoState = InstanceInfoState.IDLE,
-        val credentialsState: CredentialsState = CredentialsState.NOT_CHECKED,
+        val credentialsInfoState: CredentialsInfoState = CredentialsInfoState.NOT_CHECKED,
     )
 
     sealed class Label {

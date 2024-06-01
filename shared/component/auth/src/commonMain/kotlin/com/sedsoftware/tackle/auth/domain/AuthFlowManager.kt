@@ -27,6 +27,6 @@ internal class AuthFlowManager(
         }
 
         val response: ApplicationDetails = api.verifyCredentials()
-        response.name.isNotEmpty()
+        !response.name.isNullOrEmpty()
     }
 }

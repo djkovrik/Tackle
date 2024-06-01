@@ -8,7 +8,7 @@ import com.sedsoftware.tackle.auth.domain.AuthFlowManager
 import com.sedsoftware.tackle.auth.extension.isValidUrl
 import com.sedsoftware.tackle.auth.extension.normalizeForRequest
 import com.sedsoftware.tackle.auth.extension.trimForDisplaying
-import com.sedsoftware.tackle.auth.model.CredentialsState
+import com.sedsoftware.tackle.auth.model.CredentialsInfoState
 import com.sedsoftware.tackle.auth.model.InstanceInfo
 import com.sedsoftware.tackle.auth.model.InstanceInfoState
 import com.sedsoftware.tackle.auth.store.AuthStore.Intent
@@ -46,17 +46,17 @@ internal class AuthStoreProvider(
                             result = withContext(ioContext) { manager.verifyCredentials() },
                             onSuccess = { isCredentialsValid ->
                                 if (isCredentialsValid) {
-                                    dispatch(Msg.CredentialsStateChanged(CredentialsState.AUTHORIZED))
+                                    dispatch(Msg.CredentialsStateChanged(CredentialsInfoState.AUTHORIZED))
                                     publish(Label.NavigateToHomeScreen)
                                 } else {
-                                    dispatch(Msg.CredentialsStateChanged(CredentialsState.UNAUTHORIZED))
+                                    dispatch(Msg.CredentialsStateChanged(CredentialsInfoState.UNAUTHORIZED))
                                 }
                             },
                             onError = { throwable ->
                                 if (throwable is MissedRegistrationDataException) {
-                                    dispatch(Msg.CredentialsStateChanged(CredentialsState.UNAUTHORIZED))
+                                    dispatch(Msg.CredentialsStateChanged(CredentialsInfoState.UNAUTHORIZED))
                                 } else {
-                                    dispatch(Msg.CredentialsStateChanged(CredentialsState.EXISTING_USER_CHECK_FAILED))
+                                    dispatch(Msg.CredentialsStateChanged(CredentialsInfoState.EXISTING_USER_CHECK_FAILED))
                                 }
                             }
                         )
@@ -95,7 +95,7 @@ internal class AuthStoreProvider(
                 }
 
                 onIntent<Intent.OnRetryButtonClick> {
-                    dispatch(Msg.CredentialsStateChanged(CredentialsState.RETRYING))
+                    dispatch(Msg.CredentialsStateChanged(CredentialsInfoState.RETRYING))
                     forward(Action.CheckCurrentCredentials)
                 }
 
@@ -133,7 +133,7 @@ internal class AuthStoreProvider(
                     )
 
                     is Msg.CredentialsStateChanged -> copy(
-                        credentialsState = msg.newState,
+                        credentialsInfoState = msg.newState,
                     )
                 }
             }
@@ -149,7 +149,7 @@ internal class AuthStoreProvider(
         data class ServerInfoLoaded(val info: InstanceInfo) : Msg
         data object ServerInfoLoadingFailed : Msg
         data class LearnMoreVisibilityChanged(val visible: Boolean) : Msg
-        data class CredentialsStateChanged(val newState: CredentialsState) : Msg
+        data class CredentialsStateChanged(val newState: CredentialsInfoState) : Msg
     }
 
     private companion object {

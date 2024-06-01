@@ -1,4 +1,4 @@
-package com.sedsoftware.tackle.compose.ui.auth.part
+package com.sedsoftware.tackle.compose.ui.auth.content
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.clickable
@@ -17,12 +17,12 @@ import org.jetbrains.compose.resources.stringResource
 import tackle.shared.compose.generated.resources.Res
 import tackle.shared.compose.generated.resources.auth_join
 import tackle.shared.compose.generated.resources.auth_mastodon_description
-import tackle.shared.compose.generated.resources.auth_mastodon_title
 import tackle.shared.compose.generated.resources.auth_no_account
 import tackle.shared.compose.generated.resources.auth_server_description
+import tackle.shared.compose.generated.resources.mastodon_title
 
 @Composable
-internal fun LearnMoreBottomSheet(
+internal fun ScreenLearnMore(
     modifier: Modifier = Modifier,
     onJoinMastodonClick: () -> Unit = {},
 ) {
@@ -32,7 +32,7 @@ internal fun LearnMoreBottomSheet(
             .padding(all = 16.dp)
     ) {
         Text(
-            text = stringResource(Res.string.auth_mastodon_title),
+            text = stringResource(Res.string.mastodon_title),
             color = MaterialTheme.colorScheme.primary,
             style = MaterialTheme.typography.headlineMedium,
             modifier = modifier.padding(bottom = 8.dp),
@@ -82,7 +82,7 @@ internal fun LearnMoreBottomSheet(
 @Preview
 private fun PreviewLearnMoreBottomSheetLight() {
     TackleScreenPreview {
-        LearnMoreBottomSheet()
+        ScreenLearnMore()
     }
 }
 
@@ -90,6 +90,6 @@ private fun PreviewLearnMoreBottomSheetLight() {
 @Preview
 private fun PreviewLearnMoreBottomSheetDark() {
     TackleScreenPreview(darkTheme = true) {
-        LearnMoreBottomSheet()
+        ScreenLearnMore()
     }
 }
