@@ -18,10 +18,12 @@ import com.sedsoftware.tackle.network.api.AuthorizedApi
 import com.sedsoftware.tackle.network.api.UnauthorizedApi
 import com.sedsoftware.tackle.network.response.ApplicationDetails
 import com.sedsoftware.tackle.network.response.InstanceDetails
+import com.sedsoftware.tackle.network.response.TokenDetails
 import com.sedsoftware.tackle.settings.api.TackleSettings
 import com.sedsoftware.tackle.utils.TackleDispatchers
 import com.sedsoftware.tackle.utils.TacklePlatformTools
 import com.sedsoftware.tackle.utils.asValue
+import com.sedsoftware.tackle.utils.model.AppClientData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
@@ -48,8 +50,15 @@ class AuthComponentDefault(
 
                         override suspend fun verifyCredentials(): ApplicationDetails =
                             authorizedApi.verifyCredentials()
+
+                        override suspend fun createApp(data: AppClientData): ApplicationDetails =
+                            unauthorizedApi.createApp(data.name, data.uri, data.scopes, data.website)
+
+                        override suspend fun obtainToken(id: String, secret: String, code: String, data: AppClientData): TokenDetails =
+                            unauthorizedApi.obtainToken(id, secret, code, data.uri, data.scopes)
                     },
                     settings = settings,
+                    platformTools = platformTools,
                 ),
                 mainContext = dispatchers.main,
                 ioContext = dispatchers.io,
@@ -84,7 +93,7 @@ class AuthComponentDefault(
     }
 
     override fun onAuthenticateClick() {
-        TODO("Not yet implemented")
+        store.accept(AuthStore.Intent.OnAuthenticateButtonClick)
     }
 
     override fun onShowLearnMore() {

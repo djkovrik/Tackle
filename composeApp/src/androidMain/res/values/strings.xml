@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">Tackle</string>
+    <string name="app_name" translatable="false">Tackle</string>
+    <string name="app_scheme" translatable="false">tackle</string>
+    <string name="app_host" translatable="false">sedsoftware.com</string>
+    <string name="app_website" translatable="false">https://sedsoftware.com</string>
+    <string name="app_scopes" translatable="false">read write push</string>
 </resources>

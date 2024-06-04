@@ -9,7 +9,7 @@
     <string name="common_continue">Продолжить</string>
     <string name="common_retry">Повторить</string>
     <string name="common_retrying">Повторная попытка</string>
-    <string name="common_redirecting">Перенаправление...</string>
+    <string name="common_redirecting">Перенаправление</string>
     <!-- Auth component -->
     <string name="auth_server_address">Адрес сервера</string>
     <string name="auth_server_address_wrong">Некорректный адрес</string>

@@ -50,15 +50,16 @@ internal class TackleUnauthorizedApi(
             )
         )
 
-    override suspend fun obtainToken(id: String, secret: String, uri: String, grantType: String): TokenDetails =
+    override suspend fun obtainToken(id: String, secret: String, code: String, uri: String, scopes: String): TokenDetails =
         doPost<TokenDetails>(
             url = "$instanceUrl/oauth/token",
             body = TokenRequest(
                 clientId = id,
                 clientSecret = secret,
+                code = code,
                 redirectUri = uri,
                 grantType = GRANT_TYPE,
-                scopes = DEFAULT_SCOPES,
+                scopes = scopes,
             )
         )
 
@@ -86,7 +87,6 @@ internal class TackleUnauthorizedApi(
             .body()
 
     private companion object {
-        const val GRANT_TYPE = "client_credentials"
-        const val DEFAULT_SCOPES = "read write push"
+        const val GRANT_TYPE = "authorization_code"
     }
 }

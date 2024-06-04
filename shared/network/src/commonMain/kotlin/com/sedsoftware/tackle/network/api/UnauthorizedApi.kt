@@ -32,10 +32,11 @@ interface UnauthorizedApi {
      *
      * @param id client id received when app was created
      * @param secret client secret received when app was created
+     * @param code code obtained during oauth authorization flow
      * @param uri uri declared when app was created
-     * @param grantType credentials type
+     * @param scopes list of oauth scopes
      *
      * @see <a href="https://docs.joinmastodon.org/methods/oauth/#token">Obtain a token</a>
      */
-    suspend fun obtainToken(id: String, secret: String, uri: String, grantType: String): TokenDetails
+    suspend fun obtainToken(id: String, secret: String, code: String, uri: String, scopes: String): TokenDetails
 }

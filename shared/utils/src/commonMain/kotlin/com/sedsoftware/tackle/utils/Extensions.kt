@@ -1,5 +1,4 @@
 package com.sedsoftware.tackle.utils
-
 import com.arkivanov.decompose.Cancellation
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.mvikotlin.core.rx.observer
@@ -20,3 +19,15 @@ fun <T : Any> Store<*, T, *>.asValue(): Value<T> =
         }
     }
 
+fun String.trimUrl(): String =
+    replace(" ", "")
+        .replace("http://", "")
+        .replace("https://", "")
+        .substringAfterLast('@')
+
+fun <T> unwrap(result: Result<T>, onSuccess: (T) -> Unit, onError: (Throwable) -> Unit) {
+    with(result) {
+        getOrNull()?.let { onSuccess(it) }
+        exceptionOrNull()?.let { onError(it) }
+    }
+}

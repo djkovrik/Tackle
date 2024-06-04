@@ -1,3 +1,4 @@
+@file:Suppress("MagicNumber")
 package com.sedsoftware.tackle.compose.widget
 
 import androidx.compose.animation.core.EaseInOut

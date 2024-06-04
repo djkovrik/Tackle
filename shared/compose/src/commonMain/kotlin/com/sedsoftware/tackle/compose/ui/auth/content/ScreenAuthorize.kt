@@ -1,6 +1,10 @@
 package com.sedsoftware.tackle.compose.ui.auth.content
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -49,6 +53,7 @@ import tackle.shared.compose.generated.resources.auth_server_address_wrong
 import tackle.shared.compose.generated.resources.auth_server_info_fetch
 import tackle.shared.compose.generated.resources.auth_server_recommended
 import tackle.shared.compose.generated.resources.common_continue
+import tackle.shared.compose.generated.resources.common_redirecting
 import tackle.shared.compose.generated.resources.default_server
 
 @Composable
@@ -166,7 +171,7 @@ internal fun ScreenAuthorize(
                 LoadingDotsText(
                     text = stringResource(Res.string.auth_server_info_fetch),
                     color = MaterialTheme.colorScheme.secondary,
-                    modifier = modifier
+                    modifier = modifier,
                 )
             }
 
@@ -185,8 +190,20 @@ internal fun ScreenAuthorize(
 
             Spacer(modifier = modifier.weight(weight = 1f))
 
+            AnimatedVisibility(
+                visible = model.isOauthFlowActive,
+                enter = fadeIn() + slideInVertically { it },
+                exit = fadeOut() + slideOutVertically { it },
+            ) {
+                LoadingDotsText(
+                    text = stringResource(Res.string.common_redirecting),
+                    color = MaterialTheme.colorScheme.secondary,
+                    modifier = modifier,
+                )
+            }
+
             Button(
-                enabled = model.isServerInfoLoaded,
+                enabled = model.isServerInfoLoaded && !model.isOauthFlowActive,
                 shape = MaterialTheme.shapes.large,
                 onClick = component::onAuthenticateClick,
                 modifier = modifier.padding(all = 16.dp),

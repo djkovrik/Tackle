@@ -12,7 +12,7 @@
     <string name="common_continue">Continue</string>
     <string name="common_retry">Retry</string>
     <string name="common_retrying">Retrying</string>
-    <string name="common_redirecting">Redirecting...</string>
+    <string name="common_redirecting">Redirecting</string>
     <!-- Auth component -->
     <string name="auth_server_address">Server address</string>
     <string name="auth_server_address_wrong">Incorrect address</string>
