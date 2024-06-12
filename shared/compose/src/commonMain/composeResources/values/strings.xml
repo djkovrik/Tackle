@@ -5,11 +5,14 @@
     -->
 
     <!-- Non-translatable -->
-    <string name="auth_app_label">Tackle</string>
-    <string name="auth_mastodon_title">Mastodon</string>
-    <string name="auth_default_server">mastodon.social</string>
+    <string name="app_label">Tackle</string>
+    <string name="mastodon_title">Mastodon</string>
+    <string name="default_server">mastodon.social</string>
     <!-- Common -->
     <string name="common_continue">Continue</string>
+    <string name="common_retry">Retry</string>
+    <string name="common_retrying">Retrying</string>
+    <string name="common_redirecting">Redirecting</string>
     <!-- Auth component -->
     <string name="auth_server_address">Server address</string>
     <string name="auth_server_address_wrong">Incorrect address</string>
@@ -20,4 +23,5 @@
     <string name="auth_mastodon_description">Mastodon is a decentralized social media platform which does not rely on one single company and its server. Each Mastodon server is a completely independent entity, able to interoperate with others to form one global social network.</string>
     <string name="auth_server_description">Each user account belongs to a specific Mastodon server with it's own rules, admins and regulations, but users from each server can interact seamlessly with users in any other server.</string>
     <string name="auth_server_info_fetch">Loading server info</string>
+    <string name="auth_failed_to_connect">Failed to connect the server</string>
 </resources>

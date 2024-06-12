@@ -7,13 +7,14 @@ import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.arkivanov.decompose.extensions.compose.jetbrains.stack.Children
-import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.fade
-import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.plus
-import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.scale
-import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.stackAnimation
+import com.arkivanov.decompose.extensions.compose.stack.Children
+import com.arkivanov.decompose.extensions.compose.stack.animation.fade
+import com.arkivanov.decompose.extensions.compose.stack.animation.plus
+import com.arkivanov.decompose.extensions.compose.stack.animation.scale
+import com.arkivanov.decompose.extensions.compose.stack.animation.stackAnimation
 import com.sedsoftware.tackle.compose.theme.TackleTheme
 import com.sedsoftware.tackle.compose.ui.auth.AuthContent
+import com.sedsoftware.tackle.compose.ui.home.HomeContent
 import com.sedsoftware.tackle.root.RootComponent
 import com.sedsoftware.tackle.root.RootComponent.Child
 
@@ -35,6 +36,7 @@ fun RootContent(
             ) {
                 when (val child = it.instance) {
                     is Child.Auth -> AuthContent(component = child.component)
+                    is Child.Home -> HomeContent(component = child.component)
                 }
             }
         }

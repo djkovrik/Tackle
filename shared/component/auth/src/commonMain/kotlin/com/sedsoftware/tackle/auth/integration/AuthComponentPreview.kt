@@ -6,6 +6,7 @@ import com.arkivanov.essenty.backhandler.BackCallback
 import com.arkivanov.essenty.backhandler.BackHandler
 import com.sedsoftware.tackle.auth.AuthComponent
 import com.sedsoftware.tackle.auth.AuthComponent.Model
+import com.sedsoftware.tackle.auth.model.CredentialsState
 
 class AuthComponentPreview(
     textInput: String = "",
@@ -14,10 +15,12 @@ class AuthComponentPreview(
     isServerInfoError: Boolean = false,
     isOauthFlowActive: Boolean = false,
     isLearnMoreVisible: Boolean = false,
+    credentialsState: CredentialsState = CredentialsState.UNAUTHORIZED,
 ) : AuthComponent {
 
     override val backHandler: BackHandler =
         object : BackHandler {
+            override fun isRegistered(callback: BackCallback): Boolean = true
             override fun register(callback: BackCallback) = Unit
             override fun unregister(callback: BackCallback) = Unit
         }
@@ -26,6 +29,7 @@ class AuthComponentPreview(
         MutableValue(
             Model(
                 textInput = textInput,
+                credentialsState = credentialsState,
                 isLoadingServerInfo = isLoadingServerInfo,
                 isServerInfoLoaded = isServerInfoLoaded,
                 isServerInfoError = isServerInfoError,
@@ -40,9 +44,9 @@ class AuthComponentPreview(
         )
 
     override fun onTextInput(text: String) = Unit
+    override fun onRetryButtonClick() = Unit
     override fun onAuthenticateClick() = Unit
-    override fun authFlowCompleted() = Unit
-    override fun authFlowFailed() = Unit
     override fun onShowLearnMore() = Unit
     override fun onHideLearnMore() = Unit
+    override fun onJoinMastodonClick() = Unit
 }

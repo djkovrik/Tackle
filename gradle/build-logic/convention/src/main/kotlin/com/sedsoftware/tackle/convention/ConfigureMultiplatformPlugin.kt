@@ -60,7 +60,6 @@ internal fun Project.configureKotlinMultiplatform() {
                 implementation(libs.findLibrary("kotlinx.serialization.json").get())
                 implementation(libs.findLibrary("test.kotlin").get())
                 implementation(libs.findLibrary("test.junit").get())
-                implementation(libs.findLibrary("test.kotlin.junit").get())
             }
         }
     }

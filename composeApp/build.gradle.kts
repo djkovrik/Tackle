@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.multiplatform)
     alias(libs.plugins.android.application)
     alias(libs.plugins.compose)
+    alias(libs.plugins.compose.compiler)
 }
 
 kotlin {
@@ -49,6 +50,8 @@ kotlin {
             implementation(libs.ark.decompose.extensions)
             implementation(libs.ark.mvikotlin.core)
             implementation(libs.ark.essenty)
+
+            implementation(libs.oidc.appsupport)
         }
         androidMain.dependencies {
             implementation(libs.compose.ui.tooling.preview)
@@ -75,6 +78,10 @@ android {
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
         versionName = "1.0"
+
+        addManifestPlaceholders(
+            mapOf("oidcRedirectScheme" to "tackle")
+        )
     }
     packaging {
         resources {

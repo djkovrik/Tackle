@@ -10,6 +10,7 @@ kotlin {
         commonMain {
             dependencies {
                 implementation(project(":shared:component:auth"))
+                implementation(project(":shared:component:home"))
                 implementation(project(":shared:network"))
                 implementation(project(":shared:settings"))
                 implementation(project(":shared:utils"))
@@ -22,6 +23,8 @@ kotlin {
                 implementation(libs.ark.essenty)
 
                 implementation(libs.lib.settings.core)
+
+                implementation(libs.oidc.appsupport)
             }
         }
     }

@@ -28,6 +28,6 @@ class InstanceActiveMonth(
 @Serializable
 class InstanceThumbnail(
     @SerialName("url") val url: String,
-    @SerialName("blurhash") val blurhash: String,
+    @SerialName("blurhash") val blurHash: String,
     @SerialName("versions") val versions: Map<String, String>,
 )

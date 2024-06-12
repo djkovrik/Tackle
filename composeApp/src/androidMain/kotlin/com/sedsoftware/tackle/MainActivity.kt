@@ -7,16 +7,24 @@ import com.arkivanov.decompose.defaultComponentContext
 import com.sedsoftware.tackle.compose.ui.RootContent
 import com.sedsoftware.tackle.root.RootComponent
 import com.sedsoftware.tackle.root.RootComponentFactory
+import org.publicvalue.multiplatform.oidc.appsupport.AndroidCodeAuthFlowFactory
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val authFlowFactory = AndroidCodeAuthFlowFactory(useWebView = false)
 
         val root: RootComponent = RootComponentFactory(
             componentContext = defaultComponentContext(),
             context = applicationContext,
+            platformTools = PlatformToolsFactory(applicationContext),
+            authFlowFactory = authFlowFactory,
             dispatchers = DefaultDispatchers,
         )
+
+        authFlowFactory.registerActivity(this)
 
         setContent {
             RootContent(component = root)

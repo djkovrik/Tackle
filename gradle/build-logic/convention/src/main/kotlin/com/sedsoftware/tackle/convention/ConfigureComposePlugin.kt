@@ -9,6 +9,7 @@ class ConfigureComposePlugin : Plugin<Project> {
         with(target) {
         with(pluginManager) {
             apply(libs.findPlugin("compose").get().get().pluginId)
+            apply(libs.findPlugin("compose.compiler").get().get().pluginId)
         }
         configureCompose()
     }

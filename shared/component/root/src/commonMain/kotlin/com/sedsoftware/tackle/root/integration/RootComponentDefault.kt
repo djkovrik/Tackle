@@ -4,30 +4,37 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.childStack
+import com.arkivanov.decompose.router.stack.replaceCurrent
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.sedsoftware.tackle.auth.AuthComponent
 import com.sedsoftware.tackle.auth.integration.AuthComponentDefault
+import com.sedsoftware.tackle.home.HomeComponent
+import com.sedsoftware.tackle.home.integration.HomeComponentDefault
 import com.sedsoftware.tackle.network.api.AuthorizedApi
 import com.sedsoftware.tackle.network.api.UnauthorizedApi
 import com.sedsoftware.tackle.root.RootComponent
 import com.sedsoftware.tackle.root.RootComponent.Child
 import com.sedsoftware.tackle.settings.api.TackleSettings
 import com.sedsoftware.tackle.utils.TackleDispatchers
+import com.sedsoftware.tackle.utils.TacklePlatformTools
 import kotlinx.serialization.Serializable
+import org.publicvalue.multiplatform.oidc.appsupport.CodeAuthFlowFactory
 
 class RootComponentDefault internal constructor(
     componentContext: ComponentContext,
     private val authComponent: (ComponentContext, (AuthComponent.Output) -> Unit) -> AuthComponent,
+    private val homeComponent: (ComponentContext, (HomeComponent.Output) -> Unit) -> HomeComponent,
 ) : RootComponent, ComponentContext by componentContext {
 
-    @Suppress("UnusedPrivateProperty") // remove on settings usage
     constructor(
         componentContext: ComponentContext,
         storeFactory: StoreFactory,
         unauthorizedApi: UnauthorizedApi,
         authorizedApi: AuthorizedApi,
         settings: TackleSettings,
+        platformTools: TacklePlatformTools,
+        authFlowFactory: CodeAuthFlowFactory,
         dispatchers: TackleDispatchers,
     ) : this(
         componentContext = componentContext,
@@ -35,11 +42,22 @@ class RootComponentDefault internal constructor(
             AuthComponentDefault(
                 componentContext = childContext,
                 storeFactory = storeFactory,
-                api = unauthorizedApi,
+                unauthorizedApi = unauthorizedApi,
+                authorizedApi = authorizedApi,
+                settings = settings,
+                platformTools = platformTools,
+                authFlowFactory = authFlowFactory,
                 dispatchers = dispatchers,
                 output = output,
             )
-        }
+        },
+        homeComponent = { childContext, output ->
+            HomeComponentDefault(
+                componentContext = childContext,
+                storeFactory = storeFactory,
+                output = output,
+            )
+        },
     )
 
     private val navigation: StackNavigation<Config> = StackNavigation()
@@ -58,11 +76,19 @@ class RootComponentDefault internal constructor(
     private fun createChild(config: Config, componentContext: ComponentContext): Child =
         when (config) {
             is Config.Auth -> Child.Auth(authComponent(componentContext, ::onAuthComponentOutput))
+            is Config.Home -> Child.Home(homeComponent(componentContext, ::onHomeComponentOutput))
         }
 
     private fun onAuthComponentOutput(output: AuthComponent.Output) {
         when (output) {
+            is AuthComponent.Output.NavigateToHomeScreen -> navigation.replaceCurrent(Config.Home)
             is AuthComponent.Output.ErrorCaught -> Unit // TODO
+        }
+    }
+
+    private fun onHomeComponentOutput(output: HomeComponent.Output) {
+        when (output) {
+            is HomeComponent.Output.ErrorCaught -> Unit // TODO
         }
     }
 
@@ -70,5 +96,8 @@ class RootComponentDefault internal constructor(
     private sealed interface Config {
         @Serializable
         data object Auth : Config
+
+        @Serializable
+        data object Home : Config
     }
 }

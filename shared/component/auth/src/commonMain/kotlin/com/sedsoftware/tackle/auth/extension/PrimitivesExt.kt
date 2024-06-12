@@ -1,14 +1,7 @@
 package com.sedsoftware.tackle.auth.extension
 
-internal fun String.trimForDisplaying(): String =
-    replace(" ", "")
-        .replace("http://", "")
-        .replace("https://", "")
-        .substringAfterLast('@')
+import com.sedsoftware.tackle.utils.trimUrl
 
-internal fun String.normalizeForRequest(): String {
-    val trimmed = trimForDisplaying()
-    return "https://$trimmed"
-}
+internal fun String.normalizeUrl(): String = "https://${this.trimUrl()}"
 
-internal fun String.isValidUrl(): Boolean = contains('.')
+internal fun String.isValidUrl(): Boolean = contains('.') // needs some better check?

@@ -10,16 +10,24 @@ interface NetworkModule {
     val authorized: AuthorizedApi
 }
 
-interface NetworkModuleDependencies
+interface NetworkModuleDependencies {
+    val domainProvider: () -> String
+    val tokenProvider: () -> String
+}
 
-@Suppress("UnusedParameter") // remove on dependencies or remove dependencies
 fun NetworkModule(dependencies: NetworkModuleDependencies): NetworkModule {
     return object : NetworkModule {
         override val unauthorized: UnauthorizedApi by lazy {
-            TackleUnauthorizedApi()
+            TackleUnauthorizedApi(
+                domainProvider = dependencies.domainProvider,
+            )
         }
+
         override val authorized: AuthorizedApi by lazy {
-            TackleAuthorizedApi()
+            TackleAuthorizedApi(
+                domainProvider = dependencies.domainProvider,
+                tokenProvider = dependencies.tokenProvider,
+            )
         }
     }
 }

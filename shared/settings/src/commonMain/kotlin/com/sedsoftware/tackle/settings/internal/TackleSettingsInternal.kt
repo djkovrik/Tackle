@@ -7,10 +7,28 @@ internal class TackleSettingsInternal(
     private val settings: Settings,
 ) : TackleSettings {
 
-    override var testOption: String
-        get() = settings.getValue(PREF_KEY_TEST, "")
+    override var domain: String
+        get() = settings.getValue(PREF_KEY_DOMAIN, "")
         set(value) {
-            settings.setValue(PREF_KEY_TEST, value)
+            settings.setValue(PREF_KEY_DOMAIN, value)
+        }
+
+    override var clientId: String
+        get() = settings.getValue(PREF_KEY_CLIENT_ID, "")
+        set(value) {
+            settings.setValue(PREF_KEY_CLIENT_ID, value)
+        }
+
+    override var clientSecret: String
+        get() = settings.getValue(PREF_KEY_CLIENS_SECRET, "")
+        set(value) {
+            settings.setValue(PREF_KEY_CLIENS_SECRET, value)
+        }
+
+    override var token: String
+        get() = settings.getValue(PREF_KEY_TOKEN, "")
+        set(value) {
+            settings.setValue(PREF_KEY_TOKEN, value)
         }
 
     private fun Settings.setValue(key: String, value: Any) {
@@ -35,6 +53,9 @@ internal class TackleSettingsInternal(
         }
 
     private companion object {
-        const val PREF_KEY_TEST = "pref_test"
+        const val PREF_KEY_DOMAIN = "dn"
+        const val PREF_KEY_CLIENT_ID = "ci"
+        const val PREF_KEY_CLIENS_SECRET = "cs"
+        const val PREF_KEY_TOKEN = "tn"
     }
 }

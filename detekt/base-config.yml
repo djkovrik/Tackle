@@ -128,12 +128,12 @@ complexity:
     threshold: 600
   LongMethod:
     active: true
-    threshold: 80
-    ignoreAnnotated: ['Composable']
+    threshold: 90
+    ignoreAnnotated: ['Composable','StoreCreate']
   LongParameterList:
     active: true
-    functionThreshold: 7
-    constructorThreshold: 7
+    functionThreshold: 10
+    constructorThreshold: 10
     ignoreDefaultParameters: true
     ignoreDataClasses: true
     ignoreAnnotatedParameter: ['SerialName']
@@ -634,7 +634,7 @@ style:
     maxChainedCalls: 5
   MaxLineLength:
     active: true
-    maxLineLength: 130
+    maxLineLength: 140
     excludePackageStatements: true
     excludeImportStatements: true
     excludeCommentStatements: false
