@@ -23,6 +23,8 @@ kotlin {
                 implementation(libs.ark.essenty)
 
                 implementation(libs.lib.settings.core)
+
+                implementation(libs.oidc.appsupport)
             }
         }
     }

@@ -34,6 +34,7 @@ multiplatformSettings = "1.1.1"
 napier = "2.7.1"
 ktor = "2.3.8"
 sqlDelight = "2.0.2"
+oidc = "0.9.1"
 
 # Testing
 junit = "4.13.2"
@@ -81,6 +82,10 @@ lib-settings-test = { module = "com.russhwolf:multiplatform-settings-test", vers
 lib-sqlDelight-driver-android = { module = "app.cash.sqldelight:android-driver", version.ref = "sqlDelight" }
 lib-sqlDelight-driver-sqlite = { module = "app.cash.sqldelight:sqlite-driver", version.ref = "sqlDelight" }
 lib-sqlDelight-driver-native = { module = "app.cash.sqldelight:native-driver", version.ref = "sqlDelight" }
+
+oidc-appsupport = { module = "io.github.kalinjul.kotlin.multiplatform:oidc-appsupport", version.ref = "oidc" }
+oidc-okhttp4 = { module = "io.github.kalinjul.kotlin.multiplatform:oidc-okhttp4", version.ref = "oidc" }
+oidc-ktor = { module = "io.github.kalinjul.kotlin.multiplatform:oidc-ktor", version.ref = "oidc" }
 
 test-kotlin = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 test-junit = { group = "junit", name = "junit", version.ref = "junit" }

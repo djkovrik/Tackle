@@ -6,12 +6,14 @@ import com.sedsoftware.tackle.PlatformToolsFactory
 import com.sedsoftware.tackle.compose.ui.RootContent
 import com.sedsoftware.tackle.root.RootComponent
 import com.sedsoftware.tackle.root.RootComponentFactory
+import org.publicvalue.multiplatform.oidc.appsupport.IosCodeAuthFlowFactory
 import platform.UIKit.UIViewController
 
 private val lifecycle: LifecycleRegistry = LifecycleRegistry()
 private val root: RootComponent = RootComponentFactory(
     componentContext = DefaultComponentContext(lifecycle),
     platformTools = PlatformToolsFactory(),
+    authFlowFactory = IosCodeAuthFlowFactory(),
     dispatchers = DefaultDispatchers,
 )
 

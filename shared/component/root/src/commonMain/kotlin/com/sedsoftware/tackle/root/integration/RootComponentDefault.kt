@@ -19,6 +19,7 @@ import com.sedsoftware.tackle.settings.api.TackleSettings
 import com.sedsoftware.tackle.utils.TackleDispatchers
 import com.sedsoftware.tackle.utils.TacklePlatformTools
 import kotlinx.serialization.Serializable
+import org.publicvalue.multiplatform.oidc.appsupport.CodeAuthFlowFactory
 
 class RootComponentDefault internal constructor(
     componentContext: ComponentContext,
@@ -33,6 +34,7 @@ class RootComponentDefault internal constructor(
         authorizedApi: AuthorizedApi,
         settings: TackleSettings,
         platformTools: TacklePlatformTools,
+        authFlowFactory: CodeAuthFlowFactory,
         dispatchers: TackleDispatchers,
     ) : this(
         componentContext = componentContext,
@@ -44,6 +46,7 @@ class RootComponentDefault internal constructor(
                 authorizedApi = authorizedApi,
                 settings = settings,
                 platformTools = platformTools,
+                authFlowFactory = authFlowFactory,
                 dispatchers = dispatchers,
                 output = output,
             )

@@ -18,7 +18,6 @@ import com.sedsoftware.tackle.network.api.AuthorizedApi
 import com.sedsoftware.tackle.network.api.UnauthorizedApi
 import com.sedsoftware.tackle.network.response.ApplicationDetails
 import com.sedsoftware.tackle.network.response.InstanceDetails
-import com.sedsoftware.tackle.network.response.TokenDetails
 import com.sedsoftware.tackle.settings.api.TackleSettings
 import com.sedsoftware.tackle.utils.TackleDispatchers
 import com.sedsoftware.tackle.utils.TacklePlatformTools
@@ -27,6 +26,7 @@ import com.sedsoftware.tackle.utils.model.AppClientData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import org.publicvalue.multiplatform.oidc.appsupport.CodeAuthFlowFactory
 
 class AuthComponentDefault(
     private val componentContext: ComponentContext,
@@ -35,6 +35,7 @@ class AuthComponentDefault(
     private val authorizedApi: AuthorizedApi,
     private val settings: TackleSettings,
     private val platformTools: TacklePlatformTools,
+    private val authFlowFactory: CodeAuthFlowFactory,
     private val dispatchers: TackleDispatchers,
     private val output: (AuthComponent.Output) -> Unit,
 ) : AuthComponent, ComponentContext by componentContext {
@@ -53,12 +54,10 @@ class AuthComponentDefault(
 
                         override suspend fun createApp(data: AppClientData): ApplicationDetails =
                             unauthorizedApi.createApp(data.name, data.uri, data.scopes, data.website)
-
-                        override suspend fun obtainToken(id: String, secret: String, code: String, data: AppClientData): TokenDetails =
-                            unauthorizedApi.obtainToken(id, secret, code, data.uri, data.scopes)
                     },
                     settings = settings,
                     platformTools = platformTools,
+                    authFlowFactory = authFlowFactory,
                 ),
                 mainContext = dispatchers.main,
                 ioContext = dispatchers.io,

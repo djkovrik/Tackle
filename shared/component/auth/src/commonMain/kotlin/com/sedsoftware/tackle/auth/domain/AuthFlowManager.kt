@@ -1,5 +1,6 @@
 package com.sedsoftware.tackle.auth.domain
 
+import com.sedsoftware.tackle.auth.extension.isValidUrl
 import com.sedsoftware.tackle.auth.extension.normalizeUrl
 import com.sedsoftware.tackle.auth.model.InstanceInfo
 import com.sedsoftware.tackle.auth.model.ObtainedCredentials
@@ -10,12 +11,17 @@ import com.sedsoftware.tackle.utils.AppCreationException
 import com.sedsoftware.tackle.utils.MissedRegistrationDataException
 import com.sedsoftware.tackle.utils.TacklePlatformTools
 import com.sedsoftware.tackle.utils.model.AppClientData
-import kotlinx.coroutines.flow.StateFlow
+import org.publicvalue.multiplatform.oidc.OpenIdConnectClient
+import org.publicvalue.multiplatform.oidc.appsupport.CodeAuthFlowFactory
+import org.publicvalue.multiplatform.oidc.flows.CodeAuthFlow
+import org.publicvalue.multiplatform.oidc.types.CodeChallengeMethod
+import org.publicvalue.multiplatform.oidc.types.remote.AccessTokenResponse
 
 internal class AuthFlowManager(
     private val api: AuthFlowApi,
     private val settings: TackleSettings,
     private val platformTools: TacklePlatformTools,
+    private val authFlowFactory: CodeAuthFlowFactory,
 ) {
     private val clientAppData: AppClientData by lazy {
         platformTools.getClientData()
@@ -61,29 +67,31 @@ internal class AuthFlowManager(
         )
     }
 
-    suspend fun refreshAccessToken(code: String): Result<Boolean> = runCatching {
-        val response = api.obtainToken(
-            id = settings.clientId,
-            secret = settings.clientSecret,
-            code = code,
-            data = clientAppData,
-        )
+    suspend fun startAuthFlow(credentials: ObtainedCredentials): Result<Boolean> = runCatching {
+        val client: OpenIdConnectClient = buildOAuthClient(credentials)
+        val flow: CodeAuthFlow = authFlowFactory.createAuthFlow(client)
+        val tokens: AccessTokenResponse = flow.getAccessToken()
+        settings.token = tokens.access_token
+        tokens.access_token.isNotEmpty()
+    }
 
-        if (response.accessToken.isNotEmpty()) {
-            settings.token = response.accessToken
+    private fun buildOAuthClient(credentials: ObtainedCredentials): OpenIdConnectClient {
+        require(settings.domain.isValidUrl()) { "OAuth client must have valid domain" }
+
+        return OpenIdConnectClient {
+            endpoints {
+                authorizationEndpoint = authorizationUrl()
+                tokenEndpoint = tokenUrl()
+            }
+
+            clientId = credentials.clientId
+            clientSecret = credentials.clientSecret
+            scope = clientAppData.scopes
+            redirectUri = clientAppData.uri
+            codeChallengeMethod = CodeChallengeMethod.off
         }
-
-        response.accessToken.isNotEmpty()
     }
 
-    fun redirectToBrowser(credentials: ObtainedCredentials) {
-        platformTools.openAuthWebsite(
-            domain = credentials.domain,
-            clientId = credentials.clientId,
-        )
-    }
-
-    fun observeOAuthFlow(): StateFlow<Result<String>> {
-        return platformTools.getOAuthResponseFlow()
-    }
+    private fun authorizationUrl(): String = "${settings.domain}/oauth/authorize"
+    private fun tokenUrl(): String = "${settings.domain}/oauth/token"
 }

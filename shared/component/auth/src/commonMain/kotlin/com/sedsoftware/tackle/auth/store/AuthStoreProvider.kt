@@ -10,6 +10,7 @@ import com.sedsoftware.tackle.auth.extension.normalizeUrl
 import com.sedsoftware.tackle.auth.model.CredentialsState
 import com.sedsoftware.tackle.auth.model.InstanceInfo
 import com.sedsoftware.tackle.auth.model.InstanceInfoState
+import com.sedsoftware.tackle.auth.model.ObtainedCredentials
 import com.sedsoftware.tackle.auth.store.AuthStore.Intent
 import com.sedsoftware.tackle.auth.store.AuthStore.Label
 import com.sedsoftware.tackle.auth.store.AuthStore.State
@@ -38,7 +39,6 @@ internal class AuthStoreProvider(
             autoInit = autoInit,
             bootstrapper = coroutineBootstrapper {
                 dispatch(Action.CheckCurrentCredentials)
-                dispatch(Action.ObserveOAuthFlow)
             },
             executorFactory = coroutineExecutorFactory(mainContext) {
                 var job: Job? = null
@@ -61,35 +61,15 @@ internal class AuthStoreProvider(
                                 } else {
                                     dispatch(Msg.CredentialsStateChanged(newState = CredentialsState.EXISTING_USER_CHECK_FAILED))
                                 }
-                            }
+                            },
                         )
                     }
                 }
 
-                onAction<Action.ObserveOAuthFlow> {
-                    launch {
-                        manager
-                            .observeOAuthFlow()
-                            .collect({ result: Result<String> ->
-                                result.fold(
-                                    onSuccess = { code ->
-                                        if (code.isNotEmpty()) {
-                                            forward(Action.HandleOAuthCode(code))
-                                        }
-                                    },
-                                    onFailure = { throwable ->
-                                        dispatch(Msg.OAuthFlowStateChanged(active = false))
-                                        publish(Label.ErrorCaught(throwable))
-                                    }
-                                )
-                            })
-                    }
-                }
-
-                onAction<Action.HandleOAuthCode> {
+                onAction<Action.StartOAuthFlow> {
                     launch {
                         unwrap(
-                            result = withContext(ioContext) { manager.refreshAccessToken(it.code) },
+                            result = withContext(ioContext) { manager.startAuthFlow(it.credentials) },
                             onSuccess = { isAuthorized ->
                                 dispatch(Msg.OAuthFlowStateChanged(active = false))
 
@@ -152,12 +132,12 @@ internal class AuthStoreProvider(
                         unwrap(
                             result = withContext(ioContext) { manager.createApp(domain) },
                             onSuccess = { credentials ->
-                                manager.redirectToBrowser(credentials)
+                                forward(Action.StartOAuthFlow(credentials))
                             },
                             onError = { throwable ->
                                 dispatch(Msg.OAuthFlowStateChanged(active = false))
                                 publish(Label.ErrorCaught(throwable))
-                            }
+                            },
                         )
                     }
                 }
@@ -208,8 +188,7 @@ internal class AuthStoreProvider(
 
     private sealed interface Action {
         data object CheckCurrentCredentials : Action
-        data object ObserveOAuthFlow : Action
-        data class HandleOAuthCode(val code: String) : Action
+        data class StartOAuthFlow(val credentials: ObtainedCredentials) : Action
     }
 
     private sealed interface Msg {

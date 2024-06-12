@@ -11,11 +11,13 @@ import com.sedsoftware.tackle.settings.SettingsModuleDependencies
 import com.sedsoftware.tackle.settings.SharedSettingsFactory
 import com.sedsoftware.tackle.utils.TackleDispatchers
 import com.sedsoftware.tackle.utils.TacklePlatformTools
+import org.publicvalue.multiplatform.oidc.appsupport.CodeAuthFlowFactory
 
 @Suppress("FunctionName")
 fun RootComponentFactory(
     componentContext: ComponentContext,
     platformTools: TacklePlatformTools,
+    authFlowFactory: CodeAuthFlowFactory,
     dispatchers: TackleDispatchers,
 ) : RootComponent {
     val settingsModule = SettingsModule(
@@ -43,6 +45,7 @@ fun RootComponentFactory(
         authorizedApi = networkModule.authorized,
         settings = settingsModule.settings,
         platformTools = platformTools,
+        authFlowFactory = authFlowFactory,
         dispatchers = dispatchers,
     )
 }
