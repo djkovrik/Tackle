@@ -16,4 +16,6 @@ class AuthComponentToolsStub : AuthComponentGateways.Tools {
     override fun openUrl(url: String?) {
         // do nothing
     }
+
+    override fun getTextInputEndDelay(): Long = 0L
 }

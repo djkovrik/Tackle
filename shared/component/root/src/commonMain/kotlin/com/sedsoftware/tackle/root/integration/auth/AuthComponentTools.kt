@@ -13,4 +13,10 @@ internal class AuthComponentTools(
 
     override fun openUrl(url: String?) =
         platformTools.openUrl(url)
+
+    override fun getTextInputEndDelay(): Long = INPUT_ENDED_DELAY
+
+    private companion object {
+        const val INPUT_ENDED_DELAY = 2000L
+    }
 }

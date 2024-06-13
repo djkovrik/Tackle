@@ -92,7 +92,7 @@ internal class AuthStoreProvider(
                     dispatch(Msg.TextInput(text = it.text))
                     job?.cancel()
                     job = launch {
-                        delay(INPUT_ENDED_DELAY)
+                        delay(manager.getTextInputEndDelay())
 
                         val state = state()
                         val url = state.userInput
@@ -199,9 +199,5 @@ internal class AuthStoreProvider(
         data class LearnMoreVisibilityChanged(val visible: Boolean) : Msg
         data class CredentialsStateChanged(val newState: CredentialsState) : Msg
         data class OAuthFlowStateChanged(val active: Boolean) : Msg
-    }
-
-    private companion object {
-        const val INPUT_ENDED_DELAY = 2000L
     }
 }

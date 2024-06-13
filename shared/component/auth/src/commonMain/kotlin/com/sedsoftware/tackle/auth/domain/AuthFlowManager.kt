@@ -70,4 +70,6 @@ internal class AuthFlowManager(
         settings.token = accessToken
         accessToken.isNotEmpty()
     }
+
+    fun getTextInputEndDelay(): Long = tools.getTextInputEndDelay()
 }

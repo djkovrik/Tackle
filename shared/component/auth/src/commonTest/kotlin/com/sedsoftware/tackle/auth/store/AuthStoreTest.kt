@@ -4,7 +4,6 @@ import assertk.assertThat
 import assertk.assertions.contains
 import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
-import assertk.assertions.isNotEmpty
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import com.sedsoftware.tackle.auth.AuthComponentGateways
 import com.sedsoftware.tackle.auth.domain.AuthFlowManager

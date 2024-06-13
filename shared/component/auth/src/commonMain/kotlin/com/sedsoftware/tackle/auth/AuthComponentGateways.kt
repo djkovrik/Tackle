@@ -22,5 +22,6 @@ interface AuthComponentGateways {
     interface Tools {
         fun getClientData(): AppClientData
         fun openUrl(url: String?)
+        fun getTextInputEndDelay(): Long
     }
 }
