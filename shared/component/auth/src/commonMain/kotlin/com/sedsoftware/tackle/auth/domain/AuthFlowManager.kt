@@ -1,23 +1,22 @@
 package com.sedsoftware.tackle.auth.domain
 
+import com.sedsoftware.tackle.auth.AuthComponentGateways
 import com.sedsoftware.tackle.auth.extension.normalizeUrl
 import com.sedsoftware.tackle.auth.model.InstanceInfo
 import com.sedsoftware.tackle.auth.model.ObtainedCredentials
 import com.sedsoftware.tackle.network.response.ApplicationDetails
 import com.sedsoftware.tackle.network.response.InstanceDetails
-import com.sedsoftware.tackle.settings.api.TackleSettings
 import com.sedsoftware.tackle.utils.AppCreationException
 import com.sedsoftware.tackle.utils.MissedRegistrationDataException
-import com.sedsoftware.tackle.utils.TacklePlatformTools
 import com.sedsoftware.tackle.utils.model.AppClientData
 
 internal class AuthFlowManager(
-    private val api: AuthFlowApi,
-    private val settings: TackleSettings,
-    private val platformTools: TacklePlatformTools,
+    private val api: AuthComponentGateways.Api,
+    private val settings: AuthComponentGateways.Settings,
+    private val tools: AuthComponentGateways.Tools,
 ) {
     private val clientAppData: AppClientData by lazy {
-        platformTools.getClientData()
+        tools.getClientData()
     }
 
     suspend fun getInstanceInfo(url: String): Result<InstanceInfo> = runCatching {

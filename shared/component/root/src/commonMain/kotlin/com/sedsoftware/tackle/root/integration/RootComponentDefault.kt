@@ -16,6 +16,9 @@ import com.sedsoftware.tackle.network.api.OAuthApi
 import com.sedsoftware.tackle.network.api.UnauthorizedApi
 import com.sedsoftware.tackle.root.RootComponent
 import com.sedsoftware.tackle.root.RootComponent.Child
+import com.sedsoftware.tackle.root.integration.auth.AuthComponentApi
+import com.sedsoftware.tackle.root.integration.auth.AuthComponentSettings
+import com.sedsoftware.tackle.root.integration.auth.AuthComponentTools
 import com.sedsoftware.tackle.settings.api.TackleSettings
 import com.sedsoftware.tackle.utils.TackleDispatchers
 import com.sedsoftware.tackle.utils.TacklePlatformTools
@@ -42,11 +45,9 @@ class RootComponentDefault internal constructor(
             AuthComponentDefault(
                 componentContext = childContext,
                 storeFactory = storeFactory,
-                unauthorizedApi = unauthorizedApi,
-                authorizedApi = authorizedApi,
-                settings = settings,
-                platformTools = platformTools,
-                oauthApi = oauthApi,
+                api = AuthComponentApi(unauthorizedApi, authorizedApi, oauthApi),
+                settings = AuthComponentSettings(settings),
+                tools = AuthComponentTools(platformTools),
                 dispatchers = dispatchers,
                 output = output,
             )

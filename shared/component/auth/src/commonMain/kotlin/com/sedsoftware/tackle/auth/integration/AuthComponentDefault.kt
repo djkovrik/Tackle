@@ -9,21 +9,13 @@ import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.labels
 import com.sedsoftware.tackle.auth.AuthComponent
 import com.sedsoftware.tackle.auth.AuthComponent.Model
-import com.sedsoftware.tackle.auth.domain.AuthFlowApi
+import com.sedsoftware.tackle.auth.AuthComponentGateways
 import com.sedsoftware.tackle.auth.domain.AuthFlowManager
 import com.sedsoftware.tackle.auth.store.AuthStore
 import com.sedsoftware.tackle.auth.store.AuthStore.Label
 import com.sedsoftware.tackle.auth.store.AuthStoreProvider
-import com.sedsoftware.tackle.network.api.AuthorizedApi
-import com.sedsoftware.tackle.network.api.OAuthApi
-import com.sedsoftware.tackle.network.api.UnauthorizedApi
-import com.sedsoftware.tackle.network.response.ApplicationDetails
-import com.sedsoftware.tackle.network.response.InstanceDetails
-import com.sedsoftware.tackle.settings.api.TackleSettings
 import com.sedsoftware.tackle.utils.TackleDispatchers
-import com.sedsoftware.tackle.utils.TacklePlatformTools
 import com.sedsoftware.tackle.utils.asValue
-import com.sedsoftware.tackle.utils.model.AppClientData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
@@ -31,11 +23,9 @@ import kotlinx.coroutines.launch
 class AuthComponentDefault(
     private val componentContext: ComponentContext,
     private val storeFactory: StoreFactory,
-    private val unauthorizedApi: UnauthorizedApi,
-    private val authorizedApi: AuthorizedApi,
-    private val settings: TackleSettings,
-    private val platformTools: TacklePlatformTools,
-    private val oauthApi: OAuthApi,
+    private val api: AuthComponentGateways.Api,
+    private val settings: AuthComponentGateways.Settings,
+    private val tools: AuthComponentGateways.Tools,
     private val dispatchers: TackleDispatchers,
     private val output: (AuthComponent.Output) -> Unit,
 ) : AuthComponent, ComponentContext by componentContext {
@@ -44,23 +34,7 @@ class AuthComponentDefault(
         instanceKeeper.getStore {
             AuthStoreProvider(
                 storeFactory = storeFactory,
-                manager = AuthFlowManager(
-                    api = object : AuthFlowApi {
-                        override suspend fun getServerInfo(url: String): InstanceDetails =
-                            unauthorizedApi.getServerInfo(url)
-
-                        override suspend fun createApp(data: AppClientData): ApplicationDetails =
-                            unauthorizedApi.createApp(data.name, data.uri, data.scopes, data.website)
-
-                        override suspend fun startAuthFlow(id: String, secret: String, uri: String, scopes: String): String =
-                            oauthApi.startAuthFlow(id, secret, uri, scopes)
-
-                        override suspend fun verifyCredentials(): ApplicationDetails =
-                            authorizedApi.verifyCredentials()
-                    },
-                    settings = settings,
-                    platformTools = platformTools,
-                ),
+                manager = AuthFlowManager(api, settings, tools),
                 mainContext = dispatchers.main,
                 ioContext = dispatchers.io,
             ).create()
@@ -107,7 +81,7 @@ class AuthComponentDefault(
 
     override fun onJoinMastodonClick() {
         store.accept(AuthStore.Intent.ShowLearnMore(false))
-        platformTools.openUrl(JOIN_MASTODON_URL)
+        tools.openUrl(JOIN_MASTODON_URL)
     }
 
     private companion object {
