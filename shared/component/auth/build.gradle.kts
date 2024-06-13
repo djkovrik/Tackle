@@ -19,8 +19,6 @@ kotlin {
                 implementation(libs.ark.mvikotlin.main)
                 implementation(libs.ark.mvikotlin.extensions)
                 implementation(libs.ark.essenty)
-
-                implementation(libs.oidc.appsupport)
             }
         }
     }

@@ -12,6 +12,8 @@ kotlin {
                 implementation(libs.ktor.core)
                 implementation(libs.ktor.serialization)
                 implementation(libs.ktor.client.negotiation)
+
+                implementation(libs.oidc.appsupport)
             }
         }
         androidMain {

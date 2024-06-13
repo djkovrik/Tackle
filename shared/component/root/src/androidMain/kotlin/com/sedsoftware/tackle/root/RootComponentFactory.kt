@@ -30,6 +30,8 @@ fun RootComponentFactory(
 
     val networkModule = NetworkModule(
         dependencies = object : NetworkModuleDependencies {
+            override val authFlowFactory: CodeAuthFlowFactory = authFlowFactory
+
             override val domainProvider: () -> String = {
                 settingsModule.settings.domain
             }
@@ -45,9 +47,9 @@ fun RootComponentFactory(
         storeFactory = DefaultStoreFactory(),
         unauthorizedApi = networkModule.unauthorized,
         authorizedApi = networkModule.authorized,
+        oauthApi = networkModule.oauth,
         settings = settingsModule.settings,
         platformTools = platformTools,
-        authFlowFactory = authFlowFactory,
         dispatchers = dispatchers,
     )
 }

@@ -15,6 +15,7 @@ import com.sedsoftware.tackle.auth.store.AuthStore
 import com.sedsoftware.tackle.auth.store.AuthStore.Label
 import com.sedsoftware.tackle.auth.store.AuthStoreProvider
 import com.sedsoftware.tackle.network.api.AuthorizedApi
+import com.sedsoftware.tackle.network.api.OAuthApi
 import com.sedsoftware.tackle.network.api.UnauthorizedApi
 import com.sedsoftware.tackle.network.response.ApplicationDetails
 import com.sedsoftware.tackle.network.response.InstanceDetails
@@ -26,7 +27,6 @@ import com.sedsoftware.tackle.utils.model.AppClientData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
-import org.publicvalue.multiplatform.oidc.appsupport.CodeAuthFlowFactory
 
 class AuthComponentDefault(
     private val componentContext: ComponentContext,
@@ -35,7 +35,7 @@ class AuthComponentDefault(
     private val authorizedApi: AuthorizedApi,
     private val settings: TackleSettings,
     private val platformTools: TacklePlatformTools,
-    private val authFlowFactory: CodeAuthFlowFactory,
+    private val oauthApi: OAuthApi,
     private val dispatchers: TackleDispatchers,
     private val output: (AuthComponent.Output) -> Unit,
 ) : AuthComponent, ComponentContext by componentContext {
@@ -49,15 +49,17 @@ class AuthComponentDefault(
                         override suspend fun getServerInfo(url: String): InstanceDetails =
                             unauthorizedApi.getServerInfo(url)
 
-                        override suspend fun verifyCredentials(): ApplicationDetails =
-                            authorizedApi.verifyCredentials()
-
                         override suspend fun createApp(data: AppClientData): ApplicationDetails =
                             unauthorizedApi.createApp(data.name, data.uri, data.scopes, data.website)
+
+                        override suspend fun startAuthFlow(id: String, secret: String, uri: String, scopes: String): String =
+                            oauthApi.startAuthFlow(id, secret, uri, scopes)
+
+                        override suspend fun verifyCredentials(): ApplicationDetails =
+                            authorizedApi.verifyCredentials()
                     },
                     settings = settings,
                     platformTools = platformTools,
-                    authFlowFactory = authFlowFactory,
                 ),
                 mainContext = dispatchers.main,
                 ioContext = dispatchers.io,

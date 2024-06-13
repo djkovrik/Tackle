@@ -12,6 +12,7 @@ import com.sedsoftware.tackle.auth.integration.AuthComponentDefault
 import com.sedsoftware.tackle.home.HomeComponent
 import com.sedsoftware.tackle.home.integration.HomeComponentDefault
 import com.sedsoftware.tackle.network.api.AuthorizedApi
+import com.sedsoftware.tackle.network.api.OAuthApi
 import com.sedsoftware.tackle.network.api.UnauthorizedApi
 import com.sedsoftware.tackle.root.RootComponent
 import com.sedsoftware.tackle.root.RootComponent.Child
@@ -19,7 +20,6 @@ import com.sedsoftware.tackle.settings.api.TackleSettings
 import com.sedsoftware.tackle.utils.TackleDispatchers
 import com.sedsoftware.tackle.utils.TacklePlatformTools
 import kotlinx.serialization.Serializable
-import org.publicvalue.multiplatform.oidc.appsupport.CodeAuthFlowFactory
 
 class RootComponentDefault internal constructor(
     componentContext: ComponentContext,
@@ -32,9 +32,9 @@ class RootComponentDefault internal constructor(
         storeFactory: StoreFactory,
         unauthorizedApi: UnauthorizedApi,
         authorizedApi: AuthorizedApi,
+        oauthApi: OAuthApi,
         settings: TackleSettings,
         platformTools: TacklePlatformTools,
-        authFlowFactory: CodeAuthFlowFactory,
         dispatchers: TackleDispatchers,
     ) : this(
         componentContext = componentContext,
@@ -46,7 +46,7 @@ class RootComponentDefault internal constructor(
                 authorizedApi = authorizedApi,
                 settings = settings,
                 platformTools = platformTools,
-                authFlowFactory = authFlowFactory,
+                oauthApi = oauthApi,
                 dispatchers = dispatchers,
                 output = output,
             )

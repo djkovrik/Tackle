@@ -1,16 +1,21 @@
 package com.sedsoftware.tackle.network
 
 import com.sedsoftware.tackle.network.api.AuthorizedApi
+import com.sedsoftware.tackle.network.api.OAuthApi
 import com.sedsoftware.tackle.network.api.UnauthorizedApi
 import com.sedsoftware.tackle.network.internal.TackleAuthorizedApi
+import com.sedsoftware.tackle.network.internal.TackleOAuthApi
 import com.sedsoftware.tackle.network.internal.TackleUnauthorizedApi
+import org.publicvalue.multiplatform.oidc.appsupport.CodeAuthFlowFactory
 
 interface NetworkModule {
     val unauthorized: UnauthorizedApi
     val authorized: AuthorizedApi
+    val oauth: OAuthApi
 }
 
 interface NetworkModuleDependencies {
+    val authFlowFactory: CodeAuthFlowFactory
     val domainProvider: () -> String
     val tokenProvider: () -> String
 }
@@ -27,6 +32,13 @@ fun NetworkModule(dependencies: NetworkModuleDependencies): NetworkModule {
             TackleAuthorizedApi(
                 domainProvider = dependencies.domainProvider,
                 tokenProvider = dependencies.tokenProvider,
+            )
+        }
+
+        override val oauth: OAuthApi by lazy {
+            TackleOAuthApi(
+                authFlowFactory = dependencies.authFlowFactory,
+                domainProvider = dependencies.domainProvider,
             )
         }
     }
