@@ -25,3 +25,6 @@ jobs:
 
       - name: Code analysis
         run: ./gradlew detekt
+
+      - name: Testing
+        run: ./gradlew testDebugUnitTest
