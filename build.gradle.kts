@@ -10,6 +10,7 @@ plugins {
     alias(libs.plugins.kotlinx.serialization) apply false
     alias(libs.plugins.sqlDelight) apply false
     alias(libs.plugins.detekt)
+    alias(libs.plugins.kover)
 }
 
 detekt {
@@ -34,4 +35,28 @@ tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
 
 tasks.withType<io.gitlab.arturbosch.detekt.DetektCreateBaselineTask>().configureEach {
     jvmTarget = "1.8"
+}
+
+kover {
+    reports {
+        filters {
+            excludes {
+                classes(
+                    "com.sedsoftware.tackle.*.integration.*Preview",
+                )
+            }
+            includes {
+                classes(
+                    "com.sedsoftware.tackle.*.domain.*",
+                    "com.sedsoftware.tackle.*.extension.*",
+                    "com.sedsoftware.tackle.*.integration.*Default",
+                    "com.sedsoftware.tackle.*.store.*",
+                )
+            }
+        }
+    }
+}
+
+dependencies {
+    kover(project(":shared:component:auth"))
 }

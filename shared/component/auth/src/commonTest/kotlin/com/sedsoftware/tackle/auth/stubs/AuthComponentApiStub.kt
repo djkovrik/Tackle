@@ -10,8 +10,18 @@ import com.sedsoftware.tackle.utils.model.AppClientData
 
 class AuthComponentApiStub : AuthComponentGateways.Api {
 
-    override suspend fun getServerInfo(url: String): InstanceDetails =
-        InstanceDetails(
+    companion object {
+        val validApplicationDetails = ApplicationDetails(
+            name = StubConstants.NAME,
+            website = StubConstants.WEBSITE,
+            clientId = StubConstants.CLIENT_ID,
+            clientSecret = StubConstants.CLIENT_SECRET,
+            validApiKey = StubConstants.API_KEY,
+        )
+
+        val invalidApplicationDetails = ApplicationDetails()
+
+        val validInstanceDetails = InstanceDetails(
             domain = StubConstants.DOMAIN,
             title = StubConstants.DOMAIN,
             version = "1.0",
@@ -22,24 +32,40 @@ class AuthComponentApiStub : AuthComponentGateways.Api {
             languages = listOf("en", "ru")
         )
 
+        val invalidInstanceDetails = InstanceDetails()
+    }
+
+    var getServerInfoResponse: InstanceDetails = validInstanceDetails
+    var createAppResponse: ApplicationDetails = validApplicationDetails
+    var startAuthFlowResponse: String = StubConstants.TOKEN
+    var verifyCredentialsResponse: ApplicationDetails = validApplicationDetails
+    var shouldThrowException: Boolean = false
+
+    override suspend fun getServerInfo(url: String): InstanceDetails =
+        if (!shouldThrowException) {
+            getServerInfoResponse
+        } else {
+            error("getServerInfo exception")
+        }
+
     override suspend fun createApp(data: AppClientData): ApplicationDetails =
-        ApplicationDetails(
-            name = StubConstants.NAME,
-            website = StubConstants.WEBSITE,
-            clientId = StubConstants.CLIENT_ID,
-            clientSecret = StubConstants.CLIENT_SECRET,
-            validApiKey = StubConstants.API_KEY,
-        )
+        if (!shouldThrowException) {
+            createAppResponse
+        } else {
+            error("createApp exception")
+        }
 
     override suspend fun startAuthFlow(id: String, secret: String, uri: String, scopes: String): String =
-        StubConstants.TOKEN
+        if (!shouldThrowException) {
+            startAuthFlowResponse
+        } else {
+            error("startAuthFlow exception")
+        }
 
     override suspend fun verifyCredentials(): ApplicationDetails =
-        ApplicationDetails(
-            name = StubConstants.NAME,
-            website = StubConstants.WEBSITE,
-            clientId = StubConstants.CLIENT_ID,
-            clientSecret = StubConstants.CLIENT_SECRET,
-            validApiKey = StubConstants.API_KEY,
-        )
+        if (!shouldThrowException) {
+            verifyCredentialsResponse
+        } else {
+            error("verifyCredentials exception")
+        }
 }

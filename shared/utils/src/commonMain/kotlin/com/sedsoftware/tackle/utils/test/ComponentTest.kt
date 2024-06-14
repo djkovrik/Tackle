@@ -11,9 +11,7 @@ import kotlin.test.BeforeTest
 
 abstract class ComponentTest<Component : Any> {
 
-    protected val lifecycle = LifecycleRegistry()
-
-    protected lateinit var component: Component
+    protected val lifecycle: LifecycleRegistry = LifecycleRegistry()
 
     protected val testDispatchers: TackleDispatchers =
         object : TackleDispatchers {
@@ -21,6 +19,14 @@ abstract class ComponentTest<Component : Any> {
             override val io: CoroutineDispatcher = Dispatchers.Unconfined
             override val unconfined: CoroutineDispatcher = Dispatchers.Unconfined
         }
+
+    protected var component: Component
+        get() = _component!!
+        set(value) {
+            _component = value
+        }
+
+    private var _component: Component? = null
 
     @BeforeTest
     fun beforeTest() {
@@ -31,6 +37,7 @@ abstract class ComponentTest<Component : Any> {
     @AfterTest
     fun afterTest() {
         isAssertOnMainThreadEnabled = true
+        _component = null
     }
 
     abstract fun createComponent(): Component

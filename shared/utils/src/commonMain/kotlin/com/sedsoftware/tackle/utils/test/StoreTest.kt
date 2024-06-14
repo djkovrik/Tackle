@@ -15,7 +15,9 @@ abstract class StoreTest<Intent : Any, State : Any, Label : Any> {
 
     protected val labels: MutableList<Label> = mutableListOf()
 
-    protected lateinit var store: Store<Intent, State, Label>
+    protected val store: Store<Intent, State, Label> get() = _store!!
+
+    private var _store: Store<Intent, State, Label>? = null
 
     private var labelsJob: Job? = null
 
@@ -23,7 +25,7 @@ abstract class StoreTest<Intent : Any, State : Any, Label : Any> {
     fun beforeTest() {
         isAssertOnMainThreadEnabled = false
 
-        store = createStore()
+        _store = createStore()
 
         @OptIn(DelicateCoroutinesApi::class)
         labelsJob = GlobalScope.launch(Dispatchers.Unconfined) {
@@ -38,6 +40,7 @@ abstract class StoreTest<Intent : Any, State : Any, Label : Any> {
         labels.clear()
         labelsJob?.cancel()
         labelsJob = null
+        _store = null
     }
 
     abstract fun createStore(): Store<Intent, State, Label>

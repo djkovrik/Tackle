@@ -25,8 +25,8 @@ internal class AuthFlowManager(
             domain = response.domain.normalizeUrl(),
             name = response.title,
             description = response.description,
-            logoUrl = response.thumbnail.url,
-            users = response.usage.users.activePerMonth,
+            logoUrl = response.thumbnail?.url.orEmpty(),
+            users = response.usage?.users?.activePerMonth ?: 0L,
         )
     }
 

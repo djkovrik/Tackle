@@ -6,7 +6,6 @@ import assertk.assertions.isNotEmpty
 import com.arkivanov.decompose.DefaultComponentContext
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import com.sedsoftware.tackle.auth.AuthComponent
-import com.sedsoftware.tackle.auth.AuthComponentGateways
 import com.sedsoftware.tackle.auth.model.CredentialsState
 import com.sedsoftware.tackle.auth.stubs.AuthComponentApiStub
 import com.sedsoftware.tackle.auth.stubs.AuthComponentSettingsStub
@@ -18,13 +17,13 @@ import kotlin.test.Test
 
 class AuthComponentTest : ComponentTest<AuthComponentDefault>() {
 
-    private val settings: AuthComponentGateways.Settings = AuthComponentSettingsStub()
+    private val settings: AuthComponentSettingsStub = AuthComponentSettingsStub()
 
     private val activeModel: AuthComponent.Model
         get() = component.model.value
 
     @Test
-    fun `when created go AUTHORIZED if token is available`() = runTest {
+    fun `component creation should switch state to AUTHORIZED if token is available`() = runTest {
         // given
         asAuthorized()
         // when
@@ -34,7 +33,7 @@ class AuthComponentTest : ComponentTest<AuthComponentDefault>() {
     }
 
     @Test
-    fun `when created go UNAUTHORIZED if token is not available`() = runTest {
+    fun `component creation should switch state to UNAUTHORIZED if token is not available`() = runTest {
         // given
         asUnauthorized()
         // when
@@ -44,7 +43,7 @@ class AuthComponentTest : ComponentTest<AuthComponentDefault>() {
     }
 
     @Test
-    fun `onTextInput calls for server info load`() = runTest {
+    fun `onTextInput should call for server info load`() = runTest {
         // given
         val url = "mastodon.social"
         asUnauthorized()
@@ -60,7 +59,20 @@ class AuthComponentTest : ComponentTest<AuthComponentDefault>() {
     }
 
     @Test
-    fun `onShowLearnMore shows bottom sheet`() {
+    fun `onRetryButtonClick should proceed with retrying`() = runTest {
+        asUnauthorized()
+        // when
+        component = createComponent()
+        // then
+        assertThat(activeModel.credentialsState).isEqualTo(CredentialsState.UNAUTHORIZED)
+        // and when
+        asAuthorized()
+        component.onRetryButtonClick()
+        assertThat(activeModel.credentialsState).isEqualTo(CredentialsState.AUTHORIZED)
+    }
+
+    @Test
+    fun `onShowLearnMore should show bottom sheet`() {
         // given
         asUnauthorized()
         // when
@@ -71,7 +83,7 @@ class AuthComponentTest : ComponentTest<AuthComponentDefault>() {
     }
 
     @Test
-    fun `onHideLearnMore hides bottom sheet`() {
+    fun `onHideLearnMore should hide bottom sheet`() {
         // given
         asUnauthorized()
         // when
@@ -86,7 +98,22 @@ class AuthComponentTest : ComponentTest<AuthComponentDefault>() {
     }
 
     @Test
-    fun `onAuthenticateClick runs auth flow`() {
+    fun `onJoinMastodonClick should hide bottom sheet`() {
+        // given
+        asUnauthorized()
+        // when
+        component = createComponent()
+        component.onShowLearnMore()
+        // then
+        assertThat(activeModel.isLearnMoreVisible).isEqualTo(true)
+        // and when
+        component.onJoinMastodonClick()
+        // then
+        assertThat(activeModel.isLearnMoreVisible).isEqualTo(false)
+    }
+
+    @Test
+    fun `onAuthenticateClick should run auth flow`() {
         // given
         val url = "mastodon.social"
         asUnauthorized()
