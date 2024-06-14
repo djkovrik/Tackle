@@ -1,0 +1,40 @@
+name: CodeCoverageBadge
+
+on:
+  push:
+    branches: [ master ]
+jobs:
+  build:
+    name: Code coverage badge
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: 21
+
+      - uses: gradle/gradle-build-action@v3
+        with:
+          cache-disabled: true
+
+      - name: Calculate coverage output
+        run: echo "COVERAGE=$(./gradlew -q printLineCoverage | tail -n 1)" >> $GITHUB_ENV
+
+      - name: Print coverage output
+        run: echo "Coverage is ${{ env.COVERAGE }}"
+
+      - name: Update dynamic badge gist
+        uses: schneegans/dynamic-badges-action@v1.7.0
+        with:
+          auth: ${{secrets.GIST_SECRET}}
+          gistID: c48e04368937161aa8a56c5329628b48
+          filename: tackle-coverage-badge.json
+          label: coverage
+          message: ${{env.COVERAGE}}%
+          valColorRange: ${{env.COVERAGE}}
+          minColorRange: 0
+          maxColorRange: 100

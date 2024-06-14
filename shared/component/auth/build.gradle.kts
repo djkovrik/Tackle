@@ -1,6 +1,7 @@
 plugins {
     id("tackle.config.android")
     id("tackle.config.multiplatform")
+    alias(libs.plugins.kover)
 }
 
 kotlin {
@@ -19,9 +20,8 @@ kotlin {
                 implementation(libs.ark.mvikotlin.main)
                 implementation(libs.ark.mvikotlin.extensions)
                 implementation(libs.ark.essenty)
-
-                implementation(libs.oidc.appsupport)
             }
         }
     }
 }
+

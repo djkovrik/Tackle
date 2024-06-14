@@ -5,14 +5,14 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 class InstanceDetails(
-    @SerialName("domain") val domain: String,
-    @SerialName("title") val title: String,
-    @SerialName("version") val version: String,
-    @SerialName("source_url") val sourceUrl: String,
-    @SerialName("description") val description: String,
-    @SerialName("usage") val usage: InstanceUsers,
-    @SerialName("thumbnail") val thumbnail: InstanceThumbnail,
-    @SerialName("languages") val languages: List<String>,
+    @SerialName("domain") val domain: String = "",
+    @SerialName("title") val title: String = "",
+    @SerialName("version") val version: String = "",
+    @SerialName("source_url") val sourceUrl: String = "",
+    @SerialName("description") val description: String = "",
+    @SerialName("usage") val usage: InstanceUsers? = null,
+    @SerialName("thumbnail") val thumbnail: InstanceThumbnail? = null,
+    @SerialName("languages") val languages: List<String> = emptyList(),
 )
 
 @Serializable
