@@ -7,28 +7,28 @@ android-targetSdk = "34"
 
 # Core
 kotlin = "2.0.0"
-compose = "1.6.7"
-compose-plugin = "1.6.10"
+compose = "1.6.8"
+compose-plugin = "1.6.11"
 agp = "8.2.2"
 
 # AndroidX
 androidx-activityCompose = "1.9.0"
-androidx-appcompat = "1.6.1"
+androidx-appcompat = "1.7.0"
 androidx-core-ktx = "1.13.1"
 androidx-material = "1.12.0"
 androidx-preferences = "1.2.1"
 androidx-test-junit = "1.1.5"
 
 # Ark
-decompose = "3.0.0"
-mviKotlin = "4.0.0"
-essenty = "2.0.0"
+decompose = "3.1.0"
+mviKotlin = "4.1.0"
+essenty = "2.1.0"
 
 # Libs
 detekt = "1.23.5"
-kotlinx-coroutines = "1.8.0"
+kotlinx-coroutines = "1.8.1"
 kotlinx-serialization = "1.6.3"
-kotlinx-datetime = "0.5.0"
+kotlinx-datetime = "0.6.0"
 composeImageLoader = "1.7.1"
 multiplatformSettings = "1.1.1"
 napier = "2.7.1"
