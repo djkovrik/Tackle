@@ -16,12 +16,24 @@ import com.sedsoftware.tackle.auth.stubs.StubConstants
 import com.sedsoftware.tackle.utils.test.StoreTest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.runTest
+import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
 import kotlin.test.Test
 
 internal class AuthStoreTest : StoreTest<AuthStore.Intent, AuthStore.State, AuthStore.Label>() {
 
     private val api: AuthComponentApiStub = AuthComponentApiStub()
     private val settings: AuthComponentSettingsStub = AuthComponentSettingsStub()
+
+    @BeforeTest
+    fun before() {
+        beforeTest()
+    }
+
+    @AfterTest
+    fun after() {
+        afterTest()
+    }
 
     @Test
     fun `store creation should switch state to AUTHORIZED with navigation call if token is available`() = runTest {

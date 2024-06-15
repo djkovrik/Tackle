@@ -8,8 +8,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import kotlin.test.AfterTest
-import kotlin.test.BeforeTest
 
 abstract class StoreTest<Intent : Any, State : Any, Label : Any> {
 
@@ -21,7 +19,6 @@ abstract class StoreTest<Intent : Any, State : Any, Label : Any> {
 
     private var labelsJob: Job? = null
 
-    @BeforeTest
     fun beforeTest() {
         isAssertOnMainThreadEnabled = false
 
@@ -33,7 +30,6 @@ abstract class StoreTest<Intent : Any, State : Any, Label : Any> {
         }
     }
 
-    @AfterTest
     fun afterTest() {
         isAssertOnMainThreadEnabled = true
 

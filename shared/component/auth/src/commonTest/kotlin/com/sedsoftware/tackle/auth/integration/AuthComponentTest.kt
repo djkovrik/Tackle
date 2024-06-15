@@ -13,6 +13,8 @@ import com.sedsoftware.tackle.auth.stubs.AuthComponentToolsStub
 import com.sedsoftware.tackle.auth.stubs.StubConstants
 import com.sedsoftware.tackle.utils.test.ComponentTest
 import kotlinx.coroutines.test.runTest
+import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
 import kotlin.test.Test
 
 class AuthComponentTest : ComponentTest<AuthComponentDefault>() {
@@ -21,6 +23,16 @@ class AuthComponentTest : ComponentTest<AuthComponentDefault>() {
 
     private val activeModel: AuthComponent.Model
         get() = component.model.value
+
+    @BeforeTest
+    fun before() {
+        beforeTest()
+    }
+
+    @AfterTest
+    fun after() {
+        afterTest()
+    }
 
     @Test
     fun `component creation should switch state to AUTHORIZED if token is available`() = runTest {

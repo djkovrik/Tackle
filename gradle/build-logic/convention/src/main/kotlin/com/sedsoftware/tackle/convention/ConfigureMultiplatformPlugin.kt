@@ -56,12 +56,11 @@ internal fun Project.configureKotlinMultiplatform() {
 
             commonTest {
                 dependencies {
-                    implementation(kotlin("test-junit"))
-                    implementation(libs.findLibrary("kotlinx.datetime").get())
-                    implementation(libs.findLibrary("kotlinx.serialization.json").get())
                     implementation(libs.findLibrary("test.kotlin").get())
                     implementation(libs.findLibrary("test.kotlin.coroutines").get())
                     implementation(libs.findLibrary("test.assertk").get())
+                    implementation(libs.findLibrary("kotlinx.datetime").get())
+                    implementation(libs.findLibrary("kotlinx.serialization.json").get())
                 }
             }
         }
