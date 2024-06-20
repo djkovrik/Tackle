@@ -15,6 +15,7 @@ import com.sedsoftware.tackle.home.HomeTabComponent
 import com.sedsoftware.tackle.home.integration.HomeTabComponentDefault
 import com.sedsoftware.tackle.main.MainComponent
 import com.sedsoftware.tackle.main.MainComponent.Child
+import com.sedsoftware.tackle.main.model.TackleNavigationTab
 import com.sedsoftware.tackle.notifications.NotificationsTabComponent
 import com.sedsoftware.tackle.notifications.integration.NotificationsTabComponentDefault
 import com.sedsoftware.tackle.publications.PublicationsTabComponent
@@ -88,24 +89,14 @@ class MainComponentDefault internal constructor(
 
     override val childStack: Value<ChildStack<*, Child>> = stack
 
-    override fun onHomeTabClicked() {
-        navigation.bringToFront(Config.Home)
-    }
-
-    override fun onExploreTabClicked() {
-        navigation.bringToFront(Config.Explore)
-    }
-
-    override fun onEditorTabClicked() {
-        navigation.bringToFront(Config.Editor)
-    }
-
-    override fun onPublicationsTabClicked() {
-        navigation.bringToFront(Config.Publications)
-    }
-
-    override fun onNotificationsTabClicked() {
-        navigation.bringToFront(Config.Notifications)
+    override fun onTabClicked(tab: TackleNavigationTab) {
+        when (tab) {
+            TackleNavigationTab.HOME -> navigation.bringToFront(Config.Home)
+            TackleNavigationTab.EXPLORE -> navigation.bringToFront(Config.Explore)
+            TackleNavigationTab.EDITOR -> navigation.bringToFront(Config.Editor)
+            TackleNavigationTab.PUBLICATIONS -> navigation.bringToFront(Config.Publications)
+            TackleNavigationTab.NOTIFICATIONS -> navigation.bringToFront(Config.Notifications)
+        }
     }
 
     private fun createChild(config: Config, componentContext: ComponentContext): Child =

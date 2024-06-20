@@ -23,7 +23,7 @@ internal fun NotificationsTabContent(
             .background(color = Color.Magenta.copy(alpha = 0.1f))
     ) {
         Text(
-            text = "Home tab",
+            text = "Notifications tab",
             color = MaterialTheme.colorScheme.onBackground,
             style = MaterialTheme.typography.bodyLarge,
         )

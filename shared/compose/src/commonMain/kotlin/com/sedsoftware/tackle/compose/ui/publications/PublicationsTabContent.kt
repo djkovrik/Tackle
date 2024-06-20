@@ -23,7 +23,7 @@ internal fun PublicationsTabContent(
             .background(color = Color.Cyan.copy(alpha = 0.1f))
     ) {
         Text(
-            text = "Home tab",
+            text = "Publications tab",
             color = MaterialTheme.colorScheme.onBackground,
             style = MaterialTheme.typography.bodyLarge,
         )

@@ -4,6 +4,7 @@ import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
 import com.sedsoftware.tackle.main.MainComponent
+import com.sedsoftware.tackle.main.model.TackleNavigationTab
 
 class MainComponentPreview(
     child: MainComponent.Child
@@ -17,9 +18,5 @@ class MainComponentPreview(
             )
         )
 
-    override fun onHomeTabClicked() = Unit
-    override fun onExploreTabClicked() = Unit
-    override fun onEditorTabClicked() = Unit
-    override fun onPublicationsTabClicked() = Unit
-    override fun onNotificationsTabClicked() = Unit
+    override fun onTabClicked(tab: TackleNavigationTab) = Unit
 }

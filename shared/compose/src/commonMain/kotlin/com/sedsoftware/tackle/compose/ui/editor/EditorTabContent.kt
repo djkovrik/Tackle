@@ -24,7 +24,7 @@ internal fun EditorTabContent(
             .background(color = Color.Blue.copy(alpha = 0.1f))
     ) {
         Text(
-            text = "Home tab",
+            text = "Editor tab",
             color = MaterialTheme.colorScheme.onBackground,
             style = MaterialTheme.typography.bodyLarge,
         )

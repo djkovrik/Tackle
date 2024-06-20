@@ -7,10 +7,12 @@ import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.extensions.compose.stack.Children
 import com.arkivanov.decompose.extensions.compose.stack.animation.fade
 import com.arkivanov.decompose.extensions.compose.stack.animation.stackAnimation
+import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
 import com.sedsoftware.tackle.compose.ui.editor.EditorTabContent
 import com.sedsoftware.tackle.compose.ui.explore.ExploreTabContent
@@ -23,6 +25,7 @@ import com.sedsoftware.tackle.explore.integration.ExploreTabComponentPreview
 import com.sedsoftware.tackle.home.integration.HomeTabComponentPreview
 import com.sedsoftware.tackle.main.MainComponent
 import com.sedsoftware.tackle.main.integration.MainComponentPreview
+import com.sedsoftware.tackle.main.model.TackleNavigationTab
 import com.sedsoftware.tackle.notifications.integration.NotificationsTabComponentPreview
 import com.sedsoftware.tackle.publications.integration.PublicationsTabComponentPreview
 
@@ -31,6 +34,16 @@ internal fun MainContent(
     component: MainComponent,
     modifier: Modifier = Modifier,
 ) {
+    val stack by component.childStack.subscribeAsState()
+    val activeComponent: MainComponent.Child = stack.active.instance
+    val activeTab: TackleNavigationTab = when (activeComponent) {
+        is MainComponent.Child.TabHome -> TackleNavigationTab.HOME
+        is MainComponent.Child.TabExplore -> TackleNavigationTab.EXPLORE
+        is MainComponent.Child.TabEditor -> TackleNavigationTab.EDITOR
+        is MainComponent.Child.TabPublications -> TackleNavigationTab.PUBLICATIONS
+        is MainComponent.Child.TabNotifications -> TackleNavigationTab.NOTIFICATIONS
+    }
+
     Column(modifier = modifier) {
         ChildrenContent(
             component = component,
@@ -40,8 +53,9 @@ internal fun MainContent(
         )
 
         BottomNavigationBar(
-            component = component,
+            activeTab = activeTab,
             modifier = Modifier.fillMaxWidth(),
+            onTabClick = component::onTabClicked,
         )
     }
 }
@@ -80,6 +94,18 @@ private fun MainContentHomePreviewLight() {
 
 @Composable
 @Preview
+private fun MainContentHomePreviewDark() {
+    TackleScreenPreview(darkTheme = true) {
+        MainContent(
+            component = MainComponentPreview(
+                child = MainComponent.Child.TabHome(HomeTabComponentPreview())
+            )
+        )
+    }
+}
+
+@Composable
+@Preview
 private fun MainContentExplorePreviewLight() {
     TackleScreenPreview {
         MainContent(
@@ -92,8 +118,33 @@ private fun MainContentExplorePreviewLight() {
 
 @Composable
 @Preview
+private fun MainContentExplorePreviewDark() {
+    TackleScreenPreview(darkTheme = true) {
+        MainContent(
+            component = MainComponentPreview(
+                child = MainComponent.Child.TabExplore(ExploreTabComponentPreview())
+            )
+        )
+    }
+}
+
+
+@Composable
+@Preview
 private fun MainContentEditorPreviewLight() {
     TackleScreenPreview {
+        MainContent(
+            component = MainComponentPreview(
+                child = MainComponent.Child.TabEditor(EditorTabComponentPreview())
+            )
+        )
+    }
+}
+
+@Composable
+@Preview
+private fun MainContentEditorPreviewDark() {
+    TackleScreenPreview(darkTheme = true) {
         MainContent(
             component = MainComponentPreview(
                 child = MainComponent.Child.TabEditor(EditorTabComponentPreview())
@@ -116,60 +167,23 @@ private fun MainContentPublicationsPreviewLight() {
 
 @Composable
 @Preview
-private fun MainContentNotificationsPreviewLight() {
-    TackleScreenPreview {
-        MainContent(
-            component = MainComponentPreview(
-                child = MainComponent.Child.TabNotifications(NotificationsTabComponentPreview())
-            )
-        )
-    }
-}
-
-
-@Composable
-@Preview
-private fun MainContentHomePreviewDark() {
-    TackleScreenPreview(darkTheme = true) {
-        MainContent(
-            component = MainComponentPreview(
-                child = MainComponent.Child.TabHome(HomeTabComponentPreview())
-            )
-        )
-    }
-}
-
-@Composable
-@Preview
-private fun MainContentExplorePreviewDark() {
-    TackleScreenPreview(darkTheme = true) {
-        MainContent(
-            component = MainComponentPreview(
-                child = MainComponent.Child.TabExplore(ExploreTabComponentPreview())
-            )
-        )
-    }
-}
-
-@Composable
-@Preview
-private fun MainContentEditorPreviewDark() {
-    TackleScreenPreview(darkTheme = true) {
-        MainContent(
-            component = MainComponentPreview(
-                child = MainComponent.Child.TabEditor(EditorTabComponentPreview())
-            )
-        )
-    }
-}
-
-@Composable
-@Preview
 private fun MainContentPublicationsPreviewDark() {
     TackleScreenPreview(darkTheme = true) {
         MainContent(
             component = MainComponentPreview(
                 child = MainComponent.Child.TabPublications(PublicationsTabComponentPreview())
+            )
+        )
+    }
+}
+
+@Composable
+@Preview
+private fun MainContentNotificationsPreviewLight() {
+    TackleScreenPreview {
+        MainContent(
+            component = MainComponentPreview(
+                child = MainComponent.Child.TabNotifications(NotificationsTabComponentPreview())
             )
         )
     }
