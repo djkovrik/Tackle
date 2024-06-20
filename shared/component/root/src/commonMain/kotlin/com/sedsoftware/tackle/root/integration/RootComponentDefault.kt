@@ -56,7 +56,7 @@ class RootComponentDefault internal constructor(
             MainComponentDefault(
                 componentContext = childContext,
                 storeFactory = storeFactory,
-                output = output,
+                mainComponentOutput = output,
             )
         },
     )
@@ -95,6 +95,7 @@ class RootComponentDefault internal constructor(
 
     @Serializable
     private sealed interface Config {
+
         @Serializable
         data object Auth : Config
 
