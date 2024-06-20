@@ -1,4 +1,4 @@
-package com.sedsoftware.tackle.compose.ui.home
+package com.sedsoftware.tackle.compose.ui.main
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.layout.Arrangement
@@ -11,15 +11,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
-import com.sedsoftware.tackle.home.HomeComponent
-import com.sedsoftware.tackle.home.integration.HomeComponentPreview
+import com.sedsoftware.tackle.main.MainComponent
+import com.sedsoftware.tackle.main.integration.MainComponentPreview
 
 @Composable
-internal fun HomeContent(
-    component: HomeComponent,
+internal fun MainContent(
+    component: MainComponent,
     modifier: Modifier = Modifier,
 ) {
-    val model: HomeComponent.Model by component.model.subscribeAsState()
+    val model: MainComponent.Model by component.model.subscribeAsState()
 
     Column(
         verticalArrangement = Arrangement.Center,
@@ -35,10 +35,10 @@ internal fun HomeContent(
 
 @Composable
 @Preview
-private fun PreviewHomeContent() {
+private fun PreviewMainContent() {
     TackleScreenPreview {
-        HomeContent(
-            component = HomeComponentPreview()
+        MainContent(
+            component = MainComponentPreview()
         )
     }
 }

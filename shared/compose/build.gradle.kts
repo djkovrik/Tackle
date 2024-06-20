@@ -21,7 +21,7 @@ kotlin {
         commonMain.dependencies {
             implementation(project(":shared:component:root"))
             implementation(project(":shared:component:auth"))
-            implementation(project(":shared:component:home"))
+            implementation(project(":shared:component:main"))
 
             implementation(compose.runtime)
             implementation(compose.foundation)

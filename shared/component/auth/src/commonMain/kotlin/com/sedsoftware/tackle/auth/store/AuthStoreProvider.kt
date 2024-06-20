@@ -50,7 +50,7 @@ internal class AuthStoreProvider(
                             onSuccess = { isCredentialsValid ->
                                 if (isCredentialsValid) {
                                     dispatch(Msg.CredentialsStateChanged(newState = CredentialsState.AUTHORIZED))
-                                    publish(Label.NavigateToHomeScreen)
+                                    publish(Label.NavigateToMainScreen)
                                 } else {
                                     dispatch(Msg.CredentialsStateChanged(newState = CredentialsState.UNAUTHORIZED))
                                 }
@@ -75,7 +75,7 @@ internal class AuthStoreProvider(
 
                                 if (isAuthorized) {
                                     dispatch(Msg.CredentialsStateChanged(newState = CredentialsState.AUTHORIZED))
-                                    publish(Label.NavigateToHomeScreen)
+                                    publish(Label.NavigateToMainScreen)
                                 } else {
                                     dispatch(Msg.CredentialsStateChanged(newState = CredentialsState.UNAUTHORIZED))
                                 }

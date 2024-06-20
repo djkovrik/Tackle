@@ -10,7 +10,7 @@ kotlin {
         commonMain {
             dependencies {
                 implementation(project(":shared:component:auth"))
-                implementation(project(":shared:component:home"))
+                implementation(project(":shared:component:main"))
                 implementation(project(":shared:network"))
                 implementation(project(":shared:settings"))
                 implementation(project(":shared:utils"))

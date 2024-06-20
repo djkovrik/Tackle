@@ -46,7 +46,7 @@ class AuthComponentDefault(
         scope.launch {
             store.labels.collect { label ->
                 when (label) {
-                    is Label.NavigateToHomeScreen -> output(AuthComponent.Output.NavigateToHomeScreen)
+                    is Label.NavigateToMainScreen -> output(AuthComponent.Output.NavigateToMainScreen)
                     is Label.ErrorCaught -> output(AuthComponent.Output.ErrorCaught(label.throwable))
                 }
             }

@@ -44,7 +44,7 @@ internal class AuthStoreTest : StoreTest<AuthStore.Intent, AuthStore.State, Auth
         store.init()
         // then
         assertThat(store.state.credentialsState, "Credentials state").isEqualTo(CredentialsState.AUTHORIZED)
-        assertThat(labels).contains(AuthStore.Label.NavigateToHomeScreen)
+        assertThat(labels).contains(AuthStore.Label.NavigateToMainScreen)
     }
 
     @Test
@@ -142,7 +142,7 @@ internal class AuthStoreTest : StoreTest<AuthStore.Intent, AuthStore.State, Auth
         store.accept(AuthStore.Intent.OnRetryButtonClick)
         // then
         assertThat(store.state.credentialsState, "Credentials state").isEqualTo(CredentialsState.AUTHORIZED)
-        assertThat(labels).contains(AuthStore.Label.NavigateToHomeScreen)
+        assertThat(labels).contains(AuthStore.Label.NavigateToMainScreen)
     }
 
     @Test
@@ -159,7 +159,7 @@ internal class AuthStoreTest : StoreTest<AuthStore.Intent, AuthStore.State, Auth
         store.accept(AuthStore.Intent.OnAuthenticateButtonClick)
         // then
         assertThat(store.state.credentialsState, "Credentials state").isEqualTo(CredentialsState.AUTHORIZED)
-        assertThat(labels).contains(AuthStore.Label.NavigateToHomeScreen)
+        assertThat(labels).contains(AuthStore.Label.NavigateToMainScreen)
     }
 
     @Test

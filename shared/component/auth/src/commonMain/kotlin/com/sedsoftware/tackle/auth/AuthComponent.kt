@@ -29,7 +29,7 @@ interface AuthComponent : BackHandlerOwner {
     )
 
     sealed class Output {
-        data object NavigateToHomeScreen : Output()
+        data object NavigateToMainScreen : Output()
         data class ErrorCaught(val throwable: Throwable) : Output()
     }
 }

@@ -1,8 +1,8 @@
-package com.sedsoftware.tackle.home
+package com.sedsoftware.tackle.main
 
 import com.arkivanov.decompose.value.Value
 
-interface HomeComponent {
+interface MainComponent {
     val model: Value<Model>
 
     data class Model(
