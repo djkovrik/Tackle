@@ -23,6 +23,12 @@ kotlin {
             implementation(project(":shared:component:auth"))
             implementation(project(":shared:component:main"))
 
+            implementation(project(":shared:component:tab:home"))
+            implementation(project(":shared:component:tab:explore"))
+            implementation(project(":shared:component:tab:editor"))
+            implementation(project(":shared:component:tab:publications"))
+            implementation(project(":shared:component:tab:notifications"))
+
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material3)

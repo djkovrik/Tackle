@@ -21,4 +21,10 @@
     <string name="auth_server_description">Каждый пользовательский аккаунт относится к определенному серверу Mastodon со своими правилами, администраторами и ограничениями, но пользователи каждого сервера могут бесшовно взаимодействовать с остальными пользователями на любом другом сервере.</string>
     <string name="auth_server_info_fetch">Загрузка информации о сервере</string>
     <string name="auth_failed_to_connect">Не удалось соединиться с сервером</string>
+    <!-- Main component -->
+    <string name="main_tab_home">Главная</string>
+    <string name="main_tab_explore">Обзор</string>
+    <string name="main_tab_editor">New post</string>
+    <string name="main_tab_publications">Публикации</string>
+    <string name="main_tab_notifications">Уведомления</string>
 </resources>
