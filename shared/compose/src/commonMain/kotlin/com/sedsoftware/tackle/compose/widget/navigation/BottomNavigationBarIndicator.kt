@@ -1,11 +1,10 @@
-package com.sedsoftware.tackle.compose.widget
+package com.sedsoftware.tackle.compose.widget.navigation
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -19,34 +18,36 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
+import com.sedsoftware.tackle.main.model.TackleNavigationTab
 
 @Composable
 internal fun BottomNavigationBarIndicator(
     indicatorOffset: Dp,
-    indicatorColor: Color,
     modifier: Modifier = Modifier,
+    indicatorColor: Color = MaterialTheme.colorScheme.primary,
+    itemCount: Int = TackleNavigationTab.entries.size,
 ) {
     Box(
         modifier = modifier
-            .offset(x = indicatorOffset)
+            .fillMaxWidth(fraction = 1f / itemCount)
+            .offset(x = indicatorOffset, y = (-12).dp),
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = modifier
-                .background(color = Color.Green)
-                .align(alignment = Alignment.BottomCenter)
-        ) {
-            Indicator(indicatorColor = indicatorColor)
-            Spacer(modifier = Modifier.height(height = 2.dp))
+        Column(modifier = Modifier.align(alignment = Alignment.BottomCenter)) {
+            Indicator(
+                indicatorColor = indicatorColor,
+                modifier = Modifier.size(size = 8.dp),
+            )
         }
     }
 }
 
 @Composable
-private fun Indicator(indicatorColor: Color) {
+private fun Indicator(
+    indicatorColor: Color,
+    modifier: Modifier = Modifier,
+) {
     Box(
-        modifier = Modifier
-            .size(size = 8.dp)
+        modifier = modifier
             .background(color = indicatorColor, shape = CircleShape)
             .clip(shape = CircleShape)
     )
@@ -56,10 +57,8 @@ private fun Indicator(indicatorColor: Color) {
 @Preview
 private fun BottomNavigationBarIndicatorPreview() {
     TackleScreenPreview {
-        BottomNavigationBarIndicator(
-            indicatorOffset = 0.dp,
-            indicatorColor = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.width(120.dp)
+        BottomNavigationBar(
+            activeTab = TackleNavigationTab.HOME
         )
     }
 }

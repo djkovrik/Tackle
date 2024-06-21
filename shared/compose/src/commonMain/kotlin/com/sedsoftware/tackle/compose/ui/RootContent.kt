@@ -1,10 +1,7 @@
 package com.sedsoftware.tackle.compose.ui
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.extensions.compose.stack.Children
@@ -24,11 +21,7 @@ fun RootContent(
     modifier: Modifier = Modifier
 ) {
     TackleTheme {
-        Box(
-            modifier = modifier
-                .fillMaxSize()
-                .windowInsetsPadding(insets = WindowInsets.safeDrawing)
-        ) {
+        Box(modifier = modifier.fillMaxSize()) {
             Children(
                 stack = component.childStack,
                 animation = stackAnimation(animator = fade() + scale()),
