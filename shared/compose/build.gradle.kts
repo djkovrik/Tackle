@@ -21,7 +21,13 @@ kotlin {
         commonMain.dependencies {
             implementation(project(":shared:component:root"))
             implementation(project(":shared:component:auth"))
-            implementation(project(":shared:component:home"))
+            implementation(project(":shared:component:main"))
+
+            implementation(project(":shared:component:tab:home"))
+            implementation(project(":shared:component:tab:explore"))
+            implementation(project(":shared:component:tab:editor"))
+            implementation(project(":shared:component:tab:publications"))
+            implementation(project(":shared:component:tab:notifications"))
 
             implementation(compose.runtime)
             implementation(compose.foundation)

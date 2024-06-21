@@ -24,4 +24,10 @@
     <string name="auth_server_description">Each user account belongs to a specific Mastodon server with it's own rules, admins and regulations, but users from each server can interact seamlessly with users in any other server.</string>
     <string name="auth_server_info_fetch">Loading server info</string>
     <string name="auth_failed_to_connect">Failed to connect the server</string>
+    <!-- Main component -->
+    <string name="main_tab_home">Home</string>
+    <string name="main_tab_explore">Explore</string>
+    <string name="main_tab_editor">New post</string>
+    <string name="main_tab_publications">Publications</string>
+    <string name="main_tab_notifications">Notifications</string>
 </resources>

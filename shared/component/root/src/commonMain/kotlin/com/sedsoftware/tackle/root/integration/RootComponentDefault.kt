@@ -9,8 +9,8 @@ import com.arkivanov.decompose.value.Value
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.sedsoftware.tackle.auth.AuthComponent
 import com.sedsoftware.tackle.auth.integration.AuthComponentDefault
-import com.sedsoftware.tackle.home.HomeComponent
-import com.sedsoftware.tackle.home.integration.HomeComponentDefault
+import com.sedsoftware.tackle.main.MainComponent
+import com.sedsoftware.tackle.main.integration.MainComponentDefault
 import com.sedsoftware.tackle.network.api.AuthorizedApi
 import com.sedsoftware.tackle.network.api.OAuthApi
 import com.sedsoftware.tackle.network.api.UnauthorizedApi
@@ -27,7 +27,7 @@ import kotlinx.serialization.Serializable
 class RootComponentDefault internal constructor(
     componentContext: ComponentContext,
     private val authComponent: (ComponentContext, (AuthComponent.Output) -> Unit) -> AuthComponent,
-    private val homeComponent: (ComponentContext, (HomeComponent.Output) -> Unit) -> HomeComponent,
+    private val mainComponent: (ComponentContext, (MainComponent.Output) -> Unit) -> MainComponent,
 ) : RootComponent, ComponentContext by componentContext {
 
     constructor(
@@ -52,11 +52,11 @@ class RootComponentDefault internal constructor(
                 output = output,
             )
         },
-        homeComponent = { childContext, output ->
-            HomeComponentDefault(
+        mainComponent = { childContext, output ->
+            MainComponentDefault(
                 componentContext = childContext,
                 storeFactory = storeFactory,
-                output = output,
+                mainComponentOutput = output,
             )
         },
     )
@@ -77,28 +77,29 @@ class RootComponentDefault internal constructor(
     private fun createChild(config: Config, componentContext: ComponentContext): Child =
         when (config) {
             is Config.Auth -> Child.Auth(authComponent(componentContext, ::onAuthComponentOutput))
-            is Config.Home -> Child.Home(homeComponent(componentContext, ::onHomeComponentOutput))
+            is Config.Main -> Child.Main(mainComponent(componentContext, ::onMainComponentOutput))
         }
 
     private fun onAuthComponentOutput(output: AuthComponent.Output) {
         when (output) {
-            is AuthComponent.Output.NavigateToHomeScreen -> navigation.replaceCurrent(Config.Home)
+            is AuthComponent.Output.NavigateToMainScreen -> navigation.replaceCurrent(Config.Main)
             is AuthComponent.Output.ErrorCaught -> Unit // TODO
         }
     }
 
-    private fun onHomeComponentOutput(output: HomeComponent.Output) {
+    private fun onMainComponentOutput(output: MainComponent.Output) {
         when (output) {
-            is HomeComponent.Output.ErrorCaught -> Unit // TODO
+            is MainComponent.Output.ErrorCaught -> Unit // TODO
         }
     }
 
     @Serializable
     private sealed interface Config {
+
         @Serializable
         data object Auth : Config
 
         @Serializable
-        data object Home : Config
+        data object Main : Config
     }
 }

@@ -61,6 +61,7 @@ kover {
 
 dependencies {
     kover(project(":shared:component:auth"))
+    kover(project(":shared:component:main"))
 }
 
 // Src: https://bitspittle.dev/blog/2022/kover-badge

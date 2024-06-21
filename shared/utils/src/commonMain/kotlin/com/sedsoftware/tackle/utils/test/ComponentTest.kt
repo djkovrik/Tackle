@@ -6,8 +6,6 @@ import com.arkivanov.mvikotlin.core.utils.isAssertOnMainThreadEnabled
 import com.sedsoftware.tackle.utils.TackleDispatchers
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import kotlin.test.AfterTest
-import kotlin.test.BeforeTest
 
 abstract class ComponentTest<Component : Any> {
 
@@ -28,13 +26,13 @@ abstract class ComponentTest<Component : Any> {
 
     private var _component: Component? = null
 
-    @BeforeTest
+    // TODO Bring annotations back when this fixed
+    // https://youtrack.jetbrains.com/issue/KT-62368
     fun beforeTest() {
         isAssertOnMainThreadEnabled = false
         lifecycle.resume()
     }
 
-    @AfterTest
     fun afterTest() {
         isAssertOnMainThreadEnabled = true
         _component = null
