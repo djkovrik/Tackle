@@ -110,36 +110,31 @@ class MainComponentDefault internal constructor(
 
     private fun onHomeTabOutput(output: HomeTabComponent.Output) {
         when (output) {
-            is HomeTabComponent.Output.ErrorCaught ->
-                mainComponentOutput(MainComponent.Output.ErrorCaught(output.throwable))
+            is HomeTabComponent.Output.ErrorCaught -> mainComponentOutput(MainComponent.Output.ErrorCaught(output.throwable))
         }
     }
 
     private fun onExploreTabOutput(output: ExploreTabComponent.Output) {
         when (output) {
-            is ExploreTabComponent.Output.ErrorCaught ->
-                mainComponentOutput(MainComponent.Output.ErrorCaught(output.throwable))
+            is ExploreTabComponent.Output.ErrorCaught -> mainComponentOutput(MainComponent.Output.ErrorCaught(output.throwable))
         }
     }
 
     private fun onEditorTabOutput(output: EditorTabComponent.Output) {
         when (output) {
-            is EditorTabComponent.Output.ErrorCaught ->
-                mainComponentOutput(MainComponent.Output.ErrorCaught(output.throwable))
+            is EditorTabComponent.Output.ErrorCaught -> mainComponentOutput(MainComponent.Output.ErrorCaught(output.throwable))
         }
     }
 
     private fun onPublicationsTabOutput(output: PublicationsTabComponent.Output) {
         when (output) {
-            is PublicationsTabComponent.Output.ErrorCaught ->
-                mainComponentOutput(MainComponent.Output.ErrorCaught(output.throwable))
+            is PublicationsTabComponent.Output.ErrorCaught -> mainComponentOutput(MainComponent.Output.ErrorCaught(output.throwable))
         }
     }
 
     private fun onNotificationsTabOutput(output: NotificationsTabComponent.Output) {
         when (output) {
-            is NotificationsTabComponent.Output.ErrorCaught ->
-                mainComponentOutput(MainComponent.Output.ErrorCaught(output.throwable))
+            is NotificationsTabComponent.Output.ErrorCaught -> mainComponentOutput(MainComponent.Output.ErrorCaught(output.throwable))
         }
     }
 
