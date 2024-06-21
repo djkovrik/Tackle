@@ -7,6 +7,7 @@ import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.sedsoftware.tackle.home.HomeTabComponent
 import com.sedsoftware.tackle.home.HomeTabComponent.Model
 
+@Suppress("UnusedPrivateProperty")
 class HomeTabComponentDefault(
     private val componentContext: ComponentContext,
     private val storeFactory: StoreFactory,

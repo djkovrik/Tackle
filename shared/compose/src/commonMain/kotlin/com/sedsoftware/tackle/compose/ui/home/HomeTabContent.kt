@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.sedsoftware.tackle.home.HomeTabComponent
 
+@Suppress("UnusedParameter")
 @Composable
 internal fun HomeTabContent(
     component: HomeTabComponent,

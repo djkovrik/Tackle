@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.sedsoftware.tackle.publications.PublicationsTabComponent
 
+@Suppress("UnusedParameter")
 @Composable
 internal fun PublicationsTabContent(
     component: PublicationsTabComponent,

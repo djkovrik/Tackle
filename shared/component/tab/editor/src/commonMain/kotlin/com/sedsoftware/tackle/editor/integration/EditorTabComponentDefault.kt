@@ -7,6 +7,7 @@ import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.sedsoftware.tackle.editor.EditorTabComponent
 import com.sedsoftware.tackle.editor.EditorTabComponent.Model
 
+@Suppress("UnusedPrivateProperty")
 class EditorTabComponentDefault(
     private val componentContext: ComponentContext,
     private val storeFactory: StoreFactory,

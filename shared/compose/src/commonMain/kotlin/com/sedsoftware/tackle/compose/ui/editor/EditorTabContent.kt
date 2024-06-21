@@ -10,9 +10,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.sedsoftware.tackle.editor.EditorTabComponent
-import com.sedsoftware.tackle.home.HomeTabComponent
 
 @Composable
+@Suppress("UnusedParameter")
 internal fun EditorTabContent(
     component: EditorTabComponent,
     modifier: Modifier = Modifier

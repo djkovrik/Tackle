@@ -7,6 +7,7 @@ import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.sedsoftware.tackle.publications.PublicationsTabComponent
 import com.sedsoftware.tackle.publications.PublicationsTabComponent.Model
 
+@Suppress("UnusedPrivateProperty")
 class PublicationsTabComponentDefault(
     private val componentContext: ComponentContext,
     private val storeFactory: StoreFactory,

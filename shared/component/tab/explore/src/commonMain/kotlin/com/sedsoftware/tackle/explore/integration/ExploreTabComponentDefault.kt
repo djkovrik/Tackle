@@ -7,6 +7,7 @@ import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.sedsoftware.tackle.explore.ExploreTabComponent
 import com.sedsoftware.tackle.explore.ExploreTabComponent.Model
 
+@Suppress("UnusedPrivateProperty")
 class ExploreTabComponentDefault(
     private val componentContext: ComponentContext,
     private val storeFactory: StoreFactory,

@@ -7,6 +7,7 @@ import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.sedsoftware.tackle.notifications.NotificationsTabComponent
 import com.sedsoftware.tackle.notifications.NotificationsTabComponent.Model
 
+@Suppress("UnusedPrivateProperty")
 class NotificationsTabComponentDefault(
     private val componentContext: ComponentContext,
     private val storeFactory: StoreFactory,
