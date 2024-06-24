@@ -1,6 +1,6 @@
 package com.sedsoftware.tackle.network.api
 
-import com.sedsoftware.tackle.network.response.ApplicationDetails
+import com.sedsoftware.tackle.network.model.Application
 
 interface AuthorizedApi {
 
@@ -10,5 +10,5 @@ interface AuthorizedApi {
      *
      * @see <a href="https://docs.joinmastodon.org/methods/apps/#verify_credentials">Verify your app works</a>
      */
-    suspend fun verifyCredentials(): ApplicationDetails
+    suspend fun verifyCredentials(): Application
 }

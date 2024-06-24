@@ -1,54 +1,64 @@
 package com.sedsoftware.tackle.auth.stubs
 
 import com.sedsoftware.tackle.auth.AuthComponentGateways
-import com.sedsoftware.tackle.network.response.ApplicationDetails
-import com.sedsoftware.tackle.network.response.InstanceActiveMonth
-import com.sedsoftware.tackle.network.response.InstanceDetails
-import com.sedsoftware.tackle.network.response.InstanceThumbnail
-import com.sedsoftware.tackle.network.response.InstanceUsers
+import com.sedsoftware.tackle.network.model.Application
+import com.sedsoftware.tackle.network.model.Instance
 import com.sedsoftware.tackle.utils.model.AppClientData
 
 class AuthComponentApiStub : AuthComponentGateways.Api {
 
     companion object {
-        val validApplicationDetails = ApplicationDetails(
+        val validApplicationDetails = Application(
             name = StubConstants.NAME,
             website = StubConstants.WEBSITE,
             clientId = StubConstants.CLIENT_ID,
             clientSecret = StubConstants.CLIENT_SECRET,
-            validApiKey = StubConstants.API_KEY,
         )
 
-        val invalidApplicationDetails = ApplicationDetails()
+        val invalidApplicationDetails = Application(
+            name = "",
+            website = "",
+            clientId = "",
+            clientSecret = "",
+        )
 
-        val validInstanceDetails = InstanceDetails(
+        val validInstanceDetails = Instance(
             domain = StubConstants.DOMAIN,
             title = StubConstants.DOMAIN,
             version = "1.0",
             sourceUrl = StubConstants.DOMAIN,
             description = StubConstants.NAME,
-            usage = InstanceUsers(users = InstanceActiveMonth(activePerMonth = 123456L)),
-            thumbnail = InstanceThumbnail(url = StubConstants.DOMAIN, blurHash = "", versions = emptyMap()),
-            languages = listOf("en", "ru")
+            activePerMonth = 123L,
+            thumbnailUrl = StubConstants.DOMAIN,
+            languages = listOf("en", "ru"),
         )
 
-        val invalidInstanceDetails = InstanceDetails()
+        val invalidInstanceDetails = Instance(
+            domain = "",
+            title = "",
+            version = "1.0",
+            sourceUrl = "",
+            description = "",
+            activePerMonth = 123L,
+            thumbnailUrl = "",
+            languages = emptyList(),
+        )
     }
 
-    var getServerInfoResponse: InstanceDetails = validInstanceDetails
-    var createAppResponse: ApplicationDetails = validApplicationDetails
+    var getServerInfoResponse: Instance = validInstanceDetails
+    var createAppResponse: Application = validApplicationDetails
     var startAuthFlowResponse: String = StubConstants.TOKEN
-    var verifyCredentialsResponse: ApplicationDetails = validApplicationDetails
+    var verifyCredentialsResponse: Application = validApplicationDetails
     var shouldThrowException: Boolean = false
 
-    override suspend fun getServerInfo(url: String): InstanceDetails =
+    override suspend fun getServerInfo(url: String): Instance =
         if (!shouldThrowException) {
             getServerInfoResponse
         } else {
             error("getServerInfo exception")
         }
 
-    override suspend fun createApp(data: AppClientData): ApplicationDetails =
+    override suspend fun createApp(data: AppClientData): Application =
         if (!shouldThrowException) {
             createAppResponse
         } else {
@@ -62,7 +72,7 @@ class AuthComponentApiStub : AuthComponentGateways.Api {
             error("startAuthFlow exception")
         }
 
-    override suspend fun verifyCredentials(): ApplicationDetails =
+    override suspend fun verifyCredentials(): Application =
         if (!shouldThrowException) {
             verifyCredentialsResponse
         } else {

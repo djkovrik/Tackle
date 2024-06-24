@@ -1,7 +1,8 @@
 package com.sedsoftware.tackle.network.internal
 
 import com.sedsoftware.tackle.network.api.AuthorizedApi
-import com.sedsoftware.tackle.network.response.ApplicationDetails
+import com.sedsoftware.tackle.network.model.Application
+import com.sedsoftware.tackle.network.response.ApplicationResponse
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -32,8 +33,15 @@ internal class TackleAuthorizedApi(
         }
     }
 
-    override suspend fun verifyCredentials(): ApplicationDetails =
-        doGet<ApplicationDetails>(url = "$instanceUrl/api/v1/apps/verify_credentials")
+    override suspend fun verifyCredentials(): Application {
+        val response: ApplicationResponse = doGet<ApplicationResponse>(url = "$instanceUrl/api/v1/apps/verify_credentials")
+        return Application(
+            name = response.name,
+            website = response.website,
+            clientId = response.clientId,
+            clientSecret = response.clientSecret,
+        )
+    }
 
     @Throws(Exception::class)
     private suspend inline fun <reified T> TackleAuthorizedApi.doGet(url: String): T =

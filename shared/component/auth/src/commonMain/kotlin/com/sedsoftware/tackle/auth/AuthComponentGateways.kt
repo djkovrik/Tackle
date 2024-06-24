@@ -1,15 +1,15 @@
 package com.sedsoftware.tackle.auth
 
-import com.sedsoftware.tackle.network.response.ApplicationDetails
-import com.sedsoftware.tackle.network.response.InstanceDetails
+import com.sedsoftware.tackle.network.model.Application
+import com.sedsoftware.tackle.network.model.Instance
 import com.sedsoftware.tackle.utils.model.AppClientData
 
 interface AuthComponentGateways {
     interface Api {
-        suspend fun getServerInfo(url: String): InstanceDetails
-        suspend fun createApp(data: AppClientData): ApplicationDetails
+        suspend fun getServerInfo(url: String): Instance
+        suspend fun createApp(data: AppClientData): Application
         suspend fun startAuthFlow(id: String, secret: String, uri: String, scopes: String): String
-        suspend fun verifyCredentials(): ApplicationDetails
+        suspend fun verifyCredentials(): Application
     }
 
     interface Settings {

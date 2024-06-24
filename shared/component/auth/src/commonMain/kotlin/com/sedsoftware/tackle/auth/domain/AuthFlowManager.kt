@@ -4,8 +4,8 @@ import com.sedsoftware.tackle.auth.AuthComponentGateways
 import com.sedsoftware.tackle.auth.extension.normalizeUrl
 import com.sedsoftware.tackle.auth.model.InstanceInfo
 import com.sedsoftware.tackle.auth.model.ObtainedCredentials
-import com.sedsoftware.tackle.network.response.ApplicationDetails
-import com.sedsoftware.tackle.network.response.InstanceDetails
+import com.sedsoftware.tackle.network.model.Application
+import com.sedsoftware.tackle.network.model.Instance
 import com.sedsoftware.tackle.utils.AppCreationException
 import com.sedsoftware.tackle.utils.MissedRegistrationDataException
 import com.sedsoftware.tackle.utils.model.AppClientData
@@ -20,13 +20,13 @@ internal class AuthFlowManager(
     }
 
     suspend fun getInstanceInfo(url: String): Result<InstanceInfo> = runCatching {
-        val response: InstanceDetails = api.getServerInfo(url)
+        val response: Instance = api.getServerInfo(url)
         InstanceInfo(
             domain = response.domain.normalizeUrl(),
             name = response.title,
             description = response.description,
-            logoUrl = response.thumbnail?.url.orEmpty(),
-            users = response.usage?.users?.activePerMonth ?: 0L,
+            logoUrl = response.thumbnailUrl,
+            users = response.activePerMonth,
         )
     }
 
@@ -35,14 +35,14 @@ internal class AuthFlowManager(
             throw MissedRegistrationDataException
         }
 
-        val response: ApplicationDetails = api.verifyCredentials()
-        response.validApiKey.isNotEmpty()
+        val response: Application = api.verifyCredentials()
+        response.name.isNotEmpty()
     }
 
     suspend fun createApp(domain: String): Result<ObtainedCredentials> = runCatching {
         settings.domain = domain
 
-        val response: ApplicationDetails = api.createApp(clientAppData)
+        val response: Application = api.createApp(clientAppData)
 
         if (response.clientId.isEmpty() || response.clientSecret.isEmpty()) {
             throw AppCreationException
@@ -55,7 +55,6 @@ internal class AuthFlowManager(
             domain = domain,
             clientId = response.clientId,
             clientSecret = response.clientSecret,
-            apiKey = response.validApiKey,
         )
     }
 

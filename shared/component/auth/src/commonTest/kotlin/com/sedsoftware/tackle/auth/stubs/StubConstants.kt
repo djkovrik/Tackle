@@ -9,5 +9,4 @@ internal object StubConstants {
     const val TOKEN = "token"
     const val CLIENT_ID = "client_id"
     const val CLIENT_SECRET = "client_secret"
-    const val API_KEY = "some key"
 }

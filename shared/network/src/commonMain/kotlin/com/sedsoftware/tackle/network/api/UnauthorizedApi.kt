@@ -1,8 +1,8 @@
 package com.sedsoftware.tackle.network.api
 
-import com.sedsoftware.tackle.network.response.ApplicationDetails
-import com.sedsoftware.tackle.network.response.InstanceDetails
-import com.sedsoftware.tackle.network.response.TokenDetails
+import com.sedsoftware.tackle.network.model.Application
+import com.sedsoftware.tackle.network.model.Instance
+import com.sedsoftware.tackle.network.model.Token
 
 interface UnauthorizedApi {
 
@@ -13,7 +13,7 @@ interface UnauthorizedApi {
      *
      * @see <a href="https://docs.joinmastodon.org/methods/instance/#v2">View server information</a>
      */
-    suspend fun getServerInfo(url: String): InstanceDetails
+    suspend fun getServerInfo(url: String): Instance
 
     /**
      * Creates a new application to obtain OAuth2 credentials.
@@ -25,7 +25,7 @@ interface UnauthorizedApi {
      *
      * @see <a href="https://docs.joinmastodon.org/methods/apps/#create">Create an application</a>
      */
-    suspend fun createApp(client: String, uri: String, scopes: String, website: String): ApplicationDetails
+    suspend fun createApp(client: String, uri: String, scopes: String, website: String): Application
 
     /**
      * Obtains an access token to be used during API calls that are not public.
@@ -38,5 +38,5 @@ interface UnauthorizedApi {
      *
      * @see <a href="https://docs.joinmastodon.org/methods/oauth/#token">Obtain a token</a>
      */
-    suspend fun obtainToken(id: String, secret: String, code: String, uri: String, scopes: String): TokenDetails
+    suspend fun obtainToken(id: String, secret: String, code: String, uri: String, scopes: String): Token
 }

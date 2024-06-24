@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-class InstanceDetails(
+internal class InstanceResponse(
     @SerialName("domain") val domain: String = "",
     @SerialName("title") val title: String = "",
     @SerialName("version") val version: String = "",
@@ -13,21 +13,28 @@ class InstanceDetails(
     @SerialName("usage") val usage: InstanceUsers? = null,
     @SerialName("thumbnail") val thumbnail: InstanceThumbnail? = null,
     @SerialName("languages") val languages: List<String> = emptyList(),
+    @SerialName("rules") val rules: List<RuleItem> = emptyList(),
 )
 
 @Serializable
-class InstanceUsers(
+internal class InstanceUsers(
     @SerialName("users") val users: InstanceActiveMonth,
 )
 
 @Serializable
-class InstanceActiveMonth(
+internal class InstanceActiveMonth(
     @SerialName("active_month") val activePerMonth: Long,
 )
 
 @Serializable
-class InstanceThumbnail(
+internal class InstanceThumbnail(
     @SerialName("url") val url: String,
     @SerialName("blurhash") val blurHash: String,
     @SerialName("versions") val versions: Map<String, String>,
+)
+
+@Serializable
+internal class RuleItem(
+    @SerialName("id") val id: String,
+    @SerialName("text") val text: String,
 )

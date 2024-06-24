@@ -112,7 +112,6 @@ class AuthFlowManagerTest {
             domain = StubConstants.DOMAIN,
             clientId = StubConstants.CLIENT_ID,
             clientSecret = StubConstants.CLIENT_SECRET,
-            apiKey = StubConstants.API_KEY,
         )
         // when
         val result = manager.startAuthFlow(credentials)
@@ -128,7 +127,6 @@ class AuthFlowManagerTest {
             domain = StubConstants.DOMAIN,
             clientId = StubConstants.CLIENT_ID,
             clientSecret = StubConstants.CLIENT_SECRET,
-            apiKey = StubConstants.API_KEY,
         )
         api.startAuthFlowResponse = ""
         // when
@@ -145,7 +143,6 @@ class AuthFlowManagerTest {
             domain = StubConstants.DOMAIN,
             clientId = StubConstants.CLIENT_ID,
             clientSecret = StubConstants.CLIENT_SECRET,
-            apiKey = StubConstants.API_KEY,
         )
         // when
         manager.startAuthFlow(credentials)
