@@ -10,31 +10,31 @@ internal class InstanceResponse(
     @SerialName("version") val version: String = "",
     @SerialName("source_url") val sourceUrl: String = "",
     @SerialName("description") val description: String = "",
-    @SerialName("usage") val usage: InstanceUsers? = null,
-    @SerialName("thumbnail") val thumbnail: InstanceThumbnail? = null,
+    @SerialName("usage") val usage: InstanceUsersResponse? = null,
+    @SerialName("thumbnail") val thumbnail: InstanceThumbnailResponse? = null,
     @SerialName("languages") val languages: List<String> = emptyList(),
-    @SerialName("rules") val rules: List<RuleItem> = emptyList(),
+    @SerialName("rules") val rules: List<RuleItemResponse> = emptyList(),
 )
 
 @Serializable
-internal class InstanceUsers(
-    @SerialName("users") val users: InstanceActiveMonth,
+internal class InstanceUsersResponse(
+    @SerialName("users") val users: InstanceActiveMonthResponse,
 )
 
 @Serializable
-internal class InstanceActiveMonth(
+internal class InstanceActiveMonthResponse(
     @SerialName("active_month") val activePerMonth: Long,
 )
 
 @Serializable
-internal class InstanceThumbnail(
+internal class InstanceThumbnailResponse(
     @SerialName("url") val url: String,
-    @SerialName("blurhash") val blurHash: String,
+    @SerialName("blurhash") val blurhash: String,
     @SerialName("versions") val versions: Map<String, String>,
 )
 
 @Serializable
-internal class RuleItem(
+internal class RuleItemResponse(
     @SerialName("id") val id: String,
     @SerialName("text") val text: String,
 )

@@ -105,6 +105,7 @@ internal class TackleUnauthorizedApi(
             }
             .body()
 
+    @Throws(Exception::class)
     private suspend inline fun <reified T> TackleUnauthorizedApi.doPost(url: String, body: Any): T =
         httpClient
             .post(url) {
