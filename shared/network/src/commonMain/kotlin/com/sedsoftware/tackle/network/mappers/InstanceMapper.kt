@@ -1,7 +1,6 @@
 package com.sedsoftware.tackle.network.mappers
 
 import com.sedsoftware.tackle.network.model.Instance
-import com.sedsoftware.tackle.network.model.Rule
 import com.sedsoftware.tackle.network.response.InstanceResponse
 
 internal object InstanceMapper {
@@ -16,6 +15,6 @@ internal object InstanceMapper {
             activePerMonth = from.usage?.users?.activePerMonth ?: 0L,
             thumbnailUrl = from.thumbnail?.url.orEmpty(),
             languages = from.languages,
-            rules = from.rules.map { Rule(it.id, it.text, it.hint) },
+            rules = from.rules.map(RuleMapper::map),
         )
 }

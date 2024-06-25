@@ -8,9 +8,9 @@ data class MediaAttachment(
     val url: String,
     val previewUrl: String,
     val remoteUrl: String,
-    val meta: MediaAttachmentMeta,
     val description: String,
     val blurhash: String,
+    val meta: MediaAttachmentMeta?,
 )
 
 data class MediaAttachmentMeta(
@@ -24,9 +24,9 @@ data class MediaAttachmentMeta(
     val audioEncode: String,
     val audioBitrate: String,
     val audioChannels: String,
-    val original: MediaAttachmentInfo,
-    val small: MediaAttachmentInfo,
-    val focus: MediaAttachmentFocus,
+    val original: MediaAttachmentInfo?,
+    val small: MediaAttachmentInfo?,
+    val focus: MediaAttachmentFocus?,
 )
 
 data class MediaAttachmentInfo(

@@ -12,6 +12,7 @@ data class Poll(
     val options: List<PollOption>,
     val emojis: List<CustomEmoji>,
     val voted: Boolean,
+    val hideTotals: Boolean,
     val ownVotes: List<Int>
 )
 

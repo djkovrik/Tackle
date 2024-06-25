@@ -14,6 +14,7 @@ internal class PollResponse(
     @SerialName("options") val options: List<PollOptionResponse> = emptyList(),
     @SerialName("emojis") val emojis: List<CustomEmojiResponse> = emptyList(),
     @SerialName("voted") val voted: Boolean = false,
+    @SerialName("hide_totals") val hideTotals: Boolean = false,
     @SerialName("own_votes") val ownVotes: List<Int> = emptyList(),
 )
 

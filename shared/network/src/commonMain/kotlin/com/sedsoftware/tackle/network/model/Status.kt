@@ -13,7 +13,7 @@ data class Status(
     val sensitive: Boolean,
     val spoilerText: String,
     val mediaAttachments: List<MediaAttachment>,
-    val application: Application,
+    val application: Application?,
     val mentions: List<StatusMention>,
     val tags: List<StatusTag>,
     val emojis: List<CustomEmoji>,
@@ -24,8 +24,8 @@ data class Status(
     val inReplyToId: String,
     val inReplyToAccountId: String,
     val reblog: Status?,
-    val poll: Poll,
-    val card: PreviewCard,
+    val poll: Poll?,
+    val card: PreviewCard?,
     val language: String,
     val text: String,
     val editedAt: LocalDateTime,
@@ -47,4 +47,25 @@ data class StatusMention(
 data class StatusTag(
     val name: String,
     val url: String,
+)
+
+data class ScheduledStatus(
+    val id: String,
+    val scheduledAt: LocalDateTime,
+    val params: ScheduledStatusParams,
+)
+
+data class ScheduledStatusParams(
+    val text: String,
+    val poll: Poll? = null,
+    val mediaIds: List<String> = emptyList(),
+    val sensitive: Boolean = false,
+    val spoilerText: String = "",
+    val visibility: StatusVisibility = StatusVisibility.UNKNOWN,
+    val inReplyToId: Long = 0L,
+    val language: String = "",
+    val applicationId: Int,
+    val idempotency: String = "",
+    val withRateLimit: Boolean = false,
+    val mediaAttachments: List<MediaAttachment> = emptyList(),
 )

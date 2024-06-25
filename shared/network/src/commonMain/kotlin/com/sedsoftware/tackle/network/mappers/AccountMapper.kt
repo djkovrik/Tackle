@@ -2,8 +2,6 @@ package com.sedsoftware.tackle.network.mappers
 
 import com.sedsoftware.tackle.network.model.Account
 import com.sedsoftware.tackle.network.model.CredentialAccountSource
-import com.sedsoftware.tackle.network.model.CustomEmoji
-import com.sedsoftware.tackle.network.model.Field
 import com.sedsoftware.tackle.network.model.Role
 import com.sedsoftware.tackle.network.model.type.CredentialPrivacy
 import com.sedsoftware.tackle.network.response.AccountResponse
@@ -24,8 +22,8 @@ internal object AccountMapper {
             header = from.header,
             headerStatic = from.headerStatic,
             locked = from.locked,
-            fields = from.fields.map { Field(it.name, it.value, it.verifiedAt.toLocalDateTime()) },
-            emojis = from.emojis.map { CustomEmoji(it.shortcode, it.url, it.staticUrl, it.visibleInPicker, it.category) },
+            fields = from.fields.map(FieldMapper::map),
+            emojis = from.emojis.map(EmojisMapper::map),
             bot = from.bot,
             group = from.group,
             discoverable = from.discoverable,
@@ -41,7 +39,7 @@ internal object AccountMapper {
             source = from.source?.let { credentials ->
                 CredentialAccountSource(
                     note = credentials.note,
-                    fields = credentials.fields.map { Field(it.name, it.value, it.verifiedAt.toLocalDateTime()) },
+                    fields = credentials.fields.map(FieldMapper::map),
                     privacy = when (credentials.privacy) {
                         CredentialPrivacyRemote.PUBLIC -> CredentialPrivacy.PUBLIC
                         CredentialPrivacyRemote.UNLISTED -> CredentialPrivacy.UNLISTED
@@ -54,14 +52,6 @@ internal object AccountMapper {
                     followRequestsCount = credentials.followRequestsCount,
                 )
             },
-            role = from.role?.let {
-                Role(
-                    id = it.id,
-                    name = it.name,
-                    color = it.color,
-                    permissions = it.permissions,
-                    highlighted = it.highlighted,
-                )
-            }
+            role = from.role?.let { RoleMapper.map(it) }
         )
 }

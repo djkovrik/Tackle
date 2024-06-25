@@ -1,27 +1,27 @@
 package com.sedsoftware.tackle.network.response
 
-import com.sedsoftware.tackle.network.model.type.StatusVisibility
+import com.sedsoftware.tackle.network.response.type.StatusVisibilityRemote
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 internal class StatusResponse(
-    @SerialName("id") val id: String = "",
-    @SerialName("uri") val uri: String = "",
-    @SerialName("created_at") val createdAt: String = "",
-    @SerialName("account") val account: AccountResponse? = null,
-    @SerialName("content") val content: String = "",
-    @SerialName("visibility") val visibility: StatusVisibility = StatusVisibility.UNKNOWN,
-    @SerialName("sensitive") val sensitive: Boolean = false,
-    @SerialName("spoiler_text") val spoilerText: String = "",
+    @SerialName("id") val id: String,
+    @SerialName("uri") val uri: String,
+    @SerialName("created_at") val createdAt: String,
+    @SerialName("account") val account: AccountResponse,
+    @SerialName("content") val content: String,
+    @SerialName("visibility") val visibility: StatusVisibilityRemote = StatusVisibilityRemote.UNKNOWN,
+    @SerialName("sensitive") val sensitive: Boolean ,
+    @SerialName("spoiler_text") val spoilerText: String,
     @SerialName("media_attachments") val mediaAttachments: List<MediaAttachmentResponse> = emptyList(),
     @SerialName("application") val application: ApplicationResponse? = null,
     @SerialName("mentions") val mentions: List<StatusMentionResponse> = emptyList(),
     @SerialName("tags") val tags: List<StatusTagResponse> = emptyList(),
     @SerialName("emojis") val emojis: List<CustomEmojiResponse> = emptyList(),
-    @SerialName("reblogs_count") val reblogsCount: Long = 0L,
-    @SerialName("favourites_count") val favouritesCount: Long = 0L,
-    @SerialName("replies_count") val repliesCount: Long = 0L,
+    @SerialName("reblogs_count") val reblogsCount: Long,
+    @SerialName("favourites_count") val favouritesCount: Long,
+    @SerialName("replies_count") val repliesCount: Long,
     @SerialName("url") val url: String = "",
     @SerialName("in_reply_to_id") val inReplyToId: String = "",
     @SerialName("in_reply_to_account_id") val inReplyToAccountId: String = "",
@@ -51,4 +51,27 @@ internal class StatusMentionResponse(
 internal class StatusTagResponse(
     @SerialName("name") val name: String = "",
     @SerialName("url") val url: String = "",
+)
+
+@Serializable
+internal class ScheduledStatusResponse(
+    @SerialName("id") val id: String,
+    @SerialName("scheduled_at") val scheduledAt: String,
+    @SerialName("params") val params: ScheduledStatusParamsResponse,
+)
+
+@Serializable
+internal class ScheduledStatusParamsResponse(
+    @SerialName("text") val text: String,
+    @SerialName("poll") val poll: PollResponse? = null,
+    @SerialName("media_ids") val mediaIds: List<String> = emptyList(),
+    @SerialName("sensitive") val sensitive: Boolean = false,
+    @SerialName("spoiler_text") val spoilerText: String = "",
+    @SerialName("visibility") val visibility: StatusVisibilityRemote = StatusVisibilityRemote.UNKNOWN,
+    @SerialName("in_reply_to_id") val inReplyToId: Long = 0L,
+    @SerialName("language") val language: String = "",
+    @SerialName("application_id") val applicationId: Int,
+    @SerialName("idempotency") val idempotency: String = "",
+    @SerialName("with_rate_limit") val withRateLimit: Boolean = false,
+    @SerialName("media_attachments") val mediaAttachments: List<MediaAttachmentResponse> = emptyList(),
 )

@@ -11,7 +11,7 @@ internal class MediaAttachmentResponse(
     @SerialName("url") val url: String = "",
     @SerialName("preview_url") val previewUrl: String = "",
     @SerialName("remote_url") val remoteUrl: String = "",
-    @SerialName("meta") val meta: MediaAttachmentMetaResponse = MediaAttachmentMetaResponse(),
+    @SerialName("meta") val meta: MediaAttachmentMetaResponse? = null,
     @SerialName("description") val description: String = "",
     @SerialName("blurhash") val blurhash: String = "",
 )
@@ -28,9 +28,9 @@ internal class MediaAttachmentMetaResponse(
     @SerialName("audio_encode") val audioEncode: String = "",
     @SerialName("audio_bitrate") val audioBitrate: String = "",
     @SerialName("audio_channels") val audioChannels: String = "",
-    @SerialName("original") val original: MediaAttachmentInfoResponse = MediaAttachmentInfoResponse(),
-    @SerialName("small") val small: MediaAttachmentInfoResponse = MediaAttachmentInfoResponse(),
-    @SerialName("focus") val focus: MediaAttachmentFocusResponse = MediaAttachmentFocusResponse(),
+    @SerialName("original") val original: MediaAttachmentInfoResponse? = null,
+    @SerialName("small") val small: MediaAttachmentInfoResponse? = null,
+    @SerialName("focus") val focus: MediaAttachmentFocusResponse? = null,
 )
 
 @Serializable
