@@ -31,6 +31,7 @@ internal class AccountResponse(
     @SerialName("followers_count") val followersCount: Long,
     @SerialName("following_count") val followingCount: Long,
     @SerialName("source") val source: CredentialAccountSourceResponse? = null,
+    @SerialName("role") val role: RoleResponse? = null,
 )
 
 @Serializable
@@ -48,5 +49,4 @@ internal class CredentialAccountSourceResponse(
     @SerialName("sensitive") val sensitive: Boolean,
     @SerialName("language") val language: String,
     @SerialName("follow_requests_count") val followRequestsCount: Long,
-    @SerialName("role") val role: RoleResponse,
 )

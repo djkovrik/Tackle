@@ -7,9 +7,9 @@ import com.sedsoftware.tackle.auth.store.AuthStore.State
 internal val stateToModel: (State) -> Model = {
     Model(
         textInput = it.userInput,
-        serverName = it.instanceInfo.name,
+        serverName = it.instanceInfo.title,
         serverDescription = it.instanceInfo.description,
-        serverUsers = it.instanceInfo.users,
+        serverUsers = it.instanceInfo.activePerMonth,
         credentialsState = it.credentialsState,
         isLoadingServerInfo = it.instanceInfoState == InstanceInfoState.LOADING,
         isServerInfoLoaded = it.instanceInfoState == InstanceInfoState.LOADED,

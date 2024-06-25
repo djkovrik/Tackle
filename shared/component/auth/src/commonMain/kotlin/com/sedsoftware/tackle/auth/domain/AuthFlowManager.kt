@@ -1,9 +1,8 @@
 package com.sedsoftware.tackle.auth.domain
 
 import com.sedsoftware.tackle.auth.AuthComponentGateways
-import com.sedsoftware.tackle.auth.extension.normalizeUrl
-import com.sedsoftware.tackle.auth.model.InstanceInfo
 import com.sedsoftware.tackle.auth.model.ObtainedCredentials
+import com.sedsoftware.tackle.network.model.Account
 import com.sedsoftware.tackle.network.model.Application
 import com.sedsoftware.tackle.network.model.Instance
 import com.sedsoftware.tackle.utils.AppCreationException
@@ -19,15 +18,8 @@ internal class AuthFlowManager(
         tools.getClientData()
     }
 
-    suspend fun getInstanceInfo(url: String): Result<InstanceInfo> = runCatching {
-        val response: Instance = api.getServerInfo(url)
-        InstanceInfo(
-            domain = response.domain.normalizeUrl(),
-            name = response.title,
-            description = response.description,
-            logoUrl = response.thumbnailUrl,
-            users = response.activePerMonth,
-        )
+    suspend fun getInstanceInfo(url: String): Result<Instance> = runCatching {
+        api.getServerInfo(url)
     }
 
     suspend fun verifyCredentials(): Result<Boolean> = runCatching {
@@ -35,8 +27,18 @@ internal class AuthFlowManager(
             throw MissedRegistrationDataException
         }
 
-        val response: Application = api.verifyCredentials()
-        response.name.isNotEmpty()
+        val response: Account = api.verifyCredentials()
+
+        if (response.avatarStatic.isNotEmpty()) {
+            settings.ownAvatar = response.avatarStatic
+        }
+
+
+        if (response.username.isNotEmpty()) {
+            settings.ownUsername = response.username
+        }
+
+        response.username.isNotEmpty()
     }
 
     suspend fun createApp(domain: String): Result<ObtainedCredentials> = runCatching {

@@ -1,5 +1,6 @@
 package com.sedsoftware.tackle.auth
 
+import com.sedsoftware.tackle.network.model.Account
 import com.sedsoftware.tackle.network.model.Application
 import com.sedsoftware.tackle.network.model.Instance
 import com.sedsoftware.tackle.utils.model.AppClientData
@@ -9,7 +10,7 @@ interface AuthComponentGateways {
         suspend fun getServerInfo(url: String): Instance
         suspend fun createApp(data: AppClientData): Application
         suspend fun startAuthFlow(id: String, secret: String, uri: String, scopes: String): String
-        suspend fun verifyCredentials(): Application
+        suspend fun verifyCredentials(): Account
     }
 
     interface Settings {
@@ -17,6 +18,8 @@ interface AuthComponentGateways {
         var clientId: String
         var clientSecret: String
         var token: String
+        var ownAvatar: String
+        var ownUsername: String
     }
 
     interface Tools {

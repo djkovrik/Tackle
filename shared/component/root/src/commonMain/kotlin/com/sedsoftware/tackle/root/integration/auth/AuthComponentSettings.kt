@@ -30,4 +30,16 @@ internal class AuthComponentSettings(
         set(value) {
             settings.token = value
         }
+
+    override var ownAvatar: String
+        get() = settings.ownAvatar
+        set(value) {
+            settings.ownAvatar = value
+        }
+
+    override var ownUsername: String
+        get() = settings.ownUsername
+        set(value) {
+            settings.ownUsername = value
+        }
 }

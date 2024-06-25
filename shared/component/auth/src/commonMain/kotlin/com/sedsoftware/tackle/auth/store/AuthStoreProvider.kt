@@ -8,12 +8,12 @@ import com.sedsoftware.tackle.auth.domain.AuthFlowManager
 import com.sedsoftware.tackle.auth.extension.isValidUrl
 import com.sedsoftware.tackle.auth.extension.normalizeUrl
 import com.sedsoftware.tackle.auth.model.CredentialsState
-import com.sedsoftware.tackle.auth.model.InstanceInfo
 import com.sedsoftware.tackle.auth.model.InstanceInfoState
 import com.sedsoftware.tackle.auth.model.ObtainedCredentials
 import com.sedsoftware.tackle.auth.store.AuthStore.Intent
 import com.sedsoftware.tackle.auth.store.AuthStore.Label
 import com.sedsoftware.tackle.auth.store.AuthStore.State
+import com.sedsoftware.tackle.network.model.Instance
 import com.sedsoftware.tackle.utils.MissedRegistrationDataException
 import com.sedsoftware.tackle.utils.StoreCreate
 import com.sedsoftware.tackle.utils.isUnauthorized
@@ -161,7 +161,7 @@ internal class AuthStoreProvider(
 
                     is Msg.ServerInfoLoaded -> copy(
                         instanceInfo = msg.info,
-                        instanceInfoState = if (msg.info.name.isNotEmpty()) {
+                        instanceInfoState = if (msg.info.title.isNotEmpty()) {
                             InstanceInfoState.LOADED
                         } else {
                             InstanceInfoState.ERROR
@@ -170,7 +170,7 @@ internal class AuthStoreProvider(
 
                     is Msg.ServerInfoLoadingFailed -> copy(
                         instanceInfoState = InstanceInfoState.ERROR,
-                        instanceInfo = InstanceInfo.empty(),
+                        instanceInfo = Instance.empty(),
                     )
 
                     is Msg.LearnMoreVisibilityChanged -> copy(
@@ -196,7 +196,7 @@ internal class AuthStoreProvider(
     private sealed interface Msg {
         data class TextInput(val text: String) : Msg
         data object ServerInfoLoadingStarted : Msg
-        data class ServerInfoLoaded(val info: InstanceInfo) : Msg
+        data class ServerInfoLoaded(val info: Instance) : Msg
         data object ServerInfoLoadingFailed : Msg
         data class LearnMoreVisibilityChanged(val visible: Boolean) : Msg
         data class CredentialsStateChanged(val newState: CredentialsState) : Msg

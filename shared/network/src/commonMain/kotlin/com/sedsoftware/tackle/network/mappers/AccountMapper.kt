@@ -52,14 +52,16 @@ internal object AccountMapper {
                     sensitive = credentials.sensitive,
                     language = credentials.language,
                     followRequestsCount = credentials.followRequestsCount,
-                    role = Role(
-                        id = credentials.role.id,
-                        name = credentials.role.name,
-                        color = credentials.role.color,
-                        permissions = credentials.role.permissions,
-                        highlighted = credentials.role.highlighted,
-                    )
                 )
             },
+            role = from.role?.let {
+                Role(
+                    id = it.id,
+                    name = it.name,
+                    color = it.color,
+                    permissions = it.permissions,
+                    highlighted = it.highlighted,
+                )
+            }
         )
 }

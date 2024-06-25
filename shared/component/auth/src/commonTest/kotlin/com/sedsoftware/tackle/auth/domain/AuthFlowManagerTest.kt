@@ -34,7 +34,7 @@ class AuthFlowManagerTest {
     }
 
     @Test
-    fun `verifyCredentials should return true for valid settings and valid key`() = runTest {
+    fun `verifyCredentials should return true for valid settings`() = runTest {
         // given
         settings.domain = StubConstants.DOMAIN
         settings.token = StubConstants.TOKEN
@@ -43,19 +43,6 @@ class AuthFlowManagerTest {
         // then
         assertThat(result.isSuccess, "Successful request")
         assertThat(result.getOrThrow()).isEqualTo(true)
-    }
-
-    @Test
-    fun `verifyCredentials should return false for valid settings and invalid key`() = runTest {
-        // given
-        settings.domain = StubConstants.DOMAIN
-        settings.token = StubConstants.TOKEN
-        api.verifyCredentialsResponse = AuthComponentApiStub.invalidApplicationDetails
-        // when
-        val result = manager.verifyCredentials()
-        // then
-        assertThat(result.isSuccess, "Successful request")
-        assertThat(result.getOrThrow()).isEqualTo(false)
     }
 
     @Test

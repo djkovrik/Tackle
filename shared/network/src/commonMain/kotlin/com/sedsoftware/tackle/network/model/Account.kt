@@ -29,6 +29,7 @@ data class Account(
     val followersCount: Long,
     val followingCount: Long,
     val source: CredentialAccountSource?,
+    val role: Role?,
 )
 
 data class Field(
@@ -44,5 +45,4 @@ data class CredentialAccountSource(
     val sensitive: Boolean,
     val language: String,
     val followRequestsCount: Long,
-    val role: Role,
 )

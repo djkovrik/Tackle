@@ -7,6 +7,8 @@ class AuthComponentSettingsStub : AuthComponentGateways.Settings {
     private var clientIdStub: String = ""
     private var clientSecretStub: String = ""
     private var tokenStub: String = ""
+    private var avatarStub: String = ""
+    private var usernameStub: String = ""
 
     override var domain: String
         get() = domainStub
@@ -30,5 +32,17 @@ class AuthComponentSettingsStub : AuthComponentGateways.Settings {
         get() = tokenStub
         set(value) {
             tokenStub = value
+        }
+
+    override var ownAvatar: String
+        get() = avatarStub
+        set(value) {
+            avatarStub = value
+        }
+
+    override var ownUsername: String
+        get() = usernameStub
+        set(value) {
+            usernameStub = value
         }
 }

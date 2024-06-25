@@ -31,6 +31,18 @@ internal class TackleSettingsInternal(
             settings.setValue(PREF_KEY_TOKEN, value)
         }
 
+    override var ownAvatar: String
+        get() = settings.getValue(PREF_KEY_AVATAR, "")
+        set(value) {
+            settings.setValue(PREF_KEY_AVATAR, value)
+        }
+
+    override var ownUsername: String
+        get() = settings.getValue(PREF_KEY_USERNAME, "")
+        set(value) {
+            settings.setValue(PREF_KEY_USERNAME, value)
+        }
+
     private fun Settings.setValue(key: String, value: Any) {
         when (value) {
             is String -> putString(key, value)
@@ -57,5 +69,7 @@ internal class TackleSettingsInternal(
         const val PREF_KEY_CLIENT_ID = "ci"
         const val PREF_KEY_CLIENS_SECRET = "cs"
         const val PREF_KEY_TOKEN = "tn"
+        const val PREF_KEY_AVATAR = "av"
+        const val PREF_KEY_USERNAME = "un"
     }
 }

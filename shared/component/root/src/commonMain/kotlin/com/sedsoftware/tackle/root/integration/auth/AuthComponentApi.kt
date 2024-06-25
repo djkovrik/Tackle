@@ -4,6 +4,7 @@ import com.sedsoftware.tackle.auth.AuthComponentGateways
 import com.sedsoftware.tackle.network.api.AuthorizedApi
 import com.sedsoftware.tackle.network.api.OAuthApi
 import com.sedsoftware.tackle.network.api.UnauthorizedApi
+import com.sedsoftware.tackle.network.model.Account
 import com.sedsoftware.tackle.network.model.Application
 import com.sedsoftware.tackle.network.model.Instance
 import com.sedsoftware.tackle.utils.model.AppClientData
@@ -23,6 +24,6 @@ internal class AuthComponentApi(
     override suspend fun startAuthFlow(id: String, secret: String, uri: String, scopes: String): String =
         oauthApi.startAuthFlow(id, secret, uri, scopes)
 
-    override suspend fun verifyCredentials(): Application =
+    override suspend fun verifyCredentials(): Account =
         authorizedApi.verifyCredentials()
 }

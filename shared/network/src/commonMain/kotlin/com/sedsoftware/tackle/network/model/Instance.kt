@@ -10,4 +10,10 @@ data class Instance(
     val thumbnailUrl: String,
     val languages: List<String>,
     val rules: List<Rule>,
-)
+) {
+
+    companion object {
+        fun empty(): Instance =
+            Instance("", "", "", "", "", 0L, "", emptyList(), emptyList())
+    }
+}

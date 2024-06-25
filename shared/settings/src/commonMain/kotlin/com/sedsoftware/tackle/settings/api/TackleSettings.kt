@@ -5,4 +5,6 @@ interface TackleSettings {
     var clientId: String
     var clientSecret: String
     var token: String
+    var ownAvatar: String
+    var ownUsername: String
 }

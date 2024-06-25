@@ -1,14 +1,14 @@
 package com.sedsoftware.tackle.network.api
 
-import com.sedsoftware.tackle.network.model.Application
+import com.sedsoftware.tackle.network.model.Account
 
 interface AuthorizedApi {
 
     /**
-     * Confirms that the app’s OAuth2 credentials work.
+     * Confirms that the user token works`.
      * Requires Authorization Bearer header with the access token
      *
-     * @see <a href="https://docs.joinmastodon.org/methods/apps/#verify_credentials">Verify your app works</a>
+     * @see <a href="https://docs.joinmastodon.org/methods/accounts/#verify_credentials">Verify account credentials</a>
      */
-    suspend fun verifyCredentials(): Application
+    suspend fun verifyCredentials(): Account
 }
