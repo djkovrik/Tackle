@@ -1,5 +1,6 @@
 package com.sedsoftware.tackle.network.model
 
+import com.sedsoftware.tackle.network.model.type.CredentialPrivacy
 import kotlinx.datetime.LocalDateTime
 
 data class Account(
@@ -26,11 +27,22 @@ data class Account(
     val lastStatusAt: LocalDateTime,
     val statusesCount: Long,
     val followersCount: Long,
-    val followingCount: Long
+    val followingCount: Long,
+    val source: CredentialAccountSource?,
 )
 
 data class Field(
     val name: String,
     val value: String,
     val verifiedAt: LocalDateTime,
+)
+
+data class CredentialAccountSource(
+    val note: String,
+    val fields: List<Field>,
+    val privacy: CredentialPrivacy,
+    val sensitive: Boolean,
+    val language: String,
+    val followRequestsCount: Long,
+    val role: Role,
 )
