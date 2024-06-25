@@ -25,6 +25,7 @@ fun NetworkModule(dependencies: NetworkModuleDependencies): NetworkModule {
         override val unauthorized: UnauthorizedApi by lazy {
             TackleUnauthorizedApi(
                 domainProvider = dependencies.domainProvider,
+                tokenProvider = dependencies.tokenProvider,
             )
         }
 

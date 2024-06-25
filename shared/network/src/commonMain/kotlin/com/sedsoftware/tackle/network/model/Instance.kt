@@ -9,4 +9,5 @@ data class Instance(
     val activePerMonth: Long,
     val thumbnailUrl: String,
     val languages: List<String>,
+    val rules: List<Rule>,
 )

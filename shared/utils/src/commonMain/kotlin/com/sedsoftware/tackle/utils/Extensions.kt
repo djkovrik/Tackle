@@ -31,3 +31,8 @@ fun <T> unwrap(result: Result<T>, onSuccess: (T) -> Unit, onError: (Throwable) -
         exceptionOrNull()?.let { onError(it) }
     }
 }
+
+val Throwable.isUnauthorized
+    get() = this is RemoteServerException && this.code == HTTP_CODE_UNAUTHORIZED
+
+private const val HTTP_CODE_UNAUTHORIZED = 401

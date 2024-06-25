@@ -10,6 +10,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
@@ -90,7 +91,9 @@ internal fun ScreenFailedToConnect(
                     enabled = !isRetrying,
                     shape = MaterialTheme.shapes.large,
                     onClick = onRetryClick,
-                    modifier = modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp),
+                    modifier = modifier
+                        .padding(all = 16.dp)
+                        .navigationBarsPadding(),
                 ) {
                     Text(
                         text = stringResource(Res.string.common_retry),

@@ -9,6 +9,8 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
+                implementation(project(":shared:utils"))
+
                 implementation(libs.ktor.core)
                 implementation(libs.ktor.serialization)
                 implementation(libs.ktor.client.negotiation)

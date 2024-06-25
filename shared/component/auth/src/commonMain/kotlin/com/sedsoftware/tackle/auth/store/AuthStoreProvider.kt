@@ -16,6 +16,7 @@ import com.sedsoftware.tackle.auth.store.AuthStore.Label
 import com.sedsoftware.tackle.auth.store.AuthStore.State
 import com.sedsoftware.tackle.utils.MissedRegistrationDataException
 import com.sedsoftware.tackle.utils.StoreCreate
+import com.sedsoftware.tackle.utils.isUnauthorized
 import com.sedsoftware.tackle.utils.trimUrl
 import com.sedsoftware.tackle.utils.unwrap
 import kotlinx.coroutines.Job
@@ -56,11 +57,12 @@ internal class AuthStoreProvider(
                                 }
                             },
                             onError = { throwable ->
-                                if (throwable is MissedRegistrationDataException) {
+                                if (throwable is MissedRegistrationDataException || throwable.isUnauthorized) {
                                     dispatch(Msg.CredentialsStateChanged(newState = CredentialsState.UNAUTHORIZED))
                                 } else {
                                     dispatch(Msg.CredentialsStateChanged(newState = CredentialsState.EXISTING_USER_CHECK_FAILED))
                                 }
+                                publish(Label.ErrorCaught(throwable))
                             },
                         )
                     }
