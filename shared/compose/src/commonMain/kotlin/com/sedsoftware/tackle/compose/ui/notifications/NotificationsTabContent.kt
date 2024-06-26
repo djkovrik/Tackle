@@ -19,9 +19,7 @@ internal fun NotificationsTabContent(
 ) {
     Box(
         contentAlignment = Alignment.Center,
-        modifier = modifier
-            .fillMaxSize()
-            .background(color = Color.Magenta.copy(alpha = 0.1f))
+        modifier = modifier.fillMaxSize()
     ) {
         Text(
             text = "Notifications tab",

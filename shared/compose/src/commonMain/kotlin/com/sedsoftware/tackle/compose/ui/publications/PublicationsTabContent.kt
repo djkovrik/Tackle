@@ -19,9 +19,7 @@ internal fun PublicationsTabContent(
 ) {
     Box(
         contentAlignment = Alignment.Center,
-        modifier = modifier
-            .fillMaxSize()
-            .background(color = Color.Cyan.copy(alpha = 0.1f))
+        modifier = modifier.fillMaxSize()
     ) {
         Text(
             text = "Publications tab",

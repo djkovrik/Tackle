@@ -11,7 +11,6 @@ data class NavigationBarConfig(
     val buttonIconColorSelected: Color,
     val buttonBackgroundColorNormal: Color,
     val buttonBackgroundColorSelected: Color,
-    val buttonColor: Color,
     val iconSizeNormal: Dp,
     val iconSizeSelected: Dp,
 )

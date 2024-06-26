@@ -19,9 +19,7 @@ internal fun EditorTabContent(
 ) {
     Box(
         contentAlignment = Alignment.Center,
-        modifier = modifier
-            .fillMaxSize()
-            .background(color = Color.Blue.copy(alpha = 0.1f))
+        modifier = modifier.fillMaxSize()
     ) {
         Text(
             text = "Editor tab",

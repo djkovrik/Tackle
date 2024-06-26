@@ -19,9 +19,7 @@ internal fun ExploreTabContent(
 ) {
     Box(
         contentAlignment = Alignment.Center,
-        modifier = modifier
-            .fillMaxSize()
-            .background(color = Color.Green.copy(alpha = 0.1f))
+        modifier = modifier.fillMaxSize()
     ) {
         Text(
             text = "Explore tab",

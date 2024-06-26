@@ -19,9 +19,7 @@ internal fun HomeTabContent(
 ) {
     Box(
         contentAlignment = Alignment.Center,
-        modifier = modifier
-            .fillMaxSize()
-            .background(color = Color.Red.copy(alpha = 0.1f))
+        modifier = modifier.fillMaxSize()
     ) {
         Text(
             text = "Home tab",
