@@ -14,6 +14,7 @@ insertEmoji:
 INSERT OR REPLACE INTO ServerEmojiEntity(key, domain, shortcode, url, staticUrl, visibleInPicker, category)
 VALUES (:key, :domain, :shortcode, :url, :staticUrl, :visibleInPicker, :category);
 
-selectAllEmojis:
+selectEmojis:
 SELECT *
-FROM ServerEmojiEntity;
+FROM ServerEmojiEntity
+WHERE domain = :domain;

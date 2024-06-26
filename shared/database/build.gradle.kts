@@ -19,6 +19,8 @@ kotlin {
         commonMain {
             dependencies {
                 implementation(project(":shared:domain"))
+
+                implementation(libs.lib.sqlDelight.coroutines)
             }
         }
 

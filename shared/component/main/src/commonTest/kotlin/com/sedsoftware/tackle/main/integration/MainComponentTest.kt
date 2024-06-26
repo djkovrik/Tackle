@@ -19,6 +19,7 @@ import com.sedsoftware.tackle.domain.model.Token
 import com.sedsoftware.tackle.main.MainComponent
 import com.sedsoftware.tackle.main.model.TackleNavigationTab
 import com.sedsoftware.tackle.utils.test.ComponentTest
+import kotlinx.coroutines.flow.Flow
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -26,6 +27,7 @@ import kotlin.test.Test
 class MainComponentTest : ComponentTest<MainComponentDefault>() {
 
     // stubs for component creation, functionality tested inside related modules
+    // TODO replace with some kind of mock library?
     private val unauthorizedApi: UnauthorizedApi = object : UnauthorizedApi {
         override suspend fun getServerInfo(url: String): Instance = TODO()
         override suspend fun createApp(client: String, uri: String, scopes: String, website: String): Application = TODO()
@@ -38,7 +40,8 @@ class MainComponentTest : ComponentTest<MainComponentDefault>() {
     }
 
     private val database: TackleDatabase = object : TackleDatabase {
-
+        override suspend fun insertEmojis(list: List<CustomEmoji>) = TODO()
+        override suspend fun observeEmojis(): Flow<List<CustomEmoji>> = TODO()
     }
 
     private val settings: TackleSettings = object : TackleSettings {

@@ -17,6 +17,7 @@ import com.sedsoftware.tackle.settings.SettingsModule
 import com.sedsoftware.tackle.settings.SettingsModuleDependencies
 import com.sedsoftware.tackle.settings.SharedSettingsFactory
 import org.publicvalue.multiplatform.oidc.appsupport.CodeAuthFlowFactory
+import kotlin.coroutines.CoroutineContext
 
 @Suppress("FunctionName")
 fun RootComponentFactory(
@@ -26,15 +27,21 @@ fun RootComponentFactory(
     authFlowFactory: CodeAuthFlowFactory,
     dispatchers: TackleDispatchers,
 ): RootComponent {
-    val databaseModule = DatabaseModule(
-        dependencies = object : DatabaseModuleDependencies {
-            override val driver: SqlDriver = TackleDatabaseDriverFactory(context)
-        }
-    )
-
     val settingsModule = SettingsModule(
         dependencies = object : SettingsModuleDependencies {
             override val settings: Settings = SharedSettingsFactory(context)
+        }
+    )
+
+    val databaseModule = DatabaseModule(
+        dependencies = object : DatabaseModuleDependencies {
+            override val driver: SqlDriver = TackleDatabaseDriverFactory(context)
+
+            override val coroutineContext: CoroutineContext = dispatchers.io
+
+            override val domainProvider: () -> String = {
+                settingsModule.settings.domain
+            }
         }
     )
 

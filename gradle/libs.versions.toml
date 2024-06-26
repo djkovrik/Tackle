@@ -85,6 +85,7 @@ lib-fileKit = { module = "io.github.vinceglb:filekit-compose", version.ref = "fi
 lib-settings-core = { module = "com.russhwolf:multiplatform-settings", version.ref = "multiplatformSettings" }
 lib-settings-test = { module = "com.russhwolf:multiplatform-settings-test", version.ref = "multiplatformSettings" }
 
+lib-sqlDelight-coroutines = { module = "app.cash.sqldelight:coroutines-extensions", version.ref = "sqlDelight" }
 lib-sqlDelight-driver-android = { module = "app.cash.sqldelight:android-driver", version.ref = "sqlDelight" }
 lib-sqlDelight-driver-sqlite = { module = "app.cash.sqldelight:sqlite-driver", version.ref = "sqlDelight" }
 lib-sqlDelight-driver-native = { module = "app.cash.sqldelight:native-driver", version.ref = "sqlDelight" }
