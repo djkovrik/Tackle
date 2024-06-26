@@ -1,8 +1,8 @@
 package com.sedsoftware.tackle.editor
 
 import com.arkivanov.decompose.value.Value
-import com.sedsoftware.tackle.network.model.CustomEmoji
-import com.sedsoftware.tackle.utils.model.AppLocale
+import com.sedsoftware.tackle.domain.model.CustomEmoji
+import com.sedsoftware.tackle.domain.model.AppLocale
 
 interface EditorTabComponent {
     val model: Value<Model>

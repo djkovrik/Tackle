@@ -1,13 +1,18 @@
 package com.sedsoftware.tackle.network.mappers
 
-import com.sedsoftware.tackle.network.model.Status
-import com.sedsoftware.tackle.network.model.StatusMention
-import com.sedsoftware.tackle.network.model.StatusTag
-import com.sedsoftware.tackle.network.model.type.StatusVisibility
+import com.sedsoftware.tackle.domain.model.Status
+import com.sedsoftware.tackle.domain.model.StatusMention
+import com.sedsoftware.tackle.domain.model.StatusTag
+import com.sedsoftware.tackle.domain.model.type.StatusVisibility
 import com.sedsoftware.tackle.network.response.StatusMentionResponse
 import com.sedsoftware.tackle.network.response.StatusResponse
 import com.sedsoftware.tackle.network.response.StatusTagResponse
 import com.sedsoftware.tackle.network.response.type.StatusVisibilityRemote
+import com.sedsoftware.tackle.network.response.type.StatusVisibilityRemote.DIRECT
+import com.sedsoftware.tackle.network.response.type.StatusVisibilityRemote.PRIVATE
+import com.sedsoftware.tackle.network.response.type.StatusVisibilityRemote.PUBLIC
+import com.sedsoftware.tackle.network.response.type.StatusVisibilityRemote.UNKNOWN
+import com.sedsoftware.tackle.network.response.type.StatusVisibilityRemote.UNLISTED
 import com.sedsoftware.tackle.utils.toLocalDateTime
 
 internal object StatusMapper {
@@ -20,11 +25,11 @@ internal object StatusMapper {
             account = AccountMapper.map(from.account),
             content = from.content,
             visibility = when (from.visibility) {
-                StatusVisibilityRemote.PUBLIC -> StatusVisibility.PUBLIC
-                StatusVisibilityRemote.UNLISTED -> StatusVisibility.UNLISTED
-                StatusVisibilityRemote.PRIVATE -> StatusVisibility.PRIVATE
-                StatusVisibilityRemote.DIRECT -> StatusVisibility.DIRECT
-                StatusVisibilityRemote.UNKNOWN -> StatusVisibility.UNKNOWN
+                PUBLIC -> StatusVisibility.PUBLIC
+                UNLISTED -> StatusVisibility.UNLISTED
+                PRIVATE -> StatusVisibility.PRIVATE
+                DIRECT -> StatusVisibility.DIRECT
+                UNKNOWN -> StatusVisibility.UNKNOWN
             },
             sensitive = from.sensitive,
             spoilerText = from.spoilerText,

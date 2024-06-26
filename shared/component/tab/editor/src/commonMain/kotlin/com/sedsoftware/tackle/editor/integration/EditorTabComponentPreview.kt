@@ -2,10 +2,10 @@ package com.sedsoftware.tackle.editor.integration
 
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
+import com.sedsoftware.tackle.domain.model.AppLocale
+import com.sedsoftware.tackle.domain.model.CustomEmoji
 import com.sedsoftware.tackle.editor.EditorTabComponent
 import com.sedsoftware.tackle.editor.EditorTabComponent.Model
-import com.sedsoftware.tackle.network.model.CustomEmoji
-import com.sedsoftware.tackle.utils.model.AppLocale
 
 class EditorTabComponentPreview(
     ownAvatar: String = "",

@@ -1,6 +1,6 @@
 package com.sedsoftware.tackle.network.mappers
 
-import com.sedsoftware.tackle.network.model.Role
+import com.sedsoftware.tackle.domain.model.Role
 import com.sedsoftware.tackle.network.response.RoleResponse
 
 internal object RoleMapper {

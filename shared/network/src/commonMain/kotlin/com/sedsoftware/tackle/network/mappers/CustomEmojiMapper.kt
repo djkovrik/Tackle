@@ -1,6 +1,6 @@
 package com.sedsoftware.tackle.network.mappers
 
-import com.sedsoftware.tackle.network.model.CustomEmoji
+import com.sedsoftware.tackle.domain.model.CustomEmoji
 import com.sedsoftware.tackle.network.response.CustomEmojiResponse
 
 internal object CustomEmojiMapper {

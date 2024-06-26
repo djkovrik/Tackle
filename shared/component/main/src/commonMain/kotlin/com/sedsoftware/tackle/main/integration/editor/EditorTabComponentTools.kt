@@ -1,8 +1,8 @@
 package com.sedsoftware.tackle.main.integration.editor
 
+import com.sedsoftware.tackle.domain.TacklePlatformTools
+import com.sedsoftware.tackle.domain.model.AppLocale
 import com.sedsoftware.tackle.editor.EditorTabComponentGateways
-import com.sedsoftware.tackle.utils.TacklePlatformTools
-import com.sedsoftware.tackle.utils.model.AppLocale
 
 internal class EditorTabComponentTools(
     private val platformTools: TacklePlatformTools,

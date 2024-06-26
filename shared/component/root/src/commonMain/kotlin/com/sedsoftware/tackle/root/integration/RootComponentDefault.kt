@@ -9,20 +9,20 @@ import com.arkivanov.decompose.value.Value
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.sedsoftware.tackle.auth.AuthComponent
 import com.sedsoftware.tackle.auth.integration.AuthComponentDefault
-import com.sedsoftware.tackle.database.api.TackleDatabase
+import com.sedsoftware.tackle.domain.AuthorizedApi
+import com.sedsoftware.tackle.domain.OAuthApi
+import com.sedsoftware.tackle.domain.TackleDatabase
+import com.sedsoftware.tackle.domain.TackleDispatchers
+import com.sedsoftware.tackle.domain.TacklePlatformTools
+import com.sedsoftware.tackle.domain.TackleSettings
+import com.sedsoftware.tackle.domain.UnauthorizedApi
 import com.sedsoftware.tackle.main.MainComponent
 import com.sedsoftware.tackle.main.integration.MainComponentDefault
-import com.sedsoftware.tackle.network.api.AuthorizedApi
-import com.sedsoftware.tackle.network.api.OAuthApi
-import com.sedsoftware.tackle.network.api.UnauthorizedApi
 import com.sedsoftware.tackle.root.RootComponent
 import com.sedsoftware.tackle.root.RootComponent.Child
 import com.sedsoftware.tackle.root.integration.auth.AuthComponentApi
 import com.sedsoftware.tackle.root.integration.auth.AuthComponentSettings
 import com.sedsoftware.tackle.root.integration.auth.AuthComponentTools
-import com.sedsoftware.tackle.settings.api.TackleSettings
-import com.sedsoftware.tackle.utils.TackleDispatchers
-import com.sedsoftware.tackle.utils.TacklePlatformTools
 import kotlinx.serialization.Serializable
 
 class RootComponentDefault internal constructor(

@@ -1,6 +1,6 @@
 package com.sedsoftware.tackle.network.mappers
 
-import com.sedsoftware.tackle.network.model.Token
+import com.sedsoftware.tackle.domain.model.Token
 import com.sedsoftware.tackle.network.response.TokenResponse
 
 internal object TokenMapper {

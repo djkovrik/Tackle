@@ -1,6 +1,6 @@
 package com.sedsoftware.tackle.network.mappers
 
-import com.sedsoftware.tackle.network.model.Field
+import com.sedsoftware.tackle.domain.model.Field
 import com.sedsoftware.tackle.network.response.FieldResponse
 import com.sedsoftware.tackle.utils.toLocalDateTime
 

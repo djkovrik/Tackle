@@ -5,18 +5,19 @@ import assertk.assertions.hasClass
 import com.arkivanov.decompose.DefaultComponentContext
 import com.arkivanov.decompose.router.stack.active
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
+import com.sedsoftware.tackle.domain.AuthorizedApi
+import com.sedsoftware.tackle.domain.TackleDatabase
+import com.sedsoftware.tackle.domain.TacklePlatformTools
+import com.sedsoftware.tackle.domain.TackleSettings
+import com.sedsoftware.tackle.domain.UnauthorizedApi
+import com.sedsoftware.tackle.domain.model.Account
+import com.sedsoftware.tackle.domain.model.AppClientData
+import com.sedsoftware.tackle.domain.model.Application
+import com.sedsoftware.tackle.domain.model.CustomEmoji
+import com.sedsoftware.tackle.domain.model.Instance
+import com.sedsoftware.tackle.domain.model.Token
 import com.sedsoftware.tackle.main.MainComponent
 import com.sedsoftware.tackle.main.model.TackleNavigationTab
-import com.sedsoftware.tackle.network.api.AuthorizedApi
-import com.sedsoftware.tackle.network.api.UnauthorizedApi
-import com.sedsoftware.tackle.network.model.Account
-import com.sedsoftware.tackle.network.model.Application
-import com.sedsoftware.tackle.network.model.CustomEmoji
-import com.sedsoftware.tackle.network.model.Instance
-import com.sedsoftware.tackle.network.model.Token
-import com.sedsoftware.tackle.settings.api.TackleSettings
-import com.sedsoftware.tackle.utils.TacklePlatformTools
-import com.sedsoftware.tackle.utils.model.AppClientData
 import com.sedsoftware.tackle.utils.test.ComponentTest
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
@@ -34,6 +35,10 @@ class MainComponentTest : ComponentTest<MainComponentDefault>() {
 
     private val authorizedApi: AuthorizedApi = object : AuthorizedApi {
         override suspend fun verifyCredentials(): Account = TODO()
+    }
+
+    private val database: TackleDatabase = object : TackleDatabase {
+
     }
 
     private val settings: TackleSettings = object : TackleSettings {
@@ -127,6 +132,7 @@ class MainComponentTest : ComponentTest<MainComponentDefault>() {
             storeFactory = DefaultStoreFactory(),
             unauthorizedApi = unauthorizedApi,
             authorizedApi = authorizedApi,
+            database = database,
             settings = settings,
             platformTools = platformTools,
             dispatchers = testDispatchers,

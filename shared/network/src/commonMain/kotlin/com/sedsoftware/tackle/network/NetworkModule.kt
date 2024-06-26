@@ -1,8 +1,8 @@
 package com.sedsoftware.tackle.network
 
-import com.sedsoftware.tackle.network.api.AuthorizedApi
-import com.sedsoftware.tackle.network.api.OAuthApi
-import com.sedsoftware.tackle.network.api.UnauthorizedApi
+import com.sedsoftware.tackle.domain.AuthorizedApi
+import com.sedsoftware.tackle.domain.OAuthApi
+import com.sedsoftware.tackle.domain.UnauthorizedApi
 import com.sedsoftware.tackle.network.internal.TackleAuthorizedApi
 import com.sedsoftware.tackle.network.internal.TackleOAuthApi
 import com.sedsoftware.tackle.network.internal.TackleUnauthorizedApi

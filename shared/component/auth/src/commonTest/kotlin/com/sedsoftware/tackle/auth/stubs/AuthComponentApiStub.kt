@@ -1,11 +1,12 @@
 package com.sedsoftware.tackle.auth.stubs
 
 import com.sedsoftware.tackle.auth.AuthComponentGateways
-import com.sedsoftware.tackle.network.model.Account
-import com.sedsoftware.tackle.network.model.Application
-import com.sedsoftware.tackle.network.model.Instance
-import com.sedsoftware.tackle.utils.model.AppClientData
-import kotlinx.datetime.LocalDateTime
+import com.sedsoftware.tackle.domain.model.Account
+import com.sedsoftware.tackle.domain.model.AppClientData
+import com.sedsoftware.tackle.domain.model.Application
+import com.sedsoftware.tackle.domain.model.Instance
+import com.sedsoftware.tackle.utils.toLocalDate
+import com.sedsoftware.tackle.utils.toLocalDateTime
 
 class AuthComponentApiStub : AuthComponentGateways.Api {
 
@@ -67,8 +68,8 @@ class AuthComponentApiStub : AuthComponentGateways.Api {
             noIndex = false,
             suspended = false,
             limited = false,
-            createdAt = LocalDateTime.parse("2023-01-02T23:40:57.12"),
-            lastStatusAt = LocalDateTime.parse("2023-01-02T23:40:57.12"),
+            createdAt = "2023-01-02T23:40:57.12".toLocalDateTime(),
+            lastStatusAt = "2023-01-02".toLocalDate(),
             statusesCount = 123L,
             followersCount = 321L,
             followingCount = 1234L,
@@ -96,8 +97,8 @@ class AuthComponentApiStub : AuthComponentGateways.Api {
             noIndex = false,
             suspended = false,
             limited = false,
-            createdAt = LocalDateTime.parse("2023-01-02T23:40:57.12"),
-            lastStatusAt = LocalDateTime.parse("2023-01-02T23:40:57.12"),
+            createdAt = "2023-01-02T23:40:57.12".toLocalDateTime(),
+            lastStatusAt = "2023-01-02".toLocalDate(),
             statusesCount = 123L,
             followersCount = 321L,
             followingCount = 1234L,

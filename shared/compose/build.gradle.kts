@@ -19,6 +19,8 @@ kotlin {
         val desktopMain by getting
 
         commonMain.dependencies {
+            implementation(project(":shared:domain"))
+
             implementation(project(":shared:component:root"))
             implementation(project(":shared:component:auth"))
             implementation(project(":shared:component:main"))
@@ -28,8 +30,6 @@ kotlin {
             implementation(project(":shared:component:tab:editor"))
             implementation(project(":shared:component:tab:publications"))
             implementation(project(":shared:component:tab:notifications"))
-
-            implementation(project(":shared:utils"))
 
             implementation(compose.runtime)
             implementation(compose.foundation)

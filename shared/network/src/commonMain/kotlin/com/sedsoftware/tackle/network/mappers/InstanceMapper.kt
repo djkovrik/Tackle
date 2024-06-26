@@ -1,6 +1,6 @@
 package com.sedsoftware.tackle.network.mappers
 
-import com.sedsoftware.tackle.network.model.Instance
+import com.sedsoftware.tackle.domain.model.Instance
 import com.sedsoftware.tackle.network.response.InstanceResponse
 
 internal object InstanceMapper {

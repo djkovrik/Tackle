@@ -4,8 +4,8 @@ import com.arkivanov.mvikotlin.core.store.Store
 import com.sedsoftware.tackle.editor.store.EditorStore.Intent
 import com.sedsoftware.tackle.editor.store.EditorStore.Label
 import com.sedsoftware.tackle.editor.store.EditorStore.State
-import com.sedsoftware.tackle.network.model.CustomEmoji
-import com.sedsoftware.tackle.utils.model.AppLocale
+import com.sedsoftware.tackle.domain.model.CustomEmoji
+import com.sedsoftware.tackle.domain.model.AppLocale
 
 internal interface EditorStore : Store<Intent, State, Label> {
 

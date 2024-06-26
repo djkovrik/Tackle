@@ -1,9 +1,9 @@
 package com.sedsoftware.tackle.auth
 
-import com.sedsoftware.tackle.network.model.Account
-import com.sedsoftware.tackle.network.model.Application
-import com.sedsoftware.tackle.network.model.Instance
-import com.sedsoftware.tackle.utils.model.AppClientData
+import com.sedsoftware.tackle.domain.model.Account
+import com.sedsoftware.tackle.domain.model.AppClientData
+import com.sedsoftware.tackle.domain.model.Application
+import com.sedsoftware.tackle.domain.model.Instance
 
 interface AuthComponentGateways {
     interface Api {

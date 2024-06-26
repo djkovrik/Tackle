@@ -18,7 +18,7 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                implementation(project(":shared:utils"))
+                implementation(project(":shared:domain"))
             }
         }
 

@@ -1,7 +1,7 @@
 package com.sedsoftware.tackle.settings
 
 import com.russhwolf.settings.Settings
-import com.sedsoftware.tackle.settings.api.TackleSettings
+import com.sedsoftware.tackle.domain.TackleSettings
 import com.sedsoftware.tackle.settings.internal.TackleSettingsInternal
 
 interface SettingsModule {

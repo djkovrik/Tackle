@@ -10,6 +10,7 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
+                implementation(project(":shared:domain"))
                 implementation(project(":shared:network"))
                 implementation(project(":shared:settings"))
                 implementation(project(":shared:utils"))

@@ -2,8 +2,8 @@ package com.sedsoftware.tackle.editor.domain
 
 import com.sedsoftware.tackle.editor.EditorTabComponentGateways
 import com.sedsoftware.tackle.editor.model.EditorProfileData
-import com.sedsoftware.tackle.network.model.CustomEmoji
-import com.sedsoftware.tackle.utils.model.AppLocale
+import com.sedsoftware.tackle.domain.model.CustomEmoji
+import com.sedsoftware.tackle.domain.model.AppLocale
 import com.sedsoftware.tackle.utils.toLocalDate
 import kotlinx.coroutines.flow.Flow
 import kotlinx.datetime.Clock

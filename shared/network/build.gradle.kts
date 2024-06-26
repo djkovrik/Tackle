@@ -9,6 +9,7 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
+                implementation(project(":shared:domain"))
                 implementation(project(":shared:utils"))
 
                 implementation(libs.ktor.core)

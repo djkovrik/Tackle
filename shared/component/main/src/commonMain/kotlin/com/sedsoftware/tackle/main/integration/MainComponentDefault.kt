@@ -7,7 +7,12 @@ import com.arkivanov.decompose.router.stack.bringToFront
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.mvikotlin.core.store.StoreFactory
-import com.sedsoftware.tackle.database.api.TackleDatabase
+import com.sedsoftware.tackle.domain.AuthorizedApi
+import com.sedsoftware.tackle.domain.TackleDatabase
+import com.sedsoftware.tackle.domain.TackleDispatchers
+import com.sedsoftware.tackle.domain.TacklePlatformTools
+import com.sedsoftware.tackle.domain.TackleSettings
+import com.sedsoftware.tackle.domain.UnauthorizedApi
 import com.sedsoftware.tackle.editor.EditorTabComponent
 import com.sedsoftware.tackle.editor.integration.EditorTabComponentDefault
 import com.sedsoftware.tackle.explore.ExploreTabComponent
@@ -21,15 +26,10 @@ import com.sedsoftware.tackle.main.integration.editor.EditorTabComponentDatabase
 import com.sedsoftware.tackle.main.integration.editor.EditorTabComponentSettings
 import com.sedsoftware.tackle.main.integration.editor.EditorTabComponentTools
 import com.sedsoftware.tackle.main.model.TackleNavigationTab
-import com.sedsoftware.tackle.network.api.AuthorizedApi
-import com.sedsoftware.tackle.network.api.UnauthorizedApi
 import com.sedsoftware.tackle.notifications.NotificationsTabComponent
 import com.sedsoftware.tackle.notifications.integration.NotificationsTabComponentDefault
 import com.sedsoftware.tackle.publications.PublicationsTabComponent
 import com.sedsoftware.tackle.publications.integration.PublicationsTabComponentDefault
-import com.sedsoftware.tackle.settings.api.TackleSettings
-import com.sedsoftware.tackle.utils.TackleDispatchers
-import com.sedsoftware.tackle.utils.TacklePlatformTools
 import kotlinx.serialization.Serializable
 
 class MainComponentDefault internal constructor(

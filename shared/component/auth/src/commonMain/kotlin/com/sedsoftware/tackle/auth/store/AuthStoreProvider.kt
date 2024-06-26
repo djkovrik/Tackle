@@ -13,7 +13,7 @@ import com.sedsoftware.tackle.auth.model.ObtainedCredentials
 import com.sedsoftware.tackle.auth.store.AuthStore.Intent
 import com.sedsoftware.tackle.auth.store.AuthStore.Label
 import com.sedsoftware.tackle.auth.store.AuthStore.State
-import com.sedsoftware.tackle.network.model.Instance
+import com.sedsoftware.tackle.domain.model.Instance
 import com.sedsoftware.tackle.utils.MissedRegistrationDataException
 import com.sedsoftware.tackle.utils.StoreCreate
 import com.sedsoftware.tackle.utils.isUnauthorized

@@ -2,12 +2,12 @@ package com.sedsoftware.tackle.auth.domain
 
 import com.sedsoftware.tackle.auth.AuthComponentGateways
 import com.sedsoftware.tackle.auth.model.ObtainedCredentials
-import com.sedsoftware.tackle.network.model.Account
-import com.sedsoftware.tackle.network.model.Application
-import com.sedsoftware.tackle.network.model.Instance
+import com.sedsoftware.tackle.domain.model.Account
+import com.sedsoftware.tackle.domain.model.AppClientData
+import com.sedsoftware.tackle.domain.model.Application
+import com.sedsoftware.tackle.domain.model.Instance
 import com.sedsoftware.tackle.utils.AppCreationException
 import com.sedsoftware.tackle.utils.MissedRegistrationDataException
-import com.sedsoftware.tackle.utils.model.AppClientData
 
 internal class AuthFlowManager(
     private val api: AuthComponentGateways.Api,

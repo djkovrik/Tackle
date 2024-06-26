@@ -1,6 +1,6 @@
 package com.sedsoftware.tackle.network.internal
 
-import com.sedsoftware.tackle.network.api.OAuthApi
+import com.sedsoftware.tackle.domain.OAuthApi
 import org.publicvalue.multiplatform.oidc.OpenIdConnectClient
 import org.publicvalue.multiplatform.oidc.appsupport.CodeAuthFlowFactory
 import org.publicvalue.multiplatform.oidc.flows.CodeAuthFlow

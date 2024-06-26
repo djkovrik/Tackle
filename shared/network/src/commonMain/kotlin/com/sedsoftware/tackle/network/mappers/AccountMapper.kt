@@ -1,10 +1,15 @@
 package com.sedsoftware.tackle.network.mappers
 
-import com.sedsoftware.tackle.network.model.Account
-import com.sedsoftware.tackle.network.model.CredentialAccountSource
-import com.sedsoftware.tackle.network.model.type.CredentialPrivacy
+import com.sedsoftware.tackle.domain.model.Account
+import com.sedsoftware.tackle.domain.model.CredentialAccountSource
+import com.sedsoftware.tackle.domain.model.type.CredentialPrivacy
 import com.sedsoftware.tackle.network.response.AccountResponse
 import com.sedsoftware.tackle.network.response.type.CredentialPrivacyRemote
+import com.sedsoftware.tackle.network.response.type.CredentialPrivacyRemote.DIRECT
+import com.sedsoftware.tackle.network.response.type.CredentialPrivacyRemote.PRIVATE
+import com.sedsoftware.tackle.network.response.type.CredentialPrivacyRemote.PUBLIC
+import com.sedsoftware.tackle.network.response.type.CredentialPrivacyRemote.UNKNOWN
+import com.sedsoftware.tackle.network.response.type.CredentialPrivacyRemote.UNLISTED
 import com.sedsoftware.tackle.utils.toLocalDate
 import com.sedsoftware.tackle.utils.toLocalDateTime
 
@@ -41,11 +46,11 @@ internal object AccountMapper {
                     note = credentials.note,
                     fields = credentials.fields.map(FieldMapper::map),
                     privacy = when (credentials.privacy) {
-                        CredentialPrivacyRemote.PUBLIC -> CredentialPrivacy.PUBLIC
-                        CredentialPrivacyRemote.UNLISTED -> CredentialPrivacy.UNLISTED
-                        CredentialPrivacyRemote.PRIVATE -> CredentialPrivacy.PRIVATE
-                        CredentialPrivacyRemote.DIRECT -> CredentialPrivacy.DIRECT
-                        CredentialPrivacyRemote.UNKNOWN -> CredentialPrivacy.UNKNOWN
+                        PUBLIC -> CredentialPrivacy.PUBLIC
+                        UNLISTED -> CredentialPrivacy.UNLISTED
+                        PRIVATE -> CredentialPrivacy.PRIVATE
+                        DIRECT -> CredentialPrivacy.DIRECT
+                        UNKNOWN -> CredentialPrivacy.UNKNOWN
                     },
                     sensitive = credentials.sensitive,
                     language = credentials.language,

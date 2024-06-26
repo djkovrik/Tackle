@@ -1,7 +1,7 @@
 package com.sedsoftware.tackle.main.integration.editor
 
 import com.sedsoftware.tackle.editor.EditorTabComponentGateways
-import com.sedsoftware.tackle.settings.api.TackleSettings
+import com.sedsoftware.tackle.domain.TackleSettings
 
 internal class EditorTabComponentSettings(
     private val settings: TackleSettings,

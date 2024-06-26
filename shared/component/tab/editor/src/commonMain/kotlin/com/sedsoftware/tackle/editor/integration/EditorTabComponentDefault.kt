@@ -7,6 +7,8 @@ import com.arkivanov.essenty.lifecycle.doOnDestroy
 import com.arkivanov.mvikotlin.core.instancekeeper.getStore
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.labels
+import com.sedsoftware.tackle.domain.TackleDispatchers
+import com.sedsoftware.tackle.domain.model.AppLocale
 import com.sedsoftware.tackle.editor.EditorTabComponent
 import com.sedsoftware.tackle.editor.EditorTabComponent.Model
 import com.sedsoftware.tackle.editor.EditorTabComponentGateways
@@ -14,9 +16,7 @@ import com.sedsoftware.tackle.editor.domain.StatusEditorManager
 import com.sedsoftware.tackle.editor.store.EditorStore
 import com.sedsoftware.tackle.editor.store.EditorStore.Label
 import com.sedsoftware.tackle.editor.store.EditorStoreProvider
-import com.sedsoftware.tackle.utils.TackleDispatchers
 import com.sedsoftware.tackle.utils.asValue
-import com.sedsoftware.tackle.utils.model.AppLocale
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch

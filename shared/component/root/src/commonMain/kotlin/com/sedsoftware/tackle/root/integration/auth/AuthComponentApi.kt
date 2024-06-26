@@ -1,13 +1,13 @@
 package com.sedsoftware.tackle.root.integration.auth
 
 import com.sedsoftware.tackle.auth.AuthComponentGateways
-import com.sedsoftware.tackle.network.api.AuthorizedApi
-import com.sedsoftware.tackle.network.api.OAuthApi
-import com.sedsoftware.tackle.network.api.UnauthorizedApi
-import com.sedsoftware.tackle.network.model.Account
-import com.sedsoftware.tackle.network.model.Application
-import com.sedsoftware.tackle.network.model.Instance
-import com.sedsoftware.tackle.utils.model.AppClientData
+import com.sedsoftware.tackle.domain.AuthorizedApi
+import com.sedsoftware.tackle.domain.OAuthApi
+import com.sedsoftware.tackle.domain.UnauthorizedApi
+import com.sedsoftware.tackle.domain.model.Account
+import com.sedsoftware.tackle.domain.model.AppClientData
+import com.sedsoftware.tackle.domain.model.Application
+import com.sedsoftware.tackle.domain.model.Instance
 
 internal class AuthComponentApi(
     private val unauthorizedApi: UnauthorizedApi,

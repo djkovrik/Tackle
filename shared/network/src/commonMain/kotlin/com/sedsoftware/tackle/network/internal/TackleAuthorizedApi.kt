@@ -1,12 +1,9 @@
 package com.sedsoftware.tackle.network.internal
 
-import com.sedsoftware.tackle.network.api.AuthorizedApi
+import com.sedsoftware.tackle.domain.AuthorizedApi
 import com.sedsoftware.tackle.network.mappers.AccountMapper
-import com.sedsoftware.tackle.network.mappers.ApplicationMapper
-import com.sedsoftware.tackle.network.model.Account
-import com.sedsoftware.tackle.network.model.Application
+import com.sedsoftware.tackle.domain.model.Account
 import com.sedsoftware.tackle.network.response.AccountResponse
-import com.sedsoftware.tackle.network.response.ApplicationResponse
 import io.ktor.http.HttpMethod
 
 internal class TackleAuthorizedApi(

@@ -9,9 +9,9 @@ import com.sedsoftware.tackle.editor.model.EditorProfileData
 import com.sedsoftware.tackle.editor.store.EditorStore.Intent
 import com.sedsoftware.tackle.editor.store.EditorStore.Label
 import com.sedsoftware.tackle.editor.store.EditorStore.State
-import com.sedsoftware.tackle.network.model.CustomEmoji
+import com.sedsoftware.tackle.domain.model.CustomEmoji
 import com.sedsoftware.tackle.utils.StoreCreate
-import com.sedsoftware.tackle.utils.model.AppLocale
+import com.sedsoftware.tackle.domain.model.AppLocale
 import com.sedsoftware.tackle.utils.unwrap
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOn

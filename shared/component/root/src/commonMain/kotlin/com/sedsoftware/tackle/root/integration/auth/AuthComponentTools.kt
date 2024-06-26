@@ -1,8 +1,8 @@
 package com.sedsoftware.tackle.root.integration.auth
 
 import com.sedsoftware.tackle.auth.AuthComponentGateways
-import com.sedsoftware.tackle.utils.TacklePlatformTools
-import com.sedsoftware.tackle.utils.model.AppClientData
+import com.sedsoftware.tackle.domain.TacklePlatformTools
+import com.sedsoftware.tackle.domain.model.AppClientData
 
 internal class AuthComponentTools(
     private val platformTools: TacklePlatformTools,

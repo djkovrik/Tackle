@@ -1,7 +1,7 @@
 package com.sedsoftware.tackle.auth.stubs
 
 import com.sedsoftware.tackle.auth.AuthComponentGateways
-import com.sedsoftware.tackle.utils.model.AppClientData
+import com.sedsoftware.tackle.domain.model.AppClientData
 
 class AuthComponentToolsStub : AuthComponentGateways.Tools {
 

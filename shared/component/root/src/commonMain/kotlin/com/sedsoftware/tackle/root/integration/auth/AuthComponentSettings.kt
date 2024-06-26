@@ -1,7 +1,7 @@
 package com.sedsoftware.tackle.root.integration.auth
 
 import com.sedsoftware.tackle.auth.AuthComponentGateways
-import com.sedsoftware.tackle.settings.api.TackleSettings
+import com.sedsoftware.tackle.domain.TackleSettings
 
 internal class AuthComponentSettings(
     private val settings: TackleSettings,

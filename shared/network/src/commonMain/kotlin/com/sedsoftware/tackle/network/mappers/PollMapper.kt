@@ -1,7 +1,7 @@
 package com.sedsoftware.tackle.network.mappers
 
-import com.sedsoftware.tackle.network.model.Poll
-import com.sedsoftware.tackle.network.model.PollOption
+import com.sedsoftware.tackle.domain.model.Poll
+import com.sedsoftware.tackle.domain.model.PollOption
 import com.sedsoftware.tackle.network.response.PollOptionResponse
 import com.sedsoftware.tackle.network.response.PollResponse
 import com.sedsoftware.tackle.utils.toLocalDateTime

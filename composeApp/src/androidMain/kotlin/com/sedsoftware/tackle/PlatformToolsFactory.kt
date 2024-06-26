@@ -3,8 +3,8 @@ package com.sedsoftware.tackle
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import com.sedsoftware.tackle.utils.TacklePlatformTools
-import com.sedsoftware.tackle.utils.model.AppClientData
+import com.sedsoftware.tackle.domain.TacklePlatformTools
+import com.sedsoftware.tackle.domain.model.AppClientData
 
 @Suppress("FunctionName")
 fun PlatformToolsFactory(context: Context): TacklePlatformTools =

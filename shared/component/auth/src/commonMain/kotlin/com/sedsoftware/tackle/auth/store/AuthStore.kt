@@ -6,7 +6,7 @@ import com.sedsoftware.tackle.auth.model.InstanceInfoState
 import com.sedsoftware.tackle.auth.store.AuthStore.Intent
 import com.sedsoftware.tackle.auth.store.AuthStore.Label
 import com.sedsoftware.tackle.auth.store.AuthStore.State
-import com.sedsoftware.tackle.network.model.Instance
+import com.sedsoftware.tackle.domain.model.Instance
 
 internal interface AuthStore : Store<Intent, State, Label> {
 

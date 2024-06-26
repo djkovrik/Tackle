@@ -1,7 +1,7 @@
 package com.sedsoftware.tackle.editor
 
-import com.sedsoftware.tackle.network.model.CustomEmoji
-import com.sedsoftware.tackle.utils.model.AppLocale
+import com.sedsoftware.tackle.domain.model.CustomEmoji
+import com.sedsoftware.tackle.domain.model.AppLocale
 import kotlinx.coroutines.flow.Flow
 
 interface EditorTabComponentGateways {

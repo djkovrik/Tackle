@@ -1,6 +1,6 @@
 package com.sedsoftware.tackle.network.mappers
 
-import com.sedsoftware.tackle.network.model.Application
+import com.sedsoftware.tackle.domain.model.Application
 import com.sedsoftware.tackle.network.response.ApplicationResponse
 
 internal object ApplicationMapper {

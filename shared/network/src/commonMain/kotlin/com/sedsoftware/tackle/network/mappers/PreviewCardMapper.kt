@@ -1,9 +1,14 @@
 package com.sedsoftware.tackle.network.mappers
 
-import com.sedsoftware.tackle.network.model.PreviewCard
-import com.sedsoftware.tackle.network.model.type.PreviewCardType
+import com.sedsoftware.tackle.domain.model.PreviewCard
+import com.sedsoftware.tackle.domain.model.type.PreviewCardType
 import com.sedsoftware.tackle.network.response.PreviewCardResponse
 import com.sedsoftware.tackle.network.response.type.PreviewCardTypeRemote
+import com.sedsoftware.tackle.network.response.type.PreviewCardTypeRemote.LINK
+import com.sedsoftware.tackle.network.response.type.PreviewCardTypeRemote.PHOTO
+import com.sedsoftware.tackle.network.response.type.PreviewCardTypeRemote.RICH
+import com.sedsoftware.tackle.network.response.type.PreviewCardTypeRemote.UNKNOWN
+import com.sedsoftware.tackle.network.response.type.PreviewCardTypeRemote.VIDEO
 
 internal object PreviewCardMapper {
 
@@ -13,11 +18,11 @@ internal object PreviewCardMapper {
             title = from.title,
             description = from.description,
             type = when (from.type) {
-                PreviewCardTypeRemote.LINK -> PreviewCardType.LINK
-                PreviewCardTypeRemote.PHOTO -> PreviewCardType.PHOTO
-                PreviewCardTypeRemote.VIDEO -> PreviewCardType.VIDEO
-                PreviewCardTypeRemote.RICH -> PreviewCardType.RICH
-                PreviewCardTypeRemote.UNKNOWN -> PreviewCardType.UNKNOWN
+                LINK -> PreviewCardType.LINK
+                PHOTO -> PreviewCardType.PHOTO
+                VIDEO -> PreviewCardType.VIDEO
+                RICH -> PreviewCardType.RICH
+                UNKNOWN -> PreviewCardType.UNKNOWN
             },
             authorName = from.authorName,
             authorUrl = from.authorUrl,

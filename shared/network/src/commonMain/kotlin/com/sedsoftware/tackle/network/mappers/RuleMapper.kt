@@ -1,6 +1,6 @@
 package com.sedsoftware.tackle.network.mappers
 
-import com.sedsoftware.tackle.network.model.Rule
+import com.sedsoftware.tackle.domain.model.Rule
 import com.sedsoftware.tackle.network.response.RuleItemResponse
 
 internal object RuleMapper {

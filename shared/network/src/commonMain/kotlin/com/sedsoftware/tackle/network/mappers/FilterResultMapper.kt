@@ -1,17 +1,25 @@
 package com.sedsoftware.tackle.network.mappers
 
-import com.sedsoftware.tackle.network.model.Filter
-import com.sedsoftware.tackle.network.model.FilterKeyword
-import com.sedsoftware.tackle.network.model.FilterResult
-import com.sedsoftware.tackle.network.model.FilterStatus
-import com.sedsoftware.tackle.network.model.type.FilterAction
-import com.sedsoftware.tackle.network.model.type.FilterContext
+import com.sedsoftware.tackle.domain.model.Filter
+import com.sedsoftware.tackle.domain.model.FilterKeyword
+import com.sedsoftware.tackle.domain.model.FilterResult
+import com.sedsoftware.tackle.domain.model.FilterStatus
+import com.sedsoftware.tackle.domain.model.type.FilterAction
+import com.sedsoftware.tackle.domain.model.type.FilterContext
 import com.sedsoftware.tackle.network.response.FilterKeywordResponse
 import com.sedsoftware.tackle.network.response.FilterResponse
 import com.sedsoftware.tackle.network.response.FilterResultResponse
 import com.sedsoftware.tackle.network.response.FilterStatusResponse
 import com.sedsoftware.tackle.network.response.type.FilterActionsRemote
+import com.sedsoftware.tackle.network.response.type.FilterActionsRemote.HIDE
+import com.sedsoftware.tackle.network.response.type.FilterActionsRemote.WARN
 import com.sedsoftware.tackle.network.response.type.FilterContextRemote
+import com.sedsoftware.tackle.network.response.type.FilterContextRemote.ACCOUNT
+import com.sedsoftware.tackle.network.response.type.FilterContextRemote.HOME
+import com.sedsoftware.tackle.network.response.type.FilterContextRemote.NOTIFICATIONS
+import com.sedsoftware.tackle.network.response.type.FilterContextRemote.PUBLIC
+import com.sedsoftware.tackle.network.response.type.FilterContextRemote.THREAD
+import com.sedsoftware.tackle.network.response.type.FilterContextRemote.UNKNOWN
 import com.sedsoftware.tackle.utils.toLocalDateTime
 
 internal object FilterResultMapper {
@@ -29,17 +37,17 @@ internal object FilterResultMapper {
             title = from.title,
             context = from.context.map { context ->
                 when (context) {
-                    FilterContextRemote.HOME -> FilterContext.HOME
-                    FilterContextRemote.NOTIFICATIONS -> FilterContext.NOTIFICATIONS
-                    FilterContextRemote.PUBLIC -> FilterContext.PUBLIC
-                    FilterContextRemote.THREAD -> FilterContext.THREAD
-                    FilterContextRemote.ACCOUNT -> FilterContext.ACCOUNT
-                    FilterContextRemote.UNKNOWN -> FilterContext.UNKNOWN
+                    HOME -> FilterContext.HOME
+                    NOTIFICATIONS -> FilterContext.NOTIFICATIONS
+                    PUBLIC -> FilterContext.PUBLIC
+                    THREAD -> FilterContext.THREAD
+                    ACCOUNT -> FilterContext.ACCOUNT
+                    UNKNOWN -> FilterContext.UNKNOWN
                 }
             },
             filterAction = when (from.filterAction) {
-                FilterActionsRemote.WARN -> FilterAction.WARN
-                FilterActionsRemote.HIDE -> FilterAction.HIDE
+                WARN -> FilterAction.WARN
+                HIDE -> FilterAction.HIDE
                 FilterActionsRemote.UNKNOWN -> FilterAction.UNKNOWN
             },
             keywords = from.keywords.map(FilterResultMapper::mapKeyword),

@@ -1,7 +1,7 @@
 package com.sedsoftware.tackle
 
-import com.sedsoftware.tackle.utils.TacklePlatformTools
-import com.sedsoftware.tackle.utils.model.AppClientData
+import com.sedsoftware.tackle.domain.TacklePlatformTools
+import com.sedsoftware.tackle.domain.model.AppClientData
 import platform.Foundation.NSURL
 import platform.UIKit.UIApplication
 

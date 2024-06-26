@@ -1,11 +1,16 @@
 package com.sedsoftware.tackle.network.mappers
 
-import com.sedsoftware.tackle.network.model.ScheduledStatus
-import com.sedsoftware.tackle.network.model.ScheduledStatusParams
-import com.sedsoftware.tackle.network.model.type.StatusVisibility
+import com.sedsoftware.tackle.domain.model.ScheduledStatus
+import com.sedsoftware.tackle.domain.model.ScheduledStatusParams
+import com.sedsoftware.tackle.domain.model.type.StatusVisibility
 import com.sedsoftware.tackle.network.response.ScheduledStatusParamsResponse
 import com.sedsoftware.tackle.network.response.ScheduledStatusResponse
 import com.sedsoftware.tackle.network.response.type.StatusVisibilityRemote
+import com.sedsoftware.tackle.network.response.type.StatusVisibilityRemote.DIRECT
+import com.sedsoftware.tackle.network.response.type.StatusVisibilityRemote.PRIVATE
+import com.sedsoftware.tackle.network.response.type.StatusVisibilityRemote.PUBLIC
+import com.sedsoftware.tackle.network.response.type.StatusVisibilityRemote.UNKNOWN
+import com.sedsoftware.tackle.network.response.type.StatusVisibilityRemote.UNLISTED
 import com.sedsoftware.tackle.utils.toLocalDateTime
 
 internal object ScheduledStatusMapper {
@@ -25,11 +30,11 @@ internal object ScheduledStatusMapper {
             sensitive = from.sensitive,
             spoilerText = from.spoilerText,
             visibility = when (from.visibility) {
-                StatusVisibilityRemote.PUBLIC -> StatusVisibility.PUBLIC
-                StatusVisibilityRemote.UNLISTED -> StatusVisibility.UNLISTED
-                StatusVisibilityRemote.PRIVATE -> StatusVisibility.PRIVATE
-                StatusVisibilityRemote.DIRECT -> StatusVisibility.DIRECT
-                StatusVisibilityRemote.UNKNOWN -> StatusVisibility.UNKNOWN
+                PUBLIC -> StatusVisibility.PUBLIC
+                UNLISTED -> StatusVisibility.UNLISTED
+                PRIVATE -> StatusVisibility.PRIVATE
+                DIRECT -> StatusVisibility.DIRECT
+                UNKNOWN -> StatusVisibility.UNKNOWN
             },
             inReplyToId = from.inReplyToId,
             language = from.language,
