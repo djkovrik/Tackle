@@ -9,6 +9,7 @@ import com.arkivanov.decompose.value.Value
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.sedsoftware.tackle.auth.AuthComponent
 import com.sedsoftware.tackle.auth.integration.AuthComponentDefault
+import com.sedsoftware.tackle.database.api.TackleDatabase
 import com.sedsoftware.tackle.main.MainComponent
 import com.sedsoftware.tackle.main.integration.MainComponentDefault
 import com.sedsoftware.tackle.network.api.AuthorizedApi
@@ -36,6 +37,7 @@ class RootComponentDefault internal constructor(
         unauthorizedApi: UnauthorizedApi,
         authorizedApi: AuthorizedApi,
         oauthApi: OAuthApi,
+        database: TackleDatabase,
         settings: TackleSettings,
         platformTools: TacklePlatformTools,
         dispatchers: TackleDispatchers,
@@ -59,6 +61,7 @@ class RootComponentDefault internal constructor(
                 unauthorizedApi = unauthorizedApi,
                 authorizedApi = authorizedApi,
                 settings = settings,
+                database = database,
                 platformTools = platformTools,
                 dispatchers = dispatchers,
                 mainComponentOutput = output,

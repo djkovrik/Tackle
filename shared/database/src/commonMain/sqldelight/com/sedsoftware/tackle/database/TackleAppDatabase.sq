@@ -1,0 +1,19 @@
+---- EMOJIS
+
+CREATE TABLE IF NOT EXISTS ServerEmojiEntity (
+    key TEXT NOT NULL PRIMARY KEY,
+    domain TEXT NOT NULL,
+    shortcode TEXT NOT NULL,
+    url TEXT NOT NULL,
+    staticUrl TEXT NOT NULL,
+    visibleInPicker INTEGER NOT NULL,
+    category TEXT NOT NULL
+);
+
+insertEmoji:
+INSERT OR REPLACE INTO ServerEmojiEntity(key, domain, shortcode, url, staticUrl, visibleInPicker, category)
+VALUES (:key, :domain, :shortcode, :url, :staticUrl, :visibleInPicker, :category);
+
+selectAllEmojis:
+SELECT *
+FROM ServerEmojiEntity;

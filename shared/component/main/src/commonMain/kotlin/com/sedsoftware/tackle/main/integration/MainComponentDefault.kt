@@ -7,6 +7,7 @@ import com.arkivanov.decompose.router.stack.bringToFront
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.mvikotlin.core.store.StoreFactory
+import com.sedsoftware.tackle.database.api.TackleDatabase
 import com.sedsoftware.tackle.editor.EditorTabComponent
 import com.sedsoftware.tackle.editor.integration.EditorTabComponentDefault
 import com.sedsoftware.tackle.explore.ExploreTabComponent
@@ -46,6 +47,7 @@ class MainComponentDefault internal constructor(
         storeFactory: StoreFactory,
         unauthorizedApi: UnauthorizedApi,
         authorizedApi: AuthorizedApi,
+        database: TackleDatabase,
         settings: TackleSettings,
         platformTools: TacklePlatformTools,
         dispatchers: TackleDispatchers,
@@ -72,7 +74,7 @@ class MainComponentDefault internal constructor(
                 componentContext = childContext,
                 storeFactory = storeFactory,
                 api = EditorTabComponentApi(unauthorizedApi, authorizedApi),
-                database = EditorTabComponentDatabase(),
+                database = EditorTabComponentDatabase(database),
                 settings = EditorTabComponentSettings(settings),
                 tools = EditorTabComponentTools(platformTools),
                 dispatchers = dispatchers,

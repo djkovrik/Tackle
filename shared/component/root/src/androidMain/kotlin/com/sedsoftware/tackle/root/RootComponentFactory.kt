@@ -1,9 +1,13 @@
 package com.sedsoftware.tackle.root
 
 import android.content.Context
+import app.cash.sqldelight.db.SqlDriver
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import com.russhwolf.settings.Settings
+import com.sedsoftware.tackle.database.DatabaseModule
+import com.sedsoftware.tackle.database.DatabaseModuleDependencies
+import com.sedsoftware.tackle.database.TackleDatabaseDriverFactory
 import com.sedsoftware.tackle.network.NetworkModule
 import com.sedsoftware.tackle.network.NetworkModuleDependencies
 import com.sedsoftware.tackle.root.integration.RootComponentDefault
@@ -22,6 +26,12 @@ fun RootComponentFactory(
     authFlowFactory: CodeAuthFlowFactory,
     dispatchers: TackleDispatchers,
 ): RootComponent {
+    val databaseModule = DatabaseModule(
+        dependencies = object : DatabaseModuleDependencies {
+            override val driver: SqlDriver = TackleDatabaseDriverFactory(context)
+        }
+    )
+
     val settingsModule = SettingsModule(
         dependencies = object : SettingsModuleDependencies {
             override val settings: Settings = SharedSettingsFactory(context)
@@ -48,6 +58,7 @@ fun RootComponentFactory(
         unauthorizedApi = networkModule.unauthorized,
         authorizedApi = networkModule.authorized,
         oauthApi = networkModule.oauth,
+        database = databaseModule.database,
         settings = settingsModule.settings,
         platformTools = platformTools,
         dispatchers = dispatchers,

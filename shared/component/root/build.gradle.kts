@@ -11,6 +11,7 @@ kotlin {
             dependencies {
                 implementation(project(":shared:component:auth"))
                 implementation(project(":shared:component:main"))
+                implementation(project(":shared:database"))
                 implementation(project(":shared:network"))
                 implementation(project(":shared:settings"))
                 implementation(project(":shared:utils"))

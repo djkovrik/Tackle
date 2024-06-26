@@ -29,6 +29,8 @@ kotlin {
             implementation(project(":shared:component:tab:publications"))
             implementation(project(":shared:component:tab:notifications"))
 
+            implementation(project(":shared:utils"))
+
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material3)
@@ -40,6 +42,8 @@ kotlin {
             implementation(libs.lib.coil.compose)
             implementation(libs.lib.coil.gif)
             implementation(libs.lib.coil.svg)
+
+            implementation(libs.kotlinx.coroutines.core)
 
             implementation(libs.ark.decompose.core)
             implementation(libs.ark.decompose.extensions)

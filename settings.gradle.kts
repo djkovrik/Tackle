@@ -30,6 +30,8 @@ include(
     ":shared:component:tab:editor",
     ":shared:component:tab:publications",
     ":shared:component:tab:notifications",
+    ":shared:domain",
+    ":shared:database",
     ":shared:settings",
     ":shared:network",
     ":shared:utils",
