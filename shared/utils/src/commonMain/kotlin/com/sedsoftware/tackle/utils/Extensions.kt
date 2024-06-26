@@ -5,10 +5,9 @@ import com.arkivanov.decompose.value.Value
 import com.arkivanov.mvikotlin.core.rx.observer
 import com.arkivanov.mvikotlin.core.store.Store
 import kotlinx.datetime.Instant
+import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
-import kotlinx.datetime.isDistantPast
-import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 
 fun <T : Any> Store<*, T, *>.asValue(): Value<T> =
@@ -39,16 +38,21 @@ fun <T> unwrap(result: Result<T>, onSuccess: (T) -> Unit, onError: (Throwable) -
     }
 }
 
-fun String.toLocalDateTime(): LocalDateTime = try {
-    LocalDateTime.parse(this)
+fun String.toLocalDateTime(timeZone: TimeZone = TimeZone.currentSystemDefault()): LocalDateTime = try {
+    Instant.parse(this).toLocalDateTime(timeZone = timeZone)
 } catch (exception: IllegalArgumentException) {
-    Instant.DISTANT_PAST.toLocalDateTime(timeZone = TimeZone.currentSystemDefault())
+    Instant.parse(FALLBACK_DATE_TIME).toLocalDateTime(timeZone = timeZone)
 }
 
-val LocalDateTime.isValid
-    get() = !this.toInstant(timeZone = TimeZone.currentSystemDefault()).isDistantPast
+fun String.toLocalDate(): LocalDate = try {
+    LocalDate.parse(this)
+} catch (exception: IllegalArgumentException) {
+    LocalDate.parse(FALLBACK_DATE)
+}
 
 val Throwable.isUnauthorized
     get() = this is RemoteServerException && this.code == HTTP_CODE_UNAUTHORIZED
 
 private const val HTTP_CODE_UNAUTHORIZED = 401
+private const val FALLBACK_DATE_TIME = "1970-01-01T00:00:00.000Z"
+private const val FALLBACK_DATE = "1970-01-01"
