@@ -56,6 +56,11 @@ class RootComponentDefault internal constructor(
             MainComponentDefault(
                 componentContext = childContext,
                 storeFactory = storeFactory,
+                unauthorizedApi = unauthorizedApi,
+                authorizedApi = authorizedApi,
+                settings = settings,
+                platformTools = platformTools,
+                dispatchers = dispatchers,
                 mainComponentOutput = output,
             )
         },

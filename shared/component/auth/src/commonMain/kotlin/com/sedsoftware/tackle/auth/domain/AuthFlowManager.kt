@@ -19,7 +19,7 @@ internal class AuthFlowManager(
     }
 
     suspend fun getInstanceInfo(url: String): Result<Instance> = runCatching {
-        api.getServerInfo(url)
+        return@runCatching api.getServerInfo(url)
     }
 
     suspend fun verifyCredentials(): Result<Boolean> = runCatching {
@@ -38,7 +38,7 @@ internal class AuthFlowManager(
             settings.ownUsername = response.username
         }
 
-        response.username.isNotEmpty()
+        return@runCatching response.username.isNotEmpty()
     }
 
     suspend fun createApp(domain: String): Result<ObtainedCredentials> = runCatching {
@@ -53,7 +53,7 @@ internal class AuthFlowManager(
         settings.clientId = response.clientId
         settings.clientSecret = response.clientSecret
 
-        ObtainedCredentials(
+        return@runCatching ObtainedCredentials(
             domain = domain,
             clientId = response.clientId,
             clientSecret = response.clientSecret,
@@ -69,7 +69,7 @@ internal class AuthFlowManager(
         )
 
         settings.token = accessToken
-        accessToken.isNotEmpty()
+        return@runCatching accessToken.isNotEmpty()
     }
 
     fun getTextInputEndDelay(): Long = tools.getTextInputEndDelay()

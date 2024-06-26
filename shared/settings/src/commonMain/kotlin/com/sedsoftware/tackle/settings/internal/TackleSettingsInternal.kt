@@ -20,9 +20,9 @@ internal class TackleSettingsInternal(
         }
 
     override var clientSecret: String
-        get() = settings.getValue(PREF_KEY_CLIENS_SECRET, "")
+        get() = settings.getValue(PREF_KEY_CLIENT_SECRET, "")
         set(value) {
-            settings.setValue(PREF_KEY_CLIENS_SECRET, value)
+            settings.setValue(PREF_KEY_CLIENT_SECRET, value)
         }
 
     override var token: String
@@ -41,6 +41,12 @@ internal class TackleSettingsInternal(
         get() = settings.getValue(PREF_KEY_USERNAME, "")
         set(value) {
             settings.setValue(PREF_KEY_USERNAME, value)
+        }
+
+    override var emojiLastCachedTimestamp: String
+        get() = settings.getValue(PREF_KEY_EMOJI_TIMESTAMP, "")
+        set(value) {
+            settings.setValue(PREF_KEY_EMOJI_TIMESTAMP, value)
         }
 
     private fun Settings.setValue(key: String, value: Any) {
@@ -67,9 +73,10 @@ internal class TackleSettingsInternal(
     private companion object {
         const val PREF_KEY_DOMAIN = "dn"
         const val PREF_KEY_CLIENT_ID = "ci"
-        const val PREF_KEY_CLIENS_SECRET = "cs"
+        const val PREF_KEY_CLIENT_SECRET = "cs"
         const val PREF_KEY_TOKEN = "tn"
         const val PREF_KEY_AVATAR = "av"
         const val PREF_KEY_USERNAME = "un"
+        const val PREF_KEY_EMOJI_TIMESTAMP = "et"
     }
 }

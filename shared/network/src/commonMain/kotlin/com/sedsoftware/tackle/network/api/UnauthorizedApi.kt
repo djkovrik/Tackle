@@ -1,6 +1,7 @@
 package com.sedsoftware.tackle.network.api
 
 import com.sedsoftware.tackle.network.model.Application
+import com.sedsoftware.tackle.network.model.CustomEmoji
 import com.sedsoftware.tackle.network.model.Instance
 import com.sedsoftware.tackle.network.model.Token
 
@@ -39,4 +40,12 @@ interface UnauthorizedApi {
      * @see <a href="https://docs.joinmastodon.org/methods/oauth/#token">Obtain a token</a>
      */
     suspend fun obtainToken(id: String, secret: String, code: String, uri: String, scopes: String): Token
+
+
+    /**
+     * Returns custom emojis that are available on the server.
+     *
+     * @see <a href="https://docs.joinmastodon.org/methods/custom_emojis/#get">View all custom emoji</a>
+     */
+    suspend fun getServerEmojis(): List<CustomEmoji>
 }

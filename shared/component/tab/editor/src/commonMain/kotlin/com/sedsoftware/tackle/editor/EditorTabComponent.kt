@@ -1,12 +1,30 @@
 package com.sedsoftware.tackle.editor
 
 import com.arkivanov.decompose.value.Value
+import com.sedsoftware.tackle.network.model.CustomEmoji
+import com.sedsoftware.tackle.utils.model.AppLocale
 
 interface EditorTabComponent {
     val model: Value<Model>
 
+    fun onTextInput(text: String)
+    fun onEmojiPanelRequest(requested: Boolean)
+    fun onLanguagePickerRequest(show: Boolean)
+    fun onLocaleSelect(language: AppLocale)
+
     data class Model(
-        val text: String,
+        val ownAvatar: String,
+        val ownNickname: String,
+        val textInput: String,
+        val symbolsLimitExceeded: Boolean,
+        val symbolsLeft: Int,
+        val emojis: List<CustomEmoji>,
+        val emojisAvailable: Boolean,
+        val emojiPanelVisible: Boolean,
+        val selectedLocale: AppLocale,
+        val availableLocales: List<AppLocale>,
+        val localeSelectionAvailable: Boolean,
+        val localePickerVisible: Boolean,
     )
 
     sealed class Output {

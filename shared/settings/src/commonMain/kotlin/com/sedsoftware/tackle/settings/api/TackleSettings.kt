@@ -7,4 +7,5 @@ interface TackleSettings {
     var token: String
     var ownAvatar: String
     var ownUsername: String
+    var emojiLastCachedTimestamp: String
 }

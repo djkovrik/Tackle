@@ -15,11 +15,20 @@ import com.sedsoftware.tackle.home.HomeTabComponent
 import com.sedsoftware.tackle.home.integration.HomeTabComponentDefault
 import com.sedsoftware.tackle.main.MainComponent
 import com.sedsoftware.tackle.main.MainComponent.Child
+import com.sedsoftware.tackle.main.integration.editor.EditorTabComponentApi
+import com.sedsoftware.tackle.main.integration.editor.EditorTabComponentDatabase
+import com.sedsoftware.tackle.main.integration.editor.EditorTabComponentSettings
+import com.sedsoftware.tackle.main.integration.editor.EditorTabComponentTools
 import com.sedsoftware.tackle.main.model.TackleNavigationTab
+import com.sedsoftware.tackle.network.api.AuthorizedApi
+import com.sedsoftware.tackle.network.api.UnauthorizedApi
 import com.sedsoftware.tackle.notifications.NotificationsTabComponent
 import com.sedsoftware.tackle.notifications.integration.NotificationsTabComponentDefault
 import com.sedsoftware.tackle.publications.PublicationsTabComponent
 import com.sedsoftware.tackle.publications.integration.PublicationsTabComponentDefault
+import com.sedsoftware.tackle.settings.api.TackleSettings
+import com.sedsoftware.tackle.utils.TackleDispatchers
+import com.sedsoftware.tackle.utils.TacklePlatformTools
 import kotlinx.serialization.Serializable
 
 class MainComponentDefault internal constructor(
@@ -35,6 +44,11 @@ class MainComponentDefault internal constructor(
     constructor(
         componentContext: ComponentContext,
         storeFactory: StoreFactory,
+        unauthorizedApi: UnauthorizedApi,
+        authorizedApi: AuthorizedApi,
+        settings: TackleSettings,
+        platformTools: TacklePlatformTools,
+        dispatchers: TackleDispatchers,
         mainComponentOutput: (MainComponent.Output) -> Unit,
     ) : this(
         componentContext = componentContext,
@@ -57,6 +71,11 @@ class MainComponentDefault internal constructor(
             EditorTabComponentDefault(
                 componentContext = childContext,
                 storeFactory = storeFactory,
+                api = EditorTabComponentApi(unauthorizedApi, authorizedApi),
+                database = EditorTabComponentDatabase(),
+                settings = EditorTabComponentSettings(settings),
+                tools = EditorTabComponentTools(platformTools),
+                dispatchers = dispatchers,
                 output = componentOutput,
             )
         },

@@ -7,12 +7,50 @@ import com.arkivanov.decompose.router.stack.active
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import com.sedsoftware.tackle.main.MainComponent
 import com.sedsoftware.tackle.main.model.TackleNavigationTab
+import com.sedsoftware.tackle.network.api.AuthorizedApi
+import com.sedsoftware.tackle.network.api.UnauthorizedApi
+import com.sedsoftware.tackle.network.model.Account
+import com.sedsoftware.tackle.network.model.Application
+import com.sedsoftware.tackle.network.model.CustomEmoji
+import com.sedsoftware.tackle.network.model.Instance
+import com.sedsoftware.tackle.network.model.Token
+import com.sedsoftware.tackle.settings.api.TackleSettings
+import com.sedsoftware.tackle.utils.TacklePlatformTools
+import com.sedsoftware.tackle.utils.model.AppClientData
 import com.sedsoftware.tackle.utils.test.ComponentTest
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 
 class MainComponentTest : ComponentTest<MainComponentDefault>() {
+
+    // stubs for component creation, functionality tested inside related modules
+    private val unauthorizedApi: UnauthorizedApi = object : UnauthorizedApi {
+        override suspend fun getServerInfo(url: String): Instance = TODO()
+        override suspend fun createApp(client: String, uri: String, scopes: String, website: String): Application = TODO()
+        override suspend fun obtainToken(id: String, secret: String, code: String, uri: String, scopes: String): Token = TODO()
+        override suspend fun getServerEmojis(): List<CustomEmoji> = TODO()
+    }
+
+    private val authorizedApi: AuthorizedApi = object : AuthorizedApi {
+        override suspend fun verifyCredentials(): Account = TODO()
+    }
+
+    private val settings: TackleSettings = object : TackleSettings {
+        var stub: String = ""
+        override var domain: String = stub
+        override var clientId: String = stub
+        override var clientSecret: String = stub
+        override var token: String = stub
+        override var ownAvatar: String = stub
+        override var ownUsername: String = stub
+        override var emojiLastCachedTimestamp: String = stub
+    }
+
+    private val platformTools: TacklePlatformTools = object : TacklePlatformTools {
+        override fun openUrl(url: String?) = TODO()
+        override fun getClientData(): AppClientData = TODO()
+    }
 
     @BeforeTest
     fun before() {
@@ -87,6 +125,11 @@ class MainComponentTest : ComponentTest<MainComponentDefault>() {
         MainComponentDefault(
             componentContext = DefaultComponentContext(lifecycle),
             storeFactory = DefaultStoreFactory(),
+            unauthorizedApi = unauthorizedApi,
+            authorizedApi = authorizedApi,
+            settings = settings,
+            platformTools = platformTools,
+            dispatchers = testDispatchers,
             mainComponentOutput = {}
         )
 }

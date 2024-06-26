@@ -2,14 +2,17 @@ package com.sedsoftware.tackle.network.internal
 
 import com.sedsoftware.tackle.network.api.UnauthorizedApi
 import com.sedsoftware.tackle.network.mappers.ApplicationMapper
+import com.sedsoftware.tackle.network.mappers.CustomEmojiMapper
 import com.sedsoftware.tackle.network.mappers.InstanceMapper
 import com.sedsoftware.tackle.network.mappers.TokenMapper
 import com.sedsoftware.tackle.network.model.Application
+import com.sedsoftware.tackle.network.model.CustomEmoji
 import com.sedsoftware.tackle.network.model.Instance
 import com.sedsoftware.tackle.network.model.Token
 import com.sedsoftware.tackle.network.request.ApplicationRequest
 import com.sedsoftware.tackle.network.request.TokenRequest
 import com.sedsoftware.tackle.network.response.ApplicationResponse
+import com.sedsoftware.tackle.network.response.CustomEmojiResponse
 import com.sedsoftware.tackle.network.response.InstanceResponse
 import com.sedsoftware.tackle.network.response.TokenResponse
 import io.ktor.client.request.setBody
@@ -68,4 +71,12 @@ internal class TackleUnauthorizedApi(
                 )
             )
         }
+
+    override suspend fun getServerEmojis(): List<CustomEmoji> =
+        doRequest<List<CustomEmojiResponse>, List<CustomEmoji>>(
+            requestUrl = "$instanceUrl/api/v1/custom_emojis",
+            requestMethod = HttpMethod.Get,
+            authenticated = false,
+            responseMapper = CustomEmojiMapper::map,
+        )
 }
