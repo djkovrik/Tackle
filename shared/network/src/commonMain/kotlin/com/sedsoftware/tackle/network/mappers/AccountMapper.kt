@@ -2,10 +2,10 @@ package com.sedsoftware.tackle.network.mappers
 
 import com.sedsoftware.tackle.network.model.Account
 import com.sedsoftware.tackle.network.model.CredentialAccountSource
-import com.sedsoftware.tackle.network.model.Role
 import com.sedsoftware.tackle.network.model.type.CredentialPrivacy
 import com.sedsoftware.tackle.network.response.AccountResponse
 import com.sedsoftware.tackle.network.response.type.CredentialPrivacyRemote
+import com.sedsoftware.tackle.utils.toLocalDate
 import com.sedsoftware.tackle.utils.toLocalDateTime
 
 internal object AccountMapper {
@@ -23,7 +23,7 @@ internal object AccountMapper {
             headerStatic = from.headerStatic,
             locked = from.locked,
             fields = from.fields.map(FieldMapper::map),
-            emojis = from.emojis.map(EmojisMapper::map),
+            emojis = CustomEmojiMapper.map(from.emojis),
             bot = from.bot,
             group = from.group,
             discoverable = from.discoverable,
@@ -32,7 +32,7 @@ internal object AccountMapper {
             suspended = from.suspended,
             limited = from.limited,
             createdAt = from.createdAt.toLocalDateTime(),
-            lastStatusAt = from.lastStatusAt.toLocalDateTime(),
+            lastStatusAt = from.lastStatusAt.toLocalDate(),
             statusesCount = from.statusesCount,
             followersCount = from.followersCount,
             followingCount = from.followingCount,

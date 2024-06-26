@@ -17,7 +17,7 @@ internal object PollMapper {
             votesCount = from.votesCount,
             votersCount = from.votersCount,
             options = from.options.map(PollMapper::mapPollOption),
-            emojis = from.emojis.map(EmojisMapper::map),
+            emojis = CustomEmojiMapper.map(from.emojis),
             voted = from.voted,
             hideTotals = from.hideTotals,
             ownVotes = from.ownVotes,

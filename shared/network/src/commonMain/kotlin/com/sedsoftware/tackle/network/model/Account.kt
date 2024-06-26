@@ -1,6 +1,7 @@
 package com.sedsoftware.tackle.network.model
 
 import com.sedsoftware.tackle.network.model.type.CredentialPrivacy
+import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 
 data class Account(
@@ -24,7 +25,7 @@ data class Account(
     val suspended: Boolean,
     val limited: Boolean,
     val createdAt: LocalDateTime,
-    val lastStatusAt: LocalDateTime,
+    val lastStatusAt: LocalDate,
     val statusesCount: Long,
     val followersCount: Long,
     val followingCount: Long,

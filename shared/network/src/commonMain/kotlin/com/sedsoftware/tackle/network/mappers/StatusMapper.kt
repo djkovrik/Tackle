@@ -32,7 +32,7 @@ internal object StatusMapper {
             application = from.application?.let { ApplicationMapper.map(it) },
             mentions = from.mentions.map(::mapMention),
             tags = from.tags.map(::mapTag),
-            emojis = from.emojis.map(EmojisMapper::map),
+            emojis = CustomEmojiMapper.map(from.emojis),
             reblogsCount = from.reblogsCount,
             favouritesCount = from.favouritesCount,
             repliesCount = from.repliesCount,
