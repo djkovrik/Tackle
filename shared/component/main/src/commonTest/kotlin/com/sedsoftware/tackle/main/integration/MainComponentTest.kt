@@ -12,6 +12,7 @@ import com.sedsoftware.tackle.domain.TackleSettings
 import com.sedsoftware.tackle.domain.UnauthorizedApi
 import com.sedsoftware.tackle.domain.model.Account
 import com.sedsoftware.tackle.domain.model.AppClientData
+import com.sedsoftware.tackle.domain.model.AppLocale
 import com.sedsoftware.tackle.domain.model.Application
 import com.sedsoftware.tackle.domain.model.CustomEmoji
 import com.sedsoftware.tackle.domain.model.Instance
@@ -26,8 +27,8 @@ import kotlin.test.Test
 
 class MainComponentTest : ComponentTest<MainComponentDefault>() {
 
-    // stubs for component creation, functionality tested inside related modules
-    // TODO replace with some kind of mock library?
+    // Stubs for component creation, functionality tested inside related modules
+    // TODO replace with some kind of mock library? Too verbose now
     private val unauthorizedApi: UnauthorizedApi = object : UnauthorizedApi {
         override suspend fun getServerInfo(url: String): Instance = TODO()
         override suspend fun createApp(client: String, uri: String, scopes: String, website: String): Application = TODO()
@@ -58,6 +59,8 @@ class MainComponentTest : ComponentTest<MainComponentDefault>() {
     private val platformTools: TacklePlatformTools = object : TacklePlatformTools {
         override fun openUrl(url: String?) = TODO()
         override fun getClientData(): AppClientData = TODO()
+        override fun getCurrentLocale(): AppLocale = TODO()
+        override fun getAvailableLocales(): List<AppLocale> = TODO()
     }
 
     @BeforeTest

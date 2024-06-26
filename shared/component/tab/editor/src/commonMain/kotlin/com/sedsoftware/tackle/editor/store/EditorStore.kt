@@ -25,6 +25,7 @@ internal interface EditorStore : Store<Intent, State, Label> {
         val emojis: List<CustomEmoji> = emptyList(),
         val emojisAvailable: Boolean = false,
         val emojiPanelVisible: Boolean = false,
+        val recommendedLocale: AppLocale = AppLocale.empty(),
         val selectedLocale: AppLocale = AppLocale.empty(),
         val availableLocales: List<AppLocale> = emptyList(),
         val localeSelectionAvailable: Boolean = false,

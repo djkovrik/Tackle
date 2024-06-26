@@ -43,10 +43,13 @@ internal class StatusEditorManager(
         val response: List<CustomEmoji> = api.getServerEmojis()
         database.cacheServerEmojis(response)
 
+        settings.emojiLastCachedTimestamp = today().toString()
+
         return@runCatching response.isNotEmpty()
     }
 
-    suspend fun observeCachedEmojis(): Flow<List<CustomEmoji>> = TODO()
+    suspend fun observeCachedEmojis(): Flow<List<CustomEmoji>> =
+        database.observeCachedEmojis()
 
     private fun isSameDay(first: LocalDate, second: LocalDate): Boolean =
         first.year == second.year && first.dayOfYear == second.dayOfYear

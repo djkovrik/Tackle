@@ -8,11 +8,9 @@ internal class EditorTabComponentTools(
     private val platformTools: TacklePlatformTools,
 ) : EditorTabComponentGateways.Tools {
 
-    override fun getCurrentLocale(): AppLocale {
-        TODO("Not yet implemented")
-    }
+    override fun getCurrentLocale(): AppLocale =
+        platformTools.getCurrentLocale()
 
-    override fun getAvailableLocales(): List<AppLocale> {
-        TODO("Not yet implemented")
-    }
+    override fun getAvailableLocales(): List<AppLocale> =
+        platformTools.getAvailableLocales()
 }

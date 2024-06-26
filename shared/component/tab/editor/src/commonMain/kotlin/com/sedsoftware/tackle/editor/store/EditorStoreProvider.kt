@@ -34,6 +34,7 @@ internal class EditorStoreProvider(
             autoInit = autoInit,
             bootstrapper = coroutineBootstrapper {
                 dispatch(Action.FetchProfileData)
+                dispatch(Action.FetchDeviceLocale)
                 dispatch(Action.FetchAvailableLocales)
                 dispatch(Action.FetchServerEmojis)
                 dispatch(Action.ObserveCachedEmojis)
@@ -44,7 +45,7 @@ internal class EditorStoreProvider(
                         unwrap(
                             result = withContext(ioContext) { manager.getEditorProfileData() },
                             onSuccess = { profileData: EditorProfileData ->
-                                Msg.ProfileDataLoaded(profileData)
+                                dispatch(Msg.ProfileDataLoaded(profileData))
                             },
                             onError = { throwable ->
                                 publish(Label.ErrorCaught(throwable))
@@ -58,7 +59,7 @@ internal class EditorStoreProvider(
                         unwrap(
                             result = withContext(ioContext) { manager.getCurrentLocale() },
                             onSuccess = { currentLocale: AppLocale ->
-                                Msg.SelectedLocaleUpdated(currentLocale)
+                                dispatch(Msg.CurrentLocaleLoaded(currentLocale))
                             },
                             onError = { throwable ->
                                 publish(Label.ErrorCaught(throwable))
@@ -72,7 +73,7 @@ internal class EditorStoreProvider(
                         unwrap(
                             result = withContext(ioContext) { manager.getAvailableLocales() },
                             onSuccess = { availableLocales: List<AppLocale> ->
-                                Msg.AvailableLocalesLoaded(availableLocales)
+                                dispatch(Msg.AvailableLocalesLoaded(availableLocales))
                             },
                             onError = { throwable ->
                                 publish(Label.ErrorCaught(throwable))
@@ -94,11 +95,11 @@ internal class EditorStoreProvider(
                 }
 
                 onAction<Action.ObserveCachedEmojis> {
-                    launch(ioContext) {
+                    launch {
                         manager.observeCachedEmojis()
                             .flowOn(mainContext)
                             .catch { throwable -> publish(Label.ErrorCaught(throwable)) }
-                            .collect { dispatch(Msg.EmojiLoaded(it)) }
+                            .collect { dispatch(Msg.EmojiListRefreshed(it)) }
                     }
                 }
 
@@ -110,10 +111,12 @@ internal class EditorStoreProvider(
                     dispatch(Msg.EmojiPanelVisibilityChanged(it.show))
                 }
 
-                onIntent<Intent.OnShowLanguagePicker> { }
+                onIntent<Intent.OnShowLanguagePicker> {
+                    dispatch(Msg.LocaleSelectionVisibilityChanged(it.show))
+                }
 
                 onIntent<Intent.OnLocaleSelected> {
-                    dispatch(Msg.SelectedLocaleUpdated(it.language))
+                    dispatch(Msg.LocaleSelected(it.language))
                 }
             },
             reducer = { msg ->
@@ -121,7 +124,7 @@ internal class EditorStoreProvider(
                     is Msg.TextInput -> copy(
                         textInput = msg.text,
                         symbolsLeft = MAX_SYMBOLS_LIMIT - msg.text.length,
-                        symbolsLimitExceeded = msg.text.length <= MAX_SYMBOLS_LIMIT,
+                        symbolsLimitExceeded = msg.text.length > MAX_SYMBOLS_LIMIT,
                     )
 
                     is Msg.ProfileDataLoaded -> copy(
@@ -129,7 +132,12 @@ internal class EditorStoreProvider(
                         ownNickname = msg.data.name,
                     )
 
-                    is Msg.SelectedLocaleUpdated -> copy(
+                    is Msg.CurrentLocaleLoaded -> copy(
+                        recommendedLocale = msg.locale,
+                        selectedLocale = msg.locale,
+                    )
+
+                    is Msg.LocaleSelected -> copy(
                         selectedLocale = msg.locale,
                     )
 
@@ -138,7 +146,7 @@ internal class EditorStoreProvider(
                         localeSelectionAvailable = msg.locales.isNotEmpty(),
                     )
 
-                    is Msg.EmojiLoaded -> copy(
+                    is Msg.EmojiListRefreshed -> copy(
                         emojis = msg.emojis,
                         emojisAvailable = msg.emojis.isNotEmpty(),
                     )
@@ -165,9 +173,10 @@ internal class EditorStoreProvider(
     private sealed interface Msg {
         data class TextInput(val text: String) : Msg
         data class ProfileDataLoaded(val data: EditorProfileData) : Msg
-        data class SelectedLocaleUpdated(val locale: AppLocale) : Msg
+        data class CurrentLocaleLoaded(val locale: AppLocale) : Msg
+        data class LocaleSelected(val locale: AppLocale) : Msg
         data class AvailableLocalesLoaded(val locales: List<AppLocale>) : Msg
-        data class EmojiLoaded(val emojis: List<CustomEmoji>) : Msg
+        data class EmojiListRefreshed(val emojis: List<CustomEmoji>) : Msg
         data class EmojiPanelVisibilityChanged(val visible: Boolean) : Msg
         data class LocaleSelectionVisibilityChanged(val visible: Boolean) : Msg
     }
