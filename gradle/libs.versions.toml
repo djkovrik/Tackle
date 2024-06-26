@@ -29,12 +29,13 @@ detekt = "1.23.5"
 kotlinx-coroutines = "1.8.1"
 kotlinx-serialization = "1.6.3"
 kotlinx-datetime = "0.6.0"
-composeImageLoader = "1.7.1"
 multiplatformSettings = "1.1.1"
 napier = "2.7.1"
 ktor = "2.3.8"
 sqlDelight = "2.0.2"
 oidc = "0.9.1"
+coil = "2.6.0"
+fileKit = "0.6.0"
 
 # Testing
 assertk = "0.28.1"
@@ -76,7 +77,11 @@ ark-decompose-extensions = { module = "com.arkivanov.decompose:extensions-compos
 ark-essenty = { module = "com.arkivanov.essenty:lifecycle", version.ref = "essenty" }
 
 lib-napier = { module = "io.github.aakira:napier", version.ref = "napier" }
-lib-imageloader = { module = "io.github.qdsfdhvh:image-loader", version.ref = "composeImageLoader" }
+lib-coil-core = { module = "io.coil-kt:coil", version.ref = "coil" }
+lib-coil-gif = { module = "io.coil-kt:coil-gif", version.ref = "coil" }
+lib-coil-svg = { module = "io.coil-kt:coil-svg", version.ref = "coil" }
+lib-coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
+lib-fileKit = { module = "io.github.vinceglb:filekit-compose", version.ref = "fileKit" }
 lib-settings-core = { module = "com.russhwolf:multiplatform-settings", version.ref = "multiplatformSettings" }
 lib-settings-test = { module = "com.russhwolf:multiplatform-settings-test", version.ref = "multiplatformSettings" }
 

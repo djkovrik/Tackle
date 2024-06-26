@@ -36,6 +36,11 @@ kotlin {
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
 
+            implementation(libs.lib.coil.core)
+            implementation(libs.lib.coil.compose)
+            implementation(libs.lib.coil.gif)
+            implementation(libs.lib.coil.svg)
+
             implementation(libs.ark.decompose.core)
             implementation(libs.ark.decompose.extensions)
         }
