@@ -49,6 +49,18 @@ internal class TackleSettingsInternal(
             settings.setValue(PREF_KEY_EMOJI_TIMESTAMP, value)
         }
 
+    override var lastSelectedLanguageName: String
+        get() = settings.getValue(PREF_KEY_LAST_SELECTED_LANGUAGE_NAME, "")
+        set(value) {
+            settings.setValue(PREF_KEY_LAST_SELECTED_LANGUAGE_NAME, value)
+        }
+
+    override var lastSelectedLanguageCode: String
+        get() = settings.getValue(PREF_KEY_LAST_SELECTED_LANGUAGE_CODE, "")
+        set(value) {
+            settings.setValue(PREF_KEY_LAST_SELECTED_LANGUAGE_CODE, value)
+        }
+
     private fun Settings.setValue(key: String, value: Any) {
         when (value) {
             is String -> putString(key, value)
@@ -78,5 +90,7 @@ internal class TackleSettingsInternal(
         const val PREF_KEY_AVATAR = "av"
         const val PREF_KEY_USERNAME = "un"
         const val PREF_KEY_EMOJI_TIMESTAMP = "et"
+        const val PREF_KEY_LAST_SELECTED_LANGUAGE_NAME = "lsln"
+        const val PREF_KEY_LAST_SELECTED_LANGUAGE_CODE = "lslc"
     }
 }

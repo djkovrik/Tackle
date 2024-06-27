@@ -1,9 +1,9 @@
 package com.sedsoftware.tackle.editor.domain
 
+import com.sedsoftware.tackle.domain.model.AppLocale
+import com.sedsoftware.tackle.domain.model.CustomEmoji
 import com.sedsoftware.tackle.editor.EditorTabComponentGateways
 import com.sedsoftware.tackle.editor.model.EditorProfileData
-import com.sedsoftware.tackle.domain.model.CustomEmoji
-import com.sedsoftware.tackle.domain.model.AppLocale
 import com.sedsoftware.tackle.utils.toLocalDate
 import kotlinx.coroutines.flow.Flow
 import kotlinx.datetime.Clock
@@ -26,11 +26,23 @@ internal class StatusEditorManager(
     }
 
     fun getCurrentLocale(): Result<AppLocale> = runCatching {
+        if (settings.lastSelectedLanguageName.isNotEmpty() && settings.lastSelectedLanguageCode.isNotEmpty()) {
+            return@runCatching AppLocale(
+                languageName = settings.lastSelectedLanguageName,
+                languageCode = settings.lastSelectedLanguageCode,
+            )
+        }
+
         return@runCatching tools.getCurrentLocale()
     }
 
     fun getAvailableLocales(): Result<List<AppLocale>> = runCatching {
         return@runCatching tools.getAvailableLocales()
+    }
+
+    fun saveSelectedLocale(locale: AppLocale): Result<Unit> = runCatching {
+        settings.lastSelectedLanguageName = locale.languageName
+        settings.lastSelectedLanguageCode = locale.languageCode
     }
 
     suspend fun fetchServerEmojis(): Result<Boolean> = runCatching {

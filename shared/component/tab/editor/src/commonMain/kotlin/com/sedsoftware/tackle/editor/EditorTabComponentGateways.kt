@@ -18,6 +18,8 @@ interface EditorTabComponentGateways {
         val ownAvatar: String
         val ownNickname: String
         var emojiLastCachedTimestamp: String
+        var lastSelectedLanguageName: String
+        var lastSelectedLanguageCode: String
     }
 
     interface Tools {

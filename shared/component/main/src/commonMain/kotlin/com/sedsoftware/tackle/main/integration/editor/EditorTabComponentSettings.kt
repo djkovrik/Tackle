@@ -1,7 +1,7 @@
 package com.sedsoftware.tackle.main.integration.editor
 
-import com.sedsoftware.tackle.editor.EditorTabComponentGateways
 import com.sedsoftware.tackle.domain.TackleSettings
+import com.sedsoftware.tackle.editor.EditorTabComponentGateways
 
 internal class EditorTabComponentSettings(
     private val settings: TackleSettings,
@@ -17,5 +17,17 @@ internal class EditorTabComponentSettings(
         get() = settings.emojiLastCachedTimestamp
         set(value) {
             settings.emojiLastCachedTimestamp = value
+        }
+
+    override var lastSelectedLanguageName: String
+        get() = settings.lastSelectedLanguageName
+        set(value) {
+            settings.lastSelectedLanguageName = value
+        }
+
+    override var lastSelectedLanguageCode: String
+        get() = settings.lastSelectedLanguageCode
+        set(value) {
+            settings.lastSelectedLanguageCode = value
         }
 }

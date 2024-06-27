@@ -4,14 +4,14 @@ import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.coroutineBootstrapper
 import com.arkivanov.mvikotlin.extensions.coroutines.coroutineExecutorFactory
+import com.sedsoftware.tackle.domain.model.AppLocale
+import com.sedsoftware.tackle.domain.model.CustomEmoji
 import com.sedsoftware.tackle.editor.domain.StatusEditorManager
 import com.sedsoftware.tackle.editor.model.EditorProfileData
 import com.sedsoftware.tackle.editor.store.EditorStore.Intent
 import com.sedsoftware.tackle.editor.store.EditorStore.Label
 import com.sedsoftware.tackle.editor.store.EditorStore.State
-import com.sedsoftware.tackle.domain.model.CustomEmoji
 import com.sedsoftware.tackle.utils.StoreCreate
-import com.sedsoftware.tackle.domain.model.AppLocale
 import com.sedsoftware.tackle.utils.unwrap
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOn
@@ -116,7 +116,17 @@ internal class EditorStoreProvider(
                 }
 
                 onIntent<Intent.OnLocaleSelected> {
-                    dispatch(Msg.LocaleSelected(it.language))
+                    launch {
+                        unwrap(
+                            result = withContext(ioContext) { manager.saveSelectedLocale(it.language) },
+                            onSuccess = { _ ->
+                                dispatch(Msg.LocaleSelected(it.language))
+                            },
+                            onError = { throwable ->
+                                publish(Label.ErrorCaught(throwable))
+                            }
+                        )
+                    }
                 }
             },
             reducer = { msg ->

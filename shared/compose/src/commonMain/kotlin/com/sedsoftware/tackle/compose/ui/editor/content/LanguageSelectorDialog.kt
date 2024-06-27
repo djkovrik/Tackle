@@ -16,6 +16,8 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -41,6 +43,7 @@ internal fun LanguageSelectorDialog(
             shape = RoundedCornerShape(16.dp),
         ) {
             Column(
+                horizontalAlignment = Alignment.End,
                 modifier = modifier.fillMaxSize()
             ) {
                 LazyColumn(
@@ -76,8 +79,8 @@ internal fun LanguageSelectorDialog(
 
                 Text(
                     text = stringResource(Res.string.common_cancel),
-                    color = MaterialTheme.colorScheme.tertiary,
-                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.secondary,
+                    style = MaterialTheme.typography.bodyLarge,
                     modifier = Modifier
                         .padding(all = 16.dp)
                         .clickable(onClick = onDismissRequest)

@@ -54,6 +54,8 @@ class MainComponentTest : ComponentTest<MainComponentDefault>() {
         override var ownAvatar: String = stub
         override var ownUsername: String = stub
         override var emojiLastCachedTimestamp: String = stub
+        override var lastSelectedLanguageName: String = stub
+        override var lastSelectedLanguageCode: String = stub
     }
 
     private val platformTools: TacklePlatformTools = object : TacklePlatformTools {
