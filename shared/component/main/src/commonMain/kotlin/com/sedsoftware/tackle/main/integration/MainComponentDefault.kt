@@ -103,7 +103,7 @@ class MainComponentDefault internal constructor(
         childStack(
             source = navigation,
             serializer = Config.serializer(),
-            initialConfiguration = Config.Home,
+            initialConfiguration = Config.Editor,
             handleBackButton = true,
             childFactory = ::createChild,
         )

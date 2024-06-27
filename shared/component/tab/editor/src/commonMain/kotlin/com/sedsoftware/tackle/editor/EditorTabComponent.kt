@@ -21,6 +21,7 @@ interface EditorTabComponent {
         val emojis: List<CustomEmoji>,
         val emojisAvailable: Boolean,
         val emojiPanelVisible: Boolean,
+        val recommendedLocale: AppLocale,
         val selectedLocale: AppLocale,
         val availableLocales: List<AppLocale>,
         val localeSelectionAvailable: Boolean,

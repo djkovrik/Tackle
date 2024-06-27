@@ -10,6 +10,7 @@
     <string name="common_retry">Повторить</string>
     <string name="common_retrying">Повторная попытка</string>
     <string name="common_redirecting">Перенаправление</string>
+    <string name="common_cancel">Отмена</string>
     <!-- Auth component -->
     <string name="auth_server_address">Адрес сервера</string>
     <string name="auth_server_address_wrong">Некорректный адрес</string>
@@ -27,4 +28,6 @@
     <string name="main_tab_editor">New post</string>
     <string name="main_tab_publications">Публикации</string>
     <string name="main_tab_notifications">Уведомления</string>
+    <!-- Editor component -->
+    <string name="editor_language_default">По умолчанию</string>
 </resources>

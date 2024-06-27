@@ -20,7 +20,7 @@ import com.sedsoftware.tackle.compose.ui.auth.content.ScreenSplash
 @Composable
 internal fun AuthContent(
     component: AuthComponent,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val model: AuthComponent.Model by component.model.subscribeAsState()
     val bottomSheetState: SheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)

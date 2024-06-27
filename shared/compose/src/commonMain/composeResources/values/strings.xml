@@ -13,6 +13,7 @@
     <string name="common_retry">Retry</string>
     <string name="common_retrying">Retrying</string>
     <string name="common_redirecting">Redirecting</string>
+    <string name="common_cancel">Cancel</string>
     <!-- Auth component -->
     <string name="auth_server_address">Server address</string>
     <string name="auth_server_address_wrong">Incorrect address</string>
@@ -30,4 +31,6 @@
     <string name="main_tab_editor">New post</string>
     <string name="main_tab_publications">Publications</string>
     <string name="main_tab_notifications">Notifications</string>
+    <!-- Editor component -->
+    <string name="editor_language_default">Default</string>
 </resources>

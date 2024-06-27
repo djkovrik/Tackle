@@ -13,6 +13,7 @@ internal val stateToModel: (State) -> Model = {
         emojis = it.emojis.filter { emoji -> emoji.visibleInPicker },
         emojisAvailable = it.emojisAvailable,
         emojiPanelVisible = it.emojiPanelVisible,
+        recommendedLocale = it.recommendedLocale,
         selectedLocale = it.selectedLocale,
         availableLocales = listOf(it.recommendedLocale) + it.availableLocales.filterNot { locale -> locale == it.recommendedLocale },
         localeSelectionAvailable = it.localeSelectionAvailable,
