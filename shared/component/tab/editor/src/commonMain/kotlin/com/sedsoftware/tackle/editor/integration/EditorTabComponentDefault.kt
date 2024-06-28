@@ -1,25 +1,15 @@
 package com.sedsoftware.tackle.editor.integration
 
 import com.arkivanov.decompose.ComponentContext
-import com.arkivanov.decompose.value.Value
-import com.arkivanov.decompose.value.operator.map
-import com.arkivanov.essenty.lifecycle.doOnDestroy
-import com.arkivanov.mvikotlin.core.instancekeeper.getStore
+import com.arkivanov.decompose.childContext
 import com.arkivanov.mvikotlin.core.store.StoreFactory
-import com.arkivanov.mvikotlin.extensions.coroutines.labels
 import com.sedsoftware.tackle.domain.TackleDispatchers
-import com.sedsoftware.tackle.domain.model.AppLocale
 import com.sedsoftware.tackle.editor.EditorTabComponent
-import com.sedsoftware.tackle.editor.EditorTabComponent.Model
 import com.sedsoftware.tackle.editor.EditorTabComponentGateways
-import com.sedsoftware.tackle.editor.domain.StatusEditorManager
-import com.sedsoftware.tackle.editor.store.EditorStore
-import com.sedsoftware.tackle.editor.store.EditorStore.Label
-import com.sedsoftware.tackle.editor.store.EditorStoreProvider
-import com.sedsoftware.tackle.utils.asValue
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.launch
+import com.sedsoftware.tackle.editor.header.EditorHeaderComponent
+import com.sedsoftware.tackle.editor.header.integration.EditorHeaderComponentDefault
+import com.sedsoftware.tackle.editor.integration.header.EditorHeaderSettings
+import com.sedsoftware.tackle.editor.integration.header.EditorHeaderTools
 
 class EditorTabComponentDefault(
     private val componentContext: ComponentContext,
@@ -32,47 +22,22 @@ class EditorTabComponentDefault(
     private val output: (EditorTabComponent.Output) -> Unit,
 ) : EditorTabComponent, ComponentContext by componentContext {
 
-    private val store: EditorStore =
-        instanceKeeper.getStore {
-            EditorStoreProvider(
-                storeFactory = storeFactory,
-                manager = StatusEditorManager(api, database, settings, tools),
-                mainContext = dispatchers.main,
-                ioContext = dispatchers.io,
-            ).create()
-        }
+    override val header: EditorHeaderComponent =
+        EditorHeaderComponentDefault(
+            componentContext = childContext(
+                key = "Editor header",
+                lifecycle = lifecycle
+            ),
+            storeFactory = storeFactory,
+            settings = EditorHeaderSettings(settings),
+            tools = EditorHeaderTools(tools),
+            dispatchers = dispatchers,
+            output = ::onEditorHeaderComponentOutput
+        )
 
-    init {
-        val scope = CoroutineScope(dispatchers.main)
-
-        scope.launch {
-            store.labels.collect { label ->
-                when (label) {
-                    is Label.ErrorCaught -> output(EditorTabComponent.Output.ErrorCaught(label.throwable))
-                }
-            }
-        }
-
-        lifecycle.doOnDestroy {
-            scope.cancel()
+    private fun onEditorHeaderComponentOutput(output: EditorHeaderComponent.Output) {
+        when (output) {
+            is EditorHeaderComponent.Output.ErrorCaught -> output(EditorTabComponent.Output.ErrorCaught(output.throwable))
         }
     }
-
-    override fun onTextInput(text: String) {
-        store.accept(EditorStore.Intent.OnTextInput(text))
-    }
-
-    override fun onEmojiPanelRequest(show: Boolean) {
-        store.accept(EditorStore.Intent.OnShowEmojiPanel(show))
-    }
-
-    override fun onLanguagePickerRequest(show: Boolean) {
-        store.accept(EditorStore.Intent.OnShowLanguagePicker(show))
-    }
-
-    override fun onLocaleSelect(language: AppLocale) {
-        store.accept(EditorStore.Intent.OnLocaleSelected(language))
-    }
-
-    override val model: Value<Model> = store.asValue().map(stateToModel)
 }

@@ -29,16 +29,10 @@ internal class AuthFlowManager(
 
         val response: Account = api.verifyCredentials()
 
-        if (response.avatarStatic.isNotEmpty()) {
-            settings.ownAvatar = response.avatarStatic
-        }
+        settings.ownAvatar = response.avatarStatic
+        settings.ownUsername = response.acct
 
-
-        if (response.username.isNotEmpty()) {
-            settings.ownUsername = response.username
-        }
-
-        return@runCatching response.username.isNotEmpty()
+        return@runCatching response.acct.isNotEmpty()
     }
 
     suspend fun createApp(domain: String): Result<ObtainedCredentials> = runCatching {

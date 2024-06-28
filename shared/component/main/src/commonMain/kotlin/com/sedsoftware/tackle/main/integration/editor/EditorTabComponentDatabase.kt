@@ -9,9 +9,6 @@ internal class EditorTabComponentDatabase(
     private val database: TackleDatabase,
 ) : EditorTabComponentGateways.Database {
 
-    override suspend fun cacheServerEmojis(list: List<CustomEmoji>) =
-        database.insertEmojis(list)
-
-    override suspend fun observeCachedEmojis(): Flow<List<CustomEmoji>> =
-        database.observeEmojis()
+    override suspend fun cacheServerEmojis(list: List<CustomEmoji>) = database.insertEmojis(list)
+    override suspend fun observeCachedEmojis(): Flow<List<CustomEmoji>> = database.observeEmojis()
 }

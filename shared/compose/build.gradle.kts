@@ -25,9 +25,11 @@ kotlin {
             implementation(project(":shared:component:auth"))
             implementation(project(":shared:component:main"))
 
+            implementation(project(":shared:component:tab:editor"))
+            implementation(project(":shared:component:tab:editor:subcomponent:header"))
+
             implementation(project(":shared:component:tab:home"))
             implementation(project(":shared:component:tab:explore"))
-            implementation(project(":shared:component:tab:editor"))
             implementation(project(":shared:component:tab:publications"))
             implementation(project(":shared:component:tab:notifications"))
 
@@ -38,15 +40,12 @@ kotlin {
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
 
-            implementation(libs.lib.coil.core)
-            implementation(libs.lib.coil.compose)
-            implementation(libs.lib.coil.gif)
-            implementation(libs.lib.coil.svg)
-
             implementation(libs.kotlinx.coroutines.core)
 
             implementation(libs.ark.decompose.core)
             implementation(libs.ark.decompose.extensions)
+
+            implementation(libs.lib.imageLoader)
         }
         androidMain.dependencies {
             implementation(libs.compose.ui.tooling.preview)

@@ -25,9 +25,17 @@
     <!-- Main component -->
     <string name="main_tab_home">Главная</string>
     <string name="main_tab_explore">Обзор</string>
-    <string name="main_tab_editor">New post</string>
+    <string name="main_tab_editor">Новый пост</string>
     <string name="main_tab_publications">Публикации</string>
     <string name="main_tab_notifications">Уведомления</string>
     <!-- Editor component -->
     <string name="editor_language_default">По умолчанию</string>
+    <string name="editor_status_visibility_public">Публичный</string>
+    <string name="editor_status_visibility_public_desc">Виден публично, включен в публичные подборки</string>
+    <string name="editor_status_visibility_unlisted">Тихий</string>
+    <string name="editor_status_visibility_unlisted_desc">Виден публично, не включен в публичные подборки</string>
+    <string name="editor_status_visibility_private">Скрытый</string>
+    <string name="editor_status_visibility_private_desc">Виден только подписчикам и упомянутым пользователям</string>
+    <string name="editor_status_visibility_direct">Личный</string>
+    <string name="editor_status_visibility_direct_desc">Виден только упомянутым пользователям</string>
 </resources>

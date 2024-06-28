@@ -1,4 +1,4 @@
-package com.sedsoftware.tackle.compose.ui.editor.content
+package com.sedsoftware.tackle.compose.ui.editor.header.content
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.clickable

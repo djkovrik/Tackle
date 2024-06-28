@@ -28,6 +28,7 @@ include(
     ":shared:component:tab:home",
     ":shared:component:tab:explore",
     ":shared:component:tab:editor",
+    ":shared:component:tab:editor:subcomponent:header",
     ":shared:component:tab:publications",
     ":shared:component:tab:notifications",
     ":shared:domain",

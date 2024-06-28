@@ -12,11 +12,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.unit.dp
+import com.seiko.imageloader.ImageLoader
+import com.seiko.imageloader.LocalImageLoader
+import com.seiko.imageloader.component.setupDefaultComponents
+import com.seiko.imageloader.intercept.bitmapMemoryCacheConfig
 
 internal val LocalThemeIsDark = compositionLocalOf { mutableStateOf(true) }
 
 @Composable
-internal fun TackleTheme(
+fun TackleTheme(
     systemIsDark: Boolean = isSystemInDarkTheme(),
     content: @Composable() () -> Unit
 ) {
@@ -53,6 +57,23 @@ internal fun TackleScreenPreview(
     content: @Composable () -> Unit,
 ) {
     TackleTheme(systemIsDark = darkTheme) {
-        content()
+        CompositionLocalProvider(
+            LocalImageLoader provides generatePreviewImageLoader()
+        ) {
+            content()
+        }
+    }
+}
+
+private fun generatePreviewImageLoader(): ImageLoader {
+    return ImageLoader {
+        components {
+            setupDefaultComponents()
+        }
+        interceptor {
+            bitmapMemoryCacheConfig {
+                maxSize(32 * 1024 * 1024) // 32MB
+            }
+        }
     }
 }

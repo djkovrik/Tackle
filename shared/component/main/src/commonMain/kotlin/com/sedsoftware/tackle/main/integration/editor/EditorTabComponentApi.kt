@@ -10,6 +10,5 @@ internal class EditorTabComponentApi(
     private val authorizedApi: AuthorizedApi,
 ) : EditorTabComponentGateways.Api {
 
-    override suspend fun getServerEmojis(): List<CustomEmoji> =
-        unauthorizedApi.getServerEmojis()
+    override suspend fun getServerEmojis(): List<CustomEmoji> = unauthorizedApi.getServerEmojis()
 }

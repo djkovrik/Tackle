@@ -33,4 +33,12 @@
     <string name="main_tab_notifications">Notifications</string>
     <!-- Editor component -->
     <string name="editor_language_default">Default</string>
+    <string name="editor_status_visibility_public">Public</string>
+    <string name="editor_status_visibility_public_desc">Visible to everyone, shown in public timelines</string>
+    <string name="editor_status_visibility_unlisted">Quiet</string>
+    <string name="editor_status_visibility_unlisted_desc">Visible to public, but not included in public timelines</string>
+    <string name="editor_status_visibility_private">Private</string>
+    <string name="editor_status_visibility_private_desc">Visible to followers and mentioned users only</string>
+    <string name="editor_status_visibility_direct">Direct</string>
+    <string name="editor_status_visibility_direct_desc">Visible to mentioned users only</string>
 </resources>

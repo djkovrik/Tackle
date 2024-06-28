@@ -1,49 +1,33 @@
 package com.sedsoftware.tackle.editor.integration
 
-import com.arkivanov.decompose.value.MutableValue
-import com.arkivanov.decompose.value.Value
 import com.sedsoftware.tackle.domain.model.AppLocale
-import com.sedsoftware.tackle.domain.model.CustomEmoji
+import com.sedsoftware.tackle.domain.model.type.StatusVisibility
 import com.sedsoftware.tackle.editor.EditorTabComponent
-import com.sedsoftware.tackle.editor.EditorTabComponent.Model
+import com.sedsoftware.tackle.editor.header.EditorHeaderComponent
+import com.sedsoftware.tackle.editor.header.integration.EditorHeaderComponentPreview
 
 class EditorTabComponentPreview(
-    ownAvatar: String = "",
-    ownNickname: String = "",
-    textInput: String = "",
-    symbolsLimitExceeded: Boolean = true,
-    symbolsLeft: Int = 0,
-    emojis: List<CustomEmoji> = emptyList(),
-    emojisAvailable: Boolean = false,
-    emojiPanelVisible: Boolean = false,
+    avatar: String = "",
+    nickname: String = "",
     recommendedLocale: AppLocale = AppLocale.empty(),
     selectedLocale: AppLocale = AppLocale.empty(),
     availableLocales: List<AppLocale> = emptyList(),
-    localeSelectionAvailable: Boolean = false,
-    localePickerVisible: Boolean = false,
+    localePickerAvailable: Boolean = false,
+    localePickerDisplayed: Boolean = false,
+    statusVisibility: StatusVisibility = StatusVisibility.PUBLIC,
+    statusVisibilityPickerDisplayed: Boolean = false,
 ) : EditorTabComponent {
 
-    override val model: Value<Model> =
-        MutableValue(
-            Model(
-                ownAvatar = ownAvatar,
-                ownNickname = ownNickname,
-                textInput = textInput,
-                symbolsLimitExceeded = symbolsLimitExceeded,
-                symbolsLeft = symbolsLeft,
-                emojis = emojis,
-                emojisAvailable = emojisAvailable,
-                emojiPanelVisible = emojiPanelVisible,
-                recommendedLocale = recommendedLocale,
-                selectedLocale = selectedLocale,
-                availableLocales = availableLocales,
-                localeSelectionAvailable = localeSelectionAvailable,
-                localePickerVisible = localePickerVisible,
-            )
+    override val header: EditorHeaderComponent =
+        EditorHeaderComponentPreview(
+            avatar = avatar,
+            nickname = nickname,
+            recommendedLocale = recommendedLocale,
+            selectedLocale = selectedLocale,
+            availableLocales = availableLocales,
+            localePickerAvailable = localePickerAvailable,
+            localePickerDisplayed = localePickerDisplayed,
+            statusVisibility = statusVisibility,
+            statusVisibilityPickerDisplayed = statusVisibilityPickerDisplayed
         )
-
-    override fun onTextInput(text: String) = Unit
-    override fun onEmojiPanelRequest(requested: Boolean) = Unit
-    override fun onLanguagePickerRequest(show: Boolean) = Unit
-    override fun onLocaleSelect(language: AppLocale) = Unit
 }

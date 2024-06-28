@@ -9,7 +9,6 @@ import com.arkivanov.decompose.extensions.compose.stack.animation.fade
 import com.arkivanov.decompose.extensions.compose.stack.animation.plus
 import com.arkivanov.decompose.extensions.compose.stack.animation.scale
 import com.arkivanov.decompose.extensions.compose.stack.animation.stackAnimation
-import com.sedsoftware.tackle.compose.theme.TackleTheme
 import com.sedsoftware.tackle.compose.ui.auth.AuthContent
 import com.sedsoftware.tackle.compose.ui.main.MainContent
 import com.sedsoftware.tackle.root.RootComponent
@@ -20,17 +19,15 @@ fun RootContent(
     component: RootComponent,
     modifier: Modifier = Modifier
 ) {
-    TackleTheme {
-        Box(modifier = modifier.fillMaxSize()) {
-            Children(
-                stack = component.childStack,
-                animation = stackAnimation(animator = fade() + scale()),
-                modifier = modifier.fillMaxSize(),
-            ) {
-                when (val child = it.instance) {
-                    is Child.Auth -> AuthContent(component = child.component)
-                    is Child.Main -> MainContent(component = child.component)
-                }
+    Box(modifier = modifier.fillMaxSize()) {
+        Children(
+            stack = component.childStack,
+            animation = stackAnimation(animator = fade() + scale()),
+            modifier = modifier.fillMaxSize(),
+        ) {
+            when (val child = it.instance) {
+                is Child.Auth -> AuthContent(component = child.component)
+                is Child.Main -> MainContent(component = child.component)
             }
         }
     }

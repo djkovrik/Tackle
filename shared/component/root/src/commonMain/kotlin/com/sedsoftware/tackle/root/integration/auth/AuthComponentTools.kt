@@ -8,12 +8,8 @@ internal class AuthComponentTools(
     private val platformTools: TacklePlatformTools,
 ) : AuthComponentGateways.Tools {
 
-    override fun getClientData(): AppClientData =
-        platformTools.getClientData()
-
-    override fun openUrl(url: String?) =
-        platformTools.openUrl(url)
-
+    override fun getClientData(): AppClientData = platformTools.getClientData()
+    override fun openUrl(url: String?) = platformTools.openUrl(url)
     override fun getTextInputEndDelay(): Long = INPUT_ENDED_DELAY
 
     private companion object {
