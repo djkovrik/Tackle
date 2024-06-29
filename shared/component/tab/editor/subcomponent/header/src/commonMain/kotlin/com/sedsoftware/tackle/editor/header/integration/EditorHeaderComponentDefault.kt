@@ -7,6 +7,7 @@ import com.arkivanov.essenty.lifecycle.doOnDestroy
 import com.arkivanov.mvikotlin.core.instancekeeper.getStore
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.labels
+import com.sedsoftware.tackle.domain.ComponentOutput
 import com.sedsoftware.tackle.domain.api.TackleDispatchers
 import com.sedsoftware.tackle.domain.model.AppLocale
 import com.sedsoftware.tackle.domain.model.type.StatusVisibility
@@ -28,7 +29,7 @@ class EditorHeaderComponentDefault(
     private val settings: EditorHeaderComponentGateways.Settings,
     private val tools: EditorHeaderComponentGateways.Tools,
     private val dispatchers: TackleDispatchers,
-    private val output: (EditorHeaderComponent.Output) -> Unit,
+    private val output: (ComponentOutput) -> Unit,
 ) : EditorHeaderComponent, ComponentContext by componentContext {
 
     private val store: EditorHeaderStore =
@@ -47,7 +48,7 @@ class EditorHeaderComponentDefault(
         scope.launch {
             store.labels.collect { label ->
                 when (label) {
-                    is Label.ErrorCaught -> output(EditorHeaderComponent.Output.ErrorCaught(label.throwable))
+                    is Label.ErrorCaught -> output(ComponentOutput.Common.ErrorCaught(label.throwable))
                 }
             }
         }

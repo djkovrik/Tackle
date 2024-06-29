@@ -24,8 +24,4 @@ interface EditorHeaderComponent {
         val statusVisibility: StatusVisibility,
         val statusVisibilityPickerDisplayed: Boolean,
     )
-
-    sealed class Output {
-        data class ErrorCaught(val throwable: Throwable) : Output()
-    }
 }

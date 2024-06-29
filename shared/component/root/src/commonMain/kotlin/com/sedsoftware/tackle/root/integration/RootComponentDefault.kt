@@ -9,6 +9,7 @@ import com.arkivanov.decompose.value.Value
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.sedsoftware.tackle.auth.AuthComponent
 import com.sedsoftware.tackle.auth.integration.AuthComponentDefault
+import com.sedsoftware.tackle.domain.ComponentOutput
 import com.sedsoftware.tackle.domain.api.AuthorizedApi
 import com.sedsoftware.tackle.domain.api.OAuthApi
 import com.sedsoftware.tackle.domain.api.TackleDatabase
@@ -27,8 +28,8 @@ import kotlinx.serialization.Serializable
 
 class RootComponentDefault internal constructor(
     componentContext: ComponentContext,
-    private val authComponent: (ComponentContext, (AuthComponent.Output) -> Unit) -> AuthComponent,
-    private val mainComponent: (ComponentContext, (MainComponent.Output) -> Unit) -> MainComponent,
+    private val authComponent: (ComponentContext, (ComponentOutput) -> Unit) -> AuthComponent,
+    private val mainComponent: (ComponentContext, (ComponentOutput) -> Unit) -> MainComponent,
 ) : RootComponent, ComponentContext by componentContext {
 
     constructor(
@@ -84,22 +85,17 @@ class RootComponentDefault internal constructor(
 
     private fun createChild(config: Config, componentContext: ComponentContext): Child =
         when (config) {
-            is Config.Auth -> Child.Auth(authComponent(componentContext, ::onAuthComponentOutput))
-            is Config.Main -> Child.Main(mainComponent(componentContext, ::onMainComponentOutput))
+            is Config.Auth -> Child.Auth(authComponent(componentContext, ::onComponentOutput))
+            is Config.Main -> Child.Main(mainComponent(componentContext, ::onComponentOutput))
         }
 
-    private fun onAuthComponentOutput(output: AuthComponent.Output) {
+    private fun onComponentOutput(output: ComponentOutput) {
         when (output) {
-            is AuthComponent.Output.NavigateToMainScreen -> navigation.replaceCurrent(Config.Main)
-            is AuthComponent.Output.ErrorCaught -> Unit // TODO
+            is ComponentOutput.Auth.NavigateToMainScreen -> navigation.replaceCurrent(Config.Main)
+            is ComponentOutput.Common.ErrorCaught -> Unit // TODO
         }
     }
 
-    private fun onMainComponentOutput(output: MainComponent.Output) {
-        when (output) {
-            is MainComponent.Output.ErrorCaught -> Unit // TODO
-        }
-    }
 
     @Serializable
     private sealed interface Config {

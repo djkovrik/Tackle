@@ -8,8 +8,4 @@ interface ExploreTabComponent {
     data class Model(
         val text: String,
     )
-
-    sealed class Output {
-        data class ErrorCaught(val throwable: Throwable) : Output()
-    }
 }

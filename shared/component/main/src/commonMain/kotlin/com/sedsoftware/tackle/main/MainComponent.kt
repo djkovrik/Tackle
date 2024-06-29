@@ -22,8 +22,4 @@ interface MainComponent {
         class TabPublications(val component: PublicationsTabComponent) : Child()
         class TabNotifications(val component: NotificationsTabComponent) : Child()
     }
-
-    sealed class Output {
-        data class ErrorCaught(val throwable: Throwable) : Output()
-    }
 }

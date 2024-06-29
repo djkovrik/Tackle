@@ -3,6 +3,7 @@ package com.sedsoftware.tackle.editor.integration
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.childContext
 import com.arkivanov.mvikotlin.core.store.StoreFactory
+import com.sedsoftware.tackle.domain.ComponentOutput
 import com.sedsoftware.tackle.domain.api.TackleDispatchers
 import com.sedsoftware.tackle.editor.EditorTabComponent
 import com.sedsoftware.tackle.editor.EditorTabComponentGateways
@@ -19,7 +20,7 @@ class EditorTabComponentDefault(
     private val settings: EditorTabComponentGateways.Settings,
     private val tools: EditorTabComponentGateways.Tools,
     private val dispatchers: TackleDispatchers,
-    private val output: (EditorTabComponent.Output) -> Unit,
+    private val output: (ComponentOutput) -> Unit,
 ) : EditorTabComponent, ComponentContext by componentContext {
 
     override val header: EditorHeaderComponent =
@@ -32,12 +33,6 @@ class EditorTabComponentDefault(
             settings = EditorHeaderSettings(settings),
             tools = EditorHeaderTools(tools),
             dispatchers = dispatchers,
-            output = ::onEditorHeaderComponentOutput
+            output = output,
         )
-
-    private fun onEditorHeaderComponentOutput(output: EditorHeaderComponent.Output) {
-        when (output) {
-            is EditorHeaderComponent.Output.ErrorCaught -> output(EditorTabComponent.Output.ErrorCaught(output.throwable))
-        }
-    }
 }

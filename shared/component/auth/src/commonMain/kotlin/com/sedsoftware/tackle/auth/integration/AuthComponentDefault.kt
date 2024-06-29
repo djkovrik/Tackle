@@ -14,6 +14,7 @@ import com.sedsoftware.tackle.auth.domain.AuthFlowManager
 import com.sedsoftware.tackle.auth.store.AuthStore
 import com.sedsoftware.tackle.auth.store.AuthStore.Label
 import com.sedsoftware.tackle.auth.store.AuthStoreProvider
+import com.sedsoftware.tackle.domain.ComponentOutput
 import com.sedsoftware.tackle.domain.api.TackleDispatchers
 import com.sedsoftware.tackle.utils.asValue
 import kotlinx.coroutines.CoroutineScope
@@ -27,7 +28,7 @@ class AuthComponentDefault(
     private val settings: AuthComponentGateways.Settings,
     private val tools: AuthComponentGateways.Tools,
     private val dispatchers: TackleDispatchers,
-    private val output: (AuthComponent.Output) -> Unit,
+    private val output: (ComponentOutput) -> Unit,
 ) : AuthComponent, ComponentContext by componentContext {
 
     private val store: AuthStore =
@@ -46,8 +47,8 @@ class AuthComponentDefault(
         scope.launch {
             store.labels.collect { label ->
                 when (label) {
-                    is Label.NavigateToMainScreen -> output(AuthComponent.Output.NavigateToMainScreen)
-                    is Label.ErrorCaught -> output(AuthComponent.Output.ErrorCaught(label.throwable))
+                    is Label.NavigateToMainScreen -> output(ComponentOutput.Auth.NavigateToMainScreen)
+                    is Label.ErrorCaught -> output(ComponentOutput.Common.ErrorCaught(label.throwable))
                 }
             }
         }

@@ -7,6 +7,7 @@ import com.arkivanov.decompose.router.stack.bringToFront
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.mvikotlin.core.store.StoreFactory
+import com.sedsoftware.tackle.domain.ComponentOutput
 import com.sedsoftware.tackle.domain.api.AuthorizedApi
 import com.sedsoftware.tackle.domain.api.TackleDatabase
 import com.sedsoftware.tackle.domain.api.TackleDispatchers
@@ -34,12 +35,12 @@ import kotlinx.serialization.Serializable
 
 class MainComponentDefault internal constructor(
     private val componentContext: ComponentContext,
-    private val mainComponentOutput: (MainComponent.Output) -> Unit,
-    private val homeTabComponent: (ComponentContext, (HomeTabComponent.Output) -> Unit) -> HomeTabComponent,
-    private val exploreTabComponent: (ComponentContext, (ExploreTabComponent.Output) -> Unit) -> ExploreTabComponent,
-    private val editorTabComponent: (ComponentContext, (EditorTabComponent.Output) -> Unit) -> EditorTabComponent,
-    private val publicationsTabComponent: (ComponentContext, (PublicationsTabComponent.Output) -> Unit) -> PublicationsTabComponent,
-    private val notificationsTabComponent: (ComponentContext, (NotificationsTabComponent.Output) -> Unit) -> NotificationsTabComponent,
+    private val mainComponentOutput: (ComponentOutput) -> Unit,
+    private val homeTabComponent: (ComponentContext, (ComponentOutput) -> Unit) -> HomeTabComponent,
+    private val exploreTabComponent: (ComponentContext, (ComponentOutput) -> Unit) -> ExploreTabComponent,
+    private val editorTabComponent: (ComponentContext, (ComponentOutput) -> Unit) -> EditorTabComponent,
+    private val publicationsTabComponent: (ComponentContext, (ComponentOutput) -> Unit) -> PublicationsTabComponent,
+    private val notificationsTabComponent: (ComponentContext, (ComponentOutput) -> Unit) -> NotificationsTabComponent,
 ) : MainComponent, ComponentContext by componentContext {
 
     constructor(
@@ -51,7 +52,7 @@ class MainComponentDefault internal constructor(
         settings: TackleSettings,
         platformTools: TacklePlatformTools,
         dispatchers: TackleDispatchers,
-        mainComponentOutput: (MainComponent.Output) -> Unit,
+        mainComponentOutput: (ComponentOutput) -> Unit,
     ) : this(
         componentContext = componentContext,
         mainComponentOutput = mainComponentOutput,
@@ -122,42 +123,12 @@ class MainComponentDefault internal constructor(
 
     private fun createChild(config: Config, componentContext: ComponentContext): Child =
         when (config) {
-            is Config.Home -> Child.TabHome(homeTabComponent(componentContext, ::onHomeTabOutput))
-            is Config.Explore -> Child.TabExplore(exploreTabComponent(componentContext, ::onExploreTabOutput))
-            is Config.Editor -> Child.TabEditor(editorTabComponent(componentContext, ::onEditorTabOutput))
-            is Config.Publications -> Child.TabPublications(publicationsTabComponent(componentContext, ::onPublicationsTabOutput))
-            is Config.Notifications -> Child.TabNotifications(notificationsTabComponent(componentContext, ::onNotificationsTabOutput))
+            is Config.Home -> Child.TabHome(homeTabComponent(componentContext, mainComponentOutput))
+            is Config.Explore -> Child.TabExplore(exploreTabComponent(componentContext, mainComponentOutput))
+            is Config.Editor -> Child.TabEditor(editorTabComponent(componentContext, mainComponentOutput))
+            is Config.Publications -> Child.TabPublications(publicationsTabComponent(componentContext, mainComponentOutput))
+            is Config.Notifications -> Child.TabNotifications(notificationsTabComponent(componentContext, mainComponentOutput))
         }
-
-    private fun onHomeTabOutput(output: HomeTabComponent.Output) {
-        when (output) {
-            is HomeTabComponent.Output.ErrorCaught -> mainComponentOutput(MainComponent.Output.ErrorCaught(output.throwable))
-        }
-    }
-
-    private fun onExploreTabOutput(output: ExploreTabComponent.Output) {
-        when (output) {
-            is ExploreTabComponent.Output.ErrorCaught -> mainComponentOutput(MainComponent.Output.ErrorCaught(output.throwable))
-        }
-    }
-
-    private fun onEditorTabOutput(output: EditorTabComponent.Output) {
-        when (output) {
-            is EditorTabComponent.Output.ErrorCaught -> mainComponentOutput(MainComponent.Output.ErrorCaught(output.throwable))
-        }
-    }
-
-    private fun onPublicationsTabOutput(output: PublicationsTabComponent.Output) {
-        when (output) {
-            is PublicationsTabComponent.Output.ErrorCaught -> mainComponentOutput(MainComponent.Output.ErrorCaught(output.throwable))
-        }
-    }
-
-    private fun onNotificationsTabOutput(output: NotificationsTabComponent.Output) {
-        when (output) {
-            is NotificationsTabComponent.Output.ErrorCaught -> mainComponentOutput(MainComponent.Output.ErrorCaught(output.throwable))
-        }
-    }
 
     @Serializable
     private sealed interface Config {
