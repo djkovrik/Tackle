@@ -7,6 +7,7 @@ internal val stateToModel: (State) -> Model = {
     Model(
         avatar = it.avatar,
         nickname = it.nickname,
+        domain = it.domain,
         recommendedLocale = it.recommendedLocale,
         selectedLocale = it.selectedLocale,
         availableLocales = listOf(it.recommendedLocale) + it.availableLocales.filterNot { locale -> locale == it.recommendedLocale },

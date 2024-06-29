@@ -9,6 +9,7 @@ internal class EditorHeaderSettings(
 
     override val ownAvatar: String = settings.ownAvatar
     override val ownNickname: String = settings.ownNickname
+    override val domain: String = settings.domain
     override var lastSelectedLanguageName: String = settings.lastSelectedLanguageName
     override var lastSelectedLanguageCode: String = settings.lastSelectedLanguageCode
 }

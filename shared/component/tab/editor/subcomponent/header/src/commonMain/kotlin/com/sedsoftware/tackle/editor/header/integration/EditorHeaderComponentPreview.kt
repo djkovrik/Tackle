@@ -10,6 +10,7 @@ import com.sedsoftware.tackle.editor.header.EditorHeaderComponent.Model
 class EditorHeaderComponentPreview(
     avatar: String = "",
     nickname: String = "",
+    domain: String = "",
     recommendedLocale: AppLocale = AppLocale.empty(),
     selectedLocale: AppLocale = AppLocale.empty(),
     availableLocales: List<AppLocale> = emptyList(),
@@ -24,6 +25,7 @@ class EditorHeaderComponentPreview(
             Model(
                 avatar = avatar,
                 nickname = nickname,
+                domain = domain,
                 recommendedLocale = recommendedLocale,
                 selectedLocale = selectedLocale,
                 availableLocales = availableLocales,

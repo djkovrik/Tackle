@@ -6,6 +6,7 @@ interface EditorHeaderComponentGateways {
     interface Settings {
         val ownAvatar: String
         val ownNickname: String
+        val domain: String
         var lastSelectedLanguageName: String
         var lastSelectedLanguageCode: String
     }

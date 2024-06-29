@@ -19,6 +19,7 @@ internal interface EditorHeaderStore : Store<Intent, State, Label> {
     data class State(
         val avatar: String = "",
         val nickname: String = "",
+        val domain: String = "",
         val recommendedLocale: AppLocale = AppLocale.empty(),
         val selectedLocale: AppLocale = AppLocale.empty(),
         val availableLocales: List<AppLocale> = emptyList(),

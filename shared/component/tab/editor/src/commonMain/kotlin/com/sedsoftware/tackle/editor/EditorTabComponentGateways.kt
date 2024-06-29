@@ -17,6 +17,7 @@ interface EditorTabComponentGateways {
     interface Settings {
         val ownAvatar: String
         val ownNickname: String
+        val domain: String
         var emojiLastCachedTimestamp: String
         var lastSelectedLanguageName: String
         var lastSelectedLanguageCode: String

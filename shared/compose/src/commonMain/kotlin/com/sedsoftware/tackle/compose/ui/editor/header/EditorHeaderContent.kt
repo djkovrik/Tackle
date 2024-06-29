@@ -3,7 +3,6 @@ package com.sedsoftware.tackle.compose.ui.editor.header
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,13 +15,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
@@ -68,6 +64,8 @@ internal fun EditorHeaderContent(
                     ActionBarIcon(
                         iconRes = Res.drawable.editor_back,
                         onClick = onBackClick,
+                        backgroundColor = MaterialTheme.colorScheme.background,
+                        contentColor = MaterialTheme.colorScheme.primary,
                     )
 
                     Spacer(modifier = Modifier.width(width = 16.dp))
@@ -84,6 +82,8 @@ internal fun EditorHeaderContent(
                 ActionBarIconWithText(
                     text = model.selectedLocale.languageCode,
                     iconRes = Res.drawable.editor_language,
+                    backgroundColor = MaterialTheme.colorScheme.primaryContainer,
+                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
                     onClick = onLocalePickerRequest,
                 )
 
@@ -91,6 +91,8 @@ internal fun EditorHeaderContent(
 
                 ActionBarIcon(
                     iconRes = Res.drawable.editor_send,
+                    backgroundColor = MaterialTheme.colorScheme.primaryContainer,
+                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
                     onClick = onSendClick,
                 )
             }
@@ -123,7 +125,7 @@ internal fun EditorHeaderContent(
                     )
 
                     Text(
-                        text = "mastodon.social",
+                        text = model.domain,
                         color = MaterialTheme.colorScheme.secondary,
                         style = MaterialTheme.typography.bodyLarge,
                     )
@@ -134,6 +136,8 @@ internal fun EditorHeaderContent(
                 ActionBarIconWithText(
                     text = stringResource(model.statusVisibility.getTitle()),
                     iconRes = model.statusVisibility.getIcon(),
+                    backgroundColor = MaterialTheme.colorScheme.primaryContainer,
+                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
                     onClick = onVisibilityPickerRequest,
                 )
             }
@@ -149,6 +153,7 @@ private fun EditorHeaderContentPreview() {
             model = EditorHeaderComponent.Model(
                 avatar = "https://mastodon.social/avatars/original/missing.png",
                 nickname = "djkovrik",
+                domain = "mastodon.social",
                 recommendedLocale = AppLocale("English", "en"),
                 selectedLocale = AppLocale("English", "en"),
                 availableLocales = emptyList(),
@@ -169,6 +174,7 @@ private fun EditorHeaderContentPreviewWithBack() {
             model = EditorHeaderComponent.Model(
                 avatar = "https://mastodon.social/avatars/original/missing.png",
                 nickname = "djkovrik",
+                domain = "mastodon.social",
                 recommendedLocale = AppLocale("English", "en"),
                 selectedLocale = AppLocale("English", "en"),
                 availableLocales = emptyList(),

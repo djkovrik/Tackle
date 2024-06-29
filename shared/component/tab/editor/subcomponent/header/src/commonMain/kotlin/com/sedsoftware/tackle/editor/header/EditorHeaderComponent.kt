@@ -16,6 +16,7 @@ interface EditorHeaderComponent {
     data class Model(
         val avatar: String,
         val nickname: String,
+        val domain: String,
         val recommendedLocale: AppLocale,
         val selectedLocale: AppLocale,
         val availableLocales: List<AppLocale>,

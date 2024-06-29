@@ -109,6 +109,7 @@ internal class EditorHeaderStoreProvider(
                     is Msg.ProfileDataLoaded -> copy(
                         avatar = msg.data.avatar,
                         nickname = msg.data.name,
+                        domain = msg.data.domain,
                     )
 
                     is Msg.RecommendedLocaleLoaded -> copy(
