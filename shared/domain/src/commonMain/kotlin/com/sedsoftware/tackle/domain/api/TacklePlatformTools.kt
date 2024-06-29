@@ -1,4 +1,4 @@
-package com.sedsoftware.tackle.domain
+package com.sedsoftware.tackle.domain.api
 
 import com.sedsoftware.tackle.domain.model.AppClientData
 import com.sedsoftware.tackle.domain.model.AppLocale

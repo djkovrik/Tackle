@@ -6,7 +6,7 @@ import app.cash.sqldelight.db.SqlDriver
 import com.sedsoftware.tackle.database.TackleAppDatabase
 import com.sedsoftware.tackle.database.TackleAppDatabaseQueries
 import com.sedsoftware.tackle.database.mappers.ServerEmojiEntityMapper
-import com.sedsoftware.tackle.domain.TackleDatabase
+import com.sedsoftware.tackle.domain.api.TackleDatabase
 import com.sedsoftware.tackle.domain.model.CustomEmoji
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

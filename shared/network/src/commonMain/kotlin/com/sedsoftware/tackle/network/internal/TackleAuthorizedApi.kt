@@ -1,6 +1,6 @@
 package com.sedsoftware.tackle.network.internal
 
-import com.sedsoftware.tackle.domain.AuthorizedApi
+import com.sedsoftware.tackle.domain.api.AuthorizedApi
 import com.sedsoftware.tackle.network.mappers.AccountMapper
 import com.sedsoftware.tackle.domain.model.Account
 import com.sedsoftware.tackle.network.response.AccountResponse

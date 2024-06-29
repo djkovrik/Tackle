@@ -1,6 +1,6 @@
 package com.sedsoftware.tackle.database.internal
 
-import com.sedsoftware.tackle.domain.TackleDatabase
+import com.sedsoftware.tackle.domain.api.TackleDatabase
 import com.sedsoftware.tackle.domain.model.CustomEmoji
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow

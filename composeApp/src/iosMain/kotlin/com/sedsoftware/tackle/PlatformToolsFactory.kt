@@ -1,6 +1,6 @@
 package com.sedsoftware.tackle
 
-import com.sedsoftware.tackle.domain.TacklePlatformTools
+import com.sedsoftware.tackle.domain.api.TacklePlatformTools
 import com.sedsoftware.tackle.domain.model.AppClientData
 import com.sedsoftware.tackle.domain.model.AppLocale
 import platform.Foundation.ISOLanguageCodes

@@ -5,11 +5,11 @@ import assertk.assertions.hasClass
 import com.arkivanov.decompose.DefaultComponentContext
 import com.arkivanov.decompose.router.stack.active
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
-import com.sedsoftware.tackle.domain.AuthorizedApi
-import com.sedsoftware.tackle.domain.TackleDatabase
-import com.sedsoftware.tackle.domain.TacklePlatformTools
-import com.sedsoftware.tackle.domain.TackleSettings
-import com.sedsoftware.tackle.domain.UnauthorizedApi
+import com.sedsoftware.tackle.domain.api.AuthorizedApi
+import com.sedsoftware.tackle.domain.api.TackleDatabase
+import com.sedsoftware.tackle.domain.api.TacklePlatformTools
+import com.sedsoftware.tackle.domain.api.TackleSettings
+import com.sedsoftware.tackle.domain.api.UnauthorizedApi
 import com.sedsoftware.tackle.domain.model.Account
 import com.sedsoftware.tackle.domain.model.AppClientData
 import com.sedsoftware.tackle.domain.model.AppLocale

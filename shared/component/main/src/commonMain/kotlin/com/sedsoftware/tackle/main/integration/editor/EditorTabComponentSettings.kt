@@ -1,6 +1,6 @@
 package com.sedsoftware.tackle.main.integration.editor
 
-import com.sedsoftware.tackle.domain.TackleSettings
+import com.sedsoftware.tackle.domain.api.TackleSettings
 import com.sedsoftware.tackle.editor.EditorTabComponentGateways
 
 internal class EditorTabComponentSettings(

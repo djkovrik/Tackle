@@ -1,6 +1,6 @@
 package com.sedsoftware.tackle.network.internal
 
-import com.sedsoftware.tackle.domain.UnauthorizedApi
+import com.sedsoftware.tackle.domain.api.UnauthorizedApi
 import com.sedsoftware.tackle.network.mappers.ApplicationMapper
 import com.sedsoftware.tackle.network.mappers.CustomEmojiMapper
 import com.sedsoftware.tackle.network.mappers.InstanceMapper

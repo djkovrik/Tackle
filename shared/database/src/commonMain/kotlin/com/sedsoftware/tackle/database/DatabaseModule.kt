@@ -3,7 +3,7 @@ package com.sedsoftware.tackle.database
 import app.cash.sqldelight.db.SqlDriver
 import com.sedsoftware.tackle.database.internal.TackleSharedDatabase
 import com.sedsoftware.tackle.database.internal.TackleTestDatabase
-import com.sedsoftware.tackle.domain.TackleDatabase
+import com.sedsoftware.tackle.domain.api.TackleDatabase
 import kotlin.coroutines.CoroutineContext
 
 interface DatabaseModule {

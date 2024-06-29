@@ -3,7 +3,7 @@ package com.sedsoftware.tackle
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import com.sedsoftware.tackle.domain.TacklePlatformTools
+import com.sedsoftware.tackle.domain.api.TacklePlatformTools
 import com.sedsoftware.tackle.domain.model.AppClientData
 import com.sedsoftware.tackle.domain.model.AppLocale
 import java.util.Locale

@@ -1,4 +1,4 @@
-package com.sedsoftware.tackle.domain
+package com.sedsoftware.tackle.domain.api
 
 import com.sedsoftware.tackle.domain.model.Application
 import com.sedsoftware.tackle.domain.model.CustomEmoji

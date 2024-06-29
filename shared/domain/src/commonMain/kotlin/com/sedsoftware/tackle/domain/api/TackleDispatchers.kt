@@ -1,4 +1,4 @@
-package com.sedsoftware.tackle.domain
+package com.sedsoftware.tackle.domain.api
 
 import kotlinx.coroutines.CoroutineDispatcher
 

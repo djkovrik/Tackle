@@ -1,4 +1,4 @@
-package com.sedsoftware.tackle.domain
+package com.sedsoftware.tackle.domain.api
 
 interface TackleSettings {
     var domain: String

@@ -14,7 +14,7 @@ import com.sedsoftware.tackle.auth.domain.AuthFlowManager
 import com.sedsoftware.tackle.auth.store.AuthStore
 import com.sedsoftware.tackle.auth.store.AuthStore.Label
 import com.sedsoftware.tackle.auth.store.AuthStoreProvider
-import com.sedsoftware.tackle.domain.TackleDispatchers
+import com.sedsoftware.tackle.domain.api.TackleDispatchers
 import com.sedsoftware.tackle.utils.asValue
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel

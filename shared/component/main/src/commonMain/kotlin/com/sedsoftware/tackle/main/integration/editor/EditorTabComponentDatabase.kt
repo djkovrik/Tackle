@@ -1,6 +1,6 @@
 package com.sedsoftware.tackle.main.integration.editor
 
-import com.sedsoftware.tackle.domain.TackleDatabase
+import com.sedsoftware.tackle.domain.api.TackleDatabase
 import com.sedsoftware.tackle.domain.model.CustomEmoji
 import com.sedsoftware.tackle.editor.EditorTabComponentGateways
 import kotlinx.coroutines.flow.Flow

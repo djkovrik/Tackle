@@ -1,8 +1,8 @@
 package com.sedsoftware.tackle.main.integration.editor
 
 import com.sedsoftware.tackle.editor.EditorTabComponentGateways
-import com.sedsoftware.tackle.domain.AuthorizedApi
-import com.sedsoftware.tackle.domain.UnauthorizedApi
+import com.sedsoftware.tackle.domain.api.AuthorizedApi
+import com.sedsoftware.tackle.domain.api.UnauthorizedApi
 import com.sedsoftware.tackle.domain.model.CustomEmoji
 
 internal class EditorTabComponentApi(

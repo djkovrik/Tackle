@@ -3,7 +3,7 @@ package com.sedsoftware.tackle.editor.integration
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.childContext
 import com.arkivanov.mvikotlin.core.store.StoreFactory
-import com.sedsoftware.tackle.domain.TackleDispatchers
+import com.sedsoftware.tackle.domain.api.TackleDispatchers
 import com.sedsoftware.tackle.editor.EditorTabComponent
 import com.sedsoftware.tackle.editor.EditorTabComponentGateways
 import com.sedsoftware.tackle.editor.header.EditorHeaderComponent

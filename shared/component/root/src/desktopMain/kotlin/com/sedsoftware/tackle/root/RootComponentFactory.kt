@@ -7,8 +7,8 @@ import com.russhwolf.settings.Settings
 import com.sedsoftware.tackle.database.DatabaseModule
 import com.sedsoftware.tackle.database.DatabaseModuleDependencies
 import com.sedsoftware.tackle.database.TackleDatabaseDriverFactory
-import com.sedsoftware.tackle.domain.TackleDispatchers
-import com.sedsoftware.tackle.domain.TacklePlatformTools
+import com.sedsoftware.tackle.domain.api.TackleDispatchers
+import com.sedsoftware.tackle.domain.api.TacklePlatformTools
 import com.sedsoftware.tackle.network.NetworkModule
 import com.sedsoftware.tackle.network.NetworkModuleDependencies
 import com.sedsoftware.tackle.root.integration.RootComponentDefault
