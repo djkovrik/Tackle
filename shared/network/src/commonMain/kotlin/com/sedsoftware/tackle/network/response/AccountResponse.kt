@@ -43,10 +43,10 @@ internal class FieldResponse(
 
 @Serializable
 internal class CredentialAccountSourceResponse(
-    @SerialName("note") val note: String,
-    @SerialName("fields") val fields: List<FieldResponse>,
-    @SerialName("privacy") val privacy: CredentialPrivacyRemote,
-    @SerialName("sensitive") val sensitive: Boolean,
-    @SerialName("language") val language: String,
-    @SerialName("follow_requests_count") val followRequestsCount: Long,
+    @SerialName("note") val note: String = "",
+    @SerialName("fields") val fields: List<FieldResponse> = emptyList(),
+    @SerialName("privacy") val privacy: CredentialPrivacyRemote = CredentialPrivacyRemote.UNKNOWN,
+    @SerialName("sensitive") val sensitive: Boolean = false,
+    @SerialName("language") val language: String = "",
+    @SerialName("follow_requests_count") val followRequestsCount: Long = 0L,
 )
