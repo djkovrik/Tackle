@@ -81,7 +81,7 @@ class MainComponentTest : ComponentTest<MainComponentDefault>() {
         // when
         component = createComponent()
         // then
-        assertThat(component.childStack.active.instance).hasClass(MainComponent.Child.TabHome::class)
+        assertThat(component.childStack.active.instance).hasClass(MainComponent.Child.TabEditor::class)
     }
 
     @Test
