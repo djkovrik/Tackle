@@ -73,11 +73,8 @@ internal class AuthStoreProvider(
                         unwrap(
                             result = withContext(ioContext) { manager.startAuthFlow(it.credentials) },
                             onSuccess = { isAuthorized ->
-                                dispatch(Msg.OAuthFlowStateChanged(active = false))
-
                                 if (isAuthorized) {
-                                    dispatch(Msg.CredentialsStateChanged(newState = CredentialsState.AUTHORIZED))
-                                    publish(Label.NavigateToMainScreen)
+                                    forward(Action.CheckCurrentCredentials)
                                 } else {
                                     dispatch(Msg.CredentialsStateChanged(newState = CredentialsState.UNAUTHORIZED))
                                 }

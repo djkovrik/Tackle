@@ -7,10 +7,31 @@ internal class EditorTabComponentSettings(
     private val settings: TackleSettings,
 ) : EditorTabComponentGateways.Settings {
 
-    override val ownAvatar: String = settings.ownAvatar
-    override val ownNickname: String = settings.ownUsername
-    override val domain: String = settings.domain
-    override var emojiLastCachedTimestamp: String = settings.emojiLastCachedTimestamp
-    override var lastSelectedLanguageName: String = settings.lastSelectedLanguageName
-    override var lastSelectedLanguageCode: String = settings.lastSelectedLanguageCode
+
+    override val ownAvatar: String
+        get() = settings.ownAvatar
+
+    override val ownNickname: String
+        get() = settings.ownUsername
+
+    override val domain: String
+        get() = settings.domain
+
+    override var emojiLastCachedTimestamp: String
+        get() = settings.emojiLastCachedTimestamp
+        set(value) {
+            settings.emojiLastCachedTimestamp = value
+        }
+
+    override var lastSelectedLanguageName: String
+        get() = settings.lastSelectedLanguageName
+        set(value) {
+            settings.lastSelectedLanguageName = value
+        }
+
+    override var lastSelectedLanguageCode: String
+        get() = settings.lastSelectedLanguageCode
+        set(value) {
+            settings.lastSelectedLanguageCode = value
+        }
 }

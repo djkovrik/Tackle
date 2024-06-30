@@ -10,6 +10,7 @@ kotlin {
         commonMain {
             dependencies {
                 implementation(project(":shared:domain"))
+                implementation(project(":shared:utils"))
                 implementation(project(":shared:component:tab:editor:subcomponent:header"))
 
                 implementation(libs.ark.decompose.core)

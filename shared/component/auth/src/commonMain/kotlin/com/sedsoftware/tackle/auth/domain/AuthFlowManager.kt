@@ -1,6 +1,7 @@
 package com.sedsoftware.tackle.auth.domain
 
 import com.sedsoftware.tackle.auth.AuthComponentGateways
+import com.sedsoftware.tackle.auth.extension.normalizeUrl
 import com.sedsoftware.tackle.auth.model.ObtainedCredentials
 import com.sedsoftware.tackle.domain.model.Account
 import com.sedsoftware.tackle.domain.model.AppClientData
@@ -36,7 +37,7 @@ internal class AuthFlowManager(
     }
 
     suspend fun createApp(domain: String): Result<ObtainedCredentials> = runCatching {
-        settings.domain = domain
+        settings.domain = domain.normalizeUrl()
 
         val response: Application = api.createApp(clientAppData)
 
@@ -48,7 +49,6 @@ internal class AuthFlowManager(
         settings.clientSecret = response.clientSecret
 
         return@runCatching ObtainedCredentials(
-            domain = domain,
             clientId = response.clientId,
             clientSecret = response.clientSecret,
         )

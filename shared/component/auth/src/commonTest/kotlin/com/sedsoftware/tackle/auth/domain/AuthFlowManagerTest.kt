@@ -96,7 +96,6 @@ class AuthFlowManagerTest {
     fun `startAuthFlow should return true on valid response`() = runTest {
         // given
         val credentials = ObtainedCredentials(
-            domain = StubConstants.DOMAIN,
             clientId = StubConstants.CLIENT_ID,
             clientSecret = StubConstants.CLIENT_SECRET,
         )
@@ -111,7 +110,6 @@ class AuthFlowManagerTest {
     fun `startAuthFlow should return false on invalid response`() = runTest {
         // given
         val credentials = ObtainedCredentials(
-            domain = StubConstants.DOMAIN,
             clientId = StubConstants.CLIENT_ID,
             clientSecret = StubConstants.CLIENT_SECRET,
         )
@@ -127,7 +125,6 @@ class AuthFlowManagerTest {
     fun `startAuthFlow should update token setting on valid response`() = runTest {
         // given
         val credentials = ObtainedCredentials(
-            domain = StubConstants.DOMAIN,
             clientId = StubConstants.CLIENT_ID,
             clientSecret = StubConstants.CLIENT_SECRET,
         )

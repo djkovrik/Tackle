@@ -3,6 +3,7 @@ package com.sedsoftware.tackle.editor.header.domain
 import com.sedsoftware.tackle.domain.model.AppLocale
 import com.sedsoftware.tackle.editor.header.EditorHeaderComponentGateways
 import com.sedsoftware.tackle.editor.header.model.EditorProfileData
+import com.sedsoftware.tackle.utils.trimUrl
 
 internal class EditorHeaderManager(
     private val settings: EditorHeaderComponentGateways.Settings,
@@ -13,7 +14,7 @@ internal class EditorHeaderManager(
         return@runCatching EditorProfileData(
             avatar = settings.ownAvatar,
             name = settings.ownNickname,
-            domain = settings.domain,
+            domain = settings.domain.trimUrl(),
         )
     }
 
