@@ -14,8 +14,8 @@ import com.sedsoftware.tackle.auth.store.AuthStore.Intent
 import com.sedsoftware.tackle.auth.store.AuthStore.Label
 import com.sedsoftware.tackle.auth.store.AuthStore.State
 import com.sedsoftware.tackle.domain.model.Instance
-import com.sedsoftware.tackle.utils.MissedRegistrationDataException
 import com.sedsoftware.tackle.utils.StoreCreate
+import com.sedsoftware.tackle.utils.TackleException
 import com.sedsoftware.tackle.utils.isUnauthorized
 import com.sedsoftware.tackle.utils.trimUrl
 import com.sedsoftware.tackle.utils.unwrap
@@ -57,7 +57,7 @@ internal class AuthStoreProvider(
                                 }
                             },
                             onError = { throwable ->
-                                if (throwable is MissedRegistrationDataException || throwable.isUnauthorized) {
+                                if (throwable is TackleException.MissedRegistrationData || throwable.isUnauthorized) {
                                     dispatch(Msg.CredentialsStateChanged(newState = CredentialsState.UNAUTHORIZED))
                                 } else {
                                     dispatch(Msg.CredentialsStateChanged(newState = CredentialsState.EXISTING_USER_CHECK_FAILED))

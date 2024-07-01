@@ -14,7 +14,7 @@ import com.sedsoftware.tackle.auth.stubs.AuthComponentApiStub
 import com.sedsoftware.tackle.auth.stubs.AuthComponentSettingsStub
 import com.sedsoftware.tackle.auth.stubs.AuthComponentToolsStub
 import com.sedsoftware.tackle.auth.stubs.StubConstants
-import com.sedsoftware.tackle.utils.MissedRegistrationDataException
+import com.sedsoftware.tackle.utils.TackleException
 import com.sedsoftware.tackle.utils.test.StoreTest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.runTest
@@ -70,7 +70,7 @@ internal class AuthStoreTest : StoreTest<AuthStore.Intent, AuthStore.State, Auth
         store.init()
         // then
         assertThat(store.state.credentialsState, "Credentials state").isEqualTo(CredentialsState.UNAUTHORIZED)
-        assertThat(labels.first()).isEqualTo(AuthStore.Label.ErrorCaught(MissedRegistrationDataException))
+        assertThat(labels.first()).isEqualTo(AuthStore.Label.ErrorCaught(TackleException.MissedRegistrationData))
     }
 
     @Test

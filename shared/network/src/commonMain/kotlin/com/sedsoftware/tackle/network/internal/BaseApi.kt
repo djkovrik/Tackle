@@ -1,7 +1,7 @@
 package com.sedsoftware.tackle.network.internal
 
 import com.sedsoftware.tackle.network.response.RemoteErrorResponse
-import com.sedsoftware.tackle.utils.RemoteServerException
+import com.sedsoftware.tackle.utils.TackleException
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -13,6 +13,8 @@ import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
 import io.ktor.http.isSuccess
 import io.ktor.serialization.kotlinx.json.json
+import io.ktor.utils.io.errors.IOException
+import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 
 internal abstract class BaseApi(
@@ -44,29 +46,45 @@ internal abstract class BaseApi(
         responseMapper: (From) -> To,
         additionalConfig: HttpRequestBuilder.() -> Unit = {},
     ): To {
+        try {
 
-        val response: HttpResponse = httpClient.request(requestUrl) {
-            method = requestMethod
+            val response: HttpResponse = httpClient.request(requestUrl) {
 
-            headers {
-                append(HttpHeaders.Accept, "*/*")
-                append(HttpHeaders.UserAgent, Constants.USER_AGENT)
+                method = requestMethod
 
-                if (authenticated) {
-                    append(HttpHeaders.Authorization, "${Constants.BEARER} $appToken")
+                headers {
+                    append(HttpHeaders.Accept, "*/*")
+                    append(HttpHeaders.UserAgent, Constants.USER_AGENT)
+
+                    if (authenticated) {
+                        append(HttpHeaders.Authorization, "${Constants.BEARER} $appToken")
+                    }
                 }
+
+                additionalConfig.invoke(this)
             }
 
-            additionalConfig.invoke(this)
-        }
+            if (!response.status.isSuccess()) {
+                val errorDetails: RemoteErrorResponse? = response.remoteErrorDetails()
+                throw TackleException.RemoteServerException(errorDetails?.error, errorDetails?.errorDescription, response.status.value)
+            }
 
-        if (!response.status.isSuccess()) {
-            val errorBody: RemoteErrorResponse = json.decodeFromString(response.body())
-            throw RemoteServerException(errorBody.error, errorBody.errorDescription, response.status.value)
+            return responseMapper(json.decodeFromString<From>(response.body()))
+        } catch (exception: SerializationException) {
+            throw TackleException.SerializationException(exception)
+        } catch (exception: IOException) {
+            throw TackleException.NetworkException(exception)
+        } catch (exception: Exception) {
+            throw TackleException.Unknown(exception)
         }
-
-        return responseMapper(json.decodeFromString<From>(response.body()))
     }
+
+    suspend inline fun HttpResponse.remoteErrorDetails(): RemoteErrorResponse? =
+        try {
+            json.decodeFromString<RemoteErrorResponse>(body())
+        } catch (e: SerializationException) {
+            null
+        }
 
     internal object Constants {
         const val USER_AGENT = "Tackle"

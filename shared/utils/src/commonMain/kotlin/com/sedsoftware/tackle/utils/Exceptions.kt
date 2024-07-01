@@ -1,5 +1,22 @@
 package com.sedsoftware.tackle.utils
 
-data object MissedRegistrationDataException : IllegalStateException()
-data object AppCreationException : Exception()
-data class RemoteServerException(override val message: String, val description: String, val code: Int) : Exception(message)
+sealed class TackleException(
+    override val message: String? = null,
+    override val cause: Throwable? = null,
+    val skipUi: Boolean = false,
+) : Exception(message, cause) {
+
+    data object MissedRegistrationData : TackleException(skipUi = true)
+
+    class NetworkException(cause: Throwable) : TackleException(cause = cause)
+
+    class RemoteServerException(
+        message: String?,
+        val description: String?,
+        val code: Int?,
+    ) : TackleException(message = message)
+
+    class SerializationException(cause: Throwable) : TackleException(cause = cause)
+
+    class Unknown(cause: Throwable) : TackleException(cause = cause)
+}

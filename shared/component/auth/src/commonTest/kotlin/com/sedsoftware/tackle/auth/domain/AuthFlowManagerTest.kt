@@ -9,8 +9,7 @@ import com.sedsoftware.tackle.auth.stubs.AuthComponentApiStub
 import com.sedsoftware.tackle.auth.stubs.AuthComponentSettingsStub
 import com.sedsoftware.tackle.auth.stubs.AuthComponentToolsStub
 import com.sedsoftware.tackle.auth.stubs.StubConstants
-import com.sedsoftware.tackle.utils.AppCreationException
-import com.sedsoftware.tackle.utils.MissedRegistrationDataException
+import com.sedsoftware.tackle.utils.TackleException
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 
@@ -53,7 +52,7 @@ class AuthFlowManagerTest {
         // when
         val result = manager.verifyCredentials()
         // then
-        assertThat(result.exceptionOrNull()).isSameInstanceAs(MissedRegistrationDataException)
+        assertThat(result.exceptionOrNull()).isSameInstanceAs(TackleException.MissedRegistrationData)
     }
 
     @Test
@@ -64,17 +63,7 @@ class AuthFlowManagerTest {
         // when
         val result = manager.verifyCredentials()
         // then
-        assertThat(result.exceptionOrNull()).isSameInstanceAs(MissedRegistrationDataException)
-    }
-
-    @Test
-    fun `createApp should throw an exception on invalid response`() = runTest {
-        // given
-        api.createAppResponse = AuthComponentApiStub.invalidApplicationDetails
-        // when
-        val result = manager.createApp(StubConstants.DOMAIN)
-        // then
-        assertThat(result.exceptionOrNull()).isSameInstanceAs(AppCreationException)
+        assertThat(result.exceptionOrNull()).isSameInstanceAs(TackleException.MissedRegistrationData)
     }
 
     @Test

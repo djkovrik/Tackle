@@ -7,8 +7,7 @@ import com.sedsoftware.tackle.domain.model.Account
 import com.sedsoftware.tackle.domain.model.AppClientData
 import com.sedsoftware.tackle.domain.model.Application
 import com.sedsoftware.tackle.domain.model.Instance
-import com.sedsoftware.tackle.utils.AppCreationException
-import com.sedsoftware.tackle.utils.MissedRegistrationDataException
+import com.sedsoftware.tackle.utils.TackleException
 
 internal class AuthFlowManager(
     private val api: AuthComponentGateways.Api,
@@ -25,7 +24,7 @@ internal class AuthFlowManager(
 
     suspend fun verifyCredentials(): Result<Boolean> = runCatching {
         if (settings.domain.isEmpty() || settings.token.isEmpty()) {
-            throw MissedRegistrationDataException
+            throw TackleException.MissedRegistrationData
         }
 
         val response: Account = api.verifyCredentials()
@@ -40,10 +39,6 @@ internal class AuthFlowManager(
         settings.domain = domain.normalizeUrl()
 
         val response: Application = api.createApp(clientAppData)
-
-        if (response.clientId.isEmpty() || response.clientSecret.isEmpty()) {
-            throw AppCreationException
-        }
 
         settings.clientId = response.clientId
         settings.clientSecret = response.clientSecret
