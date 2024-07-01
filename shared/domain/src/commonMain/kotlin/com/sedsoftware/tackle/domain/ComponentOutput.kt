@@ -1,12 +1,18 @@
 package com.sedsoftware.tackle.domain
 
+import com.sedsoftware.tackle.domain.model.CustomEmoji
+
 sealed class ComponentOutput {
 
-    sealed class Auth {
-        data object NavigateToMainScreen : ComponentOutput()
+    sealed class Auth : ComponentOutput() {
+        data object NavigateToMainScreen : Auth()
     }
 
-    sealed class Common {
-        data class ErrorCaught(val throwable: Throwable) : ComponentOutput()
+    sealed class StatusEditor : ComponentOutput() {
+        data class EmojiSelected(val emoji: CustomEmoji) : StatusEditor()
+    }
+
+    sealed class Common : ComponentOutput() {
+        data class ErrorCaught(val throwable: Throwable) : Common()
     }
 }

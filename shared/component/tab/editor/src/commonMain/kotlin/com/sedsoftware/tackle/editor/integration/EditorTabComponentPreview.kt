@@ -1,8 +1,11 @@
 package com.sedsoftware.tackle.editor.integration
 
 import com.sedsoftware.tackle.domain.model.AppLocale
+import com.sedsoftware.tackle.domain.model.CustomEmoji
 import com.sedsoftware.tackle.domain.model.type.StatusVisibility
 import com.sedsoftware.tackle.editor.EditorTabComponent
+import com.sedsoftware.tackle.editor.content.EditorEmojisComponent
+import com.sedsoftware.tackle.editor.content.integration.EditorEmojisComponentPreview
 import com.sedsoftware.tackle.editor.header.EditorHeaderComponent
 import com.sedsoftware.tackle.editor.header.integration.EditorHeaderComponentPreview
 
@@ -16,6 +19,8 @@ class EditorTabComponentPreview(
     localePickerDisplayed: Boolean = false,
     statusVisibility: StatusVisibility = StatusVisibility.PUBLIC,
     statusVisibilityPickerDisplayed: Boolean = false,
+    emojis: List<CustomEmoji> = emptyList(),
+    emojiPickerAvailable: Boolean = false,
 ) : EditorTabComponent {
 
     override val header: EditorHeaderComponent =
@@ -29,5 +34,11 @@ class EditorTabComponentPreview(
             localePickerDisplayed = localePickerDisplayed,
             statusVisibility = statusVisibility,
             statusVisibilityPickerDisplayed = statusVisibilityPickerDisplayed
+        )
+
+    override val emojis: EditorEmojisComponent =
+        EditorEmojisComponentPreview(
+            emojis = emojis,
+            emojiPickerAvailable = emojiPickerAvailable,
         )
 }

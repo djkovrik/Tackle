@@ -4,7 +4,7 @@ import com.sedsoftware.tackle.domain.model.AppLocale
 import com.sedsoftware.tackle.editor.EditorTabComponentGateways
 import com.sedsoftware.tackle.editor.header.EditorHeaderComponentGateways
 
-internal class EditorHeaderTools(
+internal class EditorHeaderComponentTools(
     private val tools: EditorTabComponentGateways.Tools,
 ) : EditorHeaderComponentGateways.Tools {
 

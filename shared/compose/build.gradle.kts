@@ -26,7 +26,10 @@ kotlin {
             implementation(project(":shared:component:main"))
 
             implementation(project(":shared:component:tab:editor"))
+            implementation(project(":shared:component:tab:editor:subcomponent:attachments"))
+            implementation(project(":shared:component:tab:editor:subcomponent:emojis"))
             implementation(project(":shared:component:tab:editor:subcomponent:header"))
+            implementation(project(":shared:component:tab:editor:subcomponent:poll"))
 
             implementation(project(":shared:component:tab:home"))
             implementation(project(":shared:component:tab:explore"))

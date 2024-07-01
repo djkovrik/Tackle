@@ -93,6 +93,7 @@ class RootComponentDefault internal constructor(
         when (output) {
             is ComponentOutput.Auth.NavigateToMainScreen -> navigation.replaceCurrent(Config.Main)
             is ComponentOutput.Common.ErrorCaught -> Unit // TODO
+            else -> Unit
         }
     }
 

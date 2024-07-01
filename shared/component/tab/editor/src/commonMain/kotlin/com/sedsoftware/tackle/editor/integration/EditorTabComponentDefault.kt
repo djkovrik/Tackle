@@ -7,10 +7,15 @@ import com.sedsoftware.tackle.domain.ComponentOutput
 import com.sedsoftware.tackle.domain.api.TackleDispatchers
 import com.sedsoftware.tackle.editor.EditorTabComponent
 import com.sedsoftware.tackle.editor.EditorTabComponentGateways
+import com.sedsoftware.tackle.editor.content.EditorEmojisComponent
+import com.sedsoftware.tackle.editor.content.integration.EditorEmojisComponentDefault
 import com.sedsoftware.tackle.editor.header.EditorHeaderComponent
 import com.sedsoftware.tackle.editor.header.integration.EditorHeaderComponentDefault
-import com.sedsoftware.tackle.editor.integration.header.EditorHeaderSettings
-import com.sedsoftware.tackle.editor.integration.header.EditorHeaderTools
+import com.sedsoftware.tackle.editor.integration.emojis.EditorEmojisComponentApi
+import com.sedsoftware.tackle.editor.integration.emojis.EditorEmojisComponentDatabase
+import com.sedsoftware.tackle.editor.integration.emojis.EditorEmojisComponentSettings
+import com.sedsoftware.tackle.editor.integration.header.EditorHeaderComponentSettings
+import com.sedsoftware.tackle.editor.integration.header.EditorHeaderComponentTools
 
 class EditorTabComponentDefault(
     private val componentContext: ComponentContext,
@@ -20,7 +25,7 @@ class EditorTabComponentDefault(
     private val settings: EditorTabComponentGateways.Settings,
     private val tools: EditorTabComponentGateways.Tools,
     private val dispatchers: TackleDispatchers,
-    private val output: (ComponentOutput) -> Unit,
+    private val editorOutput: (ComponentOutput) -> Unit,
 ) : EditorTabComponent, ComponentContext by componentContext {
 
     override val header: EditorHeaderComponent =
@@ -30,9 +35,30 @@ class EditorTabComponentDefault(
                 lifecycle = lifecycle
             ),
             storeFactory = storeFactory,
-            settings = EditorHeaderSettings(settings),
-            tools = EditorHeaderTools(tools),
+            settings = EditorHeaderComponentSettings(settings),
+            tools = EditorHeaderComponentTools(tools),
             dispatchers = dispatchers,
-            output = output,
+            output = ::onSubcomponentOutput,
         )
+
+    override val emojis: EditorEmojisComponent =
+        EditorEmojisComponentDefault(
+            componentContext = childContext(
+                key = "Editor emojis",
+                lifecycle = lifecycle
+            ),
+            storeFactory = storeFactory,
+            api = EditorEmojisComponentApi(api),
+            database = EditorEmojisComponentDatabase(database),
+            settings = EditorEmojisComponentSettings(settings),
+            dispatchers = dispatchers,
+            output = ::onSubcomponentOutput,
+        )
+
+    private fun onSubcomponentOutput(output: ComponentOutput) {
+        when (output) {
+            is ComponentOutput.StatusEditor.EmojiSelected -> TODO("Emoji selected")
+            else -> editorOutput(output)
+        }
+    }
 }

@@ -79,7 +79,7 @@ class MainComponentDefault internal constructor(
                 settings = EditorTabComponentSettings(settings),
                 tools = EditorTabComponentTools(platformTools),
                 dispatchers = dispatchers,
-                output = componentOutput,
+                editorOutput = componentOutput,
             )
         },
         publicationsTabComponent = { childContext, componentOutput ->

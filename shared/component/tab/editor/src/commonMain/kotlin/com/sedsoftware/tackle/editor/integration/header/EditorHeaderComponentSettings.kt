@@ -3,7 +3,7 @@ package com.sedsoftware.tackle.editor.integration.header
 import com.sedsoftware.tackle.editor.EditorTabComponentGateways
 import com.sedsoftware.tackle.editor.header.EditorHeaderComponentGateways
 
-internal class EditorHeaderSettings(
+internal class EditorHeaderComponentSettings(
     private val settings: EditorTabComponentGateways.Settings,
 ) : EditorHeaderComponentGateways.Settings {
 

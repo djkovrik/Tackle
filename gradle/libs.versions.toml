@@ -35,7 +35,7 @@ ktor = "2.3.8"
 sqlDelight = "2.0.2"
 oidc = "0.9.1"
 imageLoader = "1.8.1"
-fileKit = "0.6.0"
+fileKit = "0.6.1"
 
 # Testing
 assertk = "0.28.1"

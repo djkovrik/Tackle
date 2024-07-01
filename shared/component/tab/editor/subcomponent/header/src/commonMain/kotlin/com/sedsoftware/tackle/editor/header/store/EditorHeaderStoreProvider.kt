@@ -27,7 +27,7 @@ internal class EditorHeaderStoreProvider(
     @StoreCreate
     fun create(autoInit: Boolean = true): EditorHeaderStore =
         object : EditorHeaderStore, Store<Intent, State, Label> by storeFactory.create<Intent, Action, Msg, State, Label>(
-            name = "EditorStore",
+            name = "EditorHeaderStore",
             initialState = State(),
             autoInit = autoInit,
             bootstrapper = coroutineBootstrapper {
