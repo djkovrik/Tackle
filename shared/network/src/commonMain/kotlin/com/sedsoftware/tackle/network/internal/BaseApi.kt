@@ -1,7 +1,7 @@
 package com.sedsoftware.tackle.network.internal
 
 import com.sedsoftware.tackle.network.response.RemoteErrorResponse
-import com.sedsoftware.tackle.utils.TackleException
+import com.sedsoftware.tackle.domain.TackleException
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -11,6 +11,7 @@ import io.ktor.client.request.request
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
+import io.ktor.http.HttpStatusCode
 import io.ktor.http.isSuccess
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.utils.io.errors.IOException
@@ -66,7 +67,11 @@ internal abstract class BaseApi(
 
             if (!response.status.isSuccess()) {
                 val errorDetails: RemoteErrorResponse? = response.remoteErrorDetails()
-                throw TackleException.RemoteServerException(errorDetails?.error, errorDetails?.errorDescription, response.status.value)
+                throw TackleException.RemoteServerException(
+                    description = errorDetails?.errorDescription,
+                    code = response.status.value,
+                    message = errorDetails?.error,
+                )
             }
 
             return responseMapper(json.decodeFromString<From>(response.body()))
@@ -75,7 +80,11 @@ internal abstract class BaseApi(
         } catch (exception: IOException) {
             throw TackleException.NetworkException(exception)
         } catch (exception: Exception) {
-            throw TackleException.Unknown(exception)
+            if (exception !is TackleException) {
+                throw TackleException.Unknown(exception)
+            } else {
+                throw exception
+            }
         }
     }
 

@@ -9,7 +9,7 @@ import com.sedsoftware.tackle.auth.stubs.AuthComponentApiStub
 import com.sedsoftware.tackle.auth.stubs.AuthComponentSettingsStub
 import com.sedsoftware.tackle.auth.stubs.AuthComponentToolsStub
 import com.sedsoftware.tackle.auth.stubs.StubConstants
-import com.sedsoftware.tackle.utils.TackleException
+import com.sedsoftware.tackle.domain.TackleException
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 

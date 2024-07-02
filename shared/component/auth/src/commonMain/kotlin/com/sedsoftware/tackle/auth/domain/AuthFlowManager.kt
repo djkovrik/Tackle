@@ -7,7 +7,7 @@ import com.sedsoftware.tackle.domain.model.Account
 import com.sedsoftware.tackle.domain.model.AppClientData
 import com.sedsoftware.tackle.domain.model.Application
 import com.sedsoftware.tackle.domain.model.Instance
-import com.sedsoftware.tackle.utils.TackleException
+import com.sedsoftware.tackle.domain.TackleException
 
 internal class AuthFlowManager(
     private val api: AuthComponentGateways.Api,

@@ -29,6 +29,6 @@ internal interface AuthStore : Store<Intent, State, Label> {
 
     sealed class Label {
         data object NavigateToMainScreen : Label()
-        data class ErrorCaught(val throwable: Throwable) : Label()
+        data class ErrorCaught(val exception: Throwable) : Label()
     }
 }

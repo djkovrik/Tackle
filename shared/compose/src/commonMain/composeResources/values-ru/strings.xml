@@ -5,12 +5,18 @@
     <string name="app_label">Tackle</string>
     <string name="mastodon_title">Mastodon</string>
     <string name="default_server">mastodon.social</string>
+
     <!-- Common -->
     <string name="common_continue">Продолжить</string>
     <string name="common_retry">Повторить</string>
     <string name="common_retrying">Повторная попытка</string>
     <string name="common_redirecting">Перенаправление</string>
     <string name="common_cancel">Отмена</string>
+    <string name="common_error_no_internet">Интернет соединение отсутствует</string>
+    <string name="common_error_server">Ошибка сервера</string>
+    <string name="common_error_serialization">Ошибка сериализации данных</string>
+    <string name="common_error_unknown">Что-то пошло не так</string>
+
     <!-- Auth component -->
     <string name="auth_server_address">Адрес сервера</string>
     <string name="auth_server_address_wrong">Некорректный адрес</string>
@@ -22,12 +28,14 @@
     <string name="auth_server_description">Каждый пользовательский аккаунт относится к определенному серверу Mastodon со своими правилами, администраторами и ограничениями, но пользователи каждого сервера могут бесшовно взаимодействовать с остальными пользователями на любом другом сервере.</string>
     <string name="auth_server_info_fetch">Загрузка информации о сервере</string>
     <string name="auth_failed_to_connect">Не удалось соединиться с сервером</string>
+
     <!-- Main component -->
     <string name="main_tab_home">Главная</string>
     <string name="main_tab_explore">Обзор</string>
     <string name="main_tab_editor">Новый пост</string>
     <string name="main_tab_publications">Публикации</string>
     <string name="main_tab_notifications">Уведомления</string>
+
     <!-- Editor component -->
     <string name="editor_language_default">По умолчанию</string>
     <string name="editor_status_visibility_public">Публичный</string>

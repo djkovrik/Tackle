@@ -48,7 +48,7 @@ class AuthComponentDefault(
             store.labels.collect { label ->
                 when (label) {
                     is Label.NavigateToMainScreen -> output(ComponentOutput.Auth.NavigateToMainScreen)
-                    is Label.ErrorCaught -> output(ComponentOutput.Common.ErrorCaught(label.throwable))
+                    is Label.ErrorCaught -> output(ComponentOutput.Common.ErrorCaught(label.exception))
                 }
             }
         }

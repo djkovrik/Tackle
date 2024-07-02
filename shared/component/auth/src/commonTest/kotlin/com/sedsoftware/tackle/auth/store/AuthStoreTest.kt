@@ -2,9 +2,7 @@ package com.sedsoftware.tackle.auth.store
 
 import assertk.assertThat
 import assertk.assertions.contains
-import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
-import assertk.assertions.isInstanceOf
 import assertk.assertions.isNotEmpty
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import com.sedsoftware.tackle.auth.domain.AuthFlowManager
@@ -14,7 +12,7 @@ import com.sedsoftware.tackle.auth.stubs.AuthComponentApiStub
 import com.sedsoftware.tackle.auth.stubs.AuthComponentSettingsStub
 import com.sedsoftware.tackle.auth.stubs.AuthComponentToolsStub
 import com.sedsoftware.tackle.auth.stubs.StubConstants
-import com.sedsoftware.tackle.utils.TackleException
+import com.sedsoftware.tackle.domain.TackleException
 import com.sedsoftware.tackle.utils.test.StoreTest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.runTest

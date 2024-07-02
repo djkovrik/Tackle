@@ -1,8 +1,10 @@
 package com.sedsoftware.tackle.compose.ui.editor
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -21,20 +23,21 @@ internal fun EditorTabContent(
 ) {
     val headerComponentModel: EditorHeaderComponent.Model by component.header.model.subscribeAsState()
 
-    Scaffold(
-        topBar = {
-            EditorHeaderContent(
-                model = headerComponentModel,
-                modifier = modifier,
-                onLocalePickerRequest = { component.header.onLocalePickerRequested(true) },
-                onVisibilityPickerRequest = { component.header.onStatusVisibilityPickerRequested(true) },
-            )
-        },
-        modifier = modifier,
-    ) { paddingValues: PaddingValues ->
+    Column {
+
+        EditorHeaderContent(
+            model = headerComponentModel,
+            modifier = modifier,
+            onLocalePickerRequest = { component.header.onLocalePickerRequested(true) },
+            onVisibilityPickerRequest = { component.header.onStatusVisibilityPickerRequested(true) },
+        )
 
         // Content
-        Column(modifier = modifier.padding(paddingValues)) {
+        Column(
+            modifier = modifier
+                .weight(weight = 1f, fill = true)
+                .background(color = MaterialTheme.colorScheme.tertiaryContainer)
+        ) {
 
         }
 

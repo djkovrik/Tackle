@@ -10,6 +10,8 @@ import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.sedsoftware.tackle.auth.AuthComponent
 import com.sedsoftware.tackle.auth.integration.AuthComponentDefault
 import com.sedsoftware.tackle.domain.ComponentOutput
+import com.sedsoftware.tackle.domain.TackleException
+import com.sedsoftware.tackle.domain.TackleExceptionHandler
 import com.sedsoftware.tackle.domain.api.AuthorizedApi
 import com.sedsoftware.tackle.domain.api.OAuthApi
 import com.sedsoftware.tackle.domain.api.TackleDatabase
@@ -24,6 +26,8 @@ import com.sedsoftware.tackle.root.RootComponent.Child
 import com.sedsoftware.tackle.root.integration.auth.AuthComponentApi
 import com.sedsoftware.tackle.root.integration.auth.AuthComponentSettings
 import com.sedsoftware.tackle.root.integration.auth.AuthComponentTools
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.serialization.Serializable
 
 class RootComponentDefault internal constructor(
@@ -83,6 +87,14 @@ class RootComponentDefault internal constructor(
 
     override val childStack: Value<ChildStack<*, Child>> = stack
 
+    private val exceptionHandler: TackleExceptionHandler =
+        TackleExceptionHandler(
+            logoutAction = { navigation.replaceCurrent(Config.Auth) }
+        )
+
+    override val errorMessages: Flow<TackleException>
+        get() = exceptionHandler.messaging
+
     private fun createChild(config: Config, componentContext: ComponentContext): Child =
         when (config) {
             is Config.Auth -> Child.Auth(authComponent(componentContext, ::onComponentOutput))
@@ -92,11 +104,10 @@ class RootComponentDefault internal constructor(
     private fun onComponentOutput(output: ComponentOutput) {
         when (output) {
             is ComponentOutput.Auth.NavigateToMainScreen -> navigation.replaceCurrent(Config.Main)
-            is ComponentOutput.Common.ErrorCaught -> Unit // TODO
+            is ComponentOutput.Common.ErrorCaught -> exceptionHandler.consume(output.throwable)
             else -> Unit
         }
     }
-
 
     @Serializable
     private sealed interface Config {
