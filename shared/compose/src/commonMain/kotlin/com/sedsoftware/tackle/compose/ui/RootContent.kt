@@ -5,12 +5,15 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarData
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.stack.Children
 import com.arkivanov.decompose.extensions.compose.stack.animation.fade
 import com.arkivanov.decompose.extensions.compose.stack.animation.plus
@@ -19,6 +22,7 @@ import com.arkivanov.decompose.extensions.compose.stack.animation.stackAnimation
 import com.sedsoftware.tackle.compose.core.exceptionToString
 import com.sedsoftware.tackle.compose.ui.auth.AuthContent
 import com.sedsoftware.tackle.compose.ui.main.MainContent
+import com.sedsoftware.tackle.compose.widget.CustomSnackBar
 import com.sedsoftware.tackle.root.RootComponent
 import com.sedsoftware.tackle.root.RootComponent.Child
 
@@ -29,12 +33,7 @@ fun RootContent(
 ) {
     val snackbarHostState: SnackbarHostState = remember { SnackbarHostState() }
 
-    Scaffold(
-        snackbarHost = {
-            SnackbarHost(hostState = snackbarHostState)
-        },
-        modifier = modifier,
-    ) { paddingValues: PaddingValues ->
+    Scaffold { paddingValues: PaddingValues ->
 
         LaunchedEffect(component) {
             component.errorMessages.collect { exception ->
@@ -44,11 +43,20 @@ fun RootContent(
             }
         }
 
-        Box(
-            modifier = modifier
-                .padding(paddingValues = paddingValues)
-                .fillMaxSize()
-        ) {
+        Box(modifier = modifier.fillMaxSize()) {
+            SnackbarHost(
+                hostState = snackbarHostState,
+                modifier = modifier
+                    .align(alignment = Alignment.TopCenter)
+                    .padding(paddingValues = paddingValues)
+                    .padding(all = 16.dp),
+            ) { snackbarData: SnackbarData ->
+                CustomSnackBar(
+                    message = snackbarData.visuals.message,
+                    modifier = modifier,
+                )
+            }
+
             Children(
                 stack = component.childStack,
                 animation = stackAnimation(animator = fade() + scale()),
