@@ -54,6 +54,10 @@ fun String.toLocalDate(): LocalDate = try {
 val Throwable.isUnauthorized
     get() = this is TackleException.RemoteServerException && this.code == HTTP_CODE_UNAUTHORIZED
 
+fun Long?.orZero(): Long = this ?: 0L
+
+fun Boolean?.orFalse(): Boolean = this ?: false
+
 private const val HTTP_CODE_UNAUTHORIZED = 401
 private const val FALLBACK_DATE_TIME = "1970-01-01T00:00:00.000Z"
 private const val FALLBACK_DATE = "1970-01-01"
