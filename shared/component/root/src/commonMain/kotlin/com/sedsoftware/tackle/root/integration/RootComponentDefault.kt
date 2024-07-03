@@ -24,6 +24,7 @@ import com.sedsoftware.tackle.main.integration.MainComponentDefault
 import com.sedsoftware.tackle.root.RootComponent
 import com.sedsoftware.tackle.root.RootComponent.Child
 import com.sedsoftware.tackle.root.integration.auth.AuthComponentApi
+import com.sedsoftware.tackle.root.integration.auth.AuthComponentDatabase
 import com.sedsoftware.tackle.root.integration.auth.AuthComponentSettings
 import com.sedsoftware.tackle.root.integration.auth.AuthComponentTools
 import kotlinx.coroutines.flow.Flow
@@ -53,6 +54,7 @@ class RootComponentDefault internal constructor(
                 componentContext = childContext,
                 storeFactory = storeFactory,
                 api = AuthComponentApi(unauthorizedApi, authorizedApi, oauthApi),
+                database = AuthComponentDatabase(database),
                 settings = AuthComponentSettings(settings),
                 tools = AuthComponentTools(platformTools),
                 dispatchers = dispatchers,

@@ -7,10 +7,16 @@ internal class AuthComponentSettings(
     private val settings: TackleSettings,
 ) : AuthComponentGateways.Settings {
 
-    override var domain: String
-        get() = settings.domain
+    override var domainNormalized: String
+        get() = settings.domainNormalized
         set(value) {
-            settings.domain = value
+            settings.domainNormalized = value
+        }
+
+    override var domainShort: String
+        get() = settings.domainShort
+        set(value) {
+            settings.domainShort = value
         }
 
     override var clientId: String

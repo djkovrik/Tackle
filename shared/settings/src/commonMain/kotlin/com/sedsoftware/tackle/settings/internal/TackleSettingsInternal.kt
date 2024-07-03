@@ -7,10 +7,16 @@ internal class TackleSettingsInternal(
     private val settings: Settings,
 ) : TackleSettings {
 
-    override var domain: String
+    override var domainNormalized: String
         get() = settings.getValue(PREF_KEY_DOMAIN, "")
         set(value) {
             settings.setValue(PREF_KEY_DOMAIN, value)
+        }
+
+    override var domainShort: String
+        get() = settings.getValue(PREF_KEY_DOMAIN_SHORT, "")
+        set(value) {
+            settings.setValue(PREF_KEY_DOMAIN_SHORT, value)
         }
 
     override var clientId: String
@@ -84,6 +90,7 @@ internal class TackleSettingsInternal(
 
     private companion object {
         const val PREF_KEY_DOMAIN = "dn"
+        const val PREF_KEY_DOMAIN_SHORT = "dns"
         const val PREF_KEY_CLIENT_ID = "ci"
         const val PREF_KEY_CLIENT_SECRET = "cs"
         const val PREF_KEY_TOKEN = "tn"

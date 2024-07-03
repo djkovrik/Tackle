@@ -13,8 +13,13 @@ interface AuthComponentGateways {
         suspend fun verifyCredentials(): Account
     }
 
+    interface Database {
+        suspend fun cacheInstanceInfo(info: Instance)
+    }
+
     interface Settings {
-        var domain: String
+        var domainNormalized: String
+        var domainShort: String
         var clientId: String
         var clientSecret: String
         var token: String

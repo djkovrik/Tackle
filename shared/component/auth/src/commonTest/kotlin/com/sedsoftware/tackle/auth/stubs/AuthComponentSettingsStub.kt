@@ -4,16 +4,23 @@ import com.sedsoftware.tackle.auth.AuthComponentGateways
 
 class AuthComponentSettingsStub : AuthComponentGateways.Settings {
     private var domainStub: String = ""
+    private var domainShortStub: String = ""
     private var clientIdStub: String = ""
     private var clientSecretStub: String = ""
     private var tokenStub: String = ""
     private var avatarStub: String = ""
     private var usernameStub: String = ""
 
-    override var domain: String
+    override var domainNormalized: String
         get() = domainStub
         set(value) {
             domainStub = value
+        }
+
+    override var domainShort: String
+        get() = domainShortStub
+        set(value) {
+            domainShortStub = value
         }
 
     override var clientId: String

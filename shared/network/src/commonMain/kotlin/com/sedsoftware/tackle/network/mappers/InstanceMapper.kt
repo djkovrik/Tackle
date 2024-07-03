@@ -17,6 +17,7 @@ internal object InstanceMapper {
             description = from.description,
             activePerMonth = from.usage?.users?.activePerMonth ?: 0L,
             thumbnailUrl = from.thumbnail?.url.orEmpty(),
+            blurhash = from.thumbnail?.blurhash.orEmpty(),
             languages = from.languages,
             contactEmail = from.contact?.email.orEmpty(),
             contactAccountId = from.contact?.account?.id.orEmpty(),

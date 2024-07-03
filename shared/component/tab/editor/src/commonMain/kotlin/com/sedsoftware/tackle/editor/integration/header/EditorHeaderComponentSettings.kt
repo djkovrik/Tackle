@@ -14,8 +14,8 @@ internal class EditorHeaderComponentSettings(
     override val ownNickname: String
         get() = settings.ownNickname
 
-    override val domain: String
-        get() = settings.domain
+    override val domainShort: String
+        get() = settings.domainShort
 
     override var lastSelectedLanguageName: String
         get() = settings.lastSelectedLanguageName

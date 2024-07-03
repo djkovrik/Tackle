@@ -8,6 +8,7 @@ data class Instance(
     val description: String = "",
     val activePerMonth: Long = 0L,
     val thumbnailUrl: String = "",
+    val blurhash: String = "",
     val languages: List<String> = emptyList(),
     val contactEmail: String = "",
     val contactAccountId: String = "",

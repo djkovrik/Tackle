@@ -150,12 +150,12 @@ class AuthComponentTest : ComponentTest<AuthComponentDefault>() {
         )
 
     private fun asAuthorized() {
-        settings.domain = StubConstants.DOMAIN
+        settings.domainNormalized = StubConstants.DOMAIN
         settings.token = StubConstants.TOKEN
     }
 
     private fun asUnauthorized() {
-        settings.domain = StubConstants.DOMAIN
+        settings.domainNormalized = StubConstants.DOMAIN
         settings.token = ""
     }
 }

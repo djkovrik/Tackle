@@ -25,6 +25,7 @@ class AuthComponentDefault(
     private val componentContext: ComponentContext,
     private val storeFactory: StoreFactory,
     private val api: AuthComponentGateways.Api,
+    private val database: AuthComponentGateways.Database,
     private val settings: AuthComponentGateways.Settings,
     private val tools: AuthComponentGateways.Tools,
     private val dispatchers: TackleDispatchers,
@@ -35,7 +36,7 @@ class AuthComponentDefault(
         instanceKeeper.getStore {
             AuthStoreProvider(
                 storeFactory = storeFactory,
-                manager = AuthFlowManager(api, settings, tools),
+                manager = AuthFlowManager(api, database, settings, tools),
                 mainContext = dispatchers.main,
                 ioContext = dispatchers.io,
             ).create()

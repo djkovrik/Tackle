@@ -9,6 +9,7 @@ import com.sedsoftware.tackle.auth.domain.AuthFlowManager
 import com.sedsoftware.tackle.auth.model.CredentialsState
 import com.sedsoftware.tackle.auth.model.InstanceInfoState
 import com.sedsoftware.tackle.auth.stubs.AuthComponentApiStub
+import com.sedsoftware.tackle.auth.stubs.AuthComponentDatabaseStub
 import com.sedsoftware.tackle.auth.stubs.AuthComponentSettingsStub
 import com.sedsoftware.tackle.auth.stubs.AuthComponentToolsStub
 import com.sedsoftware.tackle.auth.stubs.StubConstants
@@ -201,6 +202,7 @@ internal class AuthStoreTest : StoreTest<AuthStore.Intent, AuthStore.State, Auth
             manager = AuthFlowManager(
                 tools = AuthComponentToolsStub(),
                 api = api,
+                database = AuthComponentDatabaseStub(),
                 settings = settings,
             ),
             mainContext = Dispatchers.Unconfined,
@@ -209,12 +211,12 @@ internal class AuthStoreTest : StoreTest<AuthStore.Intent, AuthStore.State, Auth
     }
 
     private fun asAuthorized() {
-        settings.domain = StubConstants.DOMAIN
+        settings.domainNormalized = StubConstants.DOMAIN
         settings.token = StubConstants.TOKEN
     }
 
     private fun asUnauthorized() {
-        settings.domain = StubConstants.DOMAIN
+        settings.domainNormalized = StubConstants.DOMAIN
         settings.token = ""
     }
 }

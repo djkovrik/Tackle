@@ -43,11 +43,14 @@ class MainComponentTest : ComponentTest<MainComponentDefault>() {
     private val database: TackleDatabase = object : TackleDatabase {
         override suspend fun insertEmojis(list: List<CustomEmoji>) = TODO()
         override suspend fun observeEmojis(): Flow<List<CustomEmoji>> = TODO()
+        override suspend fun cacheInstanceInfo(info: Instance) = TODO()
+        override suspend fun getCachedInstanceInfo(): Flow<Instance> = TODO()
     }
 
     private val settings: TackleSettings = object : TackleSettings {
         var stub: String = ""
-        override var domain: String = stub
+        override var domainNormalized: String = stub
+        override var domainShort: String = stub
         override var clientId: String = stub
         override var clientSecret: String = stub
         override var token: String = stub

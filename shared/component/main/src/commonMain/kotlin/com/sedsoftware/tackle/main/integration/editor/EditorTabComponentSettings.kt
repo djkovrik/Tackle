@@ -14,8 +14,8 @@ internal class EditorTabComponentSettings(
     override val ownNickname: String
         get() = settings.ownUsername
 
-    override val domain: String
-        get() = settings.domain
+    override val domainShort: String
+        get() = settings.domainShort
 
     override var emojiLastCachedTimestamp: String
         get() = settings.emojiLastCachedTimestamp

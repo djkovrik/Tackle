@@ -40,7 +40,7 @@ fun RootComponentFactory(
             override val coroutineContext: CoroutineContext = dispatchers.io
 
             override val domainProvider: () -> String = {
-                settingsModule.settings.domain
+                settingsModule.settings.domainShort
             }
         }
     )
@@ -50,7 +50,7 @@ fun RootComponentFactory(
             override val authFlowFactory: CodeAuthFlowFactory = authFlowFactory
 
             override val domainProvider: () -> String = {
-                settingsModule.settings.domain
+                settingsModule.settings.domainNormalized
             }
 
             override val tokenProvider: () -> String = {

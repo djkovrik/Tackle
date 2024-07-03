@@ -2,12 +2,16 @@ package com.sedsoftware.tackle.database.internal
 
 import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
+import app.cash.sqldelight.coroutines.mapToOne
 import app.cash.sqldelight.db.SqlDriver
+import com.sedsoftware.tackle.database.InstanceInfoEntity
 import com.sedsoftware.tackle.database.TackleAppDatabase
 import com.sedsoftware.tackle.database.TackleAppDatabaseQueries
+import com.sedsoftware.tackle.database.mappers.InstanceInfoEntityMapper
 import com.sedsoftware.tackle.database.mappers.ServerEmojiEntityMapper
 import com.sedsoftware.tackle.domain.api.TackleDatabase
 import com.sedsoftware.tackle.domain.model.CustomEmoji
+import com.sedsoftware.tackle.domain.model.Instance
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlin.coroutines.CoroutineContext
@@ -49,4 +53,29 @@ internal class TackleSharedDatabase(
             .asFlow()
             .mapToList(coroutineContext)
             .map(ServerEmojiEntityMapper::map)
+
+    override suspend fun cacheInstanceInfo(info: Instance) {
+        val entity: InstanceInfoEntity = InstanceInfoEntityMapper.toEntity(info)
+        queries.insertInstanceInfo(
+            domain = entity.domain,
+            title = entity.title,
+            version = entity.version,
+            sourceUrl = entity.sourceUrl,
+            description = entity.description,
+            activePerMonth = entity.activePerMonth,
+            thumbnailUrl = entity.thumbnailUrl,
+            blurhash = entity.blurhash,
+            languages = entity.languages,
+            contactEmail = entity.contactEmail,
+            contactAccountId = entity.contactAccountId,
+            rules = entity.rules,
+            config = entity.config,
+        )
+    }
+
+    override suspend fun getCachedInstanceInfo(): Flow<Instance> =
+        queries.selectInstanceInfo(currentDomain)
+            .asFlow()
+            .mapToOne(coroutineContext)
+            .map(InstanceInfoEntityMapper::fromEntity)
 }

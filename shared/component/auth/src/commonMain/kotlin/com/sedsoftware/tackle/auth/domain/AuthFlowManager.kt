@@ -3,14 +3,15 @@ package com.sedsoftware.tackle.auth.domain
 import com.sedsoftware.tackle.auth.AuthComponentGateways
 import com.sedsoftware.tackle.auth.extension.normalizeUrl
 import com.sedsoftware.tackle.auth.model.ObtainedCredentials
+import com.sedsoftware.tackle.domain.TackleException
 import com.sedsoftware.tackle.domain.model.Account
 import com.sedsoftware.tackle.domain.model.AppClientData
 import com.sedsoftware.tackle.domain.model.Application
 import com.sedsoftware.tackle.domain.model.Instance
-import com.sedsoftware.tackle.domain.TackleException
 
 internal class AuthFlowManager(
     private val api: AuthComponentGateways.Api,
+    private val database: AuthComponentGateways.Database,
     private val settings: AuthComponentGateways.Settings,
     private val tools: AuthComponentGateways.Tools,
 ) {
@@ -19,11 +20,13 @@ internal class AuthFlowManager(
     }
 
     suspend fun getInstanceInfo(url: String): Result<Instance> = runCatching {
-        return@runCatching api.getServerInfo(url)
+        val response = api.getServerInfo(url)
+        database.cacheInstanceInfo(response)
+        return@runCatching response
     }
 
     suspend fun verifyCredentials(): Result<Boolean> = runCatching {
-        if (settings.domain.isEmpty() || settings.token.isEmpty()) {
+        if (settings.domainNormalized.isEmpty() || settings.token.isEmpty()) {
             throw TackleException.MissedRegistrationData
         }
 
@@ -36,7 +39,8 @@ internal class AuthFlowManager(
     }
 
     suspend fun createApp(domain: String): Result<ObtainedCredentials> = runCatching {
-        settings.domain = domain.normalizeUrl()
+        settings.domainNormalized = domain.normalizeUrl()
+        settings.domainShort = domain
 
         val response: Application = api.createApp(clientAppData)
 

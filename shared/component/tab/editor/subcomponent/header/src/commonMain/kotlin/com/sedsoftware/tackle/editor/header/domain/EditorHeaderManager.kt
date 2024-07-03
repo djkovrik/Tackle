@@ -14,7 +14,7 @@ internal class EditorHeaderManager(
         return@runCatching EditorProfileData(
             avatar = settings.ownAvatar,
             name = settings.ownNickname,
-            domain = settings.domain.trimUrl(),
+            domain = settings.domainShort,
         )
     }
 
