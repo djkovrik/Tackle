@@ -8,25 +8,14 @@ import com.sedsoftware.tackle.auth.domain.AuthFlowManager
 import com.sedsoftware.tackle.auth.extension.isValidUrl
 import com.sedsoftware.tackle.auth.extension.normalizeUrl
 import com.sedsoftware.tackle.auth.model.CredentialsState
-import com.sedsoftware.tackle.auth.model.CredentialsState.AUTHORIZED
-import com.sedsoftware.tackle.auth.model.CredentialsState.EXISTING_USER_CHECK_FAILED
-import com.sedsoftware.tackle.auth.model.CredentialsState.UNAUTHORIZED
 import com.sedsoftware.tackle.auth.model.InstanceInfoState
 import com.sedsoftware.tackle.auth.model.ObtainedCredentials
 import com.sedsoftware.tackle.auth.store.AuthStore.Intent
 import com.sedsoftware.tackle.auth.store.AuthStore.Label
-import com.sedsoftware.tackle.auth.store.AuthStore.Label.ErrorCaught
-import com.sedsoftware.tackle.auth.store.AuthStore.Label.NavigateToMainScreen
 import com.sedsoftware.tackle.auth.store.AuthStore.State
-import com.sedsoftware.tackle.auth.store.AuthStoreProvider.Action.CheckCurrentCredentials
-import com.sedsoftware.tackle.auth.store.AuthStoreProvider.Action.StartOAuthFlow
-import com.sedsoftware.tackle.auth.store.AuthStoreProvider.Msg.CredentialsStateChanged
-import com.sedsoftware.tackle.auth.store.AuthStoreProvider.Msg.OAuthFlowStateChanged
-import com.sedsoftware.tackle.auth.store.AuthStoreProvider.Msg.ServerInfoLoaded
-import com.sedsoftware.tackle.auth.store.AuthStoreProvider.Msg.ServerInfoLoadingFailed
+import com.sedsoftware.tackle.domain.TackleException.MissedRegistrationData
 import com.sedsoftware.tackle.domain.model.Instance
 import com.sedsoftware.tackle.utils.StoreCreate
-import com.sedsoftware.tackle.domain.TackleException.MissedRegistrationData
 import com.sedsoftware.tackle.utils.extension.isUnauthorized
 import com.sedsoftware.tackle.utils.extension.trimUrl
 import com.sedsoftware.tackle.utils.extension.unwrap
@@ -61,19 +50,19 @@ internal class AuthStoreProvider(
                             result = withContext(ioContext) { manager.verifyCredentials() },
                             onSuccess = { isCredentialsValid ->
                                 if (isCredentialsValid) {
-                                    dispatch(CredentialsStateChanged(newState = AUTHORIZED))
-                                    publish(NavigateToMainScreen)
+                                    dispatch(Msg.CredentialsStateChanged(newState = CredentialsState.AUTHORIZED))
+                                    publish(Label.NavigateToMainScreen)
                                 } else {
-                                    dispatch(CredentialsStateChanged(newState = UNAUTHORIZED))
+                                    dispatch(Msg.CredentialsStateChanged(newState = CredentialsState.UNAUTHORIZED))
                                 }
                             },
                             onError = { throwable ->
                                 if (throwable is MissedRegistrationData || throwable.isUnauthorized) {
-                                    dispatch(CredentialsStateChanged(newState = UNAUTHORIZED))
+                                    dispatch(Msg.CredentialsStateChanged(newState = CredentialsState.UNAUTHORIZED))
                                 } else {
-                                    dispatch(CredentialsStateChanged(newState = EXISTING_USER_CHECK_FAILED))
+                                    dispatch(Msg.CredentialsStateChanged(newState = CredentialsState.EXISTING_USER_CHECK_FAILED))
                                 }
-                                publish(ErrorCaught(throwable))
+                                publish(Label.ErrorCaught(throwable))
                             },
                         )
                     }
@@ -85,14 +74,14 @@ internal class AuthStoreProvider(
                             result = withContext(ioContext) { manager.startAuthFlow(it.credentials) },
                             onSuccess = { isAuthorized ->
                                 if (isAuthorized) {
-                                    forward(CheckCurrentCredentials)
+                                    forward(Action.CheckCurrentCredentials)
                                 } else {
-                                    dispatch(CredentialsStateChanged(newState = UNAUTHORIZED))
+                                    dispatch(Msg.CredentialsStateChanged(newState =  CredentialsState.UNAUTHORIZED))
                                 }
                             },
                             onError = { throwable ->
-                                dispatch(OAuthFlowStateChanged(active = false))
-                                publish(ErrorCaught(throwable))
+                                dispatch(Msg.OAuthFlowStateChanged(active = false))
+                                publish(Label.ErrorCaught(throwable))
                             }
                         )
                     }
@@ -118,11 +107,11 @@ internal class AuthStoreProvider(
                             unwrap(
                                 result = withContext(ioContext) { manager.getInstanceInfo(normalizedUrl) },
                                 onSuccess = { info ->
-                                    dispatch(ServerInfoLoaded(info = info))
+                                    dispatch(Msg.ServerInfoLoaded(info = info))
                                 },
                                 onError = { throwable ->
-                                    dispatch(ServerInfoLoadingFailed)
-                                    publish(ErrorCaught(throwable))
+                                    dispatch(Msg.ServerInfoLoadingFailed)
+                                    publish(Label.ErrorCaught(throwable))
                                 },
                             )
                         }
@@ -142,11 +131,11 @@ internal class AuthStoreProvider(
                         unwrap(
                             result = withContext(ioContext) { manager.createApp(domain) },
                             onSuccess = { credentials ->
-                                forward(StartOAuthFlow(credentials))
+                                forward(Action.StartOAuthFlow(credentials))
                             },
                             onError = { throwable ->
-                                dispatch(OAuthFlowStateChanged(active = false))
-                                publish(ErrorCaught(throwable))
+                                dispatch(Msg.OAuthFlowStateChanged(active = false))
+                                publish(Label.ErrorCaught(throwable))
                             },
                         )
                     }

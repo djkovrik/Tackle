@@ -10,12 +10,7 @@ import com.sedsoftware.tackle.editor.header.domain.EditorHeaderManager
 import com.sedsoftware.tackle.editor.header.model.EditorProfileData
 import com.sedsoftware.tackle.editor.header.store.EditorHeaderStore.Intent
 import com.sedsoftware.tackle.editor.header.store.EditorHeaderStore.Label
-import com.sedsoftware.tackle.editor.header.store.EditorHeaderStore.Label.ErrorCaught
 import com.sedsoftware.tackle.editor.header.store.EditorHeaderStore.State
-import com.sedsoftware.tackle.editor.header.store.EditorHeaderStoreProvider.Msg.AvailableLocalesLoaded
-import com.sedsoftware.tackle.editor.header.store.EditorHeaderStoreProvider.Msg.LocaleSelected
-import com.sedsoftware.tackle.editor.header.store.EditorHeaderStoreProvider.Msg.ProfileDataLoaded
-import com.sedsoftware.tackle.editor.header.store.EditorHeaderStoreProvider.Msg.RecommendedLocaleLoaded
 import com.sedsoftware.tackle.utils.StoreCreate
 import com.sedsoftware.tackle.utils.extension.unwrap
 import kotlinx.coroutines.launch
@@ -46,10 +41,10 @@ internal class EditorHeaderStoreProvider(
                         unwrap(
                             result = withContext(ioContext) { manager.getEditorProfileData() },
                             onSuccess = { profileData: EditorProfileData ->
-                                dispatch(ProfileDataLoaded(profileData))
+                                dispatch(Msg.ProfileDataLoaded(profileData))
                             },
                             onError = { throwable ->
-                                publish(ErrorCaught(throwable))
+                                publish(Label.ErrorCaught(throwable))
                             }
                         )
                     }
@@ -60,10 +55,10 @@ internal class EditorHeaderStoreProvider(
                         unwrap(
                             result = withContext(ioContext) { manager.getRecommendedLocale() },
                             onSuccess = { recommended: AppLocale ->
-                                dispatch(RecommendedLocaleLoaded(recommended))
+                                dispatch(Msg.RecommendedLocaleLoaded(recommended))
                             },
                             onError = { throwable ->
-                                publish(ErrorCaught(throwable))
+                                publish(Label.ErrorCaught(throwable))
                             }
                         )
                     }
@@ -74,10 +69,10 @@ internal class EditorHeaderStoreProvider(
                         unwrap(
                             result = withContext(ioContext) { manager.getAvailableLocales() },
                             onSuccess = { availableLocales: List<AppLocale> ->
-                                dispatch(AvailableLocalesLoaded(availableLocales))
+                                dispatch(Msg.AvailableLocalesLoaded(availableLocales))
                             },
                             onError = { throwable ->
-                                publish(ErrorCaught(throwable))
+                                publish(Label.ErrorCaught(throwable))
                             }
                         )
                     }
@@ -92,10 +87,10 @@ internal class EditorHeaderStoreProvider(
                         unwrap(
                             result = withContext(ioContext) { manager.saveSelectedLocale(it.language) },
                             onSuccess = {
-                                dispatch(LocaleSelected(it))
+                                dispatch(Msg.LocaleSelected(it))
                             },
                             onError = { throwable ->
-                                publish(ErrorCaught(throwable))
+                                publish(Label.ErrorCaught(throwable))
                             }
                         )
                     }

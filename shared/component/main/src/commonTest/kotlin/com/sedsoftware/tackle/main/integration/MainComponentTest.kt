@@ -10,63 +10,21 @@ import com.sedsoftware.tackle.domain.api.TackleDatabase
 import com.sedsoftware.tackle.domain.api.TacklePlatformTools
 import com.sedsoftware.tackle.domain.api.TackleSettings
 import com.sedsoftware.tackle.domain.api.UnauthorizedApi
-import com.sedsoftware.tackle.domain.model.Account
-import com.sedsoftware.tackle.domain.model.AppClientData
-import com.sedsoftware.tackle.domain.model.AppLocale
-import com.sedsoftware.tackle.domain.model.Application
-import com.sedsoftware.tackle.domain.model.CustomEmoji
-import com.sedsoftware.tackle.domain.model.Instance
-import com.sedsoftware.tackle.domain.model.Token
 import com.sedsoftware.tackle.main.MainComponent
 import com.sedsoftware.tackle.main.model.TackleNavigationTab
 import com.sedsoftware.tackle.utils.test.ComponentTest
-import kotlinx.coroutines.flow.Flow
+import dev.mokkery.mock
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 
 class MainComponentTest : ComponentTest<MainComponentDefault>() {
 
-    // Stubs for component creation, functionality tested inside related modules
-    // TODO replace with some kind of mock library? Too verbose now
-    private val unauthorizedApi: UnauthorizedApi = object : UnauthorizedApi {
-        override suspend fun getServerInfo(url: String): Instance = TODO()
-        override suspend fun createApp(client: String, uri: String, scopes: String, website: String): Application = TODO()
-        override suspend fun obtainToken(id: String, secret: String, code: String, uri: String, scopes: String): Token = TODO()
-        override suspend fun getServerEmojis(): List<CustomEmoji> = TODO()
-    }
-
-    private val authorizedApi: AuthorizedApi = object : AuthorizedApi {
-        override suspend fun verifyCredentials(): Account = TODO()
-    }
-
-    private val database: TackleDatabase = object : TackleDatabase {
-        override suspend fun insertEmojis(list: List<CustomEmoji>) = TODO()
-        override suspend fun observeEmojis(): Flow<List<CustomEmoji>> = TODO()
-        override suspend fun cacheInstanceInfo(info: Instance) = TODO()
-        override suspend fun getCachedInstanceInfo(): Flow<Instance> = TODO()
-    }
-
-    private val settings: TackleSettings = object : TackleSettings {
-        var stub: String = ""
-        override var domainNormalized: String = stub
-        override var domainShort: String = stub
-        override var clientId: String = stub
-        override var clientSecret: String = stub
-        override var token: String = stub
-        override var ownAvatar: String = stub
-        override var ownUsername: String = stub
-        override var emojiLastCachedTimestamp: String = stub
-        override var lastSelectedLanguageName: String = stub
-        override var lastSelectedLanguageCode: String = stub
-    }
-
-    private val platformTools: TacklePlatformTools = object : TacklePlatformTools {
-        override fun openUrl(url: String?) = TODO()
-        override fun getClientData(): AppClientData = TODO()
-        override fun getCurrentLocale(): AppLocale = TODO()
-        override fun getAvailableLocales(): List<AppLocale> = TODO()
-    }
+    private val unauthorizedApi: UnauthorizedApi = mock<UnauthorizedApi>()
+    private val authorizedApi: AuthorizedApi = mock<AuthorizedApi>()
+    private val database: TackleDatabase = mock<TackleDatabase>()
+    private val settings: TackleSettings = mock<TackleSettings>()
+    private val platformTools: TacklePlatformTools = mock<TacklePlatformTools>()
 
     @BeforeTest
     fun before() {
@@ -79,7 +37,7 @@ class MainComponentTest : ComponentTest<MainComponentDefault>() {
     }
 
     @Test
-    fun `component creation should initialize stack with Home`() {
+    fun `component creation should initialize stack with TabEditor`() {
         // given
         // when
         component = createComponent()
@@ -98,7 +56,7 @@ class MainComponentTest : ComponentTest<MainComponentDefault>() {
     }
 
     @Test
-    fun `click to EXPLORE tab should switch to TabHome`() {
+    fun `click to EXPLORE tab should switch to TabExplore`() {
         // given
         // when
         component = createComponent()

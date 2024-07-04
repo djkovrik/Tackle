@@ -12,6 +12,7 @@ plugins {
     alias(libs.plugins.kotlinx.parcelize) apply false
     alias(libs.plugins.kotlinx.serialization) apply false
     alias(libs.plugins.sqlDelight) apply false
+    alias(libs.plugins.mokkery) apply false
     alias(libs.plugins.detekt)
     alias(libs.plugins.kover)
 }

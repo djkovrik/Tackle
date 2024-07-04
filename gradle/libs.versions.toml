@@ -40,6 +40,7 @@ fileKit = "0.6.1"
 # Testing
 assertk = "0.28.1"
 kover = "0.8.1"
+mokkery = "2.1.1"
 
 [libraries]
 
@@ -106,3 +107,4 @@ kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", vers
 sqlDelight = { id = "app.cash.sqldelight", version.ref = "sqlDelight" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
+mokkery = { id = "dev.mokkery", version.ref = "mokkery" }

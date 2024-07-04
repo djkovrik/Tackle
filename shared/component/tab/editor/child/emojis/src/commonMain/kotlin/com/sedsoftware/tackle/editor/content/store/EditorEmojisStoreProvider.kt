@@ -7,7 +7,6 @@ import com.arkivanov.mvikotlin.extensions.coroutines.coroutineExecutorFactory
 import com.sedsoftware.tackle.domain.model.CustomEmoji
 import com.sedsoftware.tackle.editor.content.domain.EditorEmojisManager
 import com.sedsoftware.tackle.editor.content.store.EditorEmojisStore.Label
-import com.sedsoftware.tackle.editor.content.store.EditorEmojisStore.Label.ErrorCaught
 import com.sedsoftware.tackle.editor.content.store.EditorEmojisStore.State
 import com.sedsoftware.tackle.utils.StoreCreate
 import com.sedsoftware.tackle.utils.extension.unwrap
@@ -40,7 +39,7 @@ internal class EditorEmojisStoreProvider(
                             result = withContext(ioContext) { manager.fetchServerEmojis() },
                             onSuccess = {},
                             onError = { throwable ->
-                                publish(ErrorCaught(throwable))
+                                publish(Label.ErrorCaught(throwable))
                             }
                         )
                     }
