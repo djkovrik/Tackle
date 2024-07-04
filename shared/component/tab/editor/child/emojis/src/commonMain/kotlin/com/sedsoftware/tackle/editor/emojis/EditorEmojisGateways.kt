@@ -1,4 +1,4 @@
-package com.sedsoftware.tackle.editor.content
+package com.sedsoftware.tackle.editor.emojis
 
 import com.sedsoftware.tackle.domain.model.CustomEmoji
 import kotlinx.coroutines.flow.Flow

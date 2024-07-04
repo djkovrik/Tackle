@@ -1,4 +1,4 @@
-package com.sedsoftware.tackle.editor.content.integration
+package com.sedsoftware.tackle.editor.emojis.integration
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.Value
@@ -10,14 +10,14 @@ import com.arkivanov.mvikotlin.extensions.coroutines.labels
 import com.sedsoftware.tackle.domain.ComponentOutput
 import com.sedsoftware.tackle.domain.api.TackleDispatchers
 import com.sedsoftware.tackle.domain.model.CustomEmoji
-import com.sedsoftware.tackle.editor.content.EditorEmojisComponent
-import com.sedsoftware.tackle.editor.content.EditorEmojisComponent.Model
-import com.sedsoftware.tackle.editor.content.EditorEmojisGateways
-import com.sedsoftware.tackle.editor.content.EditorEmojisGateways.Database
-import com.sedsoftware.tackle.editor.content.domain.EditorEmojisManager
-import com.sedsoftware.tackle.editor.content.store.EditorEmojisStore
-import com.sedsoftware.tackle.editor.content.store.EditorEmojisStore.Label
-import com.sedsoftware.tackle.editor.content.store.EditorEmojisStoreProvider
+import com.sedsoftware.tackle.editor.emojis.EditorEmojisComponent
+import com.sedsoftware.tackle.editor.emojis.EditorEmojisComponent.Model
+import com.sedsoftware.tackle.editor.emojis.EditorEmojisGateways
+import com.sedsoftware.tackle.editor.emojis.EditorEmojisGateways.Database
+import com.sedsoftware.tackle.editor.emojis.domain.EditorEmojisManager
+import com.sedsoftware.tackle.editor.emojis.store.EditorEmojisStore
+import com.sedsoftware.tackle.editor.emojis.store.EditorEmojisStore.Label
+import com.sedsoftware.tackle.editor.emojis.store.EditorEmojisStoreProvider
 import com.sedsoftware.tackle.utils.extension.asValue
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel

@@ -74,6 +74,7 @@ class AuthFlowManagerTest {
         settings.domainNormalized = ""
         settings.clientId = ""
         settings.clientSecret = ""
+        api.createAppResponse = AuthComponentApiStub.validApplicationDetails
         // when
         val result = manager.createApp(StubConstants.DOMAIN)
         // then

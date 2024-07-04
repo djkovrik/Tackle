@@ -63,7 +63,7 @@ kover {
 
 dependencies {
     rootProject.subprojects {
-        if (this.path.contains("shared") && !this.path.contains("compose") && file("build.gradle.kts").exists()) {
+        if (!this.path.contains("root") && !this.path.contains("compose") && file("build.gradle.kts").exists()) {
             kover(this)
         }
     }

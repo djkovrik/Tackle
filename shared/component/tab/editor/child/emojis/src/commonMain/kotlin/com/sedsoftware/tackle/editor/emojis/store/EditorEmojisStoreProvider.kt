@@ -1,13 +1,13 @@
-package com.sedsoftware.tackle.editor.content.store
+package com.sedsoftware.tackle.editor.emojis.store
 
 import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.coroutineBootstrapper
 import com.arkivanov.mvikotlin.extensions.coroutines.coroutineExecutorFactory
 import com.sedsoftware.tackle.domain.model.CustomEmoji
-import com.sedsoftware.tackle.editor.content.domain.EditorEmojisManager
-import com.sedsoftware.tackle.editor.content.store.EditorEmojisStore.Label
-import com.sedsoftware.tackle.editor.content.store.EditorEmojisStore.State
+import com.sedsoftware.tackle.editor.emojis.domain.EditorEmojisManager
+import com.sedsoftware.tackle.editor.emojis.store.EditorEmojisStore.Label
+import com.sedsoftware.tackle.editor.emojis.store.EditorEmojisStore.State
 import com.sedsoftware.tackle.utils.StoreCreate
 import com.sedsoftware.tackle.utils.extension.unwrap
 import kotlinx.coroutines.flow.catch

@@ -1,9 +1,9 @@
-package com.sedsoftware.tackle.editor.content.store
+package com.sedsoftware.tackle.editor.emojis.store
 
 import com.arkivanov.mvikotlin.core.store.Store
 import com.sedsoftware.tackle.domain.model.CustomEmoji
-import com.sedsoftware.tackle.editor.content.store.EditorEmojisStore.Label
-import com.sedsoftware.tackle.editor.content.store.EditorEmojisStore.State
+import com.sedsoftware.tackle.editor.emojis.store.EditorEmojisStore.Label
+import com.sedsoftware.tackle.editor.emojis.store.EditorEmojisStore.State
 
 internal interface EditorEmojisStore : Store<Nothing, State, Label> {
 

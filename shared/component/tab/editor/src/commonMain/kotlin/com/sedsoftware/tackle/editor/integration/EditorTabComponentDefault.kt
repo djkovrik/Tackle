@@ -7,8 +7,8 @@ import com.sedsoftware.tackle.domain.ComponentOutput
 import com.sedsoftware.tackle.domain.api.TackleDispatchers
 import com.sedsoftware.tackle.editor.EditorTabComponent
 import com.sedsoftware.tackle.editor.EditorTabComponentGateways
-import com.sedsoftware.tackle.editor.content.EditorEmojisComponent
-import com.sedsoftware.tackle.editor.content.integration.EditorEmojisComponentDefault
+import com.sedsoftware.tackle.editor.emojis.EditorEmojisComponent
+import com.sedsoftware.tackle.editor.emojis.integration.EditorEmojisComponentDefault
 import com.sedsoftware.tackle.editor.header.EditorHeaderComponent
 import com.sedsoftware.tackle.editor.header.integration.EditorHeaderComponentDefault
 import com.sedsoftware.tackle.editor.integration.emojis.EditorEmojisComponentApi

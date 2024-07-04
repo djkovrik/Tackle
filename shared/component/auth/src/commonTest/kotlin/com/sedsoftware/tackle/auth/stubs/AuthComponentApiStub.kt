@@ -18,13 +18,6 @@ class AuthComponentApiStub : AuthComponentGateways.Api {
             clientSecret = StubConstants.CLIENT_SECRET,
         )
 
-        val invalidApplicationDetails = Application(
-            name = "",
-            website = "",
-            clientId = "",
-            clientSecret = "",
-        )
-
         val validInstanceDetails = Instance(
             domain = StubConstants.DOMAIN,
             title = StubConstants.DOMAIN,

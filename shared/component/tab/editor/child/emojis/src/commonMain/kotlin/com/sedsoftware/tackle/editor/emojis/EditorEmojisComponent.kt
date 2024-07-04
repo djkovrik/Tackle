@@ -1,4 +1,4 @@
-package com.sedsoftware.tackle.editor.content
+package com.sedsoftware.tackle.editor.emojis
 
 import com.arkivanov.decompose.value.Value
 import com.sedsoftware.tackle.domain.model.CustomEmoji

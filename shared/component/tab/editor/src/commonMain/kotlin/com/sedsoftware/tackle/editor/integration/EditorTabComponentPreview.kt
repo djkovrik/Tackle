@@ -4,8 +4,8 @@ import com.sedsoftware.tackle.domain.model.AppLocale
 import com.sedsoftware.tackle.domain.model.CustomEmoji
 import com.sedsoftware.tackle.domain.model.type.StatusVisibility
 import com.sedsoftware.tackle.editor.EditorTabComponent
-import com.sedsoftware.tackle.editor.content.EditorEmojisComponent
-import com.sedsoftware.tackle.editor.content.integration.EditorEmojisComponentPreview
+import com.sedsoftware.tackle.editor.emojis.EditorEmojisComponent
+import com.sedsoftware.tackle.editor.emojis.integration.EditorEmojisComponentPreview
 import com.sedsoftware.tackle.editor.header.EditorHeaderComponent
 import com.sedsoftware.tackle.editor.header.integration.EditorHeaderComponentPreview
 
