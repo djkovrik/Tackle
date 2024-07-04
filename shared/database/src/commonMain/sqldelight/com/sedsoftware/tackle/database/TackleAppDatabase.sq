@@ -1,0 +1,47 @@
+---- EMOJIS
+
+CREATE TABLE IF NOT EXISTS ServerEmojiEntity (
+    key TEXT NOT NULL PRIMARY KEY,
+    domain TEXT NOT NULL,
+    shortcode TEXT NOT NULL,
+    url TEXT NOT NULL,
+    staticUrl TEXT NOT NULL,
+    visibleInPicker INTEGER NOT NULL,
+    category TEXT NOT NULL
+);
+
+insertEmoji:
+INSERT OR REPLACE INTO ServerEmojiEntity(key, domain, shortcode, url, staticUrl, visibleInPicker, category)
+VALUES (:key, :domain, :shortcode, :url, :staticUrl, :visibleInPicker, :category);
+
+selectEmojis:
+SELECT *
+FROM ServerEmojiEntity
+WHERE domain = :domain;
+
+
+---- INSTANCE INFO
+CREATE TABLE IF NOT EXISTS InstanceInfoEntity (
+    domain TEXT NOT NULL PRIMARY KEY,
+    title TEXT NOT NULL,
+    version TEXT NOT NULL,
+    sourceUrl TEXT NOT NULL,
+    description TEXT NOT NULL,
+    activePerMonth TEXT NOT NULL,
+    thumbnailUrl TEXT NOT NULL,
+    blurhash TEXT NOT NULL,
+    languages TEXT NOT NULL,
+    contactEmail TEXT NOT NULL,
+    contactAccountId TEXT NOT NULL,
+    rules TEXT NOT NULL,
+    config TEXT NOT NULL
+);
+
+insertInstanceInfo:
+INSERT OR REPLACE INTO InstanceInfoEntity(domain, title, version, sourceUrl, description, activePerMonth, thumbnailUrl, blurhash, languages, contactEmail, contactAccountId, rules, config)
+VALUES (:domain, :title, :version, :sourceUrl, :description, :activePerMonth, :thumbnailUrl, :blurhash, :languages, :contactEmail, :contactAccountId, :rules, :config);
+
+selectInstanceInfo:
+SELECT *
+FROM InstanceInfoEntity
+WHERE domain = :domain;

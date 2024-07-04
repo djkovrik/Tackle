@@ -3,10 +3,13 @@ package com.sedsoftware.tackle
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.runtime.CompositionLocalProvider
 import com.arkivanov.decompose.defaultComponentContext
+import com.sedsoftware.tackle.compose.theme.TackleTheme
 import com.sedsoftware.tackle.compose.ui.RootContent
 import com.sedsoftware.tackle.root.RootComponent
 import com.sedsoftware.tackle.root.RootComponentFactory
+import com.seiko.imageloader.LocalImageLoader
 import org.publicvalue.multiplatform.oidc.appsupport.AndroidCodeAuthFlowFactory
 
 class MainActivity : ComponentActivity() {
@@ -27,7 +30,13 @@ class MainActivity : ComponentActivity() {
         authFlowFactory.registerActivity(this)
 
         setContent {
-            RootContent(component = root)
+            TackleTheme {
+                CompositionLocalProvider(
+                    LocalImageLoader provides generateImageLoader(this)
+                ) {
+                    RootContent(component = root)
+                }
+            }
         }
     }
 }

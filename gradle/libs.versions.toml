@@ -29,16 +29,18 @@ detekt = "1.23.5"
 kotlinx-coroutines = "1.8.1"
 kotlinx-serialization = "1.6.3"
 kotlinx-datetime = "0.6.0"
-composeImageLoader = "1.7.1"
 multiplatformSettings = "1.1.1"
 napier = "2.7.1"
 ktor = "2.3.8"
 sqlDelight = "2.0.2"
 oidc = "0.9.1"
+imageLoader = "1.8.1"
+fileKit = "0.6.1"
 
 # Testing
 assertk = "0.28.1"
 kover = "0.8.1"
+mokkery = "2.1.1"
 
 [libraries]
 
@@ -76,10 +78,12 @@ ark-decompose-extensions = { module = "com.arkivanov.decompose:extensions-compos
 ark-essenty = { module = "com.arkivanov.essenty:lifecycle", version.ref = "essenty" }
 
 lib-napier = { module = "io.github.aakira:napier", version.ref = "napier" }
-lib-imageloader = { module = "io.github.qdsfdhvh:image-loader", version.ref = "composeImageLoader" }
+lib-imageLoader = { module = "io.github.qdsfdhvh:image-loader", version.ref = "imageLoader" }
+lib-fileKit = { module = "io.github.vinceglb:filekit-compose", version.ref = "fileKit" }
 lib-settings-core = { module = "com.russhwolf:multiplatform-settings", version.ref = "multiplatformSettings" }
 lib-settings-test = { module = "com.russhwolf:multiplatform-settings-test", version.ref = "multiplatformSettings" }
 
+lib-sqlDelight-coroutines = { module = "app.cash.sqldelight:coroutines-extensions", version.ref = "sqlDelight" }
 lib-sqlDelight-driver-android = { module = "app.cash.sqldelight:android-driver", version.ref = "sqlDelight" }
 lib-sqlDelight-driver-sqlite = { module = "app.cash.sqldelight:sqlite-driver", version.ref = "sqlDelight" }
 lib-sqlDelight-driver-native = { module = "app.cash.sqldelight:native-driver", version.ref = "sqlDelight" }
@@ -103,3 +107,4 @@ kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", vers
 sqlDelight = { id = "app.cash.sqldelight", version.ref = "sqlDelight" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
+mokkery = { id = "dev.mokkery", version.ref = "mokkery" }

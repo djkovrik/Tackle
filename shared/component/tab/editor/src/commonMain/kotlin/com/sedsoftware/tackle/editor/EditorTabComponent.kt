@@ -1,15 +1,9 @@
 package com.sedsoftware.tackle.editor
 
-import com.arkivanov.decompose.value.Value
+import com.sedsoftware.tackle.editor.emojis.EditorEmojisComponent
+import com.sedsoftware.tackle.editor.header.EditorHeaderComponent
 
 interface EditorTabComponent {
-    val model: Value<Model>
-
-    data class Model(
-        val text: String,
-    )
-
-    sealed class Output {
-        data class ErrorCaught(val throwable: Throwable) : Output()
-    }
+    val header: EditorHeaderComponent
+    val emojis: EditorEmojisComponent
 }

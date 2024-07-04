@@ -2,7 +2,6 @@ package com.sedsoftware.tackle.auth.store
 
 import assertk.assertThat
 import assertk.assertions.contains
-import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNotEmpty
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
@@ -10,9 +9,11 @@ import com.sedsoftware.tackle.auth.domain.AuthFlowManager
 import com.sedsoftware.tackle.auth.model.CredentialsState
 import com.sedsoftware.tackle.auth.model.InstanceInfoState
 import com.sedsoftware.tackle.auth.stubs.AuthComponentApiStub
+import com.sedsoftware.tackle.auth.stubs.AuthComponentDatabaseStub
 import com.sedsoftware.tackle.auth.stubs.AuthComponentSettingsStub
 import com.sedsoftware.tackle.auth.stubs.AuthComponentToolsStub
 import com.sedsoftware.tackle.auth.stubs.StubConstants
+import com.sedsoftware.tackle.domain.TackleException
 import com.sedsoftware.tackle.utils.test.StoreTest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.runTest
@@ -51,7 +52,7 @@ internal class AuthStoreTest : StoreTest<AuthStore.Intent, AuthStore.State, Auth
     fun `store creation should switch state to UNAUTHORIZED with navigation call if token expired`() = runTest {
         // given
         asAuthorized()
-        api.verifyCredentialsResponse = AuthComponentApiStub.invalidApplicationDetails
+        api.verifyCredentialsResponse = AuthComponentApiStub.invalidAccountDetails
         api.shouldThrowException = false
         // when
         store.init()
@@ -68,7 +69,7 @@ internal class AuthStoreTest : StoreTest<AuthStore.Intent, AuthStore.State, Auth
         store.init()
         // then
         assertThat(store.state.credentialsState, "Credentials state").isEqualTo(CredentialsState.UNAUTHORIZED)
-        assertThat(labels).isEmpty()
+        assertThat(labels.first()).isEqualTo(AuthStore.Label.ErrorCaught(TackleException.MissedRegistrationData))
     }
 
     @Test
@@ -95,9 +96,9 @@ internal class AuthStoreTest : StoreTest<AuthStore.Intent, AuthStore.State, Auth
         store.accept(AuthStore.Intent.OnTextInput(text))
         // then
         assertThat(store.state.instanceInfo.domain).isNotEmpty()
-        assertThat(store.state.instanceInfo.name).isNotEmpty()
+        assertThat(store.state.instanceInfo.title).isNotEmpty()
         assertThat(store.state.instanceInfo.description).isNotEmpty()
-        assertThat(store.state.instanceInfo.logoUrl).isNotEmpty()
+        assertThat(store.state.instanceInfo.thumbnailUrl).isNotEmpty()
     }
 
     @Test
@@ -201,6 +202,7 @@ internal class AuthStoreTest : StoreTest<AuthStore.Intent, AuthStore.State, Auth
             manager = AuthFlowManager(
                 tools = AuthComponentToolsStub(),
                 api = api,
+                database = AuthComponentDatabaseStub(),
                 settings = settings,
             ),
             mainContext = Dispatchers.Unconfined,
@@ -209,12 +211,12 @@ internal class AuthStoreTest : StoreTest<AuthStore.Intent, AuthStore.State, Auth
     }
 
     private fun asAuthorized() {
-        settings.domain = StubConstants.DOMAIN
+        settings.domainNormalized = StubConstants.DOMAIN
         settings.token = StubConstants.TOKEN
     }
 
     private fun asUnauthorized() {
-        settings.domain = StubConstants.DOMAIN
+        settings.domainNormalized = StubConstants.DOMAIN
         settings.token = ""
     }
 }

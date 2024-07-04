@@ -1,7 +1,7 @@
 plugins {
     id("tackle.config.android")
     id("tackle.config.multiplatform")
-    alias(libs.plugins.kover)
+    alias(libs.plugins.mokkery)
 }
 
 kotlin {
@@ -10,6 +10,8 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
+                implementation(project(":shared:domain"))
+                implementation(project(":shared:database"))
                 implementation(project(":shared:network"))
                 implementation(project(":shared:settings"))
                 implementation(project(":shared:utils"))

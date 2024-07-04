@@ -19,10 +19,12 @@ internal fun Project.configureKotlinAndroid() {
     preconfigure<LibraryExtension> {
         val moduleName = path.split(":").drop(2).joinToString(".")
         namespace = if (moduleName.isNotEmpty()) "com.sedsoftware.tackle.$moduleName" else "com.sedsoftware.shared"
-//        println("Namespace for module $moduleName: $namespace")
         compileSdk = libs.findVersion("android.compileSdk").get().requiredVersion.toInt()
         defaultConfig {
             minSdk = libs.findVersion("android.minSdk").get().requiredVersion.toInt()
+            addManifestPlaceholders(
+                mapOf("oidcRedirectScheme" to "tackle")
+            )
         }
         compileOptions {
             sourceCompatibility = JavaVersion.VERSION_17

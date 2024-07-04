@@ -11,9 +11,10 @@ kotlin {
             dependencies {
                 implementation(project(":shared:component:auth"))
                 implementation(project(":shared:component:main"))
+                implementation(project(":shared:domain"))
+                implementation(project(":shared:database"))
                 implementation(project(":shared:network"))
                 implementation(project(":shared:settings"))
-                implementation(project(":shared:utils"))
 
                 implementation(libs.ark.decompose.core)
                 implementation(libs.ark.decompose.extensions)

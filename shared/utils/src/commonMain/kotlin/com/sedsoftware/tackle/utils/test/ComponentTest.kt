@@ -3,7 +3,7 @@ package com.sedsoftware.tackle.utils.test
 import com.arkivanov.essenty.lifecycle.LifecycleRegistry
 import com.arkivanov.essenty.lifecycle.resume
 import com.arkivanov.mvikotlin.core.utils.isAssertOnMainThreadEnabled
-import com.sedsoftware.tackle.utils.TackleDispatchers
+import com.sedsoftware.tackle.domain.api.TackleDispatchers
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 

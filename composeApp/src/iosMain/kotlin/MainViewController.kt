@@ -1,11 +1,15 @@
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.window.ComposeUIViewController
 import com.arkivanov.decompose.DefaultComponentContext
 import com.arkivanov.essenty.lifecycle.LifecycleRegistry
 import com.sedsoftware.tackle.DefaultDispatchers
 import com.sedsoftware.tackle.PlatformToolsFactory
+import com.sedsoftware.tackle.compose.theme.TackleTheme
 import com.sedsoftware.tackle.compose.ui.RootContent
+import com.sedsoftware.tackle.generateImageLoader
 import com.sedsoftware.tackle.root.RootComponent
 import com.sedsoftware.tackle.root.RootComponentFactory
+import com.seiko.imageloader.LocalImageLoader
 import org.publicvalue.multiplatform.oidc.appsupport.IosCodeAuthFlowFactory
 import platform.UIKit.UIViewController
 
@@ -20,5 +24,11 @@ private val root: RootComponent = RootComponentFactory(
 @Suppress("FunctionName")
 fun MainViewController(): UIViewController =
     ComposeUIViewController {
-        RootContent(component = root)
+        TackleTheme {
+            CompositionLocalProvider(
+                LocalImageLoader provides generateImageLoader()
+            ) {
+                RootContent(component = root)
+            }
+        }
     }

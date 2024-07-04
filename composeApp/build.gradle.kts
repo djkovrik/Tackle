@@ -37,7 +37,7 @@ kotlin {
         commonMain.dependencies {
             implementation(project(":shared:component:root"))
             implementation(project(":shared:compose"))
-            implementation(project(":shared:utils"))
+            implementation(project(":shared:domain"))
 
             implementation(compose.runtime)
             implementation(compose.foundation)
@@ -52,6 +52,7 @@ kotlin {
             implementation(libs.ark.essenty)
 
             implementation(libs.oidc.appsupport)
+            implementation(libs.lib.imageLoader)
         }
         androidMain.dependencies {
             implementation(libs.compose.ui.tooling.preview)

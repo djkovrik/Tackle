@@ -1,6 +1,6 @@
 package com.sedsoftware.tackle
 
-import com.sedsoftware.tackle.utils.TackleDispatchers
+import com.sedsoftware.tackle.domain.api.TackleDispatchers
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.swing.Swing

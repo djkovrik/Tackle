@@ -1,3 +1,4 @@
+import java.nio.file.Files
 import javax.xml.parsers.DocumentBuilderFactory
 
 plugins {
@@ -11,6 +12,7 @@ plugins {
     alias(libs.plugins.kotlinx.parcelize) apply false
     alias(libs.plugins.kotlinx.serialization) apply false
     alias(libs.plugins.sqlDelight) apply false
+    alias(libs.plugins.mokkery) apply false
     alias(libs.plugins.detekt)
     alias(libs.plugins.kover)
 }
@@ -33,10 +35,12 @@ tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
 
 tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
     jvmTarget = "1.8"
+    exclude("**/build/**")
 }
 
 tasks.withType<io.gitlab.arturbosch.detekt.DetektCreateBaselineTask>().configureEach {
     jvmTarget = "1.8"
+    exclude("**/build/**")
 }
 
 kover {
@@ -60,8 +64,11 @@ kover {
 }
 
 dependencies {
-    kover(project(":shared:component:auth"))
-    kover(project(":shared:component:main"))
+    rootProject.subprojects {
+        if (!this.path.contains("root") && !this.path.contains("compose") && file("build.gradle.kts").exists()) {
+            kover(this)
+        }
+    }
 }
 
 // Src: https://bitspittle.dev/blog/2022/kover-badge
@@ -69,7 +76,7 @@ tasks.register("printLineCoverage") {
     group = "verification"
     dependsOn("koverXmlReport")
     doLast {
-        val report = file("$buildDir/reports/kover/report.xml")
+        val report = file("${rootProject.projectDir}/build/reports/kover/report.xml")
 
         val doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(report)
         val rootNode = doc.firstChild

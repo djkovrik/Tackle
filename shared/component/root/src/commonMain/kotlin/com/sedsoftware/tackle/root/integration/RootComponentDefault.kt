@@ -9,25 +9,31 @@ import com.arkivanov.decompose.value.Value
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.sedsoftware.tackle.auth.AuthComponent
 import com.sedsoftware.tackle.auth.integration.AuthComponentDefault
+import com.sedsoftware.tackle.domain.ComponentOutput
+import com.sedsoftware.tackle.domain.TackleException
+import com.sedsoftware.tackle.domain.TackleExceptionHandler
+import com.sedsoftware.tackle.domain.api.AuthorizedApi
+import com.sedsoftware.tackle.domain.api.OAuthApi
+import com.sedsoftware.tackle.domain.api.TackleDatabase
+import com.sedsoftware.tackle.domain.api.TackleDispatchers
+import com.sedsoftware.tackle.domain.api.TacklePlatformTools
+import com.sedsoftware.tackle.domain.api.TackleSettings
+import com.sedsoftware.tackle.domain.api.UnauthorizedApi
 import com.sedsoftware.tackle.main.MainComponent
 import com.sedsoftware.tackle.main.integration.MainComponentDefault
-import com.sedsoftware.tackle.network.api.AuthorizedApi
-import com.sedsoftware.tackle.network.api.OAuthApi
-import com.sedsoftware.tackle.network.api.UnauthorizedApi
 import com.sedsoftware.tackle.root.RootComponent
 import com.sedsoftware.tackle.root.RootComponent.Child
 import com.sedsoftware.tackle.root.integration.auth.AuthComponentApi
+import com.sedsoftware.tackle.root.integration.auth.AuthComponentDatabase
 import com.sedsoftware.tackle.root.integration.auth.AuthComponentSettings
 import com.sedsoftware.tackle.root.integration.auth.AuthComponentTools
-import com.sedsoftware.tackle.settings.api.TackleSettings
-import com.sedsoftware.tackle.utils.TackleDispatchers
-import com.sedsoftware.tackle.utils.TacklePlatformTools
+import kotlinx.coroutines.flow.Flow
 import kotlinx.serialization.Serializable
 
 class RootComponentDefault internal constructor(
     componentContext: ComponentContext,
-    private val authComponent: (ComponentContext, (AuthComponent.Output) -> Unit) -> AuthComponent,
-    private val mainComponent: (ComponentContext, (MainComponent.Output) -> Unit) -> MainComponent,
+    private val authComponent: (ComponentContext, (ComponentOutput) -> Unit) -> AuthComponent,
+    private val mainComponent: (ComponentContext, (ComponentOutput) -> Unit) -> MainComponent,
 ) : RootComponent, ComponentContext by componentContext {
 
     constructor(
@@ -36,6 +42,7 @@ class RootComponentDefault internal constructor(
         unauthorizedApi: UnauthorizedApi,
         authorizedApi: AuthorizedApi,
         oauthApi: OAuthApi,
+        database: TackleDatabase,
         settings: TackleSettings,
         platformTools: TacklePlatformTools,
         dispatchers: TackleDispatchers,
@@ -46,6 +53,7 @@ class RootComponentDefault internal constructor(
                 componentContext = childContext,
                 storeFactory = storeFactory,
                 api = AuthComponentApi(unauthorizedApi, authorizedApi, oauthApi),
+                database = AuthComponentDatabase(database),
                 settings = AuthComponentSettings(settings),
                 tools = AuthComponentTools(platformTools),
                 dispatchers = dispatchers,
@@ -56,6 +64,12 @@ class RootComponentDefault internal constructor(
             MainComponentDefault(
                 componentContext = childContext,
                 storeFactory = storeFactory,
+                unauthorizedApi = unauthorizedApi,
+                authorizedApi = authorizedApi,
+                settings = settings,
+                database = database,
+                platformTools = platformTools,
+                dispatchers = dispatchers,
                 mainComponentOutput = output,
             )
         },
@@ -74,22 +88,25 @@ class RootComponentDefault internal constructor(
 
     override val childStack: Value<ChildStack<*, Child>> = stack
 
+    private val exceptionHandler: TackleExceptionHandler =
+        TackleExceptionHandler(
+            logoutAction = { navigation.replaceCurrent(Config.Auth) }
+        )
+
+    override val errorMessages: Flow<TackleException>
+        get() = exceptionHandler.messaging
+
     private fun createChild(config: Config, componentContext: ComponentContext): Child =
         when (config) {
-            is Config.Auth -> Child.Auth(authComponent(componentContext, ::onAuthComponentOutput))
-            is Config.Main -> Child.Main(mainComponent(componentContext, ::onMainComponentOutput))
+            is Config.Auth -> Child.Auth(authComponent(componentContext, ::onComponentOutput))
+            is Config.Main -> Child.Main(mainComponent(componentContext, ::onComponentOutput))
         }
 
-    private fun onAuthComponentOutput(output: AuthComponent.Output) {
+    private fun onComponentOutput(output: ComponentOutput) {
         when (output) {
-            is AuthComponent.Output.NavigateToMainScreen -> navigation.replaceCurrent(Config.Main)
-            is AuthComponent.Output.ErrorCaught -> Unit // TODO
-        }
-    }
-
-    private fun onMainComponentOutput(output: MainComponent.Output) {
-        when (output) {
-            is MainComponent.Output.ErrorCaught -> Unit // TODO
+            is ComponentOutput.Auth.NavigateToMainScreen -> navigation.replaceCurrent(Config.Main)
+            is ComponentOutput.Common.ErrorCaught -> exceptionHandler.consume(output.throwable)
+            else -> Unit
         }
     }
 

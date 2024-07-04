@@ -27,9 +27,4 @@ interface AuthComponent : BackHandlerOwner {
         val isLearnMoreVisible: Boolean,
         val credentialsState: CredentialsState,
     )
-
-    sealed class Output {
-        data object NavigateToMainScreen : Output()
-        data class ErrorCaught(val throwable: Throwable) : Output()
-    }
 }

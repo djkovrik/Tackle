@@ -2,16 +2,16 @@ package com.sedsoftware.tackle.auth.domain
 
 import com.sedsoftware.tackle.auth.AuthComponentGateways
 import com.sedsoftware.tackle.auth.extension.normalizeUrl
-import com.sedsoftware.tackle.auth.model.InstanceInfo
 import com.sedsoftware.tackle.auth.model.ObtainedCredentials
-import com.sedsoftware.tackle.network.response.ApplicationDetails
-import com.sedsoftware.tackle.network.response.InstanceDetails
-import com.sedsoftware.tackle.utils.AppCreationException
-import com.sedsoftware.tackle.utils.MissedRegistrationDataException
-import com.sedsoftware.tackle.utils.model.AppClientData
+import com.sedsoftware.tackle.domain.TackleException
+import com.sedsoftware.tackle.domain.model.Account
+import com.sedsoftware.tackle.domain.model.AppClientData
+import com.sedsoftware.tackle.domain.model.Application
+import com.sedsoftware.tackle.domain.model.Instance
 
 internal class AuthFlowManager(
     private val api: AuthComponentGateways.Api,
+    private val database: AuthComponentGateways.Database,
     private val settings: AuthComponentGateways.Settings,
     private val tools: AuthComponentGateways.Tools,
 ) {
@@ -19,43 +19,37 @@ internal class AuthFlowManager(
         tools.getClientData()
     }
 
-    suspend fun getInstanceInfo(url: String): Result<InstanceInfo> = runCatching {
-        val response: InstanceDetails = api.getServerInfo(url)
-        InstanceInfo(
-            domain = response.domain.normalizeUrl(),
-            name = response.title,
-            description = response.description,
-            logoUrl = response.thumbnail?.url.orEmpty(),
-            users = response.usage?.users?.activePerMonth ?: 0L,
-        )
+    suspend fun getInstanceInfo(url: String): Result<Instance> = runCatching {
+        val response = api.getServerInfo(url)
+        database.cacheInstanceInfo(response)
+        return@runCatching response
     }
 
     suspend fun verifyCredentials(): Result<Boolean> = runCatching {
-        if (settings.domain.isEmpty() || settings.token.isEmpty()) {
-            throw MissedRegistrationDataException
+        if (settings.domainNormalized.isEmpty() || settings.token.isEmpty()) {
+            throw TackleException.MissedRegistrationData
         }
 
-        val response: ApplicationDetails = api.verifyCredentials()
-        response.validApiKey.isNotEmpty()
+        val response: Account = api.verifyCredentials()
+
+        settings.ownAvatar = response.avatarStatic
+        settings.ownUsername = response.acct
+
+        return@runCatching response.acct.isNotEmpty()
     }
 
     suspend fun createApp(domain: String): Result<ObtainedCredentials> = runCatching {
-        settings.domain = domain
+        settings.domainNormalized = domain.normalizeUrl()
+        settings.domainShort = domain
 
-        val response: ApplicationDetails = api.createApp(clientAppData)
-
-        if (response.clientId.isEmpty() || response.clientSecret.isEmpty()) {
-            throw AppCreationException
-        }
+        val response: Application = api.createApp(clientAppData)
 
         settings.clientId = response.clientId
         settings.clientSecret = response.clientSecret
 
-        ObtainedCredentials(
-            domain = domain,
+        return@runCatching ObtainedCredentials(
             clientId = response.clientId,
             clientSecret = response.clientSecret,
-            apiKey = response.validApiKey,
         )
     }
 
@@ -68,7 +62,7 @@ internal class AuthFlowManager(
         )
 
         settings.token = accessToken
-        accessToken.isNotEmpty()
+        return@runCatching accessToken.isNotEmpty()
     }
 
     fun getTextInputEndDelay(): Long = tools.getTextInputEndDelay()

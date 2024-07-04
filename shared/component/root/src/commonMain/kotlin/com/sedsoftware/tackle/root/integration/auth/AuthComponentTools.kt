@@ -1,19 +1,15 @@
 package com.sedsoftware.tackle.root.integration.auth
 
 import com.sedsoftware.tackle.auth.AuthComponentGateways
-import com.sedsoftware.tackle.utils.TacklePlatformTools
-import com.sedsoftware.tackle.utils.model.AppClientData
+import com.sedsoftware.tackle.domain.api.TacklePlatformTools
+import com.sedsoftware.tackle.domain.model.AppClientData
 
 internal class AuthComponentTools(
     private val platformTools: TacklePlatformTools,
 ) : AuthComponentGateways.Tools {
 
-    override fun getClientData(): AppClientData =
-        platformTools.getClientData()
-
-    override fun openUrl(url: String?) =
-        platformTools.openUrl(url)
-
+    override fun getClientData(): AppClientData = platformTools.getClientData()
+    override fun openUrl(url: String?) = platformTools.openUrl(url)
     override fun getTextInputEndDelay(): Long = INPUT_ENDED_DELAY
 
     private companion object {

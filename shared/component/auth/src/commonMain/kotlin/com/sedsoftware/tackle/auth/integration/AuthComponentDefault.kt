@@ -14,8 +14,9 @@ import com.sedsoftware.tackle.auth.domain.AuthFlowManager
 import com.sedsoftware.tackle.auth.store.AuthStore
 import com.sedsoftware.tackle.auth.store.AuthStore.Label
 import com.sedsoftware.tackle.auth.store.AuthStoreProvider
-import com.sedsoftware.tackle.utils.TackleDispatchers
-import com.sedsoftware.tackle.utils.asValue
+import com.sedsoftware.tackle.domain.ComponentOutput
+import com.sedsoftware.tackle.domain.api.TackleDispatchers
+import com.sedsoftware.tackle.utils.extension.asValue
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
@@ -24,17 +25,18 @@ class AuthComponentDefault(
     private val componentContext: ComponentContext,
     private val storeFactory: StoreFactory,
     private val api: AuthComponentGateways.Api,
+    private val database: AuthComponentGateways.Database,
     private val settings: AuthComponentGateways.Settings,
     private val tools: AuthComponentGateways.Tools,
     private val dispatchers: TackleDispatchers,
-    private val output: (AuthComponent.Output) -> Unit,
+    private val output: (ComponentOutput) -> Unit,
 ) : AuthComponent, ComponentContext by componentContext {
 
     private val store: AuthStore =
         instanceKeeper.getStore {
             AuthStoreProvider(
                 storeFactory = storeFactory,
-                manager = AuthFlowManager(api, settings, tools),
+                manager = AuthFlowManager(api, database, settings, tools),
                 mainContext = dispatchers.main,
                 ioContext = dispatchers.io,
             ).create()
@@ -46,8 +48,8 @@ class AuthComponentDefault(
         scope.launch {
             store.labels.collect { label ->
                 when (label) {
-                    is Label.NavigateToMainScreen -> output(AuthComponent.Output.NavigateToMainScreen)
-                    is Label.ErrorCaught -> output(AuthComponent.Output.ErrorCaught(label.throwable))
+                    is Label.NavigateToMainScreen -> output(ComponentOutput.Auth.NavigateToMainScreen)
+                    is Label.ErrorCaught -> output(ComponentOutput.Common.ErrorCaught(label.exception))
                 }
             }
         }

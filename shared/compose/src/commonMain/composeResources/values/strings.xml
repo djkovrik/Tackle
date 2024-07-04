@@ -8,11 +8,18 @@
     <string name="app_label">Tackle</string>
     <string name="mastodon_title">Mastodon</string>
     <string name="default_server">mastodon.social</string>
+
     <!-- Common -->
     <string name="common_continue">Continue</string>
     <string name="common_retry">Retry</string>
     <string name="common_retrying">Retrying</string>
     <string name="common_redirecting">Redirecting</string>
+    <string name="common_cancel">Cancel</string>
+    <string name="common_error_no_internet">No internet connection</string>
+    <string name="common_error_server">Server error</string>
+    <string name="common_error_serialization">Serialization error</string>
+    <string name="common_error_unknown">Something went wrong</string>
+
     <!-- Auth component -->
     <string name="auth_server_address">Server address</string>
     <string name="auth_server_address_wrong">Incorrect address</string>
@@ -24,10 +31,22 @@
     <string name="auth_server_description">Each user account belongs to a specific Mastodon server with it's own rules, admins and regulations, but users from each server can interact seamlessly with users in any other server.</string>
     <string name="auth_server_info_fetch">Loading server info</string>
     <string name="auth_failed_to_connect">Failed to connect the server</string>
+
     <!-- Main component -->
     <string name="main_tab_home">Home</string>
     <string name="main_tab_explore">Explore</string>
     <string name="main_tab_editor">New post</string>
     <string name="main_tab_publications">Publications</string>
     <string name="main_tab_notifications">Notifications</string>
+
+    <!-- Editor component -->
+    <string name="editor_language_default">Default</string>
+    <string name="editor_status_visibility_public">Public</string>
+    <string name="editor_status_visibility_public_desc">Visible to everyone, shown in public timelines</string>
+    <string name="editor_status_visibility_unlisted">Quiet</string>
+    <string name="editor_status_visibility_unlisted_desc">Visible to public, but not included in public timelines</string>
+    <string name="editor_status_visibility_private">Private</string>
+    <string name="editor_status_visibility_private_desc">Visible to followers and mentioned users only</string>
+    <string name="editor_status_visibility_direct">Direct</string>
+    <string name="editor_status_visibility_direct_desc">Visible to mentioned users only</string>
 </resources>

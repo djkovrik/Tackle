@@ -1,16 +1,22 @@
 package com.sedsoftware.tackle.settings.internal
 
 import com.russhwolf.settings.Settings
-import com.sedsoftware.tackle.settings.api.TackleSettings
+import com.sedsoftware.tackle.domain.api.TackleSettings
 
 internal class TackleSettingsInternal(
     private val settings: Settings,
 ) : TackleSettings {
 
-    override var domain: String
+    override var domainNormalized: String
         get() = settings.getValue(PREF_KEY_DOMAIN, "")
         set(value) {
             settings.setValue(PREF_KEY_DOMAIN, value)
+        }
+
+    override var domainShort: String
+        get() = settings.getValue(PREF_KEY_DOMAIN_SHORT, "")
+        set(value) {
+            settings.setValue(PREF_KEY_DOMAIN_SHORT, value)
         }
 
     override var clientId: String
@@ -20,15 +26,45 @@ internal class TackleSettingsInternal(
         }
 
     override var clientSecret: String
-        get() = settings.getValue(PREF_KEY_CLIENS_SECRET, "")
+        get() = settings.getValue(PREF_KEY_CLIENT_SECRET, "")
         set(value) {
-            settings.setValue(PREF_KEY_CLIENS_SECRET, value)
+            settings.setValue(PREF_KEY_CLIENT_SECRET, value)
         }
 
     override var token: String
         get() = settings.getValue(PREF_KEY_TOKEN, "")
         set(value) {
             settings.setValue(PREF_KEY_TOKEN, value)
+        }
+
+    override var ownAvatar: String
+        get() = settings.getValue(PREF_KEY_AVATAR, "")
+        set(value) {
+            settings.setValue(PREF_KEY_AVATAR, value)
+        }
+
+    override var ownUsername: String
+        get() = settings.getValue(PREF_KEY_USERNAME, "")
+        set(value) {
+            settings.setValue(PREF_KEY_USERNAME, value)
+        }
+
+    override var emojiLastCachedTimestamp: String
+        get() = settings.getValue(PREF_KEY_EMOJI_TIMESTAMP, "")
+        set(value) {
+            settings.setValue(PREF_KEY_EMOJI_TIMESTAMP, value)
+        }
+
+    override var lastSelectedLanguageName: String
+        get() = settings.getValue(PREF_KEY_LAST_SELECTED_LANGUAGE_NAME, "")
+        set(value) {
+            settings.setValue(PREF_KEY_LAST_SELECTED_LANGUAGE_NAME, value)
+        }
+
+    override var lastSelectedLanguageCode: String
+        get() = settings.getValue(PREF_KEY_LAST_SELECTED_LANGUAGE_CODE, "")
+        set(value) {
+            settings.setValue(PREF_KEY_LAST_SELECTED_LANGUAGE_CODE, value)
         }
 
     private fun Settings.setValue(key: String, value: Any) {
@@ -54,8 +90,14 @@ internal class TackleSettingsInternal(
 
     private companion object {
         const val PREF_KEY_DOMAIN = "dn"
+        const val PREF_KEY_DOMAIN_SHORT = "dns"
         const val PREF_KEY_CLIENT_ID = "ci"
-        const val PREF_KEY_CLIENS_SECRET = "cs"
+        const val PREF_KEY_CLIENT_SECRET = "cs"
         const val PREF_KEY_TOKEN = "tn"
+        const val PREF_KEY_AVATAR = "av"
+        const val PREF_KEY_USERNAME = "un"
+        const val PREF_KEY_EMOJI_TIMESTAMP = "et"
+        const val PREF_KEY_LAST_SELECTED_LANGUAGE_NAME = "lsln"
+        const val PREF_KEY_LAST_SELECTED_LANGUAGE_CODE = "lslc"
     }
 }

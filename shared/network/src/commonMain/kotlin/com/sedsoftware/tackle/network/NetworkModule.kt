@@ -1,8 +1,8 @@
 package com.sedsoftware.tackle.network
 
-import com.sedsoftware.tackle.network.api.AuthorizedApi
-import com.sedsoftware.tackle.network.api.OAuthApi
-import com.sedsoftware.tackle.network.api.UnauthorizedApi
+import com.sedsoftware.tackle.domain.api.AuthorizedApi
+import com.sedsoftware.tackle.domain.api.OAuthApi
+import com.sedsoftware.tackle.domain.api.UnauthorizedApi
 import com.sedsoftware.tackle.network.internal.TackleAuthorizedApi
 import com.sedsoftware.tackle.network.internal.TackleOAuthApi
 import com.sedsoftware.tackle.network.internal.TackleUnauthorizedApi
@@ -25,6 +25,7 @@ fun NetworkModule(dependencies: NetworkModuleDependencies): NetworkModule {
         override val unauthorized: UnauthorizedApi by lazy {
             TackleUnauthorizedApi(
                 domainProvider = dependencies.domainProvider,
+                tokenProvider = dependencies.tokenProvider,
             )
         }
 

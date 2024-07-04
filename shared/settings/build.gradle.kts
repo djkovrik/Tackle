@@ -9,6 +9,8 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
+                implementation(project(":shared:domain"))
+
                 implementation(libs.lib.settings.core)
                 implementation(libs.lib.settings.test)
             }

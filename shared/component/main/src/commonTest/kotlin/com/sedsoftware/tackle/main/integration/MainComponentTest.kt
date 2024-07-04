@@ -5,14 +5,26 @@ import assertk.assertions.hasClass
 import com.arkivanov.decompose.DefaultComponentContext
 import com.arkivanov.decompose.router.stack.active
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
+import com.sedsoftware.tackle.domain.api.AuthorizedApi
+import com.sedsoftware.tackle.domain.api.TackleDatabase
+import com.sedsoftware.tackle.domain.api.TacklePlatformTools
+import com.sedsoftware.tackle.domain.api.TackleSettings
+import com.sedsoftware.tackle.domain.api.UnauthorizedApi
 import com.sedsoftware.tackle.main.MainComponent
 import com.sedsoftware.tackle.main.model.TackleNavigationTab
 import com.sedsoftware.tackle.utils.test.ComponentTest
+import dev.mokkery.mock
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 
 class MainComponentTest : ComponentTest<MainComponentDefault>() {
+
+    private val unauthorizedApi: UnauthorizedApi = mock<UnauthorizedApi>()
+    private val authorizedApi: AuthorizedApi = mock<AuthorizedApi>()
+    private val database: TackleDatabase = mock<TackleDatabase>()
+    private val settings: TackleSettings = mock<TackleSettings>()
+    private val platformTools: TacklePlatformTools = mock<TacklePlatformTools>()
 
     @BeforeTest
     fun before() {
@@ -25,12 +37,12 @@ class MainComponentTest : ComponentTest<MainComponentDefault>() {
     }
 
     @Test
-    fun `component creation should initialize stack with Home`() {
+    fun `component creation should initialize stack with TabEditor`() {
         // given
         // when
         component = createComponent()
         // then
-        assertThat(component.childStack.active.instance).hasClass(MainComponent.Child.TabHome::class)
+        assertThat(component.childStack.active.instance).hasClass(MainComponent.Child.TabEditor::class)
     }
 
     @Test
@@ -44,7 +56,7 @@ class MainComponentTest : ComponentTest<MainComponentDefault>() {
     }
 
     @Test
-    fun `click to EXPLORE tab should switch to TabHome`() {
+    fun `click to EXPLORE tab should switch to TabExplore`() {
         // given
         // when
         component = createComponent()
@@ -87,6 +99,12 @@ class MainComponentTest : ComponentTest<MainComponentDefault>() {
         MainComponentDefault(
             componentContext = DefaultComponentContext(lifecycle),
             storeFactory = DefaultStoreFactory(),
+            unauthorizedApi = unauthorizedApi,
+            authorizedApi = authorizedApi,
+            database = database,
+            settings = settings,
+            platformTools = platformTools,
+            dispatchers = testDispatchers,
             mainComponentOutput = {}
         )
 }

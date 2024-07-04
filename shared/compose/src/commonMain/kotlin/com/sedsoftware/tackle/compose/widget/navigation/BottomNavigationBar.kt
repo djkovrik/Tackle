@@ -35,14 +35,13 @@ internal fun BottomNavigationBar(
     activeTab: TackleNavigationTab,
     modifier: Modifier = Modifier,
     config: NavigationBarConfig = NavigationBarConfig(
-        containerColor = MaterialTheme.colorScheme.primaryContainer,
-        iconColorNormal = MaterialTheme.colorScheme.primary,
-        iconColorSelected = MaterialTheme.colorScheme.secondary,
+        containerColor = MaterialTheme.colorScheme.background,
+        iconColorNormal = MaterialTheme.colorScheme.secondary,
+        iconColorSelected = MaterialTheme.colorScheme.primary,
         buttonIconColorNormal = MaterialTheme.colorScheme.inverseOnSurface,
         buttonIconColorSelected = MaterialTheme.colorScheme.inverseOnSurface,
-        buttonBackgroundColorNormal = MaterialTheme.colorScheme.primary,
-        buttonBackgroundColorSelected = MaterialTheme.colorScheme.secondary,
-        buttonColor = MaterialTheme.colorScheme.primary,
+        buttonBackgroundColorNormal = MaterialTheme.colorScheme.secondary,
+        buttonBackgroundColorSelected = MaterialTheme.colorScheme.primary,
         iconSizeNormal = 34.dp,
         iconSizeSelected = 38.dp,
     ),
@@ -67,6 +66,8 @@ internal fun BottomNavigationBar(
         ) {
             NavigationBar(
                 containerColor = config.containerColor,
+                contentColor = config.containerColor,
+                tonalElevation = 0.dp,
                 modifier = modifier,
             ) {
                 BottomNavigationBarItem(
@@ -118,7 +119,7 @@ internal fun BottomNavigationBar(
 
             BottomNavigationBarIndicator(
                 indicatorOffset = animatedIndicatorOffset,
-                indicatorColor = MaterialTheme.colorScheme.secondary,
+                indicatorColor = config.iconColorSelected,
             )
         }
     }

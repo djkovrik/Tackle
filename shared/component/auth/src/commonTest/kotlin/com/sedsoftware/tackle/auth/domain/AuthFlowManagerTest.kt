@@ -6,11 +6,11 @@ import assertk.assertions.isNotEmpty
 import assertk.assertions.isSameInstanceAs
 import com.sedsoftware.tackle.auth.model.ObtainedCredentials
 import com.sedsoftware.tackle.auth.stubs.AuthComponentApiStub
+import com.sedsoftware.tackle.auth.stubs.AuthComponentDatabaseStub
 import com.sedsoftware.tackle.auth.stubs.AuthComponentSettingsStub
 import com.sedsoftware.tackle.auth.stubs.AuthComponentToolsStub
 import com.sedsoftware.tackle.auth.stubs.StubConstants
-import com.sedsoftware.tackle.utils.AppCreationException
-import com.sedsoftware.tackle.utils.MissedRegistrationDataException
+import com.sedsoftware.tackle.domain.TackleException
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 
@@ -22,6 +22,7 @@ class AuthFlowManagerTest {
     private val manager: AuthFlowManager = AuthFlowManager(
         tools = AuthComponentToolsStub(),
         api = api,
+        database = AuthComponentDatabaseStub(),
         settings = settings,
     )
 
@@ -34,9 +35,9 @@ class AuthFlowManagerTest {
     }
 
     @Test
-    fun `verifyCredentials should return true for valid settings and valid key`() = runTest {
+    fun `verifyCredentials should return true for valid settings`() = runTest {
         // given
-        settings.domain = StubConstants.DOMAIN
+        settings.domainNormalized = StubConstants.DOMAIN
         settings.token = StubConstants.TOKEN
         // when
         val result = manager.verifyCredentials()
@@ -46,61 +47,39 @@ class AuthFlowManagerTest {
     }
 
     @Test
-    fun `verifyCredentials should return false for valid settings and invalid key`() = runTest {
-        // given
-        settings.domain = StubConstants.DOMAIN
-        settings.token = StubConstants.TOKEN
-        api.verifyCredentialsResponse = AuthComponentApiStub.invalidApplicationDetails
-        // when
-        val result = manager.verifyCredentials()
-        // then
-        assertThat(result.isSuccess, "Successful request")
-        assertThat(result.getOrThrow()).isEqualTo(false)
-    }
-
-    @Test
     fun `verifyCredentials should throw an exception if domain is invalid`() = runTest {
         // given
-        settings.domain = ""
+        settings.domainNormalized = ""
         settings.token = StubConstants.TOKEN
         // when
         val result = manager.verifyCredentials()
         // then
-        assertThat(result.exceptionOrNull()).isSameInstanceAs(MissedRegistrationDataException)
+        assertThat(result.exceptionOrNull()).isSameInstanceAs(TackleException.MissedRegistrationData)
     }
 
     @Test
     fun `verifyCredentials should throw an exception if token is empty`() = runTest {
         // given
-        settings.domain = StubConstants.DOMAIN
+        settings.domainNormalized = StubConstants.DOMAIN
         settings.token = ""
         // when
         val result = manager.verifyCredentials()
         // then
-        assertThat(result.exceptionOrNull()).isSameInstanceAs(MissedRegistrationDataException)
-    }
-
-    @Test
-    fun `createApp should throw an exception on invalid response`() = runTest {
-        // given
-        api.createAppResponse = AuthComponentApiStub.invalidApplicationDetails
-        // when
-        val result = manager.createApp(StubConstants.DOMAIN)
-        // then
-        assertThat(result.exceptionOrNull()).isSameInstanceAs(AppCreationException)
+        assertThat(result.exceptionOrNull()).isSameInstanceAs(TackleException.MissedRegistrationData)
     }
 
     @Test
     fun `createApp should update id and secret settings on success`() = runTest {
         // given
-        settings.domain = ""
+        settings.domainNormalized = ""
         settings.clientId = ""
         settings.clientSecret = ""
+        api.createAppResponse = AuthComponentApiStub.validApplicationDetails
         // when
         val result = manager.createApp(StubConstants.DOMAIN)
         // then
         assertThat(result.isSuccess, "Successful credentials request")
-        assertThat(settings.domain, "domain").isEqualTo(StubConstants.DOMAIN)
+        assertThat(settings.domainNormalized, "domain").isEqualTo(StubConstants.DOMAIN)
         assertThat(settings.clientId, "client_id").isNotEmpty()
         assertThat(settings.clientSecret, "client_secret").isNotEmpty()
     }
@@ -109,10 +88,8 @@ class AuthFlowManagerTest {
     fun `startAuthFlow should return true on valid response`() = runTest {
         // given
         val credentials = ObtainedCredentials(
-            domain = StubConstants.DOMAIN,
             clientId = StubConstants.CLIENT_ID,
             clientSecret = StubConstants.CLIENT_SECRET,
-            apiKey = StubConstants.API_KEY,
         )
         // when
         val result = manager.startAuthFlow(credentials)
@@ -125,10 +102,8 @@ class AuthFlowManagerTest {
     fun `startAuthFlow should return false on invalid response`() = runTest {
         // given
         val credentials = ObtainedCredentials(
-            domain = StubConstants.DOMAIN,
             clientId = StubConstants.CLIENT_ID,
             clientSecret = StubConstants.CLIENT_SECRET,
-            apiKey = StubConstants.API_KEY,
         )
         api.startAuthFlowResponse = ""
         // when
@@ -142,10 +117,8 @@ class AuthFlowManagerTest {
     fun `startAuthFlow should update token setting on valid response`() = runTest {
         // given
         val credentials = ObtainedCredentials(
-            domain = StubConstants.DOMAIN,
             clientId = StubConstants.CLIENT_ID,
             clientSecret = StubConstants.CLIENT_SECRET,
-            apiKey = StubConstants.API_KEY,
         )
         // when
         manager.startAuthFlow(credentials)

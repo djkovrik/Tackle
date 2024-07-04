@@ -1,17 +1,22 @@
 package com.sedsoftware.tackle.root
 
+import app.cash.sqldelight.db.SqlDriver
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import com.russhwolf.settings.Settings
+import com.sedsoftware.tackle.database.DatabaseModule
+import com.sedsoftware.tackle.database.DatabaseModuleDependencies
+import com.sedsoftware.tackle.database.TackleDatabaseDriverFactory
+import com.sedsoftware.tackle.domain.api.TackleDispatchers
+import com.sedsoftware.tackle.domain.api.TacklePlatformTools
 import com.sedsoftware.tackle.network.NetworkModule
 import com.sedsoftware.tackle.network.NetworkModuleDependencies
 import com.sedsoftware.tackle.root.integration.RootComponentDefault
 import com.sedsoftware.tackle.settings.SettingsModule
 import com.sedsoftware.tackle.settings.SettingsModuleDependencies
 import com.sedsoftware.tackle.settings.SharedSettingsFactory
-import com.sedsoftware.tackle.utils.TackleDispatchers
-import com.sedsoftware.tackle.utils.TacklePlatformTools
 import org.publicvalue.multiplatform.oidc.appsupport.CodeAuthFlowFactory
+import kotlin.coroutines.CoroutineContext
 
 @Suppress("FunctionName")
 fun RootComponentFactory(
@@ -26,12 +31,24 @@ fun RootComponentFactory(
         }
     )
 
+    val databaseModule = DatabaseModule(
+        dependencies = object : DatabaseModuleDependencies {
+            override val driver: SqlDriver = TackleDatabaseDriverFactory()
+
+            override val coroutineContext: CoroutineContext = dispatchers.io
+
+            override val domainProvider: () -> String = {
+                settingsModule.settings.domainShort
+            }
+        }
+    )
+
     val networkModule = NetworkModule(
         dependencies = object : NetworkModuleDependencies {
             override val authFlowFactory: CodeAuthFlowFactory = authFlowFactory
 
             override val domainProvider: () -> String = {
-                settingsModule.settings.domain
+                settingsModule.settings.domainNormalized
             }
 
             override val tokenProvider: () -> String = {
@@ -46,6 +63,7 @@ fun RootComponentFactory(
         unauthorizedApi = networkModule.unauthorized,
         authorizedApi = networkModule.authorized,
         oauthApi = networkModule.oauth,
+        database = databaseModule.database,
         settings = settingsModule.settings,
         platformTools = platformTools,
         dispatchers = dispatchers,
