@@ -4,7 +4,7 @@ import com.sedsoftware.tackle.domain.model.Poll
 import com.sedsoftware.tackle.domain.model.PollOption
 import com.sedsoftware.tackle.network.response.PollOptionResponse
 import com.sedsoftware.tackle.network.response.PollResponse
-import com.sedsoftware.tackle.utils.toLocalDateTime
+import com.sedsoftware.tackle.utils.extension.toLocalDateTime
 
 internal object PollMapper {
 

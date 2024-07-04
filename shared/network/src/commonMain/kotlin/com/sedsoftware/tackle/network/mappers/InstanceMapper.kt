@@ -3,8 +3,8 @@ package com.sedsoftware.tackle.network.mappers
 import com.sedsoftware.tackle.domain.model.Instance
 import com.sedsoftware.tackle.network.response.InstanceConfigurationResponse
 import com.sedsoftware.tackle.network.response.InstanceResponse
-import com.sedsoftware.tackle.utils.orFalse
-import com.sedsoftware.tackle.utils.orZero
+import com.sedsoftware.tackle.utils.extension.orFalse
+import com.sedsoftware.tackle.utils.extension.orZero
 
 internal object InstanceMapper {
 

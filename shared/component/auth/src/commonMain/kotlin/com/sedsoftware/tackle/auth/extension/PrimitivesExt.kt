@@ -1,6 +1,6 @@
 package com.sedsoftware.tackle.auth.extension
 
-import com.sedsoftware.tackle.utils.trimUrl
+import com.sedsoftware.tackle.utils.extension.trimUrl
 
 internal fun String.normalizeUrl(): String = "https://${this.trimUrl()}"
 

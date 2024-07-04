@@ -2,8 +2,9 @@ package com.sedsoftware.tackle.utils
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import com.sedsoftware.tackle.utils.extension.toLocalDate
+import com.sedsoftware.tackle.utils.extension.toLocalDateTime
 import kotlinx.datetime.TimeZone
-import kotlinx.datetime.TimeZone.Companion
 import kotlin.test.Test
 
 class ExtensionsTest {

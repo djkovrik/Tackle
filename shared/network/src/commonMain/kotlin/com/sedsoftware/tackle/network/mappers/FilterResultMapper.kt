@@ -13,14 +13,13 @@ import com.sedsoftware.tackle.network.response.FilterStatusResponse
 import com.sedsoftware.tackle.network.response.type.FilterActionsRemote
 import com.sedsoftware.tackle.network.response.type.FilterActionsRemote.HIDE
 import com.sedsoftware.tackle.network.response.type.FilterActionsRemote.WARN
-import com.sedsoftware.tackle.network.response.type.FilterContextRemote
 import com.sedsoftware.tackle.network.response.type.FilterContextRemote.ACCOUNT
 import com.sedsoftware.tackle.network.response.type.FilterContextRemote.HOME
 import com.sedsoftware.tackle.network.response.type.FilterContextRemote.NOTIFICATIONS
 import com.sedsoftware.tackle.network.response.type.FilterContextRemote.PUBLIC
 import com.sedsoftware.tackle.network.response.type.FilterContextRemote.THREAD
 import com.sedsoftware.tackle.network.response.type.FilterContextRemote.UNKNOWN
-import com.sedsoftware.tackle.utils.toLocalDateTime
+import com.sedsoftware.tackle.utils.extension.toLocalDateTime
 
 internal object FilterResultMapper {
 

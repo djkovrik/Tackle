@@ -7,13 +7,12 @@ import com.sedsoftware.tackle.domain.model.type.StatusVisibility
 import com.sedsoftware.tackle.network.response.StatusMentionResponse
 import com.sedsoftware.tackle.network.response.StatusResponse
 import com.sedsoftware.tackle.network.response.StatusTagResponse
-import com.sedsoftware.tackle.network.response.type.StatusVisibilityRemote
 import com.sedsoftware.tackle.network.response.type.StatusVisibilityRemote.DIRECT
 import com.sedsoftware.tackle.network.response.type.StatusVisibilityRemote.PRIVATE
 import com.sedsoftware.tackle.network.response.type.StatusVisibilityRemote.PUBLIC
 import com.sedsoftware.tackle.network.response.type.StatusVisibilityRemote.UNKNOWN
 import com.sedsoftware.tackle.network.response.type.StatusVisibilityRemote.UNLISTED
-import com.sedsoftware.tackle.utils.toLocalDateTime
+import com.sedsoftware.tackle.utils.extension.toLocalDateTime
 
 internal object StatusMapper {
 

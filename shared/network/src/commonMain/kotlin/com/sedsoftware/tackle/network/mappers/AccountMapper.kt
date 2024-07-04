@@ -4,14 +4,13 @@ import com.sedsoftware.tackle.domain.model.Account
 import com.sedsoftware.tackle.domain.model.CredentialAccountSource
 import com.sedsoftware.tackle.domain.model.type.CredentialPrivacy
 import com.sedsoftware.tackle.network.response.AccountResponse
-import com.sedsoftware.tackle.network.response.type.CredentialPrivacyRemote
 import com.sedsoftware.tackle.network.response.type.CredentialPrivacyRemote.DIRECT
 import com.sedsoftware.tackle.network.response.type.CredentialPrivacyRemote.PRIVATE
 import com.sedsoftware.tackle.network.response.type.CredentialPrivacyRemote.PUBLIC
 import com.sedsoftware.tackle.network.response.type.CredentialPrivacyRemote.UNKNOWN
 import com.sedsoftware.tackle.network.response.type.CredentialPrivacyRemote.UNLISTED
-import com.sedsoftware.tackle.utils.toLocalDate
-import com.sedsoftware.tackle.utils.toLocalDateTime
+import com.sedsoftware.tackle.utils.extension.toLocalDate
+import com.sedsoftware.tackle.utils.extension.toLocalDateTime
 
 internal object AccountMapper {
 

@@ -8,17 +8,28 @@ import com.sedsoftware.tackle.auth.domain.AuthFlowManager
 import com.sedsoftware.tackle.auth.extension.isValidUrl
 import com.sedsoftware.tackle.auth.extension.normalizeUrl
 import com.sedsoftware.tackle.auth.model.CredentialsState
+import com.sedsoftware.tackle.auth.model.CredentialsState.AUTHORIZED
+import com.sedsoftware.tackle.auth.model.CredentialsState.EXISTING_USER_CHECK_FAILED
+import com.sedsoftware.tackle.auth.model.CredentialsState.UNAUTHORIZED
 import com.sedsoftware.tackle.auth.model.InstanceInfoState
 import com.sedsoftware.tackle.auth.model.ObtainedCredentials
 import com.sedsoftware.tackle.auth.store.AuthStore.Intent
 import com.sedsoftware.tackle.auth.store.AuthStore.Label
+import com.sedsoftware.tackle.auth.store.AuthStore.Label.ErrorCaught
+import com.sedsoftware.tackle.auth.store.AuthStore.Label.NavigateToMainScreen
 import com.sedsoftware.tackle.auth.store.AuthStore.State
+import com.sedsoftware.tackle.auth.store.AuthStoreProvider.Action.CheckCurrentCredentials
+import com.sedsoftware.tackle.auth.store.AuthStoreProvider.Action.StartOAuthFlow
+import com.sedsoftware.tackle.auth.store.AuthStoreProvider.Msg.CredentialsStateChanged
+import com.sedsoftware.tackle.auth.store.AuthStoreProvider.Msg.OAuthFlowStateChanged
+import com.sedsoftware.tackle.auth.store.AuthStoreProvider.Msg.ServerInfoLoaded
+import com.sedsoftware.tackle.auth.store.AuthStoreProvider.Msg.ServerInfoLoadingFailed
 import com.sedsoftware.tackle.domain.model.Instance
 import com.sedsoftware.tackle.utils.StoreCreate
-import com.sedsoftware.tackle.domain.TackleException
-import com.sedsoftware.tackle.utils.isUnauthorized
-import com.sedsoftware.tackle.utils.trimUrl
-import com.sedsoftware.tackle.utils.unwrap
+import com.sedsoftware.tackle.domain.TackleException.MissedRegistrationData
+import com.sedsoftware.tackle.utils.extension.isUnauthorized
+import com.sedsoftware.tackle.utils.extension.trimUrl
+import com.sedsoftware.tackle.utils.extension.unwrap
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -50,19 +61,19 @@ internal class AuthStoreProvider(
                             result = withContext(ioContext) { manager.verifyCredentials() },
                             onSuccess = { isCredentialsValid ->
                                 if (isCredentialsValid) {
-                                    dispatch(Msg.CredentialsStateChanged(newState = CredentialsState.AUTHORIZED))
-                                    publish(Label.NavigateToMainScreen)
+                                    dispatch(CredentialsStateChanged(newState = AUTHORIZED))
+                                    publish(NavigateToMainScreen)
                                 } else {
-                                    dispatch(Msg.CredentialsStateChanged(newState = CredentialsState.UNAUTHORIZED))
+                                    dispatch(CredentialsStateChanged(newState = UNAUTHORIZED))
                                 }
                             },
                             onError = { throwable ->
-                                if (throwable is TackleException.MissedRegistrationData || throwable.isUnauthorized) {
-                                    dispatch(Msg.CredentialsStateChanged(newState = CredentialsState.UNAUTHORIZED))
+                                if (throwable is MissedRegistrationData || throwable.isUnauthorized) {
+                                    dispatch(CredentialsStateChanged(newState = UNAUTHORIZED))
                                 } else {
-                                    dispatch(Msg.CredentialsStateChanged(newState = CredentialsState.EXISTING_USER_CHECK_FAILED))
+                                    dispatch(CredentialsStateChanged(newState = EXISTING_USER_CHECK_FAILED))
                                 }
-                                publish(Label.ErrorCaught(throwable))
+                                publish(ErrorCaught(throwable))
                             },
                         )
                     }
@@ -74,14 +85,14 @@ internal class AuthStoreProvider(
                             result = withContext(ioContext) { manager.startAuthFlow(it.credentials) },
                             onSuccess = { isAuthorized ->
                                 if (isAuthorized) {
-                                    forward(Action.CheckCurrentCredentials)
+                                    forward(CheckCurrentCredentials)
                                 } else {
-                                    dispatch(Msg.CredentialsStateChanged(newState = CredentialsState.UNAUTHORIZED))
+                                    dispatch(CredentialsStateChanged(newState = UNAUTHORIZED))
                                 }
                             },
                             onError = { throwable ->
-                                dispatch(Msg.OAuthFlowStateChanged(active = false))
-                                publish(Label.ErrorCaught(throwable))
+                                dispatch(OAuthFlowStateChanged(active = false))
+                                publish(ErrorCaught(throwable))
                             }
                         )
                     }
@@ -107,11 +118,11 @@ internal class AuthStoreProvider(
                             unwrap(
                                 result = withContext(ioContext) { manager.getInstanceInfo(normalizedUrl) },
                                 onSuccess = { info ->
-                                    dispatch(Msg.ServerInfoLoaded(info = info))
+                                    dispatch(ServerInfoLoaded(info = info))
                                 },
                                 onError = { throwable ->
-                                    dispatch(Msg.ServerInfoLoadingFailed)
-                                    publish(Label.ErrorCaught(throwable))
+                                    dispatch(ServerInfoLoadingFailed)
+                                    publish(ErrorCaught(throwable))
                                 },
                             )
                         }
@@ -131,11 +142,11 @@ internal class AuthStoreProvider(
                         unwrap(
                             result = withContext(ioContext) { manager.createApp(domain) },
                             onSuccess = { credentials ->
-                                forward(Action.StartOAuthFlow(credentials))
+                                forward(StartOAuthFlow(credentials))
                             },
                             onError = { throwable ->
-                                dispatch(Msg.OAuthFlowStateChanged(active = false))
-                                publish(Label.ErrorCaught(throwable))
+                                dispatch(OAuthFlowStateChanged(active = false))
+                                publish(ErrorCaught(throwable))
                             },
                         )
                     }

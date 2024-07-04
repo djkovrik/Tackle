@@ -6,6 +6,7 @@ import assertk.assertions.isNotEmpty
 import assertk.assertions.isSameInstanceAs
 import com.sedsoftware.tackle.auth.model.ObtainedCredentials
 import com.sedsoftware.tackle.auth.stubs.AuthComponentApiStub
+import com.sedsoftware.tackle.auth.stubs.AuthComponentDatabaseStub
 import com.sedsoftware.tackle.auth.stubs.AuthComponentSettingsStub
 import com.sedsoftware.tackle.auth.stubs.AuthComponentToolsStub
 import com.sedsoftware.tackle.auth.stubs.StubConstants
@@ -21,6 +22,7 @@ class AuthFlowManagerTest {
     private val manager: AuthFlowManager = AuthFlowManager(
         tools = AuthComponentToolsStub(),
         api = api,
+        database = AuthComponentDatabaseStub(),
         settings = settings,
     )
 

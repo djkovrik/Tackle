@@ -5,13 +5,12 @@ import com.sedsoftware.tackle.domain.model.ScheduledStatusParams
 import com.sedsoftware.tackle.domain.model.type.StatusVisibility
 import com.sedsoftware.tackle.network.response.ScheduledStatusParamsResponse
 import com.sedsoftware.tackle.network.response.ScheduledStatusResponse
-import com.sedsoftware.tackle.network.response.type.StatusVisibilityRemote
 import com.sedsoftware.tackle.network.response.type.StatusVisibilityRemote.DIRECT
 import com.sedsoftware.tackle.network.response.type.StatusVisibilityRemote.PRIVATE
 import com.sedsoftware.tackle.network.response.type.StatusVisibilityRemote.PUBLIC
 import com.sedsoftware.tackle.network.response.type.StatusVisibilityRemote.UNKNOWN
 import com.sedsoftware.tackle.network.response.type.StatusVisibilityRemote.UNLISTED
-import com.sedsoftware.tackle.utils.toLocalDateTime
+import com.sedsoftware.tackle.utils.extension.toLocalDateTime
 
 internal object ScheduledStatusMapper {
 

@@ -8,6 +8,7 @@ import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import com.sedsoftware.tackle.auth.AuthComponent
 import com.sedsoftware.tackle.auth.model.CredentialsState
 import com.sedsoftware.tackle.auth.stubs.AuthComponentApiStub
+import com.sedsoftware.tackle.auth.stubs.AuthComponentDatabaseStub
 import com.sedsoftware.tackle.auth.stubs.AuthComponentSettingsStub
 import com.sedsoftware.tackle.auth.stubs.AuthComponentToolsStub
 import com.sedsoftware.tackle.auth.stubs.StubConstants
@@ -143,6 +144,7 @@ class AuthComponentTest : ComponentTest<AuthComponentDefault>() {
             componentContext = DefaultComponentContext(lifecycle),
             storeFactory = DefaultStoreFactory(),
             api = AuthComponentApiStub(),
+            database = AuthComponentDatabaseStub(),
             settings = settings,
             tools = AuthComponentToolsStub(),
             dispatchers = testDispatchers,

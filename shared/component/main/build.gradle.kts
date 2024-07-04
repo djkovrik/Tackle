@@ -1,7 +1,6 @@
 plugins {
     id("tackle.config.android")
     id("tackle.config.multiplatform")
-    alias(libs.plugins.kover)
 }
 
 kotlin {

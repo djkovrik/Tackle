@@ -5,8 +5,8 @@ import com.sedsoftware.tackle.domain.model.Account
 import com.sedsoftware.tackle.domain.model.AppClientData
 import com.sedsoftware.tackle.domain.model.Application
 import com.sedsoftware.tackle.domain.model.Instance
-import com.sedsoftware.tackle.utils.toLocalDate
-import com.sedsoftware.tackle.utils.toLocalDateTime
+import com.sedsoftware.tackle.utils.extension.toLocalDate
+import com.sedsoftware.tackle.utils.extension.toLocalDateTime
 
 class AuthComponentApiStub : AuthComponentGateways.Api {
 

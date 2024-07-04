@@ -12,10 +12,10 @@ kotlin {
                 implementation(project(":shared:domain"))
                 implementation(project(":shared:utils"))
 
-                implementation(project(":shared:component:tab:editor:subcomponent:attachments"))
-                implementation(project(":shared:component:tab:editor:subcomponent:emojis"))
-                implementation(project(":shared:component:tab:editor:subcomponent:header"))
-                implementation(project(":shared:component:tab:editor:subcomponent:poll"))
+                implementation(project(":shared:component:tab:editor:child:attachments"))
+                implementation(project(":shared:component:tab:editor:child:emojis"))
+                implementation(project(":shared:component:tab:editor:child:header"))
+                implementation(project(":shared:component:tab:editor:child:poll"))
 
                 implementation(libs.ark.decompose.core)
                 implementation(libs.ark.decompose.extensions)

@@ -2,7 +2,7 @@ package com.sedsoftware.tackle.network.mappers
 
 import com.sedsoftware.tackle.domain.model.Field
 import com.sedsoftware.tackle.network.response.FieldResponse
-import com.sedsoftware.tackle.utils.toLocalDateTime
+import com.sedsoftware.tackle.utils.extension.toLocalDateTime
 
 internal object FieldMapper {
 
