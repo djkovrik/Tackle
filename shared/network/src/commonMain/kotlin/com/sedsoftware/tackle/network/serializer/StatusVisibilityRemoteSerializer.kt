@@ -16,7 +16,8 @@ internal object StatusVisibilityRemoteSerializer : KSerializer<StatusVisibilityR
     )
 
     override fun deserialize(decoder: Decoder): StatusVisibilityRemote {
-        return StatusVisibilityRemote.entries.firstOrNull { it.name.lowercase() == decoder.decodeString() } ?: StatusVisibilityRemote.UNKNOWN
+        return StatusVisibilityRemote.entries.firstOrNull { it.name.lowercase() == decoder.decodeString() }
+            ?: StatusVisibilityRemote.UNKNOWN
     }
 
     override fun serialize(encoder: Encoder, value: StatusVisibilityRemote) {

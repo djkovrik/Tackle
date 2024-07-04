@@ -10,11 +10,6 @@ import com.sedsoftware.tackle.network.response.MediaAttachmentInfoResponse
 import com.sedsoftware.tackle.network.response.MediaAttachmentMetaResponse
 import com.sedsoftware.tackle.network.response.MediaAttachmentResponse
 import com.sedsoftware.tackle.network.response.type.MediaAttachmentTypeRemote
-import com.sedsoftware.tackle.network.response.type.MediaAttachmentTypeRemote.AUDIO
-import com.sedsoftware.tackle.network.response.type.MediaAttachmentTypeRemote.GIF
-import com.sedsoftware.tackle.network.response.type.MediaAttachmentTypeRemote.IMAGE
-import com.sedsoftware.tackle.network.response.type.MediaAttachmentTypeRemote.UNKNOWN
-import com.sedsoftware.tackle.network.response.type.MediaAttachmentTypeRemote.VIDEO
 
 internal object MediaAttachmentMapper {
 
@@ -22,11 +17,11 @@ internal object MediaAttachmentMapper {
         MediaAttachment(
             id = from.id,
             type = when (from.type) {
-                IMAGE -> MediaAttachmentType.IMAGE
-                GIF -> MediaAttachmentType.GIF
-                VIDEO -> MediaAttachmentType.VIDEO
-                AUDIO -> MediaAttachmentType.AUDIO
-                UNKNOWN -> MediaAttachmentType.UNKNOWN
+                MediaAttachmentTypeRemote.IMAGE -> MediaAttachmentType.IMAGE
+                MediaAttachmentTypeRemote.GIF -> MediaAttachmentType.GIF
+                MediaAttachmentTypeRemote.VIDEO -> MediaAttachmentType.VIDEO
+                MediaAttachmentTypeRemote.AUDIO -> MediaAttachmentType.AUDIO
+                MediaAttachmentTypeRemote.UNKNOWN -> MediaAttachmentType.UNKNOWN
             },
             url = from.url,
             previewUrl = from.previewUrl,

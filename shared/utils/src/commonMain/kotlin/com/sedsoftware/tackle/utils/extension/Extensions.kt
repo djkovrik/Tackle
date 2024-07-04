@@ -39,25 +39,30 @@ fun <T> unwrap(result: Result<T>, onSuccess: (T) -> Unit, onError: (Throwable) -
     }
 }
 
+@Suppress("SwallowedException")
 fun String.toLocalDateTime(timeZone: TimeZone = TimeZone.currentSystemDefault()): LocalDateTime = try {
     Instant.parse(this).toLocalDateTime(timeZone = timeZone)
 } catch (exception: IllegalArgumentException) {
-    Instant.parse(FALLBACK_DATE_TIME).toLocalDateTime(timeZone = timeZone)
+    Instant.parse(ExtensionConstants.FALLBACK_DATE_TIME).toLocalDateTime(timeZone = timeZone)
 }
 
+@Suppress("SwallowedException")
 fun String.toLocalDate(): LocalDate = try {
     LocalDate.parse(this)
 } catch (exception: IllegalArgumentException) {
-    LocalDate.parse(FALLBACK_DATE)
+    LocalDate.parse(ExtensionConstants.FALLBACK_DATE)
 }
 
 val Throwable.isUnauthorized
-    get() = this is TackleException.RemoteServerException && this.code == HTTP_CODE_UNAUTHORIZED
+    get() = this is TackleException.RemoteServerException && this.code == ExtensionConstants.HTTP_CODE_UNAUTHORIZED
 
 fun Long?.orZero(): Long = this ?: 0L
 
 fun Boolean?.orFalse(): Boolean = this ?: false
 
-private const val HTTP_CODE_UNAUTHORIZED = 401
-private const val FALLBACK_DATE_TIME = "1970-01-01T00:00:00.000Z"
-private const val FALLBACK_DATE = "1970-01-01"
+private object ExtensionConstants {
+    const val HTTP_CODE_UNAUTHORIZED = 401
+    const val FALLBACK_DATE_TIME = "1970-01-01T00:00:00.000Z"
+    const val FALLBACK_DATE = "1970-01-01"
+
+}

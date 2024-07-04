@@ -16,7 +16,8 @@ internal object MediaAttachmentTypeRemoteSerializer : KSerializer<MediaAttachmen
     )
 
     override fun deserialize(decoder: Decoder): MediaAttachmentTypeRemote {
-        return MediaAttachmentTypeRemote.entries.firstOrNull { it.name.lowercase() == decoder.decodeString() } ?: MediaAttachmentTypeRemote.UNKNOWN
+        return MediaAttachmentTypeRemote.entries.firstOrNull { it.name.lowercase() == decoder.decodeString() }
+            ?: MediaAttachmentTypeRemote.UNKNOWN
     }
 
     override fun serialize(encoder: Encoder, value: MediaAttachmentTypeRemote) {

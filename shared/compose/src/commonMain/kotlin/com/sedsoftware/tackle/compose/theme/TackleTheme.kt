@@ -72,7 +72,7 @@ private fun generatePreviewImageLoader(): ImageLoader {
         }
         interceptor {
             bitmapMemoryCacheConfig {
-                maxSize(32 * 1024 * 1024) // 32MB
+                maxSize(size = 32 * 1024 * 1024)
             }
         }
     }

@@ -16,7 +16,8 @@ internal object CredentialsPrivacyRemoteSerializer : KSerializer<CredentialPriva
     )
 
     override fun deserialize(decoder: Decoder): CredentialPrivacyRemote {
-        return CredentialPrivacyRemote.entries.firstOrNull { it.name.lowercase() == decoder.decodeString() } ?: CredentialPrivacyRemote.UNKNOWN
+        return CredentialPrivacyRemote.entries.firstOrNull { it.name.lowercase() == decoder.decodeString() }
+            ?: CredentialPrivacyRemote.UNKNOWN
     }
 
     override fun serialize(encoder: Encoder, value: CredentialPrivacyRemote) {

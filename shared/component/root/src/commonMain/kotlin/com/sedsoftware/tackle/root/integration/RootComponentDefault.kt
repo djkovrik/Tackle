@@ -28,7 +28,6 @@ import com.sedsoftware.tackle.root.integration.auth.AuthComponentDatabase
 import com.sedsoftware.tackle.root.integration.auth.AuthComponentSettings
 import com.sedsoftware.tackle.root.integration.auth.AuthComponentTools
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.serialization.Serializable
 
 class RootComponentDefault internal constructor(
