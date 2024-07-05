@@ -48,6 +48,7 @@ kotlin {
             implementation(libs.ark.decompose.core)
             implementation(libs.ark.decompose.extensions)
 
+            implementation(libs.lib.fileKit.compose)
             implementation(libs.lib.imageLoader)
         }
         androidMain.dependencies {

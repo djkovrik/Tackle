@@ -13,6 +13,7 @@ import io.ktor.client.request.request
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
+import io.ktor.http.isSuccess
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.utils.io.errors.IOException
 import kotlinx.serialization.SerializationException
@@ -66,6 +67,15 @@ internal abstract class BaseApi(
                 additionalConfig.invoke(this)
             }
 
+            if (!response.status.isSuccess()) {
+                val errorDetails: RemoteErrorResponse? = response.remoteErrorDetails()
+                throw TackleException.RemoteServerException(
+                    description = errorDetails?.errorDescription,
+                    code = response.status.value,
+                    message = errorDetails?.error,
+                )
+            }
+
             return responseMapper(json.decodeFromString<From>(response.body()))
         } catch (exception: SerializationException) {
             throw TackleException.SerializationException(exception)
@@ -73,13 +83,6 @@ internal abstract class BaseApi(
             throw TackleException.NetworkException(exception)
         } catch (exception: ClientRequestException) {
             throw TackleException.Unknown(exception)
-        } catch (exception: ServerResponseException) {
-            val errorDetails: RemoteErrorResponse? = exception.response.remoteErrorDetails()
-            throw TackleException.RemoteServerException(
-                description = errorDetails?.errorDescription,
-                code = exception.response.status.value,
-                message = errorDetails?.error,
-            )
         }
     }
 

@@ -24,7 +24,7 @@ kotlin {
                 implementation(libs.ark.mvikotlin.extensions)
                 implementation(libs.ark.essenty)
 
-                implementation(libs.lib.fileKit)
+                implementation(libs.lib.fileKit.core)
             }
         }
     }
