@@ -3,6 +3,7 @@ package com.sedsoftware.tackle.auth.stubs
 import com.sedsoftware.tackle.auth.AuthComponentGateways
 
 class AuthComponentSettingsStub : AuthComponentGateways.Settings {
+
     private var domainStub: String = ""
     private var domainShortStub: String = ""
     private var clientIdStub: String = ""

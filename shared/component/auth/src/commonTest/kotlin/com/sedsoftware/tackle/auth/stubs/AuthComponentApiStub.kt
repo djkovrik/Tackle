@@ -7,8 +7,19 @@ import com.sedsoftware.tackle.domain.model.Application
 import com.sedsoftware.tackle.domain.model.Instance
 import com.sedsoftware.tackle.utils.extension.toLocalDate
 import com.sedsoftware.tackle.utils.extension.toLocalDateTime
+import com.sedsoftware.tackle.utils.test.StubWithException
 
-class AuthComponentApiStub : AuthComponentGateways.Api {
+class AuthComponentApiStub : StubWithException(), AuthComponentGateways.Api {
+
+    var getServerInfoResponse: Instance = validInstanceDetails
+    var createAppResponse: Application = validApplicationDetails
+    var startAuthFlowResponse: String = StubConstants.TOKEN
+    var verifyCredentialsResponse: Account = validAccountDetails
+
+    override suspend fun getServerInfo(url: String): Instance = asResponse(getServerInfoResponse)
+    override suspend fun createApp(data: AppClientData): Application = asResponse(createAppResponse)
+    override suspend fun startAuthFlow(id: String, secret: String, uri: String, scopes: String): String = asResponse(startAuthFlowResponse)
+    override suspend fun verifyCredentials(): Account = asResponse(verifyCredentialsResponse)
 
     companion object {
         val validApplicationDetails = Application(
@@ -100,38 +111,4 @@ class AuthComponentApiStub : AuthComponentGateways.Api {
             role = null,
         )
     }
-
-    var getServerInfoResponse: Instance = validInstanceDetails
-    var createAppResponse: Application = validApplicationDetails
-    var startAuthFlowResponse: String = StubConstants.TOKEN
-    var verifyCredentialsResponse: Account = validAccountDetails
-    var shouldThrowException: Boolean = false
-
-    override suspend fun getServerInfo(url: String): Instance =
-        if (!shouldThrowException) {
-            getServerInfoResponse
-        } else {
-            error("getServerInfo exception")
-        }
-
-    override suspend fun createApp(data: AppClientData): Application =
-        if (!shouldThrowException) {
-            createAppResponse
-        } else {
-            error("createApp exception")
-        }
-
-    override suspend fun startAuthFlow(id: String, secret: String, uri: String, scopes: String): String =
-        if (!shouldThrowException) {
-            startAuthFlowResponse
-        } else {
-            error("startAuthFlow exception")
-        }
-
-    override suspend fun verifyCredentials(): Account =
-        if (!shouldThrowException) {
-            verifyCredentialsResponse
-        } else {
-            error("verifyCredentials exception")
-        }
 }

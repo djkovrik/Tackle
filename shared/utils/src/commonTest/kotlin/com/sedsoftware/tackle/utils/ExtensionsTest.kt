@@ -2,8 +2,15 @@ package com.sedsoftware.tackle.utils
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import assertk.assertions.isFalse
+import assertk.assertions.isTrue
+import com.sedsoftware.tackle.domain.TackleException
+import com.sedsoftware.tackle.utils.extension.isUnauthorized
+import com.sedsoftware.tackle.utils.extension.orFalse
+import com.sedsoftware.tackle.utils.extension.orZero
 import com.sedsoftware.tackle.utils.extension.toLocalDate
 import com.sedsoftware.tackle.utils.extension.toLocalDateTime
+import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.TimeZone
 import kotlin.test.Test
 
@@ -16,7 +23,7 @@ class ExtensionsTest {
     private val incorrect = "24/06/22"
 
     @Test
-    fun `toLocalDateTime should parse correct date time string`() {
+    fun `toLocalDateTime should parse correct date time string`() = runTest {
         // given
         // when
         val dateTime1 = testDateTime1.toLocalDateTime(timeZone = TimeZone.UTC)
@@ -38,7 +45,7 @@ class ExtensionsTest {
     }
 
     @Test
-    fun `toLocalDateTime should use fallback for incorrect date time string`() {
+    fun `toLocalDateTime should use fallback for incorrect date time string`() = runTest {
         // given
         // when
         val dateTime = incorrect.toLocalDateTime(timeZone = TimeZone.UTC)
@@ -52,7 +59,7 @@ class ExtensionsTest {
     }
 
     @Test
-    fun `toLocalDate should parse correct date string`() {
+    fun `toLocalDate should parse correct date string`() = runTest {
         // given
         // when
         val date1 = testDate1.toLocalDate()
@@ -68,7 +75,7 @@ class ExtensionsTest {
     }
 
     @Test
-    fun `toLocalDate should use fallback date for incorrect date string`() {
+    fun `toLocalDate should use fallback date for incorrect date string`() = runTest {
         // given
         // when
         val date = incorrect.toLocalDate()
@@ -76,5 +83,38 @@ class ExtensionsTest {
         assertThat(date.year).isEqualTo(1970)
         assertThat(date.monthNumber).isEqualTo(1)
         assertThat(date.dayOfMonth).isEqualTo(1)
+    }
+
+    @Test
+    fun `isUnauthorized should return true for unathorized and false otherwise`() = runTest {
+        // given
+        val unauthorized = TackleException.RemoteServerException("test", 401, "test")
+        val misc = TackleException.Unknown(IllegalStateException("test"))
+        // when
+        // then
+        assertThat(unauthorized.isUnauthorized).isTrue()
+        assertThat(misc.isUnauthorized).isFalse()
+    }
+
+    @Test
+    fun `orZero should return this or zero`() = runTest {
+        // given
+        val x1: Long? = 123
+        val x2: Long? = null
+        // when
+        // then
+        assertThat(x1.orZero()).isEqualTo(123L)
+        assertThat(x2.orZero()).isEqualTo(0L)
+    }
+
+    @Test
+    fun `orFalse should return this or false`() = runTest {
+        // given
+        val x1: Boolean? = true
+        val x2: Boolean? = null
+        // when
+        // then
+        assertThat(x1.orFalse()).isTrue()
+        assertThat(x2.orFalse()).isFalse()
     }
 }

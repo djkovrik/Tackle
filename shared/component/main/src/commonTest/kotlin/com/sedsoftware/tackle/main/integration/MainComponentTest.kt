@@ -76,7 +76,7 @@ class MainComponentTest : ComponentTest<MainComponentDefault>() {
     }
 
     @Test
-    fun `click to PUBLICATIONS tab should switch to TabEditor`() {
+    fun `click to PUBLICATIONS tab should switch to TabPublications`() {
         // given
         // when
         component = createComponent()

@@ -2,21 +2,15 @@ package com.sedsoftware.tackle.editor.emojis.stubs
 
 import com.sedsoftware.tackle.domain.model.CustomEmoji
 import com.sedsoftware.tackle.editor.emojis.EditorEmojisGateways
+import com.sedsoftware.tackle.utils.test.StubWithException
 
-class EditorEmojisApiStub : EditorEmojisGateways.Api {
+class EditorEmojisApiStub : StubWithException(), EditorEmojisGateways.Api {
 
     companion object {
         var correctResponse: List<CustomEmoji> = listOf(CustomEmoji("1", "2", "3", true, "4"))
-        var emptyResponse: List<CustomEmoji> = emptyList()
-        var shouldThrowException: Boolean = false
     }
 
     var getServerEmojisResponse: List<CustomEmoji> = correctResponse
 
-    override suspend fun getServerEmojis(): List<CustomEmoji> =
-        if (!shouldThrowException) {
-            getServerEmojisResponse
-        } else {
-            error("getServerEmojis exception")
-        }
+    override suspend fun getServerEmojis(): List<CustomEmoji> = asResponse(getServerEmojisResponse)
 }
