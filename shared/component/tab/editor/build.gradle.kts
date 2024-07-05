@@ -15,7 +15,7 @@ kotlin {
                 implementation(project(":shared:component:tab:editor:child:attachments"))
                 implementation(project(":shared:component:tab:editor:child:emojis"))
                 implementation(project(":shared:component:tab:editor:child:header"))
-                implementation(project(":shared:component:tab:editor:child:poll"))
+                implementation(project(":shared:component:tab:editor:child:warning"))
 
                 implementation(libs.ark.decompose.core)
                 implementation(libs.ark.decompose.extensions)

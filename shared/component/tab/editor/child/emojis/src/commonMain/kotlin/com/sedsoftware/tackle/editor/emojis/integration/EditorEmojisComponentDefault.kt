@@ -13,7 +13,6 @@ import com.sedsoftware.tackle.domain.model.CustomEmoji
 import com.sedsoftware.tackle.editor.emojis.EditorEmojisComponent
 import com.sedsoftware.tackle.editor.emojis.EditorEmojisComponent.Model
 import com.sedsoftware.tackle.editor.emojis.EditorEmojisGateways
-import com.sedsoftware.tackle.editor.emojis.EditorEmojisGateways.Database
 import com.sedsoftware.tackle.editor.emojis.domain.EditorEmojisManager
 import com.sedsoftware.tackle.editor.emojis.store.EditorEmojisStore
 import com.sedsoftware.tackle.editor.emojis.store.EditorEmojisStore.Label
@@ -27,7 +26,7 @@ class EditorEmojisComponentDefault(
     private val componentContext: ComponentContext,
     private val storeFactory: StoreFactory,
     private val api: EditorEmojisGateways.Api,
-    private val database: Database,
+    private val database: EditorEmojisGateways.Database,
     private val settings: EditorEmojisGateways.Settings,
     private val dispatchers: TackleDispatchers,
     private val output: (ComponentOutput) -> Unit,

@@ -31,7 +31,7 @@ include(
     ":shared:component:tab:editor:child:attachments",
     ":shared:component:tab:editor:child:emojis",
     ":shared:component:tab:editor:child:header",
-    ":shared:component:tab:editor:child:poll",
+    ":shared:component:tab:editor:child:warning",
     ":shared:component:tab:publications",
     ":shared:component:tab:notifications",
     ":shared:domain",

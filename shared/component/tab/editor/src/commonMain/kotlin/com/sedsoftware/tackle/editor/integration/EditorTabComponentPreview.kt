@@ -8,6 +8,8 @@ import com.sedsoftware.tackle.editor.emojis.EditorEmojisComponent
 import com.sedsoftware.tackle.editor.emojis.integration.EditorEmojisComponentPreview
 import com.sedsoftware.tackle.editor.header.EditorHeaderComponent
 import com.sedsoftware.tackle.editor.header.integration.EditorHeaderComponentPreview
+import com.sedsoftware.tackle.editor.warning.EditorWarningComponent
+import com.sedsoftware.tackle.editor.warning.integration.EditorWarningComponentPreview
 
 class EditorTabComponentPreview(
     avatar: String = "",
@@ -21,6 +23,7 @@ class EditorTabComponentPreview(
     statusVisibilityPickerDisplayed: Boolean = false,
     emojis: List<CustomEmoji> = emptyList(),
     emojiPickerAvailable: Boolean = false,
+    warningText: String = "",
 ) : EditorTabComponent {
 
     override val header: EditorHeaderComponent =
@@ -41,4 +44,7 @@ class EditorTabComponentPreview(
             emojis = emojis,
             emojiPickerAvailable = emojiPickerAvailable,
         )
+
+    override val warning: EditorWarningComponent =
+        EditorWarningComponentPreview(warningText)
 }

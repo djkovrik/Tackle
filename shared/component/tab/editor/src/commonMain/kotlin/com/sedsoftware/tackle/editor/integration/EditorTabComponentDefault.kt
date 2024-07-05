@@ -16,6 +16,8 @@ import com.sedsoftware.tackle.editor.integration.emojis.EditorEmojisComponentDat
 import com.sedsoftware.tackle.editor.integration.emojis.EditorEmojisComponentSettings
 import com.sedsoftware.tackle.editor.integration.header.EditorHeaderComponentSettings
 import com.sedsoftware.tackle.editor.integration.header.EditorHeaderComponentTools
+import com.sedsoftware.tackle.editor.warning.EditorWarningComponent
+import com.sedsoftware.tackle.editor.warning.integration.EditorWarningComponentDefault
 
 class EditorTabComponentDefault(
     private val componentContext: ComponentContext,
@@ -38,7 +40,7 @@ class EditorTabComponentDefault(
             settings = EditorHeaderComponentSettings(settings),
             tools = EditorHeaderComponentTools(tools),
             dispatchers = dispatchers,
-            output = ::onSubcomponentOutput,
+            output = ::onChildOutput,
         )
 
     override val emojis: EditorEmojisComponent =
@@ -52,10 +54,20 @@ class EditorTabComponentDefault(
             database = EditorEmojisComponentDatabase(database),
             settings = EditorEmojisComponentSettings(settings),
             dispatchers = dispatchers,
-            output = ::onSubcomponentOutput,
+            output = ::onChildOutput,
         )
 
-    private fun onSubcomponentOutput(output: ComponentOutput) {
+    override val warning: EditorWarningComponent =
+        EditorWarningComponentDefault(
+            componentContext = childContext(
+                key = "Editor warning",
+                lifecycle = lifecycle
+            ),
+            storeFactory = storeFactory,
+            dispatchers = dispatchers,
+        )
+
+    private fun onChildOutput(output: ComponentOutput) {
         when (output) {
             is ComponentOutput.StatusEditor.EmojiSelected -> TODO("Emoji selected")
             else -> editorOutput(output)

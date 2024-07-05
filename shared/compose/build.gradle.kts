@@ -29,7 +29,7 @@ kotlin {
             implementation(project(":shared:component:tab:editor:child:attachments"))
             implementation(project(":shared:component:tab:editor:child:emojis"))
             implementation(project(":shared:component:tab:editor:child:header"))
-            implementation(project(":shared:component:tab:editor:child:poll"))
+            implementation(project(":shared:component:tab:editor:child:warning"))
 
             implementation(project(":shared:component:tab:home"))
             implementation(project(":shared:component:tab:explore"))
