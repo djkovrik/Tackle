@@ -2,7 +2,7 @@ package com.sedsoftware.tackle.network.internal
 
 import com.sedsoftware.tackle.domain.api.AuthorizedApi
 import com.sedsoftware.tackle.domain.model.Account
-import com.sedsoftware.tackle.domain.model.FileWrapper
+import com.sedsoftware.tackle.domain.model.PlatformFileWrapper
 import com.sedsoftware.tackle.domain.model.MediaAttachment
 import com.sedsoftware.tackle.network.mappers.AccountMapper
 import com.sedsoftware.tackle.network.mappers.MediaAttachmentMapper
@@ -30,9 +30,9 @@ internal class TackleAuthorizedApi(
         )
 
     override suspend fun sendFile(
-        file: FileWrapper,
+        file: PlatformFileWrapper,
         onUpload: (Int) -> Unit,
-        thumbnail: FileWrapper?,
+        thumbnail: PlatformFileWrapper?,
         description: String?,
         focus: String?
     ): MediaAttachment =
@@ -42,18 +42,21 @@ internal class TackleAuthorizedApi(
             authenticated = true,
             responseMapper = MediaAttachmentMapper::map,
         ) {
+            val fileData = file.readBytes.invoke()
+            val thumbnailData = thumbnail?.readBytes?.invoke()
+
             setBody(
                 MultiPartFormDataContent(
                     formData {
-                        append("file", file.data, Headers.build {
+                        append("file", fileData, Headers.build {
                             append(HttpHeaders.ContentType, file.mimeType)
                             append(HttpHeaders.ContentDisposition, "filename=\"${file.name}\"")
                         })
 
-                        thumbnail?.let {
-                            append("thumbnail", it.data, Headers.build {
-                                append(HttpHeaders.ContentType, it.mimeType)
-                                append(HttpHeaders.ContentDisposition, "filename=\"${it.name}\"")
+                        if (thumbnail != null && thumbnailData != null) {
+                            append("thumbnail", thumbnailData, Headers.build {
+                                append(HttpHeaders.ContentType, thumbnail.mimeType)
+                                append(HttpHeaders.ContentDisposition, "filename=\"${thumbnail.name}\"")
                             })
                         }
 
@@ -76,20 +79,22 @@ internal class TackleAuthorizedApi(
             responseMapper = MediaAttachmentMapper::map,
         )
 
-    override suspend fun updateFile(id: String, thumbnail: FileWrapper?, description: String?, focus: String?): MediaAttachment =
+    override suspend fun updateFile(id: String, thumbnail: PlatformFileWrapper?, description: String?, focus: String?): MediaAttachment =
         doRequest<MediaAttachmentResponse, MediaAttachment>(
             requestUrl = "$instanceUrl/api/v1/media/$id",
             requestMethod = HttpMethod.Put,
             authenticated = true,
             responseMapper = MediaAttachmentMapper::map,
         ) {
+            val thumbnailData = thumbnail?.readBytes?.invoke()
+
             setBody(
                 MultiPartFormDataContent(
                     formData {
-                        thumbnail?.let {
-                            append("thumbnail", it.data, Headers.build {
-                                append(HttpHeaders.ContentType, it.mimeType)
-                                append(HttpHeaders.ContentDisposition, "filename=\"${it.name}\"")
+                        if (thumbnail != null && thumbnailData != null) {
+                            append("thumbnail", thumbnailData, Headers.build {
+                                append(HttpHeaders.ContentType, thumbnail.mimeType)
+                                append(HttpHeaders.ContentDisposition, "filename=\"${thumbnail.name}\"")
                             })
                         }
 

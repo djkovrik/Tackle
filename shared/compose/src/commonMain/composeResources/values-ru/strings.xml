@@ -15,6 +15,10 @@
     <string name="common_error_no_internet">Интернет соединение отсутствует</string>
     <string name="common_error_server">Ошибка сервера</string>
     <string name="common_error_serialization">Ошибка сериализации данных</string>
+    <string name="common_error_file_size_limit">Файл слишком большой</string>
+    <string name="common_error_file_type_unknown">Данный тип файлов не поддерживается</string>
+    <string name="common_error_file_not_available">Файл недоступен</string>
+    <string name="common_error_attachments_limit">Максимальное количество вложений</string>
     <string name="common_error_unknown">Что-то пошло не так</string>
 
     <!-- Auth component -->

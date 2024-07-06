@@ -35,6 +35,14 @@ sealed class TackleException(
         action = Action.SHOW_MESSAGE,
     )
 
+    data object FileSizeExceeded: TackleException(action = Action.SHOW_MESSAGE)
+
+    data object FileTypeNotSupported : TackleException(action = Action.SHOW_MESSAGE)
+
+    data object FileNotAvailable : TackleException(action = Action.SHOW_MESSAGE)
+
+    class AttachmentsLimitExceeded(val limit: Int) : TackleException(action = Action.SHOW_MESSAGE)
+
     class Unknown(
         cause: Throwable
     ) : TackleException(

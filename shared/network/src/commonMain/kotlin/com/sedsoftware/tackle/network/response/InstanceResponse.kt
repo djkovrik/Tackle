@@ -61,9 +61,9 @@ internal class InstanceConfigurationPollsResponse(
 
 @Serializable
 internal class InstanceConfigurationStatusesResponse(
-    @SerialName("max_characters") val maxCharacters: Long = 0L,
-    @SerialName("max_media_attachments") val maxMediaAttachments: Long = 0L,
-    @SerialName("characters_reserved_per_url") val charactersReservedPerUrl: Long = 0L,
+    @SerialName("max_characters") val maxCharacters: Int = 0,
+    @SerialName("max_media_attachments") val maxMediaAttachments: Int = 0,
+    @SerialName("characters_reserved_per_url") val charactersReservedPerUrl: Int = 0,
 )
 
 @Serializable

@@ -5,11 +5,24 @@ import com.arkivanov.decompose.value.Value
 import com.arkivanov.mvikotlin.core.rx.observer
 import com.arkivanov.mvikotlin.core.store.Store
 import com.sedsoftware.tackle.domain.TackleException
+import com.sedsoftware.tackle.domain.model.PlatformFileWrapper
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+
+val Throwable.isUnauthorized
+    get() = this is TackleException.RemoteServerException && this.code == ExtensionConstants.HTTP_CODE_UNAUTHORIZED
+
+val PlatformFileWrapper.isAudio: Boolean
+    get() = mimeType.startsWith("audio")
+
+val PlatformFileWrapper.isImage: Boolean
+    get() = mimeType.startsWith("image")
+
+val PlatformFileWrapper.isVideo: Boolean
+    get() = mimeType.startsWith("video")
 
 fun <T : Any> Store<*, T, *>.asValue(): Value<T> =
     object : Value<T>() {
@@ -53,10 +66,9 @@ fun String.toLocalDate(): LocalDate = try {
     LocalDate.parse(ExtensionConstants.FALLBACK_DATE)
 }
 
-val Throwable.isUnauthorized
-    get() = this is TackleException.RemoteServerException && this.code == ExtensionConstants.HTTP_CODE_UNAUTHORIZED
-
 fun Long?.orZero(): Long = this ?: 0L
+
+fun Int?.orZero(): Int = this ?: 0
 
 fun Boolean?.orFalse(): Boolean = this ?: false
 

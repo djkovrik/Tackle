@@ -5,7 +5,11 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
 import assertk.assertions.isTrue
 import com.sedsoftware.tackle.domain.TackleException
+import com.sedsoftware.tackle.domain.model.PlatformFileWrapper
+import com.sedsoftware.tackle.utils.extension.isAudio
+import com.sedsoftware.tackle.utils.extension.isImage
 import com.sedsoftware.tackle.utils.extension.isUnauthorized
+import com.sedsoftware.tackle.utils.extension.isVideo
 import com.sedsoftware.tackle.utils.extension.orFalse
 import com.sedsoftware.tackle.utils.extension.orZero
 import com.sedsoftware.tackle.utils.extension.toLocalDate
@@ -99,12 +103,16 @@ class ExtensionsTest {
     @Test
     fun `orZero should return this or zero`() = runTest {
         // given
-        val x1: Long? = 123
+        val x1: Long? = 123L
         val x2: Long? = null
+        val x3: Int? = 123
+        val x4: Int? = null
         // when
         // then
         assertThat(x1.orZero()).isEqualTo(123L)
         assertThat(x2.orZero()).isEqualTo(0L)
+        assertThat(x3.orZero()).isEqualTo(123)
+        assertThat(x4.orZero()).isEqualTo(0)
     }
 
     @Test
@@ -116,5 +124,46 @@ class ExtensionsTest {
         // then
         assertThat(x1.orFalse()).isTrue()
         assertThat(x2.orFalse()).isFalse()
+    }
+
+    @Test
+    fun `mimeType extensions should return correct value`() = runTest {
+        // given
+        val audio = PlatformFileWrapper(
+            name = "test",
+            extension = "test",
+            path = "",
+            mimeType = "audio/ogg",
+            size = 0L,
+            readBytes = { ByteArray(0) })
+
+        val image = PlatformFileWrapper(
+            name = "test",
+            extension = "test",
+            path = "",
+            mimeType = "image/jpeg",
+            size = 0L,
+            readBytes = { ByteArray(0) })
+
+        val video = PlatformFileWrapper(
+            name = "test",
+            extension = "test",
+            path = "",
+            mimeType = "video/mp4",
+            size = 0L,
+            readBytes = { ByteArray(0) })
+        // when
+        // then
+        assertThat(audio.isAudio).isTrue()
+        assertThat(audio.isImage).isFalse()
+        assertThat(audio.isVideo).isFalse()
+
+        assertThat(image.isAudio).isFalse()
+        assertThat(image.isImage).isTrue()
+        assertThat(image.isVideo).isFalse()
+
+        assertThat(video.isAudio).isFalse()
+        assertThat(video.isImage).isFalse()
+        assertThat(video.isVideo).isTrue()
     }
 }

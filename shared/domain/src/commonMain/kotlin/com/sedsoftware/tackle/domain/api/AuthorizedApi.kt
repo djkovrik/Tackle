@@ -1,7 +1,7 @@
 package com.sedsoftware.tackle.domain.api
 
 import com.sedsoftware.tackle.domain.model.Account
-import com.sedsoftware.tackle.domain.model.FileWrapper
+import com.sedsoftware.tackle.domain.model.PlatformFileWrapper
 import com.sedsoftware.tackle.domain.model.MediaAttachment
 
 interface AuthorizedApi {
@@ -31,9 +31,9 @@ interface AuthorizedApi {
      * @see <a href="https://docs.joinmastodon.org/api/guidelines/#focal-points">Focal points for cropping media thumbnails</a>
      */
     suspend fun sendFile(
-        file: FileWrapper,
+        file: PlatformFileWrapper,
         onUpload : (Int) -> Unit = {},
-        thumbnail: FileWrapper? = null,
+        thumbnail: PlatformFileWrapper? = null,
         description: String? = null,
         focus: String? = null
     ): MediaAttachment
@@ -64,7 +64,7 @@ interface AuthorizedApi {
      */
     suspend fun updateFile(
         id: String,
-        thumbnail: FileWrapper? = null,
+        thumbnail: PlatformFileWrapper? = null,
         description: String? = null,
         focus: String? = null
     ): MediaAttachment

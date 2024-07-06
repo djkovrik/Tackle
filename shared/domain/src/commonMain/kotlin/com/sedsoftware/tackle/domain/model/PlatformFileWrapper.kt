@@ -1,8 +1,10 @@
 package com.sedsoftware.tackle.domain.model
 
-class FileWrapper(
+data class PlatformFileWrapper(
     val name: String,
     val extension: String,
+    val path: String,
     val mimeType: String,
-    val data: ByteArray,
+    val size: Long,
+    val readBytes: suspend () -> ByteArray,
 )

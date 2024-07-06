@@ -11,6 +11,7 @@ import com.sedsoftware.tackle.editor.emojis.store.EditorEmojisStore.State
 import com.sedsoftware.tackle.utils.StoreCreate
 import com.sedsoftware.tackle.utils.extension.unwrap
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.coroutines.CoroutineContext
@@ -48,6 +49,7 @@ internal class EditorEmojisStoreProvider(
                 onAction<Action.ObserveCachedEmojis> {
                     launch {
                         manager.observeCachedEmojis()
+                            .flowOn(ioContext)
                             .catch { publish(Label.ErrorCaught(it)) }
                             .collect { dispatch(Msg.EmojisListUpdated(it)) }
                     }
