@@ -31,6 +31,6 @@ class EditorAttachmentsApiStub : StubWithException(), EditorAttachmentsGateways.
         description: String?,
         focus: String?
     ): MediaAttachment {
-        return sendFileResponse
+        return asResponse(sendFileResponse)
     }
 }

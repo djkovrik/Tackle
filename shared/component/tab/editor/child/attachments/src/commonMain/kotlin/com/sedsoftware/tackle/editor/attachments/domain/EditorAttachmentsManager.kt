@@ -7,7 +7,6 @@ import com.sedsoftware.tackle.domain.model.PlatformFileWrapper
 import com.sedsoftware.tackle.editor.attachments.EditorAttachmentsGateways
 import com.sedsoftware.tackle.editor.attachments.model.AttachedFile
 import com.sedsoftware.tackle.editor.attachments.model.UploadProgress
-import com.sedsoftware.tackle.utils.FileUtils
 import com.sedsoftware.tackle.utils.extension.isImage
 import com.sedsoftware.tackle.utils.extension.isVideo
 import com.sedsoftware.tackle.utils.generateUUID
