@@ -69,6 +69,10 @@ class EditorAttachmentsComponentDefault(
         store.accept(EditorAttachmentsStore.Intent.OnFilesSelected(wrapped))
     }
 
+    override fun changeFeatureState(available: Boolean) {
+        store.accept(EditorAttachmentsStore.Intent.ChangeFeatureState(available))
+    }
+
     private fun wrap(from: PlatformFile): PlatformFileWrapper =
         PlatformFileWrapper(
             name = from.name,

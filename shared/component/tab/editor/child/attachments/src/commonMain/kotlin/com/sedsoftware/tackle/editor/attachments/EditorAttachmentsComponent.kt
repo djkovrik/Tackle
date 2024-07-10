@@ -9,6 +9,7 @@ interface EditorAttachmentsComponent {
     val model: Value<Model>
 
     fun onFileSelected(files: List<PlatformFile>)
+    fun changeFeatureState(available: Boolean)
 
     data class Model(
         val attachments: List<AttachedFile>,

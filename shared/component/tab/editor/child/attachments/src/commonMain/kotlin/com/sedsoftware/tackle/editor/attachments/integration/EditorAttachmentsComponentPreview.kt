@@ -21,4 +21,5 @@ class EditorAttachmentsComponentPreview(
         )
 
     override fun onFileSelected(files: List<PlatformFile>) = Unit
+    override fun changeFeatureState(available: Boolean) = Unit
 }

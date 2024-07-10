@@ -66,7 +66,7 @@ internal class TackleAuthorizedApi(
                 )
             )
             onUpload { bytesSentTotal: Long, contentLength: Long ->
-                val progress: Int = (bytesSentTotal / contentLength).toInt() * 100
+                val progress: Int = (bytesSentTotal / contentLength).toInt() * ONE_HUNDRED_PERCENTS
                 onUpload.invoke(progress)
             }
         }
@@ -104,4 +104,8 @@ internal class TackleAuthorizedApi(
                 )
             )
         }
+
+    companion object {
+        const val ONE_HUNDRED_PERCENTS = 100
+    }
 }

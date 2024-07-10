@@ -7,10 +7,14 @@ import com.sedsoftware.tackle.domain.ComponentOutput
 import com.sedsoftware.tackle.domain.api.TackleDispatchers
 import com.sedsoftware.tackle.editor.EditorTabComponent
 import com.sedsoftware.tackle.editor.EditorTabComponentGateways
+import com.sedsoftware.tackle.editor.attachments.EditorAttachmentsComponent
+import com.sedsoftware.tackle.editor.attachments.integration.EditorAttachmentsComponentDefault
 import com.sedsoftware.tackle.editor.emojis.EditorEmojisComponent
 import com.sedsoftware.tackle.editor.emojis.integration.EditorEmojisComponentDefault
 import com.sedsoftware.tackle.editor.header.EditorHeaderComponent
 import com.sedsoftware.tackle.editor.header.integration.EditorHeaderComponentDefault
+import com.sedsoftware.tackle.editor.integration.attachments.EditorAttachmentsComponentApi
+import com.sedsoftware.tackle.editor.integration.attachments.EditorAttachmentsComponentDatabase
 import com.sedsoftware.tackle.editor.integration.emojis.EditorEmojisComponentApi
 import com.sedsoftware.tackle.editor.integration.emojis.EditorEmojisComponentDatabase
 import com.sedsoftware.tackle.editor.integration.emojis.EditorEmojisComponentSettings
@@ -30,15 +34,15 @@ class EditorTabComponentDefault(
     private val editorOutput: (ComponentOutput) -> Unit,
 ) : EditorTabComponent, ComponentContext by componentContext {
 
-    override val header: EditorHeaderComponent =
-        EditorHeaderComponentDefault(
+    override val attachments: EditorAttachmentsComponent =
+        EditorAttachmentsComponentDefault(
             componentContext = childContext(
-                key = "Editor header",
+                key = "Editor attachments",
                 lifecycle = lifecycle
             ),
             storeFactory = storeFactory,
-            settings = EditorHeaderComponentSettings(settings),
-            tools = EditorHeaderComponentTools(tools),
+            api = EditorAttachmentsComponentApi(api),
+            database = EditorAttachmentsComponentDatabase(database),
             dispatchers = dispatchers,
             output = ::onChildOutput,
         )
@@ -53,6 +57,19 @@ class EditorTabComponentDefault(
             api = EditorEmojisComponentApi(api),
             database = EditorEmojisComponentDatabase(database),
             settings = EditorEmojisComponentSettings(settings),
+            dispatchers = dispatchers,
+            output = ::onChildOutput,
+        )
+
+    override val header: EditorHeaderComponent =
+        EditorHeaderComponentDefault(
+            componentContext = childContext(
+                key = "Editor header",
+                lifecycle = lifecycle
+            ),
+            storeFactory = storeFactory,
+            settings = EditorHeaderComponentSettings(settings),
+            tools = EditorHeaderComponentTools(tools),
             dispatchers = dispatchers,
             output = ::onChildOutput,
         )

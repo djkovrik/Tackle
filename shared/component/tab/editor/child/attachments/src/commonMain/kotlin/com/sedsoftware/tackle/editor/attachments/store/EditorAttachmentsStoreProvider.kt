@@ -131,6 +131,8 @@ internal class EditorAttachmentsStoreProvider(
                         forward(Action.UploadNextPendingAttachment)
                     }
                 }
+
+                onIntent<Intent.ChangeFeatureState> { dispatch(Msg.FeatureStateChanged(it.available)) }
             },
             reducer = { msg ->
                 when (msg) {
@@ -146,7 +148,7 @@ internal class EditorAttachmentsStoreProvider(
 
                     is Msg.AttachmentPrepared -> copy(
                         selectedFiles = selectedFiles + listOf(msg.attachment),
-                        attachmentsAtLimit = (selectedFiles.size + 1) <= maxPossibleAttachments,
+                        attachmentsAtLimit = (selectedFiles.size + 1) >= maxPossibleAttachments,
                     )
 
                     is Msg.AttachmentStatusChanged -> copy(
@@ -163,6 +165,10 @@ internal class EditorAttachmentsStoreProvider(
 
                     is Msg.UploadQueueCompleted -> copy(
                         hasUploadInProgress = false,
+                    )
+
+                    is Msg.FeatureStateChanged -> copy(
+                        attachmentsAvailable = msg.available,
                     )
                 }
             }
@@ -183,5 +189,6 @@ internal class EditorAttachmentsStoreProvider(
         data class AttachmentLoaded(val id: String, val serverAttachment: MediaAttachment) : Msg
         data object UploadQueueStarted : Msg
         data object UploadQueueCompleted : Msg
+        data class FeatureStateChanged(val available: Boolean) : Msg
     }
 }

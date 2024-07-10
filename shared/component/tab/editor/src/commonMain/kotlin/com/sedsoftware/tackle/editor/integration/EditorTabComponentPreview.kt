@@ -4,6 +4,9 @@ import com.sedsoftware.tackle.domain.model.AppLocale
 import com.sedsoftware.tackle.domain.model.CustomEmoji
 import com.sedsoftware.tackle.domain.model.type.StatusVisibility
 import com.sedsoftware.tackle.editor.EditorTabComponent
+import com.sedsoftware.tackle.editor.attachments.EditorAttachmentsComponent
+import com.sedsoftware.tackle.editor.attachments.integration.EditorAttachmentsComponentPreview
+import com.sedsoftware.tackle.editor.attachments.model.AttachedFile
 import com.sedsoftware.tackle.editor.emojis.EditorEmojisComponent
 import com.sedsoftware.tackle.editor.emojis.integration.EditorEmojisComponentPreview
 import com.sedsoftware.tackle.editor.header.EditorHeaderComponent
@@ -12,6 +15,8 @@ import com.sedsoftware.tackle.editor.warning.EditorWarningComponent
 import com.sedsoftware.tackle.editor.warning.integration.EditorWarningComponentPreview
 
 class EditorTabComponentPreview(
+    attachments: List<AttachedFile> = emptyList(),
+    attachmentsAvailable: Boolean = true,
     avatar: String = "",
     nickname: String = "",
     recommendedLocale: AppLocale = AppLocale.empty(),
@@ -25,6 +30,13 @@ class EditorTabComponentPreview(
     emojiPickerAvailable: Boolean = false,
     warningText: String = "",
 ) : EditorTabComponent {
+
+    override val attachments: EditorAttachmentsComponent =
+        EditorAttachmentsComponentPreview(
+            attachments = attachments,
+            available = attachmentsAvailable,
+        )
+
 
     override val header: EditorHeaderComponent =
         EditorHeaderComponentPreview(
