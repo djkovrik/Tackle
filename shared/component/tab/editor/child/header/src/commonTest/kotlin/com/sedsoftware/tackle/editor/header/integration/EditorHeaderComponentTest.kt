@@ -36,7 +36,6 @@ class EditorHeaderComponentTest : ComponentTest<EditorHeaderComponentDefault>() 
     fun `onLocalePickerRequested should change locale picker visibility`() = runTest {
         // given
         // when
-        component = createComponent()
         component.onLocalePickerRequested(true)
         // then
         assertThat(activeModel.localePickerDisplayed).isTrue()
@@ -51,7 +50,6 @@ class EditorHeaderComponentTest : ComponentTest<EditorHeaderComponentDefault>() 
         // given
         val targetLocale = AppLocale("Russian", "ru")
         // when
-        component = createComponent()
         component.onLocaleSelected(targetLocale)
         // then
         assertThat(activeModel.selectedLocale).isEqualTo(targetLocale)
@@ -61,7 +59,6 @@ class EditorHeaderComponentTest : ComponentTest<EditorHeaderComponentDefault>() 
     fun `onStatusVisibilityPickerRequested should change locale picker visibility`() = runTest {
         // given
         // when
-        component = createComponent()
         component.onStatusVisibilityPickerRequested(true)
         // then
         assertThat(activeModel.statusVisibilityPickerDisplayed).isTrue()
@@ -75,7 +72,6 @@ class EditorHeaderComponentTest : ComponentTest<EditorHeaderComponentDefault>() 
     fun `OnStatusVisibilitySelected should update visibility`() = runTest {
         // given
         // when
-        component = createComponent()
         component.onStatusVisibilitySelected(StatusVisibility.PUBLIC)
         // then
         assertThat(activeModel.statusVisibility).isEqualTo(StatusVisibility.PUBLIC)

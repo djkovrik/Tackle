@@ -61,7 +61,7 @@ class EditorHeaderComponentDefault(
     override val model: Value<Model> = store.asValue().map(stateToModel)
 
     override fun onLocalePickerRequested(show: Boolean) {
-        store.accept(EditorHeaderStore.Intent.OnShowLocalePicker(show))
+        store.accept(EditorHeaderStore.Intent.OnRequestLocalePicker(show))
     }
 
     override fun onLocaleSelected(language: AppLocale) {
@@ -69,10 +69,10 @@ class EditorHeaderComponentDefault(
     }
 
     override fun onStatusVisibilityPickerRequested(show: Boolean) {
-        store.accept(EditorHeaderStore.Intent.OnShowStatusVisibilityPicker(show))
+        store.accept(EditorHeaderStore.Intent.OnRequestVisibilityPicker(show))
     }
 
     override fun onStatusVisibilitySelected(visibility: StatusVisibility) {
-        store.accept(EditorHeaderStore.Intent.OnStatusVisibilitySelected(visibility))
+        store.accept(EditorHeaderStore.Intent.OnVisibilityPickerSelected(visibility))
     }
 }

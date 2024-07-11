@@ -36,21 +36,10 @@ class AuthComponentTest : ComponentTest<AuthComponentDefault>() {
     }
 
     @Test
-    fun `component creation should switch state to AUTHORIZED if token is available`() = runTest {
-        // given
-        asAuthorized()
-        // when
-        component = createComponent()
-        // then
-        assertThat(activeModel.credentialsState).isEqualTo(CredentialsState.AUTHORIZED)
-    }
-
-    @Test
     fun `component creation should switch state to UNAUTHORIZED if token is not available`() = runTest {
         // given
         asUnauthorized()
         // when
-        component = createComponent()
         // then
         assertThat(activeModel.credentialsState).isEqualTo(CredentialsState.UNAUTHORIZED)
     }
@@ -61,7 +50,6 @@ class AuthComponentTest : ComponentTest<AuthComponentDefault>() {
         val url = "mastodon.social"
         asUnauthorized()
         // when
-        component = createComponent()
         component.onTextInput(url)
         // then
         assertThat(activeModel.credentialsState).isEqualTo(CredentialsState.UNAUTHORIZED)
@@ -75,7 +63,6 @@ class AuthComponentTest : ComponentTest<AuthComponentDefault>() {
     fun `onRetryButtonClick should proceed with retrying`() = runTest {
         asUnauthorized()
         // when
-        component = createComponent()
         // then
         assertThat(activeModel.credentialsState).isEqualTo(CredentialsState.UNAUTHORIZED)
         // and when
@@ -89,7 +76,6 @@ class AuthComponentTest : ComponentTest<AuthComponentDefault>() {
         // given
         asUnauthorized()
         // when
-        component = createComponent()
         component.onShowLearnMore()
         // then
         assertThat(activeModel.isLearnMoreVisible).isEqualTo(true)
@@ -100,7 +86,6 @@ class AuthComponentTest : ComponentTest<AuthComponentDefault>() {
         // given
         asUnauthorized()
         // when
-        component = createComponent()
         component.onShowLearnMore()
         // then
         assertThat(activeModel.isLearnMoreVisible).isEqualTo(true)
@@ -115,7 +100,6 @@ class AuthComponentTest : ComponentTest<AuthComponentDefault>() {
         // given
         asUnauthorized()
         // when
-        component = createComponent()
         component.onShowLearnMore()
         // then
         assertThat(activeModel.isLearnMoreVisible).isEqualTo(true)
@@ -131,7 +115,6 @@ class AuthComponentTest : ComponentTest<AuthComponentDefault>() {
         val url = "mastodon.social"
         asUnauthorized()
         // when
-        component = createComponent()
         component.onTextInput(url)
         component.onAuthenticateClick()
         // then

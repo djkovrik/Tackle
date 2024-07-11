@@ -10,7 +10,7 @@ kotlin {
         commonMain {
             dependencies {
                 implementation(project(":shared:domain"))
-                implementation(project(":shared:settings"))
+                implementation(project(":shared:database"))
                 implementation(project(":shared:utils"))
 
                 implementation(libs.ark.decompose.core)
@@ -20,7 +20,7 @@ kotlin {
                 implementation(libs.ark.mvikotlin.extensions)
                 implementation(libs.ark.essenty)
 
-                implementation(libs.lib.fileKit)
+                implementation(libs.lib.fileKit.core)
             }
         }
     }

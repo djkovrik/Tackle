@@ -79,7 +79,8 @@ ark-essenty = { module = "com.arkivanov.essenty:lifecycle", version.ref = "essen
 
 lib-napier = { module = "io.github.aakira:napier", version.ref = "napier" }
 lib-imageLoader = { module = "io.github.qdsfdhvh:image-loader", version.ref = "imageLoader" }
-lib-fileKit = { module = "io.github.vinceglb:filekit-compose", version.ref = "fileKit" }
+lib-fileKit-core = { module = "io.github.vinceglb:filekit-core", version.ref = "fileKit" }
+lib-fileKit-compose = { module = "io.github.vinceglb:filekit-compose", version.ref = "fileKit" }
 lib-settings-core = { module = "com.russhwolf:multiplatform-settings", version.ref = "multiplatformSettings" }
 lib-settings-test = { module = "com.russhwolf:multiplatform-settings-test", version.ref = "multiplatformSettings" }
 

@@ -18,17 +18,15 @@ abstract class ComponentTest<Component : Any> {
             override val unconfined: CoroutineDispatcher = Dispatchers.Unconfined
         }
 
-    protected var component: Component
+    protected val component: Component
         get() = _component!!
-        set(value) {
-            _component = value
-        }
 
     private var _component: Component? = null
 
     // TODO Bring annotations back when this fixed
     // https://youtrack.jetbrains.com/issue/KT-62368
     fun beforeTest() {
+        _component = createComponent()
         isAssertOnMainThreadEnabled = false
         lifecycle.resume()
     }

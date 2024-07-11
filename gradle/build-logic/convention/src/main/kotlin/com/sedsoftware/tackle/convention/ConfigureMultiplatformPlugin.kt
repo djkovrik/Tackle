@@ -13,6 +13,7 @@ class ConfigureMultiplatformPlugin : Plugin<Project> {
                 apply(libs.findPlugin("multiplatform").get().get().pluginId)
                 apply(libs.findPlugin("kotlinx.serialization").get().get().pluginId)
                 apply(libs.findPlugin("kover").get().get().pluginId)
+                apply(libs.findPlugin("mokkery").get().get().pluginId)
             }
             configureKotlinMultiplatform()
         }

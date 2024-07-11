@@ -1,0 +1,153 @@
+package com.sedsoftware.tackle.utils
+
+object FileUtils {
+
+    private val audio: Map<String, String> by lazy {
+        mapOf(
+            "aac" to "audio/aac",
+            "adp" to "audio/adpcm",
+            "aif" to "audio/x-aiff",
+            "aifc" to "audio/x-aiff",
+            "aiff" to "audio/x-aiff",
+            "au" to "audio/basic",
+            "dts" to "audio/vnd.dts",
+            "flac" to "audio/flac",
+            "kar" to "audio/midi",
+            "m2a" to "audio/m2a",
+            "m3a" to "audio/m3a",
+            "m3u" to "audio/x-mpegurl",
+            "m4a" to "audio/m4a",
+            "mid" to "audio/midi",
+            "midi" to "audio/midi",
+            "mp2" to "audio/mp2",
+            "mp2a" to "audio/mp2a",
+            "mp3" to "audio/mp3",
+            "mp4a" to "audio/mp4a",
+            "mpga" to "audio/mpeg",
+            "oga" to "audio/ogg",
+            "ogg" to "audio/ogg",
+            "opus" to "audio/ogg",
+            "ra" to "audio/x-pn-realaudio",
+            "ram" to "audio/x-pn-realaudio",
+            "rmi" to "audio/midi",
+            "rmp" to "audio/x-pn-realaudio-plugin",
+            "snd" to "audio/basic",
+            "spx" to "audio/ogg",
+            "wav" to "audio/x-wav",
+            "wax" to "audio/x-ms-wax",
+            "wma" to "audio/x-ms-wma",
+        )
+    }
+
+    private val images: Map<String, String> by lazy {
+        mapOf(
+            "avif" to "image/avif",
+            "bmp" to "image/bmp",
+            "btif" to "image/prs.btif",
+            "cgm" to "image/cgm",
+            "cmx" to "image/x-cmx",
+            "djv" to "image/vnd.djvu",
+            "djvu" to "image/vnd.djvu",
+            "dwg" to "image/vnd.dwg",
+            "dxf" to "image/vnd.dxf",
+            "fbs" to "image/vnd.fastbidsheet",
+            "fh" to "image/x-freehand",
+            "fh4" to "image/x-freehand",
+            "fh5" to "image/x-freehand",
+            "fh7" to "image/x-freehand",
+            "fhc" to "image/x-freehand",
+            "fpx" to "image/vnd.fpx",
+            "fst" to "image/vnd.fst",
+            "g3" to "image/g3fax",
+            "gif" to "image/gif",
+            "heic" to "image/heic",
+            "heif" to "image/heif",
+            "ico" to "image/x-icon",
+            "ief" to "image/ief",
+            "jpe" to "image/jpeg",
+            "jpeg" to "image/jpeg",
+            "jpg" to "image/jpeg",
+            "mdi" to "image/vnd.ms-modi",
+            "mmr" to "image/vnd.fujixerox.edmics-mmr",
+            "npx" to "image/vnd.net-fpx",
+            "pbm" to "image/x-portable-bitmap",
+            "pct" to "image/x-pict",
+            "pcx" to "image/x-pcx",
+            "pgm" to "image/x-portable-graymap",
+            "pic" to "image/x-pict",
+            "png" to "image/png",
+            "pnm" to "image/x-portable-anymap",
+            "ppm" to "image/x-portable-pixmap",
+            "psd" to "image/vnd.adobe.photoshop",
+            "ras" to "image/x-cmu-raster",
+            "rgb" to "image/x-rgb",
+            "rlc" to "image/vnd.fujixerox.edmics-rlc",
+            "svg" to "image/svg+xml",
+            "svgz" to "image/svg+xml",
+            "tif" to "image/tiff",
+            "tiff" to "image/tiff",
+            "wbmp" to "image/vnd.wap.wbmp",
+            "webp" to "image/webp",
+            "xbm" to "image/x-xbitmap",
+            "xif" to "image/vnd.xiff",
+            "xpm" to "image/x-xpixmap",
+            "xwd" to "image/x-xwindowdump",
+        )
+    }
+
+    private val video: Map<String, String> by lazy {
+        mapOf(
+            "3g2" to "video/3gpp2",
+            "3gp" to "video/3gpp",
+            "asf" to "video/x-ms-asf",
+            "asx" to "video/x-ms-asf",
+            "avi" to "video/x-msvideo",
+            "f4v" to "video/x-f4v",
+            "fli" to "video/x-fli",
+            "flv" to "video/x-flv",
+            "fvt" to "video/vnd.fvt",
+            "h261" to "video/h261",
+            "h263" to "video/h263",
+            "h264" to "video/h264",
+            "jpgm" to "video/jpm",
+            "jpgv" to "video/jpeg",
+            "jpm" to "video/jpm",
+            "m1v" to "video/mpeg",
+            "m2v" to "video/mpeg",
+            "m4u" to "video/vnd.mpegurl",
+            "m4v" to "video/x-m4v",
+            "mj2" to "video/mj2",
+            "mjp2" to "video/mj2",
+            "mkv" to "video/x-matroska",
+            "mov" to "video/quicktime",
+            "mp4" to "video/mp4",
+            "mp4v" to "video/mp4",
+            "mpa" to "video/mpeg",
+            "mpe" to "video/mpeg",
+            "mpeg" to "video/mpeg",
+            "mpg" to "video/mpeg",
+            "mpg4" to "video/mp4",
+            "mpv" to "video/x-matroska",
+            "mxu" to "video/vnd.mpegurl",
+            "ogv" to "video/ogg",
+            "pyv" to "video/vnd.ms-playready.media.pyv",
+            "qt" to "video/quicktime",
+            "viv" to "video/vnd.vivo",
+            "webm" to "video/webm",
+            "wm" to "video/x-ms-wm",
+            "wmv" to "video/x-ms-wmv",
+            "wmx" to "video/x-ms-wmx",
+            "wvx" to "video/x-ms-wvx",
+        )
+    }
+
+    fun getMimeTypeByExtension(ext: String): String {
+        val key: String = ext.lowercase()
+        return when {
+            images.containsKey(key) -> images[key]!!
+            video.containsKey(key) -> video[key]!!
+            audio.containsKey(key) -> audio[key]!!
+            else -> "application/octet-stream"
+        }
+    }
+}

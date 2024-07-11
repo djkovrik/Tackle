@@ -10,10 +10,10 @@ import com.sedsoftware.tackle.editor.header.store.EditorHeaderStore.State
 internal interface EditorHeaderStore : Store<Intent, State, Label> {
 
     sealed class Intent {
-        data class OnShowLocalePicker(val show: Boolean) : Intent()
+        data class OnRequestLocalePicker(val show: Boolean) : Intent()
         data class OnLocaleSelected(val language: AppLocale) : Intent()
-        data class OnShowStatusVisibilityPicker(val show: Boolean) : Intent()
-        data class OnStatusVisibilitySelected(val visibility: StatusVisibility) : Intent()
+        data class OnRequestVisibilityPicker(val show: Boolean) : Intent()
+        data class OnVisibilityPickerSelected(val visibility: StatusVisibility) : Intent()
     }
 
     data class State(

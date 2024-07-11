@@ -40,7 +40,6 @@ class MainComponentTest : ComponentTest<MainComponentDefault>() {
     fun `component creation should initialize stack with TabEditor`() {
         // given
         // when
-        component = createComponent()
         // then
         assertThat(component.childStack.active.instance).hasClass(MainComponent.Child.TabEditor::class)
     }
@@ -49,7 +48,6 @@ class MainComponentTest : ComponentTest<MainComponentDefault>() {
     fun `click to HOME tab should switch to TabHome`() {
         // given
         // when
-        component = createComponent()
         component.onTabClicked(TackleNavigationTab.HOME)
         // then
         assertThat(component.childStack.active.instance).hasClass(MainComponent.Child.TabHome::class)
@@ -59,7 +57,6 @@ class MainComponentTest : ComponentTest<MainComponentDefault>() {
     fun `click to EXPLORE tab should switch to TabExplore`() {
         // given
         // when
-        component = createComponent()
         component.onTabClicked(TackleNavigationTab.EXPLORE)
         // then
         assertThat(component.childStack.active.instance).hasClass(MainComponent.Child.TabExplore::class)
@@ -69,17 +66,15 @@ class MainComponentTest : ComponentTest<MainComponentDefault>() {
     fun `click to EDITOR tab should switch to TabEditor`() {
         // given
         // when
-        component = createComponent()
         component.onTabClicked(TackleNavigationTab.EDITOR)
         // then
         assertThat(component.childStack.active.instance).hasClass(MainComponent.Child.TabEditor::class)
     }
 
     @Test
-    fun `click to PUBLICATIONS tab should switch to TabEditor`() {
+    fun `click to PUBLICATIONS tab should switch to TabPublications`() {
         // given
         // when
-        component = createComponent()
         component.onTabClicked(TackleNavigationTab.PUBLICATIONS)
         // then
         assertThat(component.childStack.active.instance).hasClass(MainComponent.Child.TabPublications::class)
@@ -89,7 +84,6 @@ class MainComponentTest : ComponentTest<MainComponentDefault>() {
     fun `click to NOTIFICATIONS tab should switch to TabNotifications`() {
         // given
         // when
-        component = createComponent()
         component.onTabClicked(TackleNavigationTab.NOTIFICATIONS)
         // then
         assertThat(component.childStack.active.instance).hasClass(MainComponent.Child.TabNotifications::class)

@@ -17,14 +17,10 @@ import kotlin.test.Test
 class AuthFlowManagerTest {
 
     private val api: AuthComponentApiStub = AuthComponentApiStub()
+    private val database: AuthComponentDatabaseStub = AuthComponentDatabaseStub()
     private val settings: AuthComponentSettingsStub = AuthComponentSettingsStub()
-
-    private val manager: AuthFlowManager = AuthFlowManager(
-        tools = AuthComponentToolsStub(),
-        api = api,
-        database = AuthComponentDatabaseStub(),
-        settings = settings,
-    )
+    private val tools: AuthComponentToolsStub = AuthComponentToolsStub()
+    private val manager: AuthFlowManager = AuthFlowManager(api, database, settings, tools)
 
     @Test
     fun `getInstanceInfo should load instance info`() = runTest {

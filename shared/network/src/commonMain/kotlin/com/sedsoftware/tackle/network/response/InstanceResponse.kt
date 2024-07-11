@@ -53,17 +53,17 @@ internal class InstanceConfigurationAttachmentsResponse(
 
 @Serializable
 internal class InstanceConfigurationPollsResponse(
-    @SerialName("max_options") val maxOptions: Long = 0L,
-    @SerialName("max_characters_per_option") val maxCharactersPerOption: Long = 0L,
+    @SerialName("max_options") val maxOptions: Int = 0,
+    @SerialName("max_characters_per_option") val maxCharactersPerOption: Int = 0,
     @SerialName("min_expiration") val minExpiration: Long = 0L,
     @SerialName("max_expiration") val maxExpiration: Long = 0L,
 )
 
 @Serializable
 internal class InstanceConfigurationStatusesResponse(
-    @SerialName("max_characters") val maxCharacters: Long = 0L,
-    @SerialName("max_media_attachments") val maxMediaAttachments: Long = 0L,
-    @SerialName("characters_reserved_per_url") val charactersReservedPerUrl: Long = 0L,
+    @SerialName("max_characters") val maxCharacters: Int = 0,
+    @SerialName("max_media_attachments") val maxMediaAttachments: Int = 0,
+    @SerialName("characters_reserved_per_url") val charactersReservedPerUrl: Int = 0,
 )
 
 @Serializable

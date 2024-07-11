@@ -30,16 +30,16 @@ internal class CachedConfig(
 
     @Serializable
     class CachedPolls(
-        val maxOptions: Long = 0L,
-        val maxCharactersPerOption: Long = 0L,
+        val maxOptions: Int = 0,
+        val maxCharactersPerOption: Int = 0,
         val minExpiration: Long = 0L,
         val maxExpiration: Long = 0L,
     )
 
     @Serializable
     class CachedStatuses(
-        val maxCharacters: Long = 0L,
-        val maxMediaAttachments: Long = 0L,
-        val charactersReservedPerUrl: Long = 0L,
+        val maxCharacters: Int = 0,
+        val maxMediaAttachments: Int = 0,
+        val charactersReservedPerUrl: Int = 0,
     )
 }

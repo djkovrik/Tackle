@@ -78,7 +78,7 @@ internal class EditorHeaderStoreProvider(
                     }
                 }
 
-                onIntent<Intent.OnShowLocalePicker> {
+                onIntent<Intent.OnRequestLocalePicker> {
                     dispatch(Msg.LocaleDialogVisibilityChanged(it.show))
                 }
 
@@ -96,11 +96,11 @@ internal class EditorHeaderStoreProvider(
                     }
                 }
 
-                onIntent<Intent.OnShowStatusVisibilityPicker> {
+                onIntent<Intent.OnRequestVisibilityPicker> {
                     dispatch(Msg.StatusDialogVisibilityChanged(it.show))
                 }
 
-                onIntent<Intent.OnStatusVisibilitySelected> {
+                onIntent<Intent.OnVisibilityPickerSelected> {
                     dispatch(Msg.VisibilitySelected(it.visibility))
                 }
             },
