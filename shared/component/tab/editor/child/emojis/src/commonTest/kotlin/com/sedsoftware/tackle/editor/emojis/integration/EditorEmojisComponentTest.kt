@@ -33,7 +33,6 @@ class EditorEmojisComponentTest : ComponentTest<EditorEmojisComponentDefault>() 
     fun `onEmojiClicked should use output`() = runTest {
         // given
         val emoji = CustomEmoji("a", "b", "c", true, "d")
-        component = createComponent()
         // when
         component.onEmojiClicked(emoji)
         // then

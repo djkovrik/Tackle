@@ -41,24 +41,9 @@ internal class EditorAttachmentsStoreProvider(
             initialState = State(),
             autoInit = autoInit,
             bootstrapper = coroutineBootstrapper {
-                dispatch(Action.LoadCachedConfig)
                 dispatch(Action.ObserveUploadProgress)
             },
             executorFactory = coroutineExecutorFactory(mainContext) {
-                onAction<Action.LoadCachedConfig> {
-                    launch {
-                        unwrap(
-                            result = withContext(ioContext) { manager.getCachedInstanceInfo() },
-                            onSuccess = { cachedInstance: Instance ->
-                                dispatch(Msg.CachedInstanceLoaded(cachedInstance))
-                            },
-                            onError = { throwable: Throwable ->
-                                publish(Label.ErrorCaught(throwable))
-                            }
-                        )
-                    }
-                }
-
                 onAction<Action.ObserveUploadProgress> {
                     launch {
                         manager.observeUploadProgress()
@@ -133,13 +118,15 @@ internal class EditorAttachmentsStoreProvider(
                 }
 
                 onIntent<Intent.ChangeFeatureState> { dispatch(Msg.FeatureStateChanged(it.available)) }
+
+                onIntent<Intent.UpdateInstanceConfig> { dispatch(Msg.InstanceConfigAvailable(it.config)) }
             },
             reducer = { msg ->
                 when (msg) {
-                    is Msg.CachedInstanceLoaded -> copy(
-                        config = msg.instance.config,
+                    is Msg.InstanceConfigAvailable -> copy(
+                        config = msg.config,
                         configLoaded = true,
-                        maxPossibleAttachments = msg.instance.config.statuses.maxMediaAttachments,
+                        maxPossibleAttachments = msg.config.statuses.maxMediaAttachments,
                     )
 
                     is Msg.UploadProgressAvailable -> copy(
@@ -175,14 +162,13 @@ internal class EditorAttachmentsStoreProvider(
         ) {}
 
     private sealed interface Action {
-        data object LoadCachedConfig : Action
         data object ObserveUploadProgress : Action
         data class PrepareAttachment(val file: PlatformFileWrapper) : Action
         data object UploadNextPendingAttachment : Action
     }
 
     private sealed interface Msg {
-        data class CachedInstanceLoaded(val instance: Instance) : Msg
+        data class InstanceConfigAvailable(val config: Instance.Config) : Msg
         data class UploadProgressAvailable(val progress: UploadProgress) : Msg
         data class AttachmentPrepared(val attachment: AttachedFile) : Msg
         data class AttachmentStatusChanged(val id: String, val status: AttachedFile.Status) : Msg

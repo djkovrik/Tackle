@@ -2,26 +2,35 @@ package com.sedsoftware.tackle.editor.integration
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.childContext
+import com.arkivanov.essenty.lifecycle.doOnDestroy
+import com.arkivanov.mvikotlin.core.instancekeeper.getStore
 import com.arkivanov.mvikotlin.core.store.StoreFactory
+import com.arkivanov.mvikotlin.extensions.coroutines.labels
 import com.sedsoftware.tackle.domain.ComponentOutput
 import com.sedsoftware.tackle.domain.api.TackleDispatchers
 import com.sedsoftware.tackle.editor.EditorTabComponent
 import com.sedsoftware.tackle.editor.EditorTabComponentGateways
 import com.sedsoftware.tackle.editor.attachments.EditorAttachmentsComponent
 import com.sedsoftware.tackle.editor.attachments.integration.EditorAttachmentsComponentDefault
+import com.sedsoftware.tackle.editor.domain.EditorTabManager
 import com.sedsoftware.tackle.editor.emojis.EditorEmojisComponent
 import com.sedsoftware.tackle.editor.emojis.integration.EditorEmojisComponentDefault
 import com.sedsoftware.tackle.editor.header.EditorHeaderComponent
 import com.sedsoftware.tackle.editor.header.integration.EditorHeaderComponentDefault
 import com.sedsoftware.tackle.editor.integration.attachments.EditorAttachmentsComponentApi
-import com.sedsoftware.tackle.editor.integration.attachments.EditorAttachmentsComponentDatabase
 import com.sedsoftware.tackle.editor.integration.emojis.EditorEmojisComponentApi
 import com.sedsoftware.tackle.editor.integration.emojis.EditorEmojisComponentDatabase
 import com.sedsoftware.tackle.editor.integration.emojis.EditorEmojisComponentSettings
 import com.sedsoftware.tackle.editor.integration.header.EditorHeaderComponentSettings
 import com.sedsoftware.tackle.editor.integration.header.EditorHeaderComponentTools
+import com.sedsoftware.tackle.editor.store.EditorTabStore
+import com.sedsoftware.tackle.editor.store.EditorTabStore.Label
+import com.sedsoftware.tackle.editor.store.EditorTabStoreProvider
 import com.sedsoftware.tackle.editor.warning.EditorWarningComponent
 import com.sedsoftware.tackle.editor.warning.integration.EditorWarningComponentDefault
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 
 class EditorTabComponentDefault(
     private val componentContext: ComponentContext,
@@ -42,7 +51,6 @@ class EditorTabComponentDefault(
             ),
             storeFactory = storeFactory,
             api = EditorAttachmentsComponentApi(api),
-            database = EditorAttachmentsComponentDatabase(database),
             dispatchers = dispatchers,
             output = ::onChildOutput,
         )
@@ -83,6 +91,33 @@ class EditorTabComponentDefault(
             storeFactory = storeFactory,
             dispatchers = dispatchers,
         )
+
+    private val store: EditorTabStore =
+        instanceKeeper.getStore {
+            EditorTabStoreProvider(
+                storeFactory = storeFactory,
+                manager = EditorTabManager(database),
+                mainContext = dispatchers.main,
+                ioContext = dispatchers.io,
+            ).create()
+        }
+
+    init {
+        val scope = CoroutineScope(dispatchers.main)
+
+        scope.launch {
+            store.labels.collect { label ->
+                when (label) {
+                    is Label.InstanceConfigLoaded -> attachments.updateInstanceConfig(label.config)
+                    is Label.ErrorCaught -> editorOutput(ComponentOutput.Common.ErrorCaught(label.throwable))
+                }
+            }
+        }
+
+        lifecycle.doOnDestroy {
+            scope.cancel()
+        }
+    }
 
     private fun onChildOutput(output: ComponentOutput) {
         when (output) {

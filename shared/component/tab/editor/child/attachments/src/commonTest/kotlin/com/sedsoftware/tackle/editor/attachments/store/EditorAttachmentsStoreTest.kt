@@ -13,10 +13,10 @@ import com.sedsoftware.tackle.editor.attachments.domain.EditorAttachmentsManager
 import com.sedsoftware.tackle.editor.attachments.extension.hasPending
 import com.sedsoftware.tackle.editor.attachments.model.AttachedFile
 import com.sedsoftware.tackle.editor.attachments.store.EditorAttachmentsStore.Intent
+import com.sedsoftware.tackle.editor.attachments.store.EditorAttachmentsStore.Intent.UpdateInstanceConfig
 import com.sedsoftware.tackle.editor.attachments.store.EditorAttachmentsStore.Label
 import com.sedsoftware.tackle.editor.attachments.store.EditorAttachmentsStore.State
 import com.sedsoftware.tackle.editor.attachments.stubs.EditorAttachmentsApiStub
-import com.sedsoftware.tackle.editor.attachments.stubs.EditorAttachmentsDatabaseStub
 import com.sedsoftware.tackle.editor.attachments.stubs.InstanceConfigStub
 import com.sedsoftware.tackle.editor.attachments.stubs.PlatformFileStubs
 import com.sedsoftware.tackle.utils.test.StoreTest
@@ -29,8 +29,7 @@ import kotlin.test.Test
 internal class EditorAttachmentsStoreTest : StoreTest<Intent, State, Label>() {
 
     private val api: EditorAttachmentsApiStub = EditorAttachmentsApiStub()
-    private val database: EditorAttachmentsDatabaseStub = EditorAttachmentsDatabaseStub()
-    private val manager: EditorAttachmentsManager = EditorAttachmentsManager(api, database)
+    private val manager: EditorAttachmentsManager = EditorAttachmentsManager(api)
 
     @BeforeTest
     fun before() {
@@ -40,17 +39,6 @@ internal class EditorAttachmentsStoreTest : StoreTest<Intent, State, Label>() {
     @AfterTest
     fun after() {
         afterTest()
-    }
-
-    @Test
-    fun `store creation should load instance config`() = runTest {
-        // given
-        // when
-        store.init()
-        // then
-        assertThat(store.state.config).isEqualTo(InstanceConfigStub.config)
-        assertThat(store.state.configLoaded).isTrue()
-        assertThat(store.state.maxPossibleAttachments).isEqualTo(InstanceConfigStub.config.statuses.maxMediaAttachments)
     }
 
     @Test
@@ -68,6 +56,17 @@ internal class EditorAttachmentsStoreTest : StoreTest<Intent, State, Label>() {
     }
 
     @Test
+    fun `UpdateInstanceConfig should update state`() = runTest {
+        // given
+        val config = InstanceConfigStub.config
+        // when
+        store.init()
+        store.accept(UpdateInstanceConfig(config))
+        // then
+        assertThat(store.state.config).isEqualTo(config)
+    }
+
+    @Test
     fun `four correct files should be loaded ok`() = runTest {
         // given
         val files = listOf(
@@ -78,6 +77,7 @@ internal class EditorAttachmentsStoreTest : StoreTest<Intent, State, Label>() {
         )
         // when
         store.init()
+        store.accept(UpdateInstanceConfig(InstanceConfigStub.config))
         store.accept(Intent.OnFilesSelected(files))
         // then
         assertThat(store.state.selectedFiles.size).isEqualTo(files.size)
@@ -96,6 +96,7 @@ internal class EditorAttachmentsStoreTest : StoreTest<Intent, State, Label>() {
         )
         // when
         store.init()
+        store.accept(UpdateInstanceConfig(InstanceConfigStub.config))
         store.accept(Intent.OnFilesSelected(files))
         // then
         assertThat(store.state.selectedFiles.size).isEqualTo(files.size - 1)
@@ -118,6 +119,7 @@ internal class EditorAttachmentsStoreTest : StoreTest<Intent, State, Label>() {
         )
         // when
         store.init()
+        store.accept(UpdateInstanceConfig(InstanceConfigStub.config))
         store.accept(Intent.OnFilesSelected(files))
         // then
         assertThat(store.state.selectedFiles.size).isEqualTo(store.state.maxPossibleAttachments)
@@ -139,6 +141,7 @@ internal class EditorAttachmentsStoreTest : StoreTest<Intent, State, Label>() {
         )
         // when
         store.init()
+        store.accept(UpdateInstanceConfig(InstanceConfigStub.config))
         store.accept(Intent.OnFilesSelected(files))
         // then
         assertThat(store.state.selectedFiles.size).isEqualTo(0)
@@ -159,6 +162,7 @@ internal class EditorAttachmentsStoreTest : StoreTest<Intent, State, Label>() {
         api.shouldThrowException = true
         // when
         store.init()
+        store.accept(UpdateInstanceConfig(InstanceConfigStub.config))
         store.accept(Intent.OnFilesSelected(files))
         // then
         assertThat(store.state.selectedFiles.count { it.status == AttachedFile.Status.ERROR }).isEqualTo(files.size)

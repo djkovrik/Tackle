@@ -39,7 +39,6 @@ class EditorWarningComponentTest : ComponentTest<EditorWarningComponentDefault>(
         // given
         val text = "test text"
         // when
-        component = createComponent()
         component.onTextInput(text)
         // then
         assertThat(activeModel.text).isEqualTo(text)
@@ -50,7 +49,6 @@ class EditorWarningComponentTest : ComponentTest<EditorWarningComponentDefault>(
         // given
         val text = "test text"
         // when
-        component = createComponent()
         component.onTextInput(text)
         component.clearTextInput()
         // then

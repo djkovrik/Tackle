@@ -9,6 +9,7 @@ import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.labels
 import com.sedsoftware.tackle.domain.ComponentOutput
 import com.sedsoftware.tackle.domain.api.TackleDispatchers
+import com.sedsoftware.tackle.domain.model.Instance
 import com.sedsoftware.tackle.domain.model.PlatformFileWrapper
 import com.sedsoftware.tackle.editor.attachments.EditorAttachmentsComponent
 import com.sedsoftware.tackle.editor.attachments.EditorAttachmentsComponent.Model
@@ -30,7 +31,6 @@ class EditorAttachmentsComponentDefault(
     private val componentContext: ComponentContext,
     private val storeFactory: StoreFactory,
     private val api: EditorAttachmentsGateways.Api,
-    private val database: EditorAttachmentsGateways.Database,
     private val dispatchers: TackleDispatchers,
     private val output: (ComponentOutput) -> Unit,
 ) : EditorAttachmentsComponent, ComponentContext by componentContext {
@@ -39,7 +39,7 @@ class EditorAttachmentsComponentDefault(
         instanceKeeper.getStore {
             EditorAttachmentsStoreProvider(
                 storeFactory = storeFactory,
-                manager = EditorAttachmentsManager(api, database),
+                manager = EditorAttachmentsManager(api),
                 mainContext = dispatchers.main,
                 ioContext = dispatchers.io,
             ).create()
@@ -71,6 +71,10 @@ class EditorAttachmentsComponentDefault(
 
     override fun changeFeatureState(available: Boolean) {
         store.accept(EditorAttachmentsStore.Intent.ChangeFeatureState(available))
+    }
+
+    override fun updateInstanceConfig(config: Instance.Config) {
+        store.accept(EditorAttachmentsStore.Intent.UpdateInstanceConfig(config))
     }
 
     private fun wrap(from: PlatformFile): PlatformFileWrapper =

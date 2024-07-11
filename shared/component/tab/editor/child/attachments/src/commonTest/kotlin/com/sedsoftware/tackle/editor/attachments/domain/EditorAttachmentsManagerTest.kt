@@ -3,15 +3,12 @@ package com.sedsoftware.tackle.editor.attachments.domain
 import assertk.assertThat
 import assertk.assertions.isFalse
 import assertk.assertions.isNotEmpty
-import assertk.assertions.isNotEqualTo
 import assertk.assertions.isSameInstanceAs
 import assertk.assertions.isTrue
 import com.sedsoftware.tackle.domain.TackleException
-import com.sedsoftware.tackle.domain.model.Instance
 import com.sedsoftware.tackle.domain.model.PlatformFileWrapper
 import com.sedsoftware.tackle.editor.attachments.model.AttachedFile
 import com.sedsoftware.tackle.editor.attachments.stubs.EditorAttachmentsApiStub
-import com.sedsoftware.tackle.editor.attachments.stubs.EditorAttachmentsDatabaseStub
 import com.sedsoftware.tackle.editor.attachments.stubs.InstanceConfigStub
 import com.sedsoftware.tackle.editor.attachments.stubs.PlatformFileStubs
 import kotlinx.coroutines.test.runTest
@@ -20,21 +17,7 @@ import kotlin.test.Test
 class EditorAttachmentsManagerTest {
 
     private val api: EditorAttachmentsApiStub = EditorAttachmentsApiStub()
-    private val database: EditorAttachmentsDatabaseStub = EditorAttachmentsDatabaseStub()
-    private val manager: EditorAttachmentsManager = EditorAttachmentsManager(api, database)
-
-    @Test
-    fun `getCachedInstanceInfo should return cached instance info`() = runTest {
-        // given
-        // when
-        val info: Result<Instance> = manager.getCachedInstanceInfo()
-        // then
-        assertThat(info.isSuccess).isTrue()
-        assertThat(info.getOrThrow().config.statuses.maxMediaAttachments).isNotEqualTo(0)
-        assertThat(info.getOrThrow().config.mediaAttachments.imageSizeLimit).isNotEqualTo(0L)
-        assertThat(info.getOrThrow().config.mediaAttachments.videoSizeLimit).isNotEqualTo(0L)
-        assertThat(info.getOrThrow().config.mediaAttachments.supportedMimeTypes).isNotEmpty()
-    }
+    private val manager: EditorAttachmentsManager = EditorAttachmentsManager(api)
 
     @Test
     fun `upload should return result on success`() = runTest {

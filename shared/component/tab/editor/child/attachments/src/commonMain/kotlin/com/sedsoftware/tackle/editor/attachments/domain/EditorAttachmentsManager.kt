@@ -12,20 +12,14 @@ import com.sedsoftware.tackle.utils.extension.isVideo
 import com.sedsoftware.tackle.utils.generateUUID
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.first
 
 internal class EditorAttachmentsManager(
     private val api: EditorAttachmentsGateways.Api,
-    private val database: EditorAttachmentsGateways.Database,
 ) {
     private val uploadProgress: MutableStateFlow<UploadProgress> =
         MutableStateFlow(UploadProgress("", 0))
 
     fun observeUploadProgress(): Flow<UploadProgress> = uploadProgress
-
-    suspend fun getCachedInstanceInfo(): Result<Instance> = runCatching {
-        database.getCachedInstanceInfo().first()
-    }
 
     fun prepare(platformFile: PlatformFileWrapper, config: Instance.Config): Result<AttachedFile> = runCatching {
         if (platformFile.size == 0L) {
