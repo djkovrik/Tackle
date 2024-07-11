@@ -98,7 +98,7 @@ internal class EditorAttachmentsStoreProvider(
 
                 onIntent<Intent.OnFilesSelected> {
                     val currentSelectionSize = state().selectedFiles.size
-                    val limit = state().maxPossibleAttachments
+                    val limit = state().config.statuses.maxMediaAttachments
                     var newSelectionSize = it.files.size
                     val total = currentSelectionSize + newSelectionSize
 
@@ -126,7 +126,6 @@ internal class EditorAttachmentsStoreProvider(
                     is Msg.InstanceConfigAvailable -> copy(
                         config = msg.config,
                         configLoaded = true,
-                        maxPossibleAttachments = msg.config.statuses.maxMediaAttachments,
                     )
 
                     is Msg.UploadProgressAvailable -> copy(
@@ -135,7 +134,7 @@ internal class EditorAttachmentsStoreProvider(
 
                     is Msg.AttachmentPrepared -> copy(
                         selectedFiles = selectedFiles + listOf(msg.attachment),
-                        attachmentsAtLimit = (selectedFiles.size + 1) >= maxPossibleAttachments,
+                        attachmentsAtLimit = (selectedFiles.size + 1) >= config.statuses.maxMediaAttachments,
                     )
 
                     is Msg.AttachmentStatusChanged -> copy(

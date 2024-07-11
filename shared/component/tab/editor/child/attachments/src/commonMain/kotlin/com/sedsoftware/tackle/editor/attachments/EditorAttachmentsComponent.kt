@@ -15,6 +15,6 @@ interface EditorAttachmentsComponent {
 
     data class Model(
         val attachments: List<AttachedFile>,
-        val available: Boolean,
+        val attachmentButtonAvailable: Boolean,
     )
 }

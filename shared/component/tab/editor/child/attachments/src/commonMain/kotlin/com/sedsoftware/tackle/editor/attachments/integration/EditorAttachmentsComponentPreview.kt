@@ -17,7 +17,7 @@ class EditorAttachmentsComponentPreview(
         MutableValue(
             Model(
                 attachments = attachments,
-                available = available,
+                attachmentButtonAvailable = available,
             )
         )
 

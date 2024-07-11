@@ -24,6 +24,3 @@ internal fun List<AttachedFile>.updateProgress(progress: UploadProgress): List<A
 
 internal fun List<AttachedFile>.delete(id: String): List<AttachedFile> =
     filterNot { it.id == id }
-
-internal fun List<AttachedFile>.get(id: String): AttachedFile? =
-    firstOrNull { it.id == id }

@@ -122,7 +122,7 @@ internal class EditorAttachmentsStoreTest : StoreTest<Intent, State, Label>() {
         store.accept(UpdateInstanceConfig(InstanceConfigStub.config))
         store.accept(Intent.OnFilesSelected(files))
         // then
-        assertThat(store.state.selectedFiles.size).isEqualTo(store.state.maxPossibleAttachments)
+        assertThat(store.state.selectedFiles.size).isEqualTo(store.state.config.statuses.maxMediaAttachments)
         assertThat(store.state.attachmentsAtLimit).isTrue()
         assertThat(store.state.selectedFiles.hasPending).isFalse()
         assertThat(labels).isNotEmpty()

@@ -20,7 +20,6 @@ internal interface EditorAttachmentsStore : Store<Intent, State, Label> {
         val config: Instance.Config = Instance.Config(),
         val configLoaded: Boolean = false,
         val selectedFiles: List<AttachedFile> = emptyList(),
-        val maxPossibleAttachments: Int = 0,
         val attachmentsAtLimit: Boolean = false,
         val attachmentsAvailable: Boolean = false,
         val hasUploadInProgress: Boolean = false,

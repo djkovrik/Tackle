@@ -63,11 +63,11 @@ internal class EditorHeaderStoreTest : StoreTest<EditorHeaderStore.Intent, Edito
         // given
         // when
         store.init()
-        store.accept(EditorHeaderStore.Intent.OnShowLocalePicker(true))
+        store.accept(EditorHeaderStore.Intent.OnRequestLocalePicker(true))
         // then
         assertThat(store.state.localePickerDisplayed).isTrue()
         // and when
-        store.accept(EditorHeaderStore.Intent.OnShowLocalePicker(false))
+        store.accept(EditorHeaderStore.Intent.OnRequestLocalePicker(false))
         // then
         assertThat(store.state.localePickerDisplayed).isFalse()
     }
@@ -88,11 +88,11 @@ internal class EditorHeaderStoreTest : StoreTest<EditorHeaderStore.Intent, Edito
         // given
         // when
         store.init()
-        store.accept(EditorHeaderStore.Intent.OnShowStatusVisibilityPicker(true))
+        store.accept(EditorHeaderStore.Intent.OnRequestVisibilityPicker(true))
         // then
         assertThat(store.state.statusVisibilityPickerDisplayed).isTrue()
         // and when
-        store.accept(EditorHeaderStore.Intent.OnShowStatusVisibilityPicker(false))
+        store.accept(EditorHeaderStore.Intent.OnRequestVisibilityPicker(false))
         // then
         assertThat(store.state.statusVisibilityPickerDisplayed).isFalse()
     }
@@ -102,19 +102,19 @@ internal class EditorHeaderStoreTest : StoreTest<EditorHeaderStore.Intent, Edito
         // given
         // when
         store.init()
-        store.accept(EditorHeaderStore.Intent.OnStatusVisibilitySelected(StatusVisibility.PUBLIC))
+        store.accept(EditorHeaderStore.Intent.OnVisibilityPickerSelected(StatusVisibility.PUBLIC))
         // then
         assertThat(store.state.statusVisibility).isEqualTo(StatusVisibility.PUBLIC)
         // and when
-        store.accept(EditorHeaderStore.Intent.OnStatusVisibilitySelected(StatusVisibility.DIRECT))
+        store.accept(EditorHeaderStore.Intent.OnVisibilityPickerSelected(StatusVisibility.DIRECT))
         // then
         assertThat(store.state.statusVisibility).isEqualTo(StatusVisibility.DIRECT)
         // and when
-        store.accept(EditorHeaderStore.Intent.OnStatusVisibilitySelected(StatusVisibility.PRIVATE))
+        store.accept(EditorHeaderStore.Intent.OnVisibilityPickerSelected(StatusVisibility.PRIVATE))
         // then
         assertThat(store.state.statusVisibility).isEqualTo(StatusVisibility.PRIVATE)
         // and when
-        store.accept(EditorHeaderStore.Intent.OnStatusVisibilitySelected(StatusVisibility.UNLISTED))
+        store.accept(EditorHeaderStore.Intent.OnVisibilityPickerSelected(StatusVisibility.UNLISTED))
         // then
         assertThat(store.state.statusVisibility).isEqualTo(StatusVisibility.UNLISTED)
     }

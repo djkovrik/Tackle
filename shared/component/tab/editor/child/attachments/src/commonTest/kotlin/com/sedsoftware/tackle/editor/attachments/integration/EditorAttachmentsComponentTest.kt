@@ -33,7 +33,7 @@ class EditorAttachmentsComponentTest : ComponentTest<EditorAttachmentsComponentD
         // when
         component.changeFeatureState(false)
         // then
-        assertThat(activeModel.available).isFalse()
+        assertThat(activeModel.attachmentButtonAvailable).isFalse()
     }
 
     override fun createComponent(): EditorAttachmentsComponentDefault =

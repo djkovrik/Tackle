@@ -23,6 +23,8 @@ import com.sedsoftware.tackle.editor.integration.emojis.EditorEmojisComponentDat
 import com.sedsoftware.tackle.editor.integration.emojis.EditorEmojisComponentSettings
 import com.sedsoftware.tackle.editor.integration.header.EditorHeaderComponentSettings
 import com.sedsoftware.tackle.editor.integration.header.EditorHeaderComponentTools
+import com.sedsoftware.tackle.editor.poll.EditorPollComponent
+import com.sedsoftware.tackle.editor.poll.integration.EditorPollComponentDefault
 import com.sedsoftware.tackle.editor.store.EditorTabStore
 import com.sedsoftware.tackle.editor.store.EditorTabStore.Label
 import com.sedsoftware.tackle.editor.store.EditorTabStoreProvider
@@ -82,6 +84,16 @@ class EditorTabComponentDefault(
             output = ::onChildOutput,
         )
 
+    override val poll: EditorPollComponent =
+        EditorPollComponentDefault(
+            componentContext = childContext(
+                key = "Editor poll",
+                lifecycle = lifecycle
+            ),
+            storeFactory = storeFactory,
+            dispatchers = dispatchers,
+        )
+
     override val warning: EditorWarningComponent =
         EditorWarningComponentDefault(
             componentContext = childContext(
@@ -108,8 +120,14 @@ class EditorTabComponentDefault(
         scope.launch {
             store.labels.collect { label ->
                 when (label) {
-                    is Label.InstanceConfigLoaded -> attachments.updateInstanceConfig(label.config)
-                    is Label.ErrorCaught -> editorOutput(ComponentOutput.Common.ErrorCaught(label.throwable))
+                    is Label.InstanceConfigLoaded -> {
+                        attachments.updateInstanceConfig(label.config)
+                        poll.updateInstanceConfig(label.config)
+                    }
+
+                    is Label.ErrorCaught -> {
+                        editorOutput(ComponentOutput.Common.ErrorCaught(label.throwable))
+                    }
                 }
             }
         }

@@ -40,8 +40,8 @@ data class Instance(
         )
 
         data class Polls(
-            val maxOptions: Long = 0L,
-            val maxCharactersPerOption: Long = 0L,
+            val maxOptions: Int = 0,
+            val maxCharactersPerOption: Int = 0,
             val minExpiration: Long = 0L,
             val maxExpiration: Long = 0L,
         )
