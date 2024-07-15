@@ -14,7 +14,7 @@ kotlin {
                 implementation(project(":shared:network"))
                 implementation(project(":shared:settings"))
                 implementation(project(":shared:utils"))
-                
+
                 implementation(project(":shared:component:tab:home"))
                 implementation(project(":shared:component:tab:explore"))
                 implementation(project(":shared:component:tab:editor"))

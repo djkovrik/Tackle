@@ -1,4 +1,5 @@
 @file:Suppress("MagicNumber")
+
 package com.sedsoftware.tackle.compose.widget
 
 import androidx.compose.animation.core.EaseInOut
@@ -123,7 +124,7 @@ internal fun InfiniteTransition.wanderingCubesTransition(
     targetValue: Float,
     durationMillisPerFraction: Int,
     offsetMillis: Int = 0,
-    easing: Easing = EaseInOut
+    easing: Easing = EaseInOut,
 ): State<Float> {
     return animateFloat(
         initialValue = initialValue,
@@ -150,7 +151,7 @@ internal fun InfiniteTransition.wanderingCubesRotateTransition(
     durationMillisPerFraction: Int,
     delayMillis: Int = 0,
     offsetMillis: Int = 0,
-    easing: Easing = EaseInOut
+    easing: Easing = EaseInOut,
 ): State<Float> {
     return animateFloat(
         initialValue = initialValue,

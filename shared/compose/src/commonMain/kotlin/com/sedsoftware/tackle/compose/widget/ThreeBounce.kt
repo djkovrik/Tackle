@@ -1,4 +1,5 @@
 @file:Suppress("MagicNumber")
+
 package com.sedsoftware.tackle.compose.widget
 
 import androidx.compose.animation.core.RepeatMode
@@ -28,7 +29,7 @@ internal fun ThreeBounce(
     delayBetweenDotsMillis: Int = 160,
     size: DpSize = DpSize(width = 40.dp, height = 40.dp),
     color: Color = MaterialTheme.colorScheme.primary,
-    shape: Shape = CircleShape
+    shape: Shape = CircleShape,
 ) {
     val transition = rememberInfiniteTransition()
 

@@ -22,7 +22,7 @@ internal val LocalThemeIsDark = compositionLocalOf { mutableStateOf(true) }
 @Composable
 fun TackleTheme(
     systemIsDark: Boolean = isSystemInDarkTheme(),
-    content: @Composable() () -> Unit
+    content: @Composable() () -> Unit,
 ) {
 
     val isDarkState = remember { mutableStateOf(systemIsDark) }

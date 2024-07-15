@@ -5,7 +5,7 @@ import com.russhwolf.settings.Settings
 import platform.Foundation.NSUserDefaults
 
 @Suppress("FunctionName")
-fun SharedSettingsFactory() : Settings {
+fun SharedSettingsFactory(): Settings {
     val delegate: NSUserDefaults = NSUserDefaults.standardUserDefaults()
     return NSUserDefaultsSettings(delegate)
 }

@@ -29,7 +29,7 @@ import com.sedsoftware.tackle.root.RootComponent.Child
 @Composable
 fun RootContent(
     component: RootComponent,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val snackbarHostState: SnackbarHostState = remember { SnackbarHostState() }
 

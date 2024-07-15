@@ -1,7 +1,7 @@
 package com.sedsoftware.tackle.editor.attachments.model
 
-import com.sedsoftware.tackle.domain.model.PlatformFileWrapper
 import com.sedsoftware.tackle.domain.model.MediaAttachment
+import com.sedsoftware.tackle.domain.model.PlatformFileWrapper
 
 data class AttachedFile(
     val id: String,

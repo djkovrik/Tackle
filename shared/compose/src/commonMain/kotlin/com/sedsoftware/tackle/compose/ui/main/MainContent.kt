@@ -63,7 +63,7 @@ internal fun MainContent(
 @Composable
 private fun ChildrenContent(
     component: MainComponent,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Children(
         stack = component.childStack,

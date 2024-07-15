@@ -13,7 +13,7 @@ import com.sedsoftware.tackle.publications.PublicationsTabComponent
 @Composable
 internal fun PublicationsTabContent(
     component: PublicationsTabComponent,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Box(
         contentAlignment = Alignment.Center,

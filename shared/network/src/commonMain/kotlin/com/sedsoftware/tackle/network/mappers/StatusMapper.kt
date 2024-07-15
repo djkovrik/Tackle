@@ -56,7 +56,7 @@ internal object StatusMapper {
             pinned = from.pinned,
             filtered = from.filtered.map(FilterResultMapper::map),
 
-        )
+            )
 
     private fun mapMention(from: StatusMentionResponse): StatusMention =
         StatusMention(

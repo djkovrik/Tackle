@@ -19,7 +19,7 @@ import kotlin.coroutines.CoroutineContext
 internal class TackleSharedDatabase(
     private val currentDomainProvider: () -> String,
     private val coroutineContext: CoroutineContext,
-    private val driver: SqlDriver
+    private val driver: SqlDriver,
 ) : TackleDatabase {
 
     private val currentDomain: String

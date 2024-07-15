@@ -7,7 +7,7 @@ import com.russhwolf.settings.Settings
 import com.russhwolf.settings.SharedPreferencesSettings
 
 @Suppress("FunctionName")
-fun SharedSettingsFactory(context: Context) : Settings {
+fun SharedSettingsFactory(context: Context): Settings {
     val delegate: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context.applicationContext)
     return SharedPreferencesSettings(delegate)
 }
