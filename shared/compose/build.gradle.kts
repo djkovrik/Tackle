@@ -6,8 +6,6 @@ plugins {
 }
 
 kotlin {
-    task("testClasses")
-
     sourceSets {
         all {
             languageSettings {
