@@ -15,12 +15,11 @@ import com.sedsoftware.tackle.editor.attachments.EditorAttachmentsComponent
 import com.sedsoftware.tackle.editor.attachments.EditorAttachmentsComponent.Model
 import com.sedsoftware.tackle.editor.attachments.EditorAttachmentsGateways
 import com.sedsoftware.tackle.editor.attachments.domain.EditorAttachmentsManager
+import com.sedsoftware.tackle.editor.attachments.extension.wrap
 import com.sedsoftware.tackle.editor.attachments.store.EditorAttachmentsStore
 import com.sedsoftware.tackle.editor.attachments.store.EditorAttachmentsStore.Label
 import com.sedsoftware.tackle.editor.attachments.store.EditorAttachmentsStoreProvider
-import com.sedsoftware.tackle.utils.FileUtils
 import com.sedsoftware.tackle.utils.extension.asValue
-import com.sedsoftware.tackle.utils.extension.orZero
 import io.github.vinceglb.filekit.core.PlatformFile
 import io.github.vinceglb.filekit.core.extension
 import kotlinx.coroutines.CoroutineScope
@@ -51,6 +50,7 @@ class EditorAttachmentsComponentDefault(
         scope.launch {
             store.labels.collect { label ->
                 when (label) {
+                    is Label.AttachmentsCountUpdated -> output(ComponentOutput.StatusEditor.AttachmentsCountUpdated(label.count))
                     is Label.ErrorCaught -> output(ComponentOutput.Common.ErrorCaught(label.throwable))
                 }
             }
@@ -64,8 +64,16 @@ class EditorAttachmentsComponentDefault(
     override val model: Value<Model> = store.asValue().map(stateToModel)
 
     override fun onFileSelected(files: List<PlatformFile>) {
-        val wrapped: List<PlatformFileWrapper> = files.map(::wrap)
+        val wrapped: List<PlatformFileWrapper> = files.map { wrap(it.name, it.extension, it.path, it::getSize, it::readBytes) }
         store.accept(EditorAttachmentsStore.Intent.OnFilesSelected(wrapped))
+    }
+
+    override fun onFileSelectedWrapped(files: List<PlatformFileWrapper>) {
+        store.accept(EditorAttachmentsStore.Intent.OnFilesSelected(files))
+    }
+
+    override fun onFileDeleted(id: String) {
+        store.accept(EditorAttachmentsStore.Intent.OnFileDeleted(id))
     }
 
     override fun changeFeatureState(available: Boolean) {
@@ -75,14 +83,4 @@ class EditorAttachmentsComponentDefault(
     override fun updateInstanceConfig(config: Instance.Config) {
         store.accept(EditorAttachmentsStore.Intent.UpdateInstanceConfig(config))
     }
-
-    private fun wrap(from: PlatformFile): PlatformFileWrapper =
-        PlatformFileWrapper(
-            name = from.name,
-            extension = from.extension,
-            path = from.path.orEmpty(),
-            mimeType = FileUtils.getMimeTypeByExtension(from.extension),
-            size = from.getSize().orZero(),
-            readBytes = from::readBytes,
-        )
 }

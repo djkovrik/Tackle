@@ -12,6 +12,7 @@ internal interface EditorAttachmentsStore : Store<Intent, State, Label> {
 
     sealed class Intent {
         data class OnFilesSelected(val files: List<PlatformFileWrapper>) : Intent()
+        data class OnFileDeleted(val id: String) : Intent()
         data class ChangeFeatureState(val available: Boolean) : Intent()
         data class UpdateInstanceConfig(val config: Instance.Config) : Intent()
     }
@@ -26,6 +27,7 @@ internal interface EditorAttachmentsStore : Store<Intent, State, Label> {
     )
 
     sealed class Label {
+        data class AttachmentsCountUpdated(val count: Int) : Label()
         data class ErrorCaught(val throwable: Throwable) : Label()
     }
 }

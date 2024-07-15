@@ -160,4 +160,22 @@ class ExtensionsTest {
         // then
         assertThat(newList).containsNone(targetItem)
     }
+
+    @Test
+    fun `wrap should create PlatformWrapper`() = runTest {
+        // given
+        val name = "file.mp4"
+        val extension = "mp4"
+        val path = "pa/th"
+        val getSize = { 123L }
+        val readBytes = { ByteArray(0) }
+        // when
+        val wrapped = wrap(name, extension, path, getSize, readBytes)
+        // then
+        assertThat(wrapped.name).isEqualTo(name)
+        assertThat(wrapped.extension).isEqualTo(extension)
+        assertThat(wrapped.path).isEqualTo(path)
+        assertThat(wrapped.size).isEqualTo(getSize.invoke())
+        assertThat(wrapped.mimeType).isEqualTo("video/mp4")
+    }
 }

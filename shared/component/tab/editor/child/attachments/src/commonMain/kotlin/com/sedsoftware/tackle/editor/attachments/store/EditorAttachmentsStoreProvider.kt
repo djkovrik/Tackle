@@ -9,6 +9,7 @@ import com.sedsoftware.tackle.domain.model.Instance
 import com.sedsoftware.tackle.domain.model.MediaAttachment
 import com.sedsoftware.tackle.domain.model.PlatformFileWrapper
 import com.sedsoftware.tackle.editor.attachments.domain.EditorAttachmentsManager
+import com.sedsoftware.tackle.editor.attachments.extension.delete
 import com.sedsoftware.tackle.editor.attachments.extension.firstPending
 import com.sedsoftware.tackle.editor.attachments.extension.hasPending
 import com.sedsoftware.tackle.editor.attachments.extension.updateProgress
@@ -115,6 +116,14 @@ internal class EditorAttachmentsStoreProvider(
                         dispatch(Msg.UploadQueueStarted)
                         forward(Action.UploadNextPendingAttachment)
                     }
+
+                    publish(Label.AttachmentsCountUpdated(newSelectionSize))
+                }
+
+                onIntent<Intent.OnFileDeleted> {
+                    val currentAttachmentsCount = state().selectedFiles.size
+                    publish(Label.AttachmentsCountUpdated(currentAttachmentsCount - 1))
+                    dispatch(Msg.FileDeleted(it.id))
                 }
 
                 onIntent<Intent.ChangeFeatureState> { dispatch(Msg.FeatureStateChanged(it.available)) }
@@ -156,6 +165,11 @@ internal class EditorAttachmentsStoreProvider(
                     is Msg.FeatureStateChanged -> copy(
                         attachmentsAvailable = msg.available,
                     )
+
+                    is Msg.FileDeleted -> copy(
+                        selectedFiles = selectedFiles.delete(msg.id),
+                        attachmentsAtLimit = false,
+                    )
                 }
             }
         ) {}
@@ -175,5 +189,6 @@ internal class EditorAttachmentsStoreProvider(
         data object UploadQueueStarted : Msg
         data object UploadQueueCompleted : Msg
         data class FeatureStateChanged(val available: Boolean) : Msg
+        data class FileDeleted(val id: String) : Msg
     }
 }
