@@ -2,13 +2,17 @@ package com.sedsoftware.tackle.editor.integration
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.childContext
+import com.arkivanov.decompose.value.Value
+import com.arkivanov.decompose.value.operator.map
 import com.arkivanov.essenty.lifecycle.doOnDestroy
 import com.arkivanov.mvikotlin.core.instancekeeper.getStore
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.labels
 import com.sedsoftware.tackle.domain.ComponentOutput
 import com.sedsoftware.tackle.domain.api.TackleDispatchers
+import com.sedsoftware.tackle.domain.model.CustomEmoji
 import com.sedsoftware.tackle.editor.EditorTabComponent
+import com.sedsoftware.tackle.editor.EditorTabComponent.Model
 import com.sedsoftware.tackle.editor.EditorTabComponentGateways
 import com.sedsoftware.tackle.editor.attachments.EditorAttachmentsComponent
 import com.sedsoftware.tackle.editor.attachments.integration.EditorAttachmentsComponentDefault
@@ -30,6 +34,7 @@ import com.sedsoftware.tackle.editor.store.EditorTabStore.Label
 import com.sedsoftware.tackle.editor.store.EditorTabStoreProvider
 import com.sedsoftware.tackle.editor.warning.EditorWarningComponent
 import com.sedsoftware.tackle.editor.warning.integration.EditorWarningComponentDefault
+import com.sedsoftware.tackle.utils.extension.asValue
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
@@ -137,9 +142,39 @@ class EditorTabComponentDefault(
         }
     }
 
+    override val model: Value<Model> = store.asValue().map(stateToModel)
+
+    override fun onTextInput(text: String) {
+        store.accept(EditorTabStore.Intent.OnTextInput(text))
+    }
+
+    override fun onEmojiSelected(emoji: CustomEmoji) {
+        store.accept(EditorTabStore.Intent.OnEmojiSelect(emoji))
+    }
+
+    override fun onAttachmentsButtonClicked() {
+        store.accept(EditorTabStore.Intent.OnAttachmentsButtonClick)
+    }
+
+    override fun onPollButtonClicked() {
+        store.accept(EditorTabStore.Intent.OnPollButtonClick)
+    }
+
+    override fun onEmojisButtonClicked() {
+        store.accept(EditorTabStore.Intent.OnEmojisButtonClick)
+    }
+
+    override fun onWarningButtonClicked() {
+        store.accept(EditorTabStore.Intent.OnWarningButtonClick)
+    }
+
+    override fun onSendButtonClicked() {
+        TODO("Status send not implemented yet")
+    }
+
     private fun onChildOutput(output: ComponentOutput) {
         when (output) {
-            is ComponentOutput.StatusEditor.EmojiSelected -> TODO("Emoji selected")
+            is ComponentOutput.StatusEditor.EmojiSelected -> onEmojiSelected(output.emoji)
             else -> editorOutput(output)
         }
     }

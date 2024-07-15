@@ -1,9 +1,12 @@
 package com.sedsoftware.tackle.editor.integration
 
+import com.arkivanov.decompose.value.MutableValue
+import com.arkivanov.decompose.value.Value
 import com.sedsoftware.tackle.domain.model.AppLocale
 import com.sedsoftware.tackle.domain.model.CustomEmoji
 import com.sedsoftware.tackle.domain.model.type.StatusVisibility
 import com.sedsoftware.tackle.editor.EditorTabComponent
+import com.sedsoftware.tackle.editor.EditorTabComponent.Model
 import com.sedsoftware.tackle.editor.attachments.EditorAttachmentsComponent
 import com.sedsoftware.tackle.editor.attachments.integration.EditorAttachmentsComponentPreview
 import com.sedsoftware.tackle.editor.attachments.model.AttachedFile
@@ -42,6 +45,13 @@ class EditorTabComponentPreview(
     pollButtonAvailable: Boolean = false,
     maxOptionTextLength: Int = 1,
     warningText: String = "",
+    statusText: String = "",
+    statusCharactersLeft: Int = -1,
+    attachmentsActive: Boolean = false,
+    emojisActive: Boolean = false,
+    pollActive: Boolean = false,
+    warningActive: Boolean = false,
+    sendingAvailable: Boolean = false,
 ) : EditorTabComponent {
 
     override val attachments: EditorAttachmentsComponent =
@@ -84,4 +94,25 @@ class EditorTabComponentPreview(
 
     override val warning: EditorWarningComponent =
         EditorWarningComponentPreview(warningText)
+
+    override val model: Value<Model> =
+        MutableValue(
+            Model(
+                statusText = statusText,
+                statusCharactersLeft = statusCharactersLeft,
+                attachmentsActive = attachmentsActive,
+                emojisActive = emojisActive,
+                pollActive = pollActive,
+                warningActive = warningActive,
+                sendingAvailable = sendingAvailable,
+            )
+        )
+
+    override fun onTextInput(text: String) = Unit
+    override fun onEmojiSelected(emoji: CustomEmoji) = Unit
+    override fun onAttachmentsButtonClicked() = Unit
+    override fun onPollButtonClicked() = Unit
+    override fun onEmojisButtonClicked() = Unit
+    override fun onWarningButtonClicked() = Unit
+    override fun onSendButtonClicked() = Unit
 }

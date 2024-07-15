@@ -1,6 +1,7 @@
 package com.sedsoftware.tackle.editor.store
 
 import com.arkivanov.mvikotlin.core.store.Store
+import com.sedsoftware.tackle.domain.model.CustomEmoji
 import com.sedsoftware.tackle.domain.model.Instance
 import com.sedsoftware.tackle.editor.store.EditorTabStore.Intent
 import com.sedsoftware.tackle.editor.store.EditorTabStore.Label
@@ -8,9 +9,23 @@ import com.sedsoftware.tackle.editor.store.EditorTabStore.State
 
 interface EditorTabStore : Store<Intent, State, Label> {
 
-    sealed class Intent
+    sealed class Intent {
+        data class OnTextInput(val text: String) : Intent()
+        data class OnEmojiSelect(val emoji: CustomEmoji) : Intent()
+        data object OnAttachmentsButtonClick : Intent()
+        data object OnPollButtonClick : Intent()
+        data object OnEmojisButtonClick : Intent()
+        data object OnWarningButtonClick : Intent()
+    }
 
     data class State(
+        val statusText: String = "",
+        val statusCharactersLeft: Int = -1,
+        val attachmentsActive: Boolean = false,
+        val emojisActive: Boolean = false,
+        val pollActive: Boolean = false,
+        val warningActive: Boolean = false,
+        val sendingAvailable: Boolean = false,
         val instanceInfo: Instance = Instance.empty(),
         val instanceInfoLoaded: Boolean = false,
     )

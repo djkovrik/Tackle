@@ -38,6 +38,7 @@ internal class EditorTabStoreProvider(
                             result = withContext(ioContext) { manager.getCachedInstanceInfo() },
                             onSuccess = { cachedInstance: Instance ->
                                 dispatch(Msg.CachedInstanceLoaded(cachedInstance))
+                                dispatch(Msg.StatusCharactersLimitAvailable(cachedInstance.config.statuses.maxCharacters))
                                 publish(Label.InstanceConfigLoaded(cachedInstance.config))
                             },
                             onError = { throwable: Throwable ->
@@ -53,6 +54,10 @@ internal class EditorTabStoreProvider(
                         instanceInfo = msg.instance,
                         instanceInfoLoaded = true,
                     )
+
+                    is Msg.StatusCharactersLimitAvailable -> copy(
+                        statusCharactersLeft = msg.limit,
+                    )
                 }
             }
         ) {}
@@ -63,5 +68,6 @@ internal class EditorTabStoreProvider(
 
     private sealed interface Msg {
         data class CachedInstanceLoaded(val instance: Instance) : Msg
+        data class StatusCharactersLimitAvailable(val limit: Int) : Msg
     }
 }
