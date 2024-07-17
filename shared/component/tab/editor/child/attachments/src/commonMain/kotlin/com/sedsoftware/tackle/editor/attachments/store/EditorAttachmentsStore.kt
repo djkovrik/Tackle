@@ -22,7 +22,7 @@ internal interface EditorAttachmentsStore : Store<Intent, State, Label> {
         val configLoaded: Boolean = false,
         val selectedFiles: List<AttachedFile> = emptyList(),
         val attachmentsAtLimit: Boolean = false,
-        val attachmentsAvailable: Boolean = false,
+        val attachmentsAvailable: Boolean = true,
         val hasUploadInProgress: Boolean = false,
     )
 

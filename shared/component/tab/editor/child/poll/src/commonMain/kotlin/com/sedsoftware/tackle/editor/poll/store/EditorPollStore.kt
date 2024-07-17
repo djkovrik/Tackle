@@ -24,7 +24,7 @@ interface EditorPollStore : Store<Intent, State, Nothing> {
         val config: Instance.Config = Instance.Config(),
         val configLoaded: Boolean = false,
         val options: List<PollOption> = emptyList(),
-        val pollAvailable: Boolean = false,
+        val pollAvailable: Boolean = true,
         val multiselectEnabled: Boolean = false,
         val duration: PollDuration = PollDuration.NOT_SELECTED,
         val availableDurations: List<PollDuration> = emptyList(),

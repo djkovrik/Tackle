@@ -3,11 +3,14 @@ package com.sedsoftware.tackle.editor.store
 import assertk.assertThat
 import assertk.assertions.hasClass
 import assertk.assertions.isEqualTo
+import assertk.assertions.isGreaterThan
 import assertk.assertions.isNotEmpty
 import assertk.assertions.isNotEqualTo
 import assertk.assertions.isTrue
 import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
+import com.sedsoftware.tackle.domain.model.CustomEmoji
+import com.sedsoftware.tackle.domain.model.Instance
 import com.sedsoftware.tackle.editor.EditorTabComponentGateways
 import com.sedsoftware.tackle.editor.domain.EditorTabManager
 import com.sedsoftware.tackle.editor.store.EditorTabStore.Intent
@@ -38,7 +41,7 @@ internal class EditorTabStoreTest : StoreTest<Intent, State, Label>() {
     }
 
     @Test
-    fun `store creation should load cached instance info`() = runTest {
+    fun `store creation should load cached config`() = runTest {
         // given
         // when
         store.init()
@@ -46,6 +49,7 @@ internal class EditorTabStoreTest : StoreTest<Intent, State, Label>() {
         assertThat(store.state.instanceInfoLoaded).isTrue()
         assertThat(store.state.instanceInfo.domain).isNotEmpty()
         assertThat(store.state.instanceInfo.config.statuses.maxMediaAttachments).isNotEqualTo(0)
+        assertThat(store.state.statusCharactersLeft).isGreaterThan(0)
         assertThat(labels.isNotEmpty())
         val label = labels.first()
         assertThat(label).hasClass(Label.InstanceConfigLoaded::class)

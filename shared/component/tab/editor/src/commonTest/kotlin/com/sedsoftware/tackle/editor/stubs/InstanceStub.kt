@@ -5,6 +5,7 @@ import com.sedsoftware.tackle.domain.model.Instance
 internal object InstanceStub {
     val config: Instance.Config = Instance.Config(
         statuses = Instance.Config.Statuses(
+            maxCharacters = 500,
             maxMediaAttachments = 4,
         ),
         mediaAttachments = Instance.Config.MediaAttachments(

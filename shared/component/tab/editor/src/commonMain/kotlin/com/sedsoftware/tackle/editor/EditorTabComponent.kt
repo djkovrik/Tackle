@@ -17,9 +17,8 @@ interface EditorTabComponent {
 
     val model: Value<Model>
 
-    fun onTextInput(text: String)
+    fun onTextInput(text: String, selection: Pair<Int, Int>)
     fun onEmojiSelected(emoji: CustomEmoji)
-    fun onAttachmentsButtonClicked()
     fun onPollButtonClicked()
     fun onEmojisButtonClicked()
     fun onWarningButtonClicked()
@@ -27,11 +26,11 @@ interface EditorTabComponent {
 
     data class Model(
         val statusText: String,
+        val statusTextSelection: Pair<Int, Int>,
         val statusCharactersLeft: Int,
-        val attachmentsActive: Boolean,
-        val emojisActive: Boolean,
-        val pollActive: Boolean,
-        val warningActive: Boolean,
+        val emojisVisible: Boolean,
+        val pollVisible: Boolean,
+        val warningVisible: Boolean,
         val sendingAvailable: Boolean,
     )
 }

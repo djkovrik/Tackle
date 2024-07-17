@@ -46,11 +46,17 @@ internal class EditorPollStoreProvider(
                 }
 
                 onIntent<Intent.OnRequestDurationPicker> { dispatch(Msg.DurationDialogVisibilityChanged(it.show)) }
+
                 onIntent<Intent.OnDurationSelected> { dispatch(Msg.DurationSelected(it.duration)) }
+
                 onIntent<Intent.OnMultiselectEnabled> { dispatch(Msg.MultiselectEnabled(it.enabled)) }
+
                 onIntent<Intent.ChangePollState> { dispatch(Msg.PollAvailabilityChanged(it.available)) }
+
                 onIntent<Intent.OnTextInput> { dispatch(Msg.TextInput(it.id, it.text)) }
+
                 onIntent<Intent.OnAddPollOption> { dispatch(Msg.PollOptionAdded) }
+
                 onIntent<Intent.OnDeletePollOption> { dispatch(Msg.PollOptionDeleted(it.id)) }
             },
             reducer = { msg ->

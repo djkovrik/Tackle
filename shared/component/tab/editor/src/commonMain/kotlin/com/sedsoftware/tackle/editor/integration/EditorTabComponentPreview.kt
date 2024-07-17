@@ -47,7 +47,6 @@ class EditorTabComponentPreview(
     warningText: String = "",
     statusText: String = "",
     statusCharactersLeft: Int = -1,
-    attachmentsActive: Boolean = false,
     emojisActive: Boolean = false,
     pollActive: Boolean = false,
     warningActive: Boolean = false,
@@ -99,18 +98,17 @@ class EditorTabComponentPreview(
         MutableValue(
             Model(
                 statusText = statusText,
+                statusTextSelection = (0 to statusText.length),
                 statusCharactersLeft = statusCharactersLeft,
-                attachmentsActive = attachmentsActive,
-                emojisActive = emojisActive,
-                pollActive = pollActive,
-                warningActive = warningActive,
+                emojisVisible = emojisActive,
+                pollVisible = pollActive,
+                warningVisible = warningActive,
                 sendingAvailable = sendingAvailable,
             )
         )
 
-    override fun onTextInput(text: String) = Unit
+    override fun onTextInput(text: String, selection: Pair<Int, Int>) = Unit
     override fun onEmojiSelected(emoji: CustomEmoji) = Unit
-    override fun onAttachmentsButtonClicked() = Unit
     override fun onPollButtonClicked() = Unit
     override fun onEmojisButtonClicked() = Unit
     override fun onWarningButtonClicked() = Unit

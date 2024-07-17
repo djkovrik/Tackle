@@ -144,19 +144,17 @@ class EditorTabComponentDefault(
 
     override val model: Value<Model> = store.asValue().map(stateToModel)
 
-    override fun onTextInput(text: String) {
-        store.accept(EditorTabStore.Intent.OnTextInput(text))
+    override fun onTextInput(text: String, selection: Pair<Int, Int>) {
+        store.accept(EditorTabStore.Intent.OnTextInput(text, selection))
     }
 
     override fun onEmojiSelected(emoji: CustomEmoji) {
         store.accept(EditorTabStore.Intent.OnEmojiSelect(emoji))
     }
 
-    override fun onAttachmentsButtonClicked() {
-        store.accept(EditorTabStore.Intent.OnAttachmentsButtonClick)
-    }
-
     override fun onPollButtonClicked() {
+        val isPollVisibleNow = model.value.pollVisible
+        attachments.changeFeatureState(available = isPollVisibleNow)
         store.accept(EditorTabStore.Intent.OnPollButtonClick)
     }
 
@@ -169,11 +167,12 @@ class EditorTabComponentDefault(
     }
 
     override fun onSendButtonClicked() {
-        TODO("Status send not implemented yet")
+        TODO("Sending not implemented yet")
     }
 
     private fun onChildOutput(output: ComponentOutput) {
         when (output) {
+            is ComponentOutput.StatusEditor.AttachmentsCountUpdated -> poll.changeFeatureState(available = output.count == 0)
             is ComponentOutput.StatusEditor.EmojiSelected -> onEmojiSelected(output.emoji)
             else -> editorOutput(output)
         }

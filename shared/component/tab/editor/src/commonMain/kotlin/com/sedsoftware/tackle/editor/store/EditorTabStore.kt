@@ -10,9 +10,8 @@ import com.sedsoftware.tackle.editor.store.EditorTabStore.State
 interface EditorTabStore : Store<Intent, State, Label> {
 
     sealed class Intent {
-        data class OnTextInput(val text: String) : Intent()
+        data class OnTextInput(val text: String, val selection: Pair<Int, Int>) : Intent()
         data class OnEmojiSelect(val emoji: CustomEmoji) : Intent()
-        data object OnAttachmentsButtonClick : Intent()
         data object OnPollButtonClick : Intent()
         data object OnEmojisButtonClick : Intent()
         data object OnWarningButtonClick : Intent()
@@ -20,11 +19,12 @@ interface EditorTabStore : Store<Intent, State, Label> {
 
     data class State(
         val statusText: String = "",
+        val statusTextSelection: Pair<Int, Int> = (0 to 0),
         val statusCharactersLeft: Int = -1,
-        val attachmentsActive: Boolean = false,
-        val emojisActive: Boolean = false,
-        val pollActive: Boolean = false,
-        val warningActive: Boolean = false,
+        val statusCharactersLimit: Int = -1,
+        val emojisVisible: Boolean = false,
+        val pollVisible: Boolean = false,
+        val warningVisible: Boolean = false,
         val sendingAvailable: Boolean = false,
         val instanceInfo: Instance = Instance.empty(),
         val instanceInfoLoaded: Boolean = false,

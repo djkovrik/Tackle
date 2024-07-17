@@ -6,11 +6,11 @@ import com.sedsoftware.tackle.editor.store.EditorTabStore.State
 internal val stateToModel: (State) -> Model = {
     Model(
         statusText = it.statusText,
+        statusTextSelection = it.statusTextSelection,
         statusCharactersLeft = it.statusCharactersLeft,
-        attachmentsActive = it.attachmentsActive,
-        emojisActive = it.emojisActive,
-        pollActive = it.pollActive,
-        warningActive = it.warningActive,
+        emojisVisible = it.emojisVisible,
+        pollVisible = it.pollVisible,
+        warningVisible = it.warningVisible,
         sendingAvailable = it.sendingAvailable,
     )
 }
