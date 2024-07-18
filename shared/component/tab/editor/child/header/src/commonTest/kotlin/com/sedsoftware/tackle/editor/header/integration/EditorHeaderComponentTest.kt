@@ -17,7 +17,7 @@ import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 
-class EditorHeaderComponentTest : ComponentTest<EditorHeaderComponentDefault>() {
+class EditorHeaderComponentTest : ComponentTest<EditorHeaderComponent>() {
 
     private val activeModel: EditorHeaderComponent.Model
         get() = component.model.value
@@ -77,7 +77,7 @@ class EditorHeaderComponentTest : ComponentTest<EditorHeaderComponentDefault>() 
         assertThat(activeModel.statusVisibility).isEqualTo(StatusVisibility.PUBLIC)
     }
 
-    override fun createComponent(): EditorHeaderComponentDefault =
+    override fun createComponent(): EditorHeaderComponent =
         EditorHeaderComponentDefault(
             componentContext = DefaultComponentContext(lifecycle),
             storeFactory = DefaultStoreFactory(),

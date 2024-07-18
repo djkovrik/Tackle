@@ -16,7 +16,8 @@ class EditorPollComponentPreview(
     durationPickerVisible: Boolean = false,
     insertionAvailable: Boolean = false,
     deletionAvailable: Boolean = false,
-    pollButtonAvailable: Boolean = false,
+    pollButtonAvailable: Boolean = true,
+    pollContentVisible: Boolean = false,
     maxOptionTextLength: Int = 1,
 ) : EditorPollComponent {
 
@@ -31,6 +32,7 @@ class EditorPollComponentPreview(
                 insertionAvailable = insertionAvailable,
                 deletionAvailable = deletionAvailable,
                 pollButtonAvailable = pollButtonAvailable,
+                pollContentVisible = pollContentVisible,
                 maxOptionTextLength = maxOptionTextLength,
             )
         )
@@ -41,6 +43,7 @@ class EditorPollComponentPreview(
     override fun onTextInput(id: String, text: String) = Unit
     override fun onAddPollOptionClick() = Unit
     override fun onDeletePollOptionClick(id: String) = Unit
-    override fun changeFeatureState(available: Boolean) = Unit
+    override fun changeComponentAvailability(available: Boolean) = Unit
+    override fun toggleComponentVisibility() = Unit
     override fun updateInstanceConfig(config: Config) = Unit
 }

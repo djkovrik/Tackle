@@ -16,7 +16,8 @@ interface EditorPollStore : Store<Intent, State, Nothing> {
         data class OnTextInput(val id: String, val text: String) : Intent()
         data object OnAddPollOption : Intent()
         data class OnDeletePollOption(val id: String) : Intent()
-        data class ChangePollState(val available: Boolean) : Intent()
+        data class ChangeComponentAvailability(val available: Boolean) : Intent()
+        data object ToggleComponentVisibility : Intent()
         data class UpdateInstanceConfig(val config: Instance.Config) : Intent()
     }
 
@@ -25,6 +26,7 @@ interface EditorPollStore : Store<Intent, State, Nothing> {
         val configLoaded: Boolean = false,
         val options: List<PollOption> = emptyList(),
         val pollAvailable: Boolean = true,
+        val pollVisible: Boolean = false,
         val multiselectEnabled: Boolean = false,
         val duration: PollDuration = PollDuration.NOT_SELECTED,
         val availableDurations: List<PollDuration> = emptyList(),

@@ -11,20 +11,22 @@ import io.github.vinceglb.filekit.core.PlatformFile
 
 class EditorAttachmentsComponentPreview(
     attachments: List<AttachedFile> = emptyList(),
-    available: Boolean = false,
+    attachmentsButtonAvailable: Boolean = true,
+    attachmentsContentVisible: Boolean = false,
 ) : EditorAttachmentsComponent {
 
     override val model: Value<Model> =
         MutableValue(
             Model(
                 attachments = attachments,
-                attachmentButtonAvailable = available,
+                attachmentsButtonAvailable = attachmentsButtonAvailable,
+                attachmentsContentVisible = attachmentsContentVisible,
             )
         )
 
     override fun onFileSelected(files: List<PlatformFile>) = Unit
     override fun onFileSelectedWrapped(files: List<PlatformFileWrapper>) = Unit
     override fun onFileDeleted(id: String) = Unit
-    override fun changeFeatureState(available: Boolean) = Unit
+    override fun changeComponentAvailability(available: Boolean) = Unit
     override fun updateInstanceConfig(config: Config) = Unit
 }

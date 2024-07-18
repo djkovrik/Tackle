@@ -17,7 +17,7 @@ import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 
-class EditorAttachmentsComponentTest : ComponentTest<EditorAttachmentsComponentDefault>() {
+class EditorAttachmentsComponentTest : ComponentTest<EditorAttachmentsComponent>() {
 
     private val activeModel: EditorAttachmentsComponent.Model
         get() = component.model.value
@@ -44,11 +44,12 @@ class EditorAttachmentsComponentTest : ComponentTest<EditorAttachmentsComponentD
         val config = InstanceConfigStub.config
         // when
         component.updateInstanceConfig(config)
-        component.changeFeatureState(available = true)
+        component.changeComponentAvailability(available = true)
         component.onFileSelectedWrapped(files)
         // then
         assertThat(activeModel.attachments.size).isEqualTo(files.size)
-        assertThat(activeModel.attachmentButtonAvailable).isFalse()
+        assertThat(activeModel.attachmentsButtonAvailable).isFalse()
+        assertThat(activeModel.attachmentsContentVisible).isTrue()
     }
 
     @Test
@@ -63,7 +64,7 @@ class EditorAttachmentsComponentTest : ComponentTest<EditorAttachmentsComponentD
         val config = InstanceConfigStub.config
         // when
         component.updateInstanceConfig(config)
-        component.changeFeatureState(available = true)
+        component.changeComponentAvailability(available = true)
         component.onFileSelectedWrapped(files)
         // given
         val fileToDelete = activeModel.attachments[2]
@@ -71,19 +72,19 @@ class EditorAttachmentsComponentTest : ComponentTest<EditorAttachmentsComponentD
         component.onFileDeleted(fileToDelete.id)
         // then
         assertThat(activeModel.attachments).containsNone(fileToDelete)
-        assertThat(activeModel.attachmentButtonAvailable).isTrue()
+        assertThat(activeModel.attachmentsButtonAvailable).isTrue()
     }
 
     @Test
-    fun `changeFeatureState should update feature state`() = runTest {
+    fun `changeFeatureAvailability should update feature availability`() = runTest {
         // given
         // when
-        component.changeFeatureState(false)
+        component.changeComponentAvailability(false)
         // then
-        assertThat(activeModel.attachmentButtonAvailable).isFalse()
+        assertThat(activeModel.attachmentsButtonAvailable).isFalse()
     }
 
-    override fun createComponent(): EditorAttachmentsComponentDefault =
+    override fun createComponent(): EditorAttachmentsComponent =
         EditorAttachmentsComponentDefault(
             componentContext = DefaultComponentContext(lifecycle),
             storeFactory = DefaultStoreFactory(),

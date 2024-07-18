@@ -12,6 +12,7 @@ class EditorTabComponentDatabaseStub : StubWithException(), EditorTabComponentGa
     var cachedEmoji: List<CustomEmoji> = emptyList()
 
     override suspend fun observeCachedEmojis(): Flow<List<CustomEmoji>> = flowOf(cachedEmoji)
+
     override suspend fun getCachedInstanceInfo(): Flow<Instance> = flowOf(InstanceStub.instance)
 
     override suspend fun cacheServerEmojis(list: List<CustomEmoji>) {

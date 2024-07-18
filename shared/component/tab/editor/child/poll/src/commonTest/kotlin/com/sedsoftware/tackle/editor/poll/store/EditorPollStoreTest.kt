@@ -12,8 +12,7 @@ import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import com.sedsoftware.tackle.editor.poll.domain.EditorPollManager
 import com.sedsoftware.tackle.editor.poll.model.PollDuration
-import com.sedsoftware.tackle.editor.poll.store.EditorPollStore.Intent
-import com.sedsoftware.tackle.editor.poll.store.EditorPollStore.State
+import com.sedsoftware.tackle.editor.poll.store.EditorPollStore
 import com.sedsoftware.tackle.editor.poll.stubs.InstanceConfigStub
 import com.sedsoftware.tackle.utils.test.StoreTest
 import kotlinx.coroutines.Dispatchers
@@ -22,7 +21,7 @@ import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 
-internal class EditorPollStoreTest : StoreTest<Intent, State, Nothing>() {
+internal class EditorPollStoreTest : StoreTest<EditorPollStore.Intent, EditorPollStore.State, Nothing>() {
 
     private val manager: EditorPollManager = EditorPollManager()
 
@@ -42,7 +41,7 @@ internal class EditorPollStoreTest : StoreTest<Intent, State, Nothing>() {
         val config = InstanceConfigStub.config
         // when
         store.init()
-        store.accept(Intent.UpdateInstanceConfig(config))
+        store.accept(EditorPollStore.Intent.UpdateInstanceConfig(config))
         // then
         assertThat(store.state.config).isEqualTo(config)
         assertThat(store.state.configLoaded).isTrue()
@@ -54,7 +53,7 @@ internal class EditorPollStoreTest : StoreTest<Intent, State, Nothing>() {
         val config = InstanceConfigStub.config
         // when
         store.init()
-        store.accept(Intent.UpdateInstanceConfig(config))
+        store.accept(EditorPollStore.Intent.UpdateInstanceConfig(config))
         // then
         assertThat(store.state.availableDurations).isNotEmpty()
         assertThat(store.state.duration).isEqualTo(store.state.availableDurations.first())
@@ -66,7 +65,7 @@ internal class EditorPollStoreTest : StoreTest<Intent, State, Nothing>() {
         val config = InstanceConfigStub.config
         // when
         store.init()
-        store.accept(Intent.UpdateInstanceConfig(config))
+        store.accept(EditorPollStore.Intent.UpdateInstanceConfig(config))
         // then
         assertThat(store.state.options).isNotEmpty()
         val firstOption = store.state.options.first()
@@ -75,17 +74,31 @@ internal class EditorPollStoreTest : StoreTest<Intent, State, Nothing>() {
     }
 
     @Test
-    fun `ChangePollState should update feature state`() = runTest {
+    fun `ChangeComponentAvailability should update component availability`() = runTest {
         // given
         // when
         store.init()
-        store.accept(Intent.ChangePollState(false))
+        store.accept(EditorPollStore.Intent.ChangeComponentAvailability(false))
         // then
         assertThat(store.state.pollAvailable).isFalse()
         // and when
-        store.accept(Intent.ChangePollState(true))
+        store.accept(EditorPollStore.Intent.ChangeComponentAvailability(true))
         // then
         assertThat(store.state.pollAvailable).isTrue()
+    }
+
+    @Test
+    fun `ToggleComponentVisibility should update component visibility`() = runTest {
+        // given
+        store.init()
+        // when
+        store.accept(EditorPollStore.Intent.ToggleComponentVisibility)
+        // then
+        assertThat(store.state.pollVisible).isTrue()
+        // when
+        store.accept(EditorPollStore.Intent.ToggleComponentVisibility)
+        // then
+        assertThat(store.state.pollVisible).isFalse()
     }
 
     @Test
@@ -93,11 +106,11 @@ internal class EditorPollStoreTest : StoreTest<Intent, State, Nothing>() {
         // given
         // when
         store.init()
-        store.accept(Intent.OnRequestDurationPicker(true))
+        store.accept(EditorPollStore.Intent.OnRequestDurationPicker(true))
         // then
         assertThat(store.state.durationPickerVisible).isTrue()
         // and when
-        store.accept(Intent.OnRequestDurationPicker(false))
+        store.accept(EditorPollStore.Intent.OnRequestDurationPicker(false))
         // then
         assertThat(store.state.durationPickerVisible).isFalse()
 
@@ -109,7 +122,7 @@ internal class EditorPollStoreTest : StoreTest<Intent, State, Nothing>() {
         val selected = PollDuration.THIRTY_DAYS
         // when
         store.init()
-        store.accept(Intent.OnDurationSelected(selected))
+        store.accept(EditorPollStore.Intent.OnDurationSelected(selected))
         // then
         assertThat(store.state.duration).isEqualTo(selected)
     }
@@ -119,11 +132,11 @@ internal class EditorPollStoreTest : StoreTest<Intent, State, Nothing>() {
         // given
         // when
         store.init()
-        store.accept(Intent.OnMultiselectEnabled(true))
+        store.accept(EditorPollStore.Intent.OnMultiselectEnabled(true))
         // then
         assertThat(store.state.multiselectEnabled).isTrue()
         // and when
-        store.accept(Intent.OnMultiselectEnabled(false))
+        store.accept(EditorPollStore.Intent.OnMultiselectEnabled(false))
         // then
         assertThat(store.state.multiselectEnabled).isFalse()
     }
@@ -135,7 +148,7 @@ internal class EditorPollStoreTest : StoreTest<Intent, State, Nothing>() {
         val config = InstanceConfigStub.config
         // when
         store.init()
-        store.accept(Intent.UpdateInstanceConfig(config))
+        store.accept(EditorPollStore.Intent.UpdateInstanceConfig(config))
         val lastOption = store.state.options.lastOrNull()
         // then
         assertThat(lastOption).isNotNull()
@@ -144,7 +157,7 @@ internal class EditorPollStoreTest : StoreTest<Intent, State, Nothing>() {
         assertThat(lastOption.text).isEmpty()
         // and when
         val lastOptionId = lastOption.id
-        store.accept(Intent.OnTextInput(lastOptionId, text))
+        store.accept(EditorPollStore.Intent.OnTextInput(lastOptionId, text))
         // then
         assertThat(store.state.options.last().text).isEqualTo(text)
     }
@@ -155,7 +168,7 @@ internal class EditorPollStoreTest : StoreTest<Intent, State, Nothing>() {
         val config = InstanceConfigStub.config
         // when
         store.init()
-        store.accept(Intent.UpdateInstanceConfig(config))
+        store.accept(EditorPollStore.Intent.UpdateInstanceConfig(config))
 
         // then has two options, can insert and can't delete
         assertThat(store.state.options.size).isEqualTo(2)
@@ -163,7 +176,7 @@ internal class EditorPollStoreTest : StoreTest<Intent, State, Nothing>() {
         assertThat(store.state.deletionAvailable).isFalse()
 
         // when adding new option
-        store.accept(Intent.OnAddPollOption)
+        store.accept(EditorPollStore.Intent.OnAddPollOption)
 
         // then has three options, can insert and can delete
         assertThat(store.state.options.size).isEqualTo(3)
@@ -171,7 +184,7 @@ internal class EditorPollStoreTest : StoreTest<Intent, State, Nothing>() {
         assertThat(store.state.deletionAvailable).isTrue()
 
         // when adding new option
-        store.accept(Intent.OnAddPollOption)
+        store.accept(EditorPollStore.Intent.OnAddPollOption)
 
         // then has four options, can't insert and can delete
         assertThat(store.state.options.size).isEqualTo(4)
@@ -179,7 +192,7 @@ internal class EditorPollStoreTest : StoreTest<Intent, State, Nothing>() {
         assertThat(store.state.deletionAvailable).isTrue()
 
         // when deleting an option
-        store.accept(Intent.OnDeletePollOption(store.state.options.first().id))
+        store.accept(EditorPollStore.Intent.OnDeletePollOption(store.state.options.first().id))
 
         // then has three options, can insert and can delete
         assertThat(store.state.options.size).isEqualTo(3)
@@ -187,7 +200,7 @@ internal class EditorPollStoreTest : StoreTest<Intent, State, Nothing>() {
         assertThat(store.state.deletionAvailable).isTrue()
 
         // when deleting an option
-        store.accept(Intent.OnDeletePollOption(store.state.options.first().id))
+        store.accept(EditorPollStore.Intent.OnDeletePollOption(store.state.options.first().id))
 
         // then has two options, can insert and can't delete
         assertThat(store.state.options.size).isEqualTo(2)
@@ -195,7 +208,7 @@ internal class EditorPollStoreTest : StoreTest<Intent, State, Nothing>() {
         assertThat(store.state.deletionAvailable).isFalse()
     }
 
-    override fun createStore(): Store<Intent, State, Nothing> =
+    override fun createStore(): Store<EditorPollStore.Intent, EditorPollStore.State, Nothing> =
         EditorPollStoreProvider(
             storeFactory = DefaultStoreFactory(),
             manager = manager,

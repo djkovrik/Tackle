@@ -8,8 +8,10 @@ interface EditorWarningComponent {
 
     fun onTextInput(text: String)
     fun clearTextInput()
+    fun toggleComponentVisibility()
 
     data class Model(
         val text: String,
+        val warningContentVisible: Boolean,
     )
 }

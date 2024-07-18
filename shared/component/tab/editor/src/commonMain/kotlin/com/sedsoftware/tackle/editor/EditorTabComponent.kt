@@ -28,9 +28,5 @@ interface EditorTabComponent {
         val statusText: String,
         val statusTextSelection: Pair<Int, Int>,
         val statusCharactersLeft: Int,
-        val emojisVisible: Boolean,
-        val pollVisible: Boolean,
-        val warningVisible: Boolean,
-        val sendingAvailable: Boolean,
     )
 }

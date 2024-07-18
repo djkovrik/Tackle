@@ -6,6 +6,7 @@ import com.sedsoftware.tackle.editor.attachments.store.EditorAttachmentsStore.St
 internal val stateToModel: (State) -> Model = {
     Model(
         attachments = it.selectedFiles,
-        attachmentButtonAvailable = it.configLoaded && it.attachmentsAvailable && !it.attachmentsAtLimit && !it.hasUploadInProgress,
+        attachmentsButtonAvailable = it.configLoaded && it.attachmentsAvailable && !it.attachmentsAtLimit && !it.hasUploadInProgress,
+        attachmentsContentVisible = it.selectedFiles.isNotEmpty(),
     )
 }

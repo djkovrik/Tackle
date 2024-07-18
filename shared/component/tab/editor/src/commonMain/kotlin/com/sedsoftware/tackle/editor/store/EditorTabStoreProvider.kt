@@ -55,12 +55,6 @@ internal class EditorTabStoreProvider(
                 onIntent<Intent.OnTextInput> { dispatch(Msg.TextInput(it.text, it.selection)) }
 
                 onIntent<Intent.OnEmojiSelect> { dispatch(Msg.EmojiSelected(it.emoji)) }
-
-                onIntent<Intent.OnPollButtonClick> { dispatch(Msg.PollButtonClicked) }
-
-                onIntent<Intent.OnEmojisButtonClick> { dispatch(Msg.EmojisButtonClicked) }
-
-                onIntent<Intent.OnWarningButtonClick> { dispatch(Msg.WarningButtonClicked) }
             },
             reducer = { msg ->
                 when (msg) {
@@ -93,18 +87,6 @@ internal class EditorTabStoreProvider(
                         statusTextSelection = statusText.getNewPosition(msg.emoji, this),
                         statusCharactersLeft = statusCharactersLimit - statusText.getNewLength(msg.emoji, this),
                     )
-
-                    is Msg.PollButtonClicked -> copy(
-                        pollVisible = !pollVisible,
-                    )
-
-                    is Msg.EmojisButtonClicked -> copy(
-                        emojisVisible = !emojisVisible,
-                    )
-
-                    is Msg.WarningButtonClicked -> copy(
-                        warningVisible = !warningVisible,
-                    )
                 }
             }
         ) {}
@@ -118,9 +100,6 @@ internal class EditorTabStoreProvider(
         data class StatusCharactersLimitAvailable(val limit: Int) : Msg
         data class TextInput(val text: String, val selection: Pair<Int, Int>) : Msg
         data class EmojiSelected(val emoji: CustomEmoji) : Msg
-        data object PollButtonClicked : Msg
-        data object EmojisButtonClicked : Msg
-        data object WarningButtonClicked : Msg
     }
 
     private fun Msg.TextInput.exceedTheLimit(limit: Int): Boolean = limit - text.length < 0

@@ -44,15 +44,15 @@ internal class EditorAttachmentsStoreTest : StoreTest<Intent, State, Label>() {
     }
 
     @Test
-    fun `ChangeFeatureState should change feature availability`() = runTest {
+    fun `ChangeFeatureAvailability should change feature availability`() = runTest {
         // given
         // when
         store.init()
-        store.accept(Intent.ChangeFeatureState(true))
+        store.accept(Intent.ChangeComponentAvailability(true))
         // then
         assertThat(store.state.attachmentsAvailable).isTrue()
         // and when
-        store.accept(Intent.ChangeFeatureState(false))
+        store.accept(Intent.ChangeComponentAvailability(false))
         // then
         assertThat(store.state.attachmentsAvailable).isFalse()
     }

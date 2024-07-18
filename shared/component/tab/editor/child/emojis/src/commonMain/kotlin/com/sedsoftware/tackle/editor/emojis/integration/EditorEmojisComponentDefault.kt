@@ -63,4 +63,8 @@ class EditorEmojisComponentDefault(
     override fun onEmojiClicked(emoji: CustomEmoji) {
         output(ComponentOutput.StatusEditor.EmojiSelected(emoji))
     }
+
+    override fun toggleComponentVisibility() {
+        store.accept(EditorEmojisStore.Intent.ToggleComponentVisibility)
+    }
 }

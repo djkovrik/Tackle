@@ -35,4 +35,8 @@ class EditorWarningComponentDefault(
     override fun clearTextInput() {
         store.accept(EditorWarningStore.Intent.OnTextInput(""))
     }
+
+    override fun toggleComponentVisibility() {
+        store.accept(EditorWarningStore.Intent.ToggleComponentVisibility)
+    }
 }

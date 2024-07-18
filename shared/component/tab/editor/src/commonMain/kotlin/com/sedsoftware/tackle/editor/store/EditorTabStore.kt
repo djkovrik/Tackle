@@ -12,9 +12,6 @@ interface EditorTabStore : Store<Intent, State, Label> {
     sealed class Intent {
         data class OnTextInput(val text: String, val selection: Pair<Int, Int>) : Intent()
         data class OnEmojiSelect(val emoji: CustomEmoji) : Intent()
-        data object OnPollButtonClick : Intent()
-        data object OnEmojisButtonClick : Intent()
-        data object OnWarningButtonClick : Intent()
     }
 
     data class State(
@@ -22,10 +19,6 @@ interface EditorTabStore : Store<Intent, State, Label> {
         val statusTextSelection: Pair<Int, Int> = (0 to 0),
         val statusCharactersLeft: Int = -1,
         val statusCharactersLimit: Int = -1,
-        val emojisVisible: Boolean = false,
-        val pollVisible: Boolean = false,
-        val warningVisible: Boolean = false,
-        val sendingAvailable: Boolean = false,
         val instanceInfo: Instance = Instance.empty(),
         val instanceInfoLoaded: Boolean = false,
     )

@@ -15,7 +15,8 @@ interface EditorPollComponent {
     fun onTextInput(id: String, text: String)
     fun onAddPollOptionClick()
     fun onDeletePollOptionClick(id: String)
-    fun changeFeatureState(available: Boolean)
+    fun changeComponentAvailability(available: Boolean)
+    fun toggleComponentVisibility()
     fun updateInstanceConfig(config: Instance.Config)
 
     data class Model(
@@ -27,6 +28,7 @@ interface EditorPollComponent {
         val insertionAvailable: Boolean,
         val deletionAvailable: Boolean,
         val pollButtonAvailable: Boolean,
+        val pollContentVisible: Boolean,
         val maxOptionTextLength: Int,
     )
 }

@@ -8,9 +8,5 @@ internal val stateToModel: (State) -> Model = {
         statusText = it.statusText,
         statusTextSelection = it.statusTextSelection,
         statusCharactersLeft = it.statusCharactersLeft,
-        emojisVisible = it.emojisVisible,
-        pollVisible = it.pollVisible,
-        warningVisible = it.warningVisible,
-        sendingAvailable = it.sendingAvailable,
     )
 }

@@ -6,6 +6,7 @@ import com.arkivanov.mvikotlin.extensions.coroutines.coroutineBootstrapper
 import com.arkivanov.mvikotlin.extensions.coroutines.coroutineExecutorFactory
 import com.sedsoftware.tackle.domain.model.CustomEmoji
 import com.sedsoftware.tackle.editor.emojis.domain.EditorEmojisManager
+import com.sedsoftware.tackle.editor.emojis.store.EditorEmojisStore.Intent
 import com.sedsoftware.tackle.editor.emojis.store.EditorEmojisStore.Label
 import com.sedsoftware.tackle.editor.emojis.store.EditorEmojisStore.State
 import com.sedsoftware.tackle.utils.StoreCreate
@@ -25,7 +26,7 @@ internal class EditorEmojisStoreProvider(
 
     @StoreCreate
     fun create(autoInit: Boolean = true): EditorEmojisStore =
-        object : EditorEmojisStore, Store<Nothing, State, Label> by storeFactory.create<Nothing, Action, Msg, State, Label>(
+        object : EditorEmojisStore, Store<Intent, State, Label> by storeFactory.create<Intent, Action, Msg, State, Label>(
             name = "EditorEmojisStore",
             initialState = State(),
             autoInit = autoInit,
@@ -54,12 +55,18 @@ internal class EditorEmojisStoreProvider(
                             .collect { dispatch(Msg.EmojisListUpdated(it)) }
                     }
                 }
+
+                onIntent<Intent.ToggleComponentVisibility> { dispatch(Msg.ComponentVisibilityToggled) }
             },
             reducer = { msg ->
                 when (msg) {
                     is Msg.EmojisListUpdated -> copy(
                         emojis = msg.list,
-                        emojiPickerAvailable = msg.list.isNotEmpty(),
+                        emojisAvailable = msg.list.isNotEmpty(),
+                    )
+
+                    is Msg.ComponentVisibilityToggled -> copy(
+                        emojisVisible = !emojisVisible,
                     )
                 }
             }
@@ -72,5 +79,6 @@ internal class EditorEmojisStoreProvider(
 
     private sealed interface Msg {
         data class EmojisListUpdated(val list: List<CustomEmoji>) : Msg
+        data object ComponentVisibilityToggled : Msg
     }
 }

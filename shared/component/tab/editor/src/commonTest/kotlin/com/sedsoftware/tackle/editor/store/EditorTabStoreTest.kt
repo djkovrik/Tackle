@@ -9,14 +9,13 @@ import assertk.assertions.isNotEqualTo
 import assertk.assertions.isTrue
 import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
-import com.sedsoftware.tackle.domain.model.CustomEmoji
-import com.sedsoftware.tackle.domain.model.Instance
 import com.sedsoftware.tackle.editor.EditorTabComponentGateways
 import com.sedsoftware.tackle.editor.domain.EditorTabManager
 import com.sedsoftware.tackle.editor.store.EditorTabStore.Intent
 import com.sedsoftware.tackle.editor.store.EditorTabStore.Label
 import com.sedsoftware.tackle.editor.store.EditorTabStore.State
 import com.sedsoftware.tackle.editor.stubs.EditorTabComponentDatabaseStub
+import com.sedsoftware.tackle.editor.stubs.EmojiStub
 import com.sedsoftware.tackle.editor.stubs.InstanceStub
 import com.sedsoftware.tackle.utils.test.StoreTest
 import kotlinx.coroutines.Dispatchers
@@ -38,6 +37,31 @@ internal class EditorTabStoreTest : StoreTest<Intent, State, Label>() {
     @AfterTest
     fun after() {
         afterTest()
+    }
+
+    @Test
+    fun `OnTextInput should update status text and selection`() = runTest {
+        // given
+        val text = "Some text"
+        val selection = text.length to text.length
+        // when
+        store.init()
+        store.accept(Intent.OnTextInput(text, selection))
+        // then
+        assertThat(store.state.statusText).isEqualTo(text)
+        assertThat(store.state.statusTextSelection).isEqualTo(selection)
+        assertThat(store.state.statusCharactersLeft).isEqualTo(store.state.statusCharactersLimit - text.length)
+    }
+
+    @Test
+    fun `OnEmojiSelect should update status text and selection`() = runTest {
+        // given
+        val emoji = EmojiStub.single
+        // when
+        store.init()
+        store.accept(Intent.OnEmojiSelect(emoji))
+        // then
+        assertThat(store.state.statusText).isEqualTo(emoji.shortcode)
     }
 
     @Test
@@ -65,3 +89,6 @@ internal class EditorTabStoreTest : StoreTest<Intent, State, Label>() {
             ioContext = Dispatchers.Unconfined,
         ).create(autoInit = false)
 }
+
+//data class OnTextInput(val text: String, val selection: Pair<Int, Int>) : Intent()
+//data class OnEmojiSelect(val emoji: CustomEmoji) : Intent()

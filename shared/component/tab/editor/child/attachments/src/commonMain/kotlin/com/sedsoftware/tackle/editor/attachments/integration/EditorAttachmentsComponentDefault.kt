@@ -76,8 +76,8 @@ class EditorAttachmentsComponentDefault(
         store.accept(EditorAttachmentsStore.Intent.OnFileDeleted(id))
     }
 
-    override fun changeFeatureState(available: Boolean) {
-        store.accept(EditorAttachmentsStore.Intent.ChangeFeatureState(available))
+    override fun changeComponentAvailability(available: Boolean) {
+        store.accept(EditorAttachmentsStore.Intent.ChangeComponentAvailability(available))
     }
 
     override fun updateInstanceConfig(config: Instance.Config) {

@@ -13,11 +13,12 @@ interface EditorAttachmentsComponent {
     fun onFileSelected(files: List<PlatformFile>)
     fun onFileSelectedWrapped(files: List<PlatformFileWrapper>)
     fun onFileDeleted(id: String)
-    fun changeFeatureState(available: Boolean)
+    fun changeComponentAvailability(available: Boolean)
     fun updateInstanceConfig(config: Instance.Config)
 
     data class Model(
         val attachments: List<AttachedFile>,
-        val attachmentButtonAvailable: Boolean,
+        val attachmentsButtonAvailable: Boolean,
+        val attachmentsContentVisible: Boolean,
     )
 }

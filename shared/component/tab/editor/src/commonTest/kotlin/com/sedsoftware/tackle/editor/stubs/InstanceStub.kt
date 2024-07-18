@@ -16,6 +16,12 @@ internal object InstanceStub {
                 "image/jpeg",
                 "image/png",
             )
+        ),
+        polls = Instance.Config.Polls(
+            maxOptions = 4,
+            maxCharactersPerOption = 50,
+            minExpiration = 60,
+            maxExpiration = 123456789L,
         )
     )
 

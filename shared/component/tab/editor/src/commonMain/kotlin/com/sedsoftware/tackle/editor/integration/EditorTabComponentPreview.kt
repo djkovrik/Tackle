@@ -23,7 +23,11 @@ import com.sedsoftware.tackle.editor.warning.integration.EditorWarningComponentP
 
 class EditorTabComponentPreview(
     attachments: List<AttachedFile> = emptyList(),
-    attachmentsAvailable: Boolean = true,
+    attachmentsButtonAvailable: Boolean = true,
+    attachmentsContentVisible: Boolean = false,
+    emojis: List<CustomEmoji> = emptyList(),
+    emojisButtonAvailable: Boolean = false,
+    emojisContentVisible: Boolean = false,
     avatar: String = "",
     nickname: String = "",
     recommendedLocale: AppLocale = AppLocale.empty(),
@@ -33,8 +37,6 @@ class EditorTabComponentPreview(
     localePickerDisplayed: Boolean = false,
     statusVisibility: StatusVisibility = StatusVisibility.PUBLIC,
     statusVisibilityPickerDisplayed: Boolean = false,
-    emojis: List<CustomEmoji> = emptyList(),
-    emojiPickerAvailable: Boolean = false,
     options: List<PollOption> = emptyList(),
     multiselectEnabled: Boolean = false,
     duration: PollDuration = PollDuration.FIVE_MINUTES,
@@ -42,27 +44,27 @@ class EditorTabComponentPreview(
     durationPickerVisible: Boolean = false,
     insertionAvailable: Boolean = false,
     deletionAvailable: Boolean = false,
-    pollButtonAvailable: Boolean = false,
+    pollButtonAvailable: Boolean = true,
+    pollContentVisible: Boolean = false,
     maxOptionTextLength: Int = 1,
     warningText: String = "",
+    warningContentVisible: Boolean = false,
     statusText: String = "",
     statusCharactersLeft: Int = -1,
-    emojisActive: Boolean = false,
-    pollActive: Boolean = false,
-    warningActive: Boolean = false,
-    sendingAvailable: Boolean = false,
 ) : EditorTabComponent {
 
     override val attachments: EditorAttachmentsComponent =
         EditorAttachmentsComponentPreview(
             attachments = attachments,
-            available = attachmentsAvailable,
+            attachmentsButtonAvailable = attachmentsButtonAvailable,
+            attachmentsContentVisible = attachmentsContentVisible,
         )
 
     override val emojis: EditorEmojisComponent =
         EditorEmojisComponentPreview(
             emojis = emojis,
-            emojiPickerAvailable = emojiPickerAvailable,
+            emojisButtonAvailable = emojisButtonAvailable,
+            emojisContentVisible = emojisContentVisible,
         )
 
     override val header: EditorHeaderComponent =
@@ -88,11 +90,15 @@ class EditorTabComponentPreview(
             insertionAvailable = insertionAvailable,
             deletionAvailable = deletionAvailable,
             pollButtonAvailable = pollButtonAvailable,
+            pollContentVisible = pollContentVisible,
             maxOptionTextLength = maxOptionTextLength,
         )
 
     override val warning: EditorWarningComponent =
-        EditorWarningComponentPreview(warningText)
+        EditorWarningComponentPreview(
+            warningText = warningText,
+            warningContentVisible = warningContentVisible,
+        )
 
     override val model: Value<Model> =
         MutableValue(
@@ -100,10 +106,6 @@ class EditorTabComponentPreview(
                 statusText = statusText,
                 statusTextSelection = (0 to statusText.length),
                 statusCharactersLeft = statusCharactersLeft,
-                emojisVisible = emojisActive,
-                pollVisible = pollActive,
-                warningVisible = warningActive,
-                sendingAvailable = sendingAvailable,
             )
         )
 

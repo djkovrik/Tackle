@@ -18,7 +18,7 @@ import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 
-class AuthComponentTest : ComponentTest<AuthComponentDefault>() {
+class AuthComponentTest : ComponentTest<AuthComponent>() {
 
     private val settings: AuthComponentSettingsStub = AuthComponentSettingsStub()
 
@@ -122,7 +122,7 @@ class AuthComponentTest : ComponentTest<AuthComponentDefault>() {
         assertThat(settings.token).isNotEmpty()
     }
 
-    override fun createComponent(): AuthComponentDefault =
+    override fun createComponent(): AuthComponent =
         AuthComponentDefault(
             componentContext = DefaultComponentContext(lifecycle),
             storeFactory = DefaultStoreFactory(),

@@ -16,7 +16,7 @@ import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 
-class EditorPollComponentTest : ComponentTest<EditorPollComponentDefault>() {
+class EditorPollComponentTest : ComponentTest<EditorPollComponent>() {
 
     private val activeModel: EditorPollComponent.Model
         get() = component.model.value
@@ -80,16 +80,29 @@ class EditorPollComponentTest : ComponentTest<EditorPollComponentDefault>() {
     }
 
     @Test
-    fun `changeFeatureState updates state`() = runTest {
+    fun `changeComponentAvailability should update component availability`() = runTest {
         // given
         // when
-        component.changeFeatureState(true)
+        component.changeComponentAvailability(true)
         // then
         assertThat(activeModel.pollButtonAvailable).isTrue()
         // and when
-        component.changeFeatureState(false)
+        component.changeComponentAvailability(false)
         // then
         assertThat(activeModel.pollButtonAvailable).isFalse()
+    }
+
+    @Test
+    fun `toggleComponentVisibility should toggle component visibility`() = runTest {
+        // given
+        // when
+        component.toggleComponentVisibility()
+        // then
+        assertThat(activeModel.pollContentVisible).isTrue()
+        // when
+        component.toggleComponentVisibility()
+        // then
+        assertThat(activeModel.pollContentVisible).isFalse()
     }
 
     @Test
@@ -106,7 +119,7 @@ class EditorPollComponentTest : ComponentTest<EditorPollComponentDefault>() {
         assertThat(activeModel.options.size).isEqualTo(2)
     }
 
-    override fun createComponent(): EditorPollComponentDefault =
+    override fun createComponent(): EditorPollComponent =
         EditorPollComponentDefault(
             componentContext = DefaultComponentContext(lifecycle),
             storeFactory = DefaultStoreFactory(),

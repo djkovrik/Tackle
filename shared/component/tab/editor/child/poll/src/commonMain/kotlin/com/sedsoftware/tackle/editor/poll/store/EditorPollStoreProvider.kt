@@ -51,7 +51,9 @@ internal class EditorPollStoreProvider(
 
                 onIntent<Intent.OnMultiselectEnabled> { dispatch(Msg.MultiselectEnabled(it.enabled)) }
 
-                onIntent<Intent.ChangePollState> { dispatch(Msg.PollAvailabilityChanged(it.available)) }
+                onIntent<Intent.ChangeComponentAvailability> { dispatch(Msg.ComponentAvailabilityChanged(it.available)) }
+
+                onIntent<Intent.ToggleComponentVisibility> { dispatch(Msg.ComponentVisibilityToggled) }
 
                 onIntent<Intent.OnTextInput> { dispatch(Msg.TextInput(it.id, it.text)) }
 
@@ -86,8 +88,12 @@ internal class EditorPollStoreProvider(
                         multiselectEnabled = msg.enabled,
                     )
 
-                    is Msg.PollAvailabilityChanged -> copy(
+                    is Msg.ComponentAvailabilityChanged -> copy(
                         pollAvailable = msg.available,
+                    )
+
+                    is Msg.ComponentVisibilityToggled -> copy(
+                        pollVisible = !pollVisible,
                     )
 
                     is Msg.TextInput -> copy(
@@ -119,7 +125,8 @@ internal class EditorPollStoreProvider(
         data class DurationDialogVisibilityChanged(val visible: Boolean) : Msg
         data class DurationSelected(val duration: PollDuration) : Msg
         data class MultiselectEnabled(val enabled: Boolean) : Msg
-        data class PollAvailabilityChanged(val available: Boolean) : Msg
+        data class ComponentAvailabilityChanged(val available: Boolean) : Msg
+        data object ComponentVisibilityToggled : Msg
         data class TextInput(val id: String, val text: String) : Msg
         data object PollOptionAdded : Msg
         data class PollOptionDeleted(val id: String) : Msg

@@ -126,7 +126,7 @@ internal class EditorAttachmentsStoreProvider(
                     dispatch(Msg.FileDeleted(it.id))
                 }
 
-                onIntent<Intent.ChangeFeatureState> { dispatch(Msg.FeatureStateChanged(it.available)) }
+                onIntent<Intent.ChangeComponentAvailability> { dispatch(Msg.ComponentAvailabilityChanged(it.available)) }
 
                 onIntent<Intent.UpdateInstanceConfig> { dispatch(Msg.InstanceConfigAvailable(it.config)) }
             },
@@ -162,7 +162,7 @@ internal class EditorAttachmentsStoreProvider(
                         hasUploadInProgress = false,
                     )
 
-                    is Msg.FeatureStateChanged -> copy(
+                    is Msg.ComponentAvailabilityChanged -> copy(
                         attachmentsAvailable = msg.available,
                     )
 
@@ -188,7 +188,7 @@ internal class EditorAttachmentsStoreProvider(
         data class AttachmentLoaded(val id: String, val serverAttachment: MediaAttachment) : Msg
         data object UploadQueueStarted : Msg
         data object UploadQueueCompleted : Msg
-        data class FeatureStateChanged(val available: Boolean) : Msg
+        data class ComponentAvailabilityChanged(val available: Boolean) : Msg
         data class FileDeleted(val id: String) : Msg
     }
 }

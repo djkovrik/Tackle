@@ -5,6 +5,7 @@ import com.sedsoftware.tackle.editor.warning.store.EditorWarningStore.State
 
 internal val stateToModel: (State) -> Model = {
     Model(
-        text = it.text
+        text = it.text,
+        warningContentVisible = it.warningVisible,
     )
 }
