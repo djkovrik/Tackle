@@ -30,6 +30,7 @@ class EditorTabComponentPreview(
     emojisContentVisible: Boolean = false,
     avatar: String = "",
     nickname: String = "",
+    domain: String = "",
     recommendedLocale: AppLocale = AppLocale.empty(),
     selectedLocale: AppLocale = AppLocale.empty(),
     availableLocales: List<AppLocale> = emptyList(),
@@ -71,6 +72,7 @@ class EditorTabComponentPreview(
         EditorHeaderComponentPreview(
             avatar = avatar,
             nickname = nickname,
+            domain = domain,
             recommendedLocale = recommendedLocale,
             selectedLocale = selectedLocale,
             availableLocales = availableLocales,

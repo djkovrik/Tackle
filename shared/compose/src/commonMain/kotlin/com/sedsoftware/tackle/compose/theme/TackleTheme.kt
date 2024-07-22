@@ -16,6 +16,8 @@ import com.seiko.imageloader.ImageLoader
 import com.seiko.imageloader.LocalImageLoader
 import com.seiko.imageloader.component.setupDefaultComponents
 import com.seiko.imageloader.intercept.bitmapMemoryCacheConfig
+import com.seiko.imageloader.intercept.imageMemoryCacheConfig
+import com.seiko.imageloader.intercept.painterMemoryCacheConfig
 
 internal val LocalThemeIsDark = compositionLocalOf { mutableStateOf(true) }
 
@@ -57,23 +59,6 @@ internal fun TackleScreenPreview(
     content: @Composable () -> Unit,
 ) {
     TackleTheme(systemIsDark = darkTheme) {
-        CompositionLocalProvider(
-            LocalImageLoader provides generatePreviewImageLoader()
-        ) {
-            content()
-        }
-    }
-}
-
-private fun generatePreviewImageLoader(): ImageLoader {
-    return ImageLoader {
-        components {
-            setupDefaultComponents()
-        }
-        interceptor {
-            bitmapMemoryCacheConfig {
-                maxSize(size = 32 * 1024 * 1024)
-            }
-        }
+        content()
     }
 }

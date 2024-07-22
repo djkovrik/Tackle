@@ -1,4 +1,4 @@
-package com.sedsoftware.tackle.compose.widget.navigation
+package com.sedsoftware.tackle.compose.custom.navigation
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.background

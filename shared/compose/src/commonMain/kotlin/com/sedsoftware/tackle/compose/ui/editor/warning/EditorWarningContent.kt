@@ -1,13 +1,13 @@
 package com.sedsoftware.tackle.compose.ui.editor.warning
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -22,6 +22,11 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
 import com.sedsoftware.tackle.compose.ui.editor.warning.content.createStripedBrush
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
+import tackle.shared.compose.generated.resources.Res
+import tackle.shared.compose.generated.resources.editor_close
+import tackle.shared.compose.generated.resources.editor_warning_hint
 
 @Composable
 internal fun EditorWarningComponent(
@@ -67,21 +72,23 @@ internal fun EditorWarningComponent(
         TextField(
             value = text,
             onValueChange = onTextInput,
-            maxLines = 4,
+            maxLines = 3,
             textStyle = MaterialTheme.typography.bodyMedium,
             trailingIcon = {
-                if (text.isNotBlank()) {
+                AnimatedVisibility(visible = text.isNotBlank()) {
                     Icon(
-                        imageVector = Icons.Default.Clear,
+                        painterResource(resource = Res.drawable.editor_close),
                         contentDescription = null,
                         tint = MaterialTheme.colorScheme.secondary,
-                        modifier = Modifier.clickable(onClick = onTextClear),
+                        modifier = Modifier
+                            .size(size = 24.dp)
+                            .clickable(onClick = onTextClear),
                     )
                 }
             },
             placeholder = {
                 Text(
-                    text = "Sensitive content warning",
+                    text = stringResource(Res.string.editor_warning_hint),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurface.copy(
                         alpha = 0.4f,

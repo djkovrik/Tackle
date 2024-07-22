@@ -41,8 +41,8 @@ import com.sedsoftware.tackle.auth.AuthComponent
 import com.sedsoftware.tackle.auth.integration.AuthComponentPreview
 import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
 import com.sedsoftware.tackle.compose.ui.auth.AuthContent
-import com.sedsoftware.tackle.compose.widget.CustomOutlinedTextField
-import com.sedsoftware.tackle.compose.widget.LoadingDotsText
+import com.sedsoftware.tackle.compose.custom.CustomOutlinedTextField
+import com.sedsoftware.tackle.compose.custom.LoadingDotsText
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import tackle.shared.compose.generated.resources.Res

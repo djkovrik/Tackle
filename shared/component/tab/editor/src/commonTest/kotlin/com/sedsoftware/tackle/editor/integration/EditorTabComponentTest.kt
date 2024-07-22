@@ -181,7 +181,7 @@ class EditorTabComponentTest : ComponentTest<EditorTabComponent>() {
         // when
         component.attachments.updateInstanceConfig(InstanceStub.config)
         component.poll.updateInstanceConfig(InstanceStub.config)
-        component.attachments.onFileSelectedWrapped(files)
+        component.attachments.onFilesSelectedWrapped(files)
 
         // then
         assertThat(attachmentsActiveModel.attachmentsContentVisible).isTrue()

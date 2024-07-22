@@ -45,7 +45,7 @@ class EditorAttachmentsComponentTest : ComponentTest<EditorAttachmentsComponent>
         // when
         component.updateInstanceConfig(config)
         component.changeComponentAvailability(available = true)
-        component.onFileSelectedWrapped(files)
+        component.onFilesSelectedWrapped(files)
         // then
         assertThat(activeModel.attachments.size).isEqualTo(files.size)
         assertThat(activeModel.attachmentsButtonAvailable).isFalse()
@@ -65,7 +65,7 @@ class EditorAttachmentsComponentTest : ComponentTest<EditorAttachmentsComponent>
         // when
         component.updateInstanceConfig(config)
         component.changeComponentAvailability(available = true)
-        component.onFileSelectedWrapped(files)
+        component.onFilesSelectedWrapped(files)
         // given
         val fileToDelete = activeModel.attachments[2]
         // when

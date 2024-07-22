@@ -63,12 +63,12 @@ class EditorAttachmentsComponentDefault(
 
     override val model: Value<Model> = store.asValue().map(stateToModel)
 
-    override fun onFileSelected(files: List<PlatformFile>) {
+    override fun onFilesSelected(files: List<PlatformFile>) {
         val wrapped: List<PlatformFileWrapper> = files.map { wrap(it.name, it.extension, it.path, it::getSize, it::readBytes) }
         store.accept(EditorAttachmentsStore.Intent.OnFilesSelected(wrapped))
     }
 
-    override fun onFileSelectedWrapped(files: List<PlatformFileWrapper>) {
+    override fun onFilesSelectedWrapped(files: List<PlatformFileWrapper>) {
         store.accept(EditorAttachmentsStore.Intent.OnFilesSelected(files))
     }
 

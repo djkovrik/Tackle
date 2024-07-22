@@ -52,10 +52,7 @@ class EditorTabComponentDefault(
 
     override val attachments: EditorAttachmentsComponent =
         EditorAttachmentsComponentDefault(
-            componentContext = childContext(
-                key = "Editor attachments",
-                lifecycle = lifecycle
-            ),
+            componentContext = childContext(key = "Editor attachments"),
             storeFactory = storeFactory,
             api = EditorAttachmentsComponentApi(api),
             dispatchers = dispatchers,
@@ -64,10 +61,7 @@ class EditorTabComponentDefault(
 
     override val emojis: EditorEmojisComponent =
         EditorEmojisComponentDefault(
-            componentContext = childContext(
-                key = "Editor emojis",
-                lifecycle = lifecycle
-            ),
+            componentContext = childContext(key = "Editor emojis"),
             storeFactory = storeFactory,
             api = EditorEmojisComponentApi(api),
             database = EditorEmojisComponentDatabase(database),
@@ -78,10 +72,7 @@ class EditorTabComponentDefault(
 
     override val header: EditorHeaderComponent =
         EditorHeaderComponentDefault(
-            componentContext = childContext(
-                key = "Editor header",
-                lifecycle = lifecycle
-            ),
+            componentContext = childContext(key = "Editor header"),
             storeFactory = storeFactory,
             settings = EditorHeaderComponentSettings(settings),
             tools = EditorHeaderComponentTools(tools),
@@ -91,20 +82,14 @@ class EditorTabComponentDefault(
 
     override val poll: EditorPollComponent =
         EditorPollComponentDefault(
-            componentContext = childContext(
-                key = "Editor poll",
-                lifecycle = lifecycle
-            ),
+            componentContext = childContext(key = "Editor poll"),
             storeFactory = storeFactory,
             dispatchers = dispatchers,
         )
 
     override val warning: EditorWarningComponent =
         EditorWarningComponentDefault(
-            componentContext = childContext(
-                key = "Editor warning",
-                lifecycle = lifecycle
-            ),
+            componentContext = childContext(key = "Editor warning"),
             storeFactory = storeFactory,
             dispatchers = dispatchers,
         )

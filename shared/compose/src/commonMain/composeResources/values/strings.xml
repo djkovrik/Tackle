@@ -44,6 +44,8 @@
     <string name="main_tab_notifications">Notifications</string>
 
     <!-- Editor component -->
+    <string name="editor_input_hint">What's on your mind?</string>
+    <string name="editor_warning_hint">Sensitive content warning</string>
     <string name="editor_language_default">Default</string>
     <string name="editor_status_visibility_public">Public</string>
     <string name="editor_status_visibility_public_desc">Visible to everyone, shown in public timelines</string>
@@ -53,4 +55,9 @@
     <string name="editor_status_visibility_private_desc">Visible to followers and mentioned users only</string>
     <string name="editor_status_visibility_direct">Direct</string>
     <string name="editor_status_visibility_direct_desc">Visible to mentioned users only</string>
+    <string name="editor_content_description_attach">Attach file</string>
+    <string name="editor_content_description_emoji">Emojis</string>
+    <string name="editor_content_description_poll">Poll</string>
+    <string name="editor_content_description_warning">Sensitive content</string>
+    <string name="editor_content_description_schedule">Scheduled post</string>
 </resources>

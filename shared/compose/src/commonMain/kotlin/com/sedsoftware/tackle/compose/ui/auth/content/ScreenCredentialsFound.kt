@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
-import com.sedsoftware.tackle.compose.widget.LoadingDotsText
+import com.sedsoftware.tackle.compose.custom.LoadingDotsText
 import org.jetbrains.compose.resources.stringResource
 import tackle.shared.compose.generated.resources.Res
 import tackle.shared.compose.generated.resources.common_redirecting

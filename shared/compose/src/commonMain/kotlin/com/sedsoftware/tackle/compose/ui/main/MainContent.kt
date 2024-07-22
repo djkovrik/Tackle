@@ -19,7 +19,7 @@ import com.sedsoftware.tackle.compose.ui.explore.ExploreTabContent
 import com.sedsoftware.tackle.compose.ui.home.HomeTabContent
 import com.sedsoftware.tackle.compose.ui.notifications.NotificationsTabContent
 import com.sedsoftware.tackle.compose.ui.publications.PublicationsTabContent
-import com.sedsoftware.tackle.compose.widget.navigation.BottomNavigationBar
+import com.sedsoftware.tackle.compose.custom.navigation.BottomNavigationBar
 import com.sedsoftware.tackle.editor.integration.EditorTabComponentPreview
 import com.sedsoftware.tackle.explore.integration.ExploreTabComponentPreview
 import com.sedsoftware.tackle.home.integration.HomeTabComponentPreview

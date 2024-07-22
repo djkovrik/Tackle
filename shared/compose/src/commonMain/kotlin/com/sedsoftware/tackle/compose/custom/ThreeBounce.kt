@@ -1,6 +1,6 @@
 @file:Suppress("MagicNumber")
 
-package com.sedsoftware.tackle.compose.widget
+package com.sedsoftware.tackle.compose.custom
 
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.rememberInfiniteTransition

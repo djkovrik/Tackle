@@ -6,7 +6,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.sedsoftware.tackle.compose.widget.WanderingCubes
+import com.sedsoftware.tackle.compose.custom.WanderingCubes
 
 @Composable
 internal fun ScreenSplash(

@@ -108,7 +108,7 @@ internal fun EditorHeaderContent(
                         .background(color = MaterialTheme.colorScheme.primary)
                 ) {
                     Image(
-                        painter = rememberImagePainter(model.avatar),
+                        painter = rememberImagePainter(url = model.avatar),
                         contentDescription = null,
                         contentScale = ContentScale.Crop,
                         modifier = Modifier

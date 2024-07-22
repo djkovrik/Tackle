@@ -41,6 +41,8 @@
     <string name="main_tab_notifications">Уведомления</string>
 
     <!-- Editor component -->
+    <string name="editor_input_hint">О чем думаете?</string>
+    <string name="editor_warning_hint">Предупреждение о чувствительном контенте</string>
     <string name="editor_language_default">По умолчанию</string>
     <string name="editor_status_visibility_public">Публичный</string>
     <string name="editor_status_visibility_public_desc">Виден публично, включен в публичные подборки</string>
@@ -50,4 +52,9 @@
     <string name="editor_status_visibility_private_desc">Виден только подписчикам и упомянутым пользователям</string>
     <string name="editor_status_visibility_direct">Личный</string>
     <string name="editor_status_visibility_direct_desc">Виден только упомянутым пользователям</string>
+    <string name="editor_content_description_attach">Прикрепить файл</string>
+    <string name="editor_content_description_emoji">Смайлы</string>
+    <string name="editor_content_description_poll">Опрос</string>
+    <string name="editor_content_description_warning">Чувствительный контент</string>
+    <string name="editor_content_description_schedule">Отложенный пост</string>
 </resources>
