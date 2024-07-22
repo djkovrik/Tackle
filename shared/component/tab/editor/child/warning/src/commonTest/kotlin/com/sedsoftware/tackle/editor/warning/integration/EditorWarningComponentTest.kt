@@ -45,7 +45,7 @@ class EditorWarningComponentTest : ComponentTest<EditorWarningComponent>() {
         val text = "test text"
         // when
         component.onTextInput(text)
-        component.clearTextInput()
+        component.onClearTextInput()
         // then
         assertThat(activeModel.text).isEmpty()
     }

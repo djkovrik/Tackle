@@ -3,7 +3,7 @@ package com.sedsoftware.tackle.editor.poll.store
 import com.arkivanov.mvikotlin.core.store.Store
 import com.sedsoftware.tackle.domain.model.Instance
 import com.sedsoftware.tackle.editor.poll.model.PollDuration
-import com.sedsoftware.tackle.editor.poll.model.PollOption
+import com.sedsoftware.tackle.editor.poll.model.PollChoiceOption
 import com.sedsoftware.tackle.editor.poll.store.EditorPollStore.Intent
 import com.sedsoftware.tackle.editor.poll.store.EditorPollStore.State
 
@@ -24,7 +24,7 @@ interface EditorPollStore : Store<Intent, State, Nothing> {
     data class State(
         val config: Instance.Config = Instance.Config(),
         val configLoaded: Boolean = false,
-        val options: List<PollOption> = emptyList(),
+        val options: List<PollChoiceOption> = emptyList(),
         val pollAvailable: Boolean = true,
         val pollVisible: Boolean = false,
         val multiselectEnabled: Boolean = false,
@@ -33,5 +33,6 @@ interface EditorPollStore : Store<Intent, State, Nothing> {
         val durationPickerVisible: Boolean = false,
         val insertionAvailable: Boolean = false,
         val deletionAvailable: Boolean = false,
+        val maxTextOptionLength: Int = 0,
     )
 }

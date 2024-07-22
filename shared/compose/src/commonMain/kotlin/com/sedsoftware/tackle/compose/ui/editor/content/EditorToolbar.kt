@@ -7,12 +7,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.sedsoftware.tackle.compose.extension.getContentDescription
 import com.sedsoftware.tackle.compose.model.EditorToolbarItem
-import com.sedsoftware.tackle.compose.model.getContentDescription
-import com.sedsoftware.tackle.compose.model.getIcon
+import com.sedsoftware.tackle.compose.extension.getIcon
 
 @Composable
-internal fun EditorButtonsBar(
+internal fun EditorToolbar(
     items: List<EditorToolbarItem>,
     modifier: Modifier = Modifier,
     onClick: (EditorToolbarItem.Type) -> Unit = {},
@@ -20,7 +20,7 @@ internal fun EditorButtonsBar(
     Row(modifier = modifier) {
         items.forEach { item ->
             Box(modifier = Modifier.padding(all = 4.dp)) {
-                EditorButton(
+                EditorToolbarButton(
                     iconResource = item.type.getIcon(),
                     contentDescriptionResource = item.type.getContentDescription(),
                     isActive = item.active,

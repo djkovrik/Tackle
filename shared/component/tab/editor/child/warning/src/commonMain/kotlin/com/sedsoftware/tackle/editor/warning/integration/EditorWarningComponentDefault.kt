@@ -32,7 +32,7 @@ class EditorWarningComponentDefault(
         store.accept(EditorWarningStore.Intent.OnTextInput(text))
     }
 
-    override fun clearTextInput() {
+    override fun onClearTextInput() {
         store.accept(EditorWarningStore.Intent.OnTextInput(""))
     }
 

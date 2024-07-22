@@ -16,9 +16,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import com.sedsoftware.tackle.compose.model.getDescription
-import com.sedsoftware.tackle.compose.model.getIcon
-import com.sedsoftware.tackle.compose.model.getTitle
+import com.sedsoftware.tackle.compose.extension.getDescription
+import com.sedsoftware.tackle.compose.extension.getIcon
+import com.sedsoftware.tackle.compose.extension.getTitle
 import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
 import com.sedsoftware.tackle.domain.model.type.StatusVisibility
 import org.jetbrains.compose.resources.stringResource

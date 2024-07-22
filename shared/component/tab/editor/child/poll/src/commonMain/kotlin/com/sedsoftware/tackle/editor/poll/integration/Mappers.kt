@@ -14,6 +14,5 @@ internal val stateToModel: (State) -> Model = {
         deletionAvailable = it.deletionAvailable,
         pollButtonAvailable = it.pollAvailable,
         pollContentVisible = it.pollVisible,
-        maxOptionTextLength = it.config.polls.maxCharactersPerOption,
     )
 }

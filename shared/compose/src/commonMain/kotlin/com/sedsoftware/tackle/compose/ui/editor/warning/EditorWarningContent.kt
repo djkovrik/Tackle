@@ -1,6 +1,10 @@
 package com.sedsoftware.tackle.compose.ui.editor.warning
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -29,7 +33,7 @@ import tackle.shared.compose.generated.resources.editor_close
 import tackle.shared.compose.generated.resources.editor_warning_hint
 
 @Composable
-internal fun EditorWarningComponent(
+internal fun EditorWarningContent(
     text: String,
     modifier: Modifier = Modifier,
     onTextInput: (String) -> Unit = {},
@@ -73,9 +77,13 @@ internal fun EditorWarningComponent(
             value = text,
             onValueChange = onTextInput,
             maxLines = 3,
-            textStyle = MaterialTheme.typography.bodyMedium,
+            textStyle = MaterialTheme.typography.bodyLarge,
             trailingIcon = {
-                AnimatedVisibility(visible = text.isNotBlank()) {
+                AnimatedVisibility(
+                    visible = text.isNotBlank(),
+                    enter = scaleIn() + fadeIn(),
+                    exit = scaleOut() + fadeOut(),
+                ) {
                     Icon(
                         painterResource(resource = Res.drawable.editor_close),
                         contentDescription = null,
@@ -89,9 +97,9 @@ internal fun EditorWarningComponent(
             placeholder = {
                 Text(
                     text = stringResource(Res.string.editor_warning_hint),
-                    style = MaterialTheme.typography.bodyMedium,
+                    style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onSurface.copy(
-                        alpha = 0.4f,
+                        alpha = 0.5f,
                     ),
                 )
             },
@@ -107,7 +115,7 @@ internal fun EditorWarningComponent(
 @Composable
 private fun EditorWarningComponentEmptyPreview() {
     TackleScreenPreview {
-        EditorWarningComponent(
+        EditorWarningContent(
             text = "",
             modifier = Modifier.padding(all = 2.dp)
         )
@@ -119,21 +127,9 @@ private fun EditorWarningComponentEmptyPreview() {
 @Composable
 private fun EditorWarningComponentSingleLinePreview() {
     TackleScreenPreview {
-        EditorWarningComponent(
+        EditorWarningContent(
             text = "abcdef",
             modifier = Modifier.padding(all = 2.dp)
         )
     }
 }
-
-@Preview
-@Composable
-private fun EditorWarningComponentMultilinePreview() {
-    TackleScreenPreview {
-        EditorWarningComponent(
-            text = "abcdef\nghijkl",
-            modifier = Modifier.padding(all = 2.dp)
-        )
-    }
-}
-

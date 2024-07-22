@@ -7,7 +7,7 @@ import com.sedsoftware.tackle.domain.model.Instance
 import com.sedsoftware.tackle.editor.poll.domain.EditorPollManager
 import com.sedsoftware.tackle.editor.poll.extension.applyInput
 import com.sedsoftware.tackle.editor.poll.model.PollDuration
-import com.sedsoftware.tackle.editor.poll.model.PollOption
+import com.sedsoftware.tackle.editor.poll.model.PollChoiceOption
 import com.sedsoftware.tackle.editor.poll.store.EditorPollStore.Intent
 import com.sedsoftware.tackle.editor.poll.store.EditorPollStore.State
 import com.sedsoftware.tackle.utils.StoreCreate
@@ -23,8 +23,8 @@ internal class EditorPollStoreProvider(
     private val ioContext: CoroutineContext,
 ) {
 
-    private val emptyPollOption: PollOption
-        get() = PollOption(id = generateUUID(), text = "")
+    private val emptyPollOption: PollChoiceOption
+        get() = PollChoiceOption(id = generateUUID(), text = "")
 
     @StoreCreate
     fun create(autoInit: Boolean = true): EditorPollStore =
@@ -69,6 +69,7 @@ internal class EditorPollStoreProvider(
                         options = listOf(emptyPollOption, emptyPollOption),
                         insertionAvailable = true,
                         deletionAvailable = false,
+                        maxTextOptionLength = msg.config.polls.maxCharactersPerOption,
                     )
 
                     is Msg.DurationsAvailable -> copy(
@@ -97,7 +98,7 @@ internal class EditorPollStoreProvider(
                     )
 
                     is Msg.TextInput -> copy(
-                        options = options.applyInput(msg.id, msg.text),
+                        options = options.applyInput(msg.id, msg.text.take(maxTextOptionLength)),
                     )
 
                     is Msg.PollOptionAdded -> copy(

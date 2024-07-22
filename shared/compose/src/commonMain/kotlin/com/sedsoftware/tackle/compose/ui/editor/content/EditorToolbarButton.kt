@@ -26,7 +26,7 @@ import tackle.shared.compose.generated.resources.editor_attachment
 import tackle.shared.compose.generated.resources.editor_content_description_attach
 
 @Composable
-internal fun EditorButton(
+internal fun EditorToolbarButton(
     iconResource: DrawableResource,
     contentDescriptionResource: StringResource,
     modifier: Modifier = Modifier,
@@ -61,7 +61,7 @@ internal fun EditorButton(
 @Composable
 private fun EditorToolbarButtonPreviewNormal() {
     TackleScreenPreview {
-        EditorButton(
+        EditorToolbarButton(
             iconResource = drawable.editor_attachment,
             contentDescriptionResource = string.editor_content_description_attach,
             isActive = false,
@@ -76,7 +76,7 @@ private fun EditorToolbarButtonPreviewNormal() {
 @Composable
 private fun EditorToolbarButtonPreviewDisabled() {
     TackleScreenPreview {
-        EditorButton(
+        EditorToolbarButton(
             iconResource = drawable.editor_attachment,
             contentDescriptionResource = string.editor_content_description_attach,
             isActive = false,
@@ -92,7 +92,7 @@ private fun EditorToolbarButtonPreviewDisabled() {
 @Composable
 private fun EditorToolbarButtonPreviewActive() {
     TackleScreenPreview {
-        EditorButton(
+        EditorToolbarButton(
             iconResource = drawable.editor_attachment,
             contentDescriptionResource = string.editor_content_description_attach,
             isActive = true,

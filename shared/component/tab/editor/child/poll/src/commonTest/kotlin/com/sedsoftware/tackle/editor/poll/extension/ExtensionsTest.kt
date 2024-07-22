@@ -2,7 +2,7 @@ package com.sedsoftware.tackle.editor.poll.extension
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import com.sedsoftware.tackle.editor.poll.model.PollOption
+import com.sedsoftware.tackle.editor.poll.model.PollChoiceOption
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 
@@ -12,10 +12,10 @@ class ExtensionsTest {
     fun `applyInput should update list item`() = runTest {
         // given
         val options = listOf(
-            PollOption(id = "1", text = "abc"),
-            PollOption(id = "2", text = "def"),
-            PollOption(id = "3", text = "ghi"),
-            PollOption(id = "4", text = "jkl"),
+            PollChoiceOption(id = "1", text = "abc"),
+            PollChoiceOption(id = "2", text = "def"),
+            PollChoiceOption(id = "3", text = "ghi"),
+            PollChoiceOption(id = "4", text = "jkl"),
         )
         val targetId = "2"
         val newInput = "Test input"

@@ -1,4 +1,4 @@
-package com.sedsoftware.tackle.compose.model
+package com.sedsoftware.tackle.compose.extension
 
 import com.sedsoftware.tackle.domain.model.type.StatusVisibility
 import org.jetbrains.compose.resources.DrawableResource

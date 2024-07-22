@@ -27,19 +27,3 @@ internal data class EditorToolbarItem(
         SCHEDULE;
     }
 }
-
-internal fun EditorToolbarItem.Type.getIcon(): DrawableResource = when (this) {
-    EditorToolbarItem.Type.ATTACH -> Res.drawable.editor_attachment
-    EditorToolbarItem.Type.EMOJIS -> Res.drawable.editor_emoji
-    EditorToolbarItem.Type.POLL -> Res.drawable.editor_chart
-    EditorToolbarItem.Type.WARNING -> Res.drawable.editor_alert
-    EditorToolbarItem.Type.SCHEDULE -> Res.drawable.editor_scheduled
-}
-
-internal fun EditorToolbarItem.Type.getContentDescription(): StringResource = when (this) {
-    EditorToolbarItem.Type.ATTACH -> Res.string.editor_content_description_attach
-    EditorToolbarItem.Type.EMOJIS -> Res.string.editor_content_description_emoji
-    EditorToolbarItem.Type.POLL -> Res.string.editor_content_description_poll
-    EditorToolbarItem.Type.WARNING -> Res.string.editor_content_description_warning
-    EditorToolbarItem.Type.SCHEDULE -> Res.string.editor_content_description_schedule
-}

@@ -6,10 +6,10 @@ import com.sedsoftware.tackle.domain.model.Instance.Config
 import com.sedsoftware.tackle.editor.poll.EditorPollComponent
 import com.sedsoftware.tackle.editor.poll.EditorPollComponent.Model
 import com.sedsoftware.tackle.editor.poll.model.PollDuration
-import com.sedsoftware.tackle.editor.poll.model.PollOption
+import com.sedsoftware.tackle.editor.poll.model.PollChoiceOption
 
 class EditorPollComponentPreview(
-    options: List<PollOption> = emptyList(),
+    options: List<PollChoiceOption> = emptyList(),
     multiselectEnabled: Boolean = false,
     duration: PollDuration = PollDuration.FIVE_MINUTES,
     availableDurations: List<PollDuration> = emptyList(),
@@ -18,7 +18,6 @@ class EditorPollComponentPreview(
     deletionAvailable: Boolean = false,
     pollButtonAvailable: Boolean = true,
     pollContentVisible: Boolean = false,
-    maxOptionTextLength: Int = 1,
 ) : EditorPollComponent {
 
     override val model: Value<Model> =
@@ -33,7 +32,6 @@ class EditorPollComponentPreview(
                 deletionAvailable = deletionAvailable,
                 pollButtonAvailable = pollButtonAvailable,
                 pollContentVisible = pollContentVisible,
-                maxOptionTextLength = maxOptionTextLength,
             )
         )
 

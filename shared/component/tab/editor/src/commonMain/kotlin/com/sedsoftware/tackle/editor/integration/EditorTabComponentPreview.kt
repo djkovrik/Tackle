@@ -17,7 +17,7 @@ import com.sedsoftware.tackle.editor.header.integration.EditorHeaderComponentPre
 import com.sedsoftware.tackle.editor.poll.EditorPollComponent
 import com.sedsoftware.tackle.editor.poll.integration.EditorPollComponentPreview
 import com.sedsoftware.tackle.editor.poll.model.PollDuration
-import com.sedsoftware.tackle.editor.poll.model.PollOption
+import com.sedsoftware.tackle.editor.poll.model.PollChoiceOption
 import com.sedsoftware.tackle.editor.warning.EditorWarningComponent
 import com.sedsoftware.tackle.editor.warning.integration.EditorWarningComponentPreview
 
@@ -38,7 +38,7 @@ class EditorTabComponentPreview(
     localePickerDisplayed: Boolean = false,
     statusVisibility: StatusVisibility = StatusVisibility.PUBLIC,
     statusVisibilityPickerDisplayed: Boolean = false,
-    options: List<PollOption> = emptyList(),
+    options: List<PollChoiceOption> = emptyList(),
     multiselectEnabled: Boolean = false,
     duration: PollDuration = PollDuration.FIVE_MINUTES,
     availableDurations: List<PollDuration> = emptyList(),
@@ -47,7 +47,6 @@ class EditorTabComponentPreview(
     deletionAvailable: Boolean = false,
     pollButtonAvailable: Boolean = true,
     pollContentVisible: Boolean = false,
-    maxOptionTextLength: Int = 1,
     warningText: String = "",
     warningContentVisible: Boolean = false,
     statusText: String = "",
@@ -93,7 +92,6 @@ class EditorTabComponentPreview(
             deletionAvailable = deletionAvailable,
             pollButtonAvailable = pollButtonAvailable,
             pollContentVisible = pollContentVisible,
-            maxOptionTextLength = maxOptionTextLength,
         )
 
     override val warning: EditorWarningComponent =
