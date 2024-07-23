@@ -3,7 +3,6 @@ package com.sedsoftware.tackle.compose.ui.editor.content
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -20,8 +19,7 @@ import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
-import tackle.shared.compose.generated.resources.Res.drawable
-import tackle.shared.compose.generated.resources.Res.string
+import tackle.shared.compose.generated.resources.Res
 import tackle.shared.compose.generated.resources.editor_attachment
 import tackle.shared.compose.generated.resources.editor_content_description_attach
 
@@ -37,20 +35,19 @@ internal fun EditorToolbarButton(
     Box(modifier = modifier.alpha(alpha = if (isEnabled) 1f else 0.5f)) {
         IconButton(
             onClick = { if (isEnabled) onClick.invoke() },
-            modifier = Modifier
-                .fillMaxSize()
+            modifier = modifier
                 .clip(shape = CircleShape)
                 .background(
                     color = if (isActive)
-                        MaterialTheme.colorScheme.primaryContainer
+                        MaterialTheme.colorScheme.secondaryContainer
                     else
                         MaterialTheme.colorScheme.surface
                 ),
         ) {
             Icon(
                 painter = painterResource(resource = iconResource),
-                contentDescription = stringResource(contentDescriptionResource),
-                tint = MaterialTheme.colorScheme.primary,
+                contentDescription = stringResource(resource = contentDescriptionResource),
+                tint = MaterialTheme.colorScheme.secondary,
                 modifier = Modifier.padding(all = 8.dp),
             )
         }
@@ -62,12 +59,10 @@ internal fun EditorToolbarButton(
 private fun EditorToolbarButtonPreviewNormal() {
     TackleScreenPreview {
         EditorToolbarButton(
-            iconResource = drawable.editor_attachment,
-            contentDescriptionResource = string.editor_content_description_attach,
+            iconResource = Res.drawable.editor_attachment,
+            contentDescriptionResource = Res.string.editor_content_description_attach,
             isActive = false,
-            modifier = Modifier
-                .padding(all = 4.dp)
-                .size(size = 64.dp),
+            modifier = Modifier.size(size = 64.dp),
         )
     }
 }
@@ -77,13 +72,11 @@ private fun EditorToolbarButtonPreviewNormal() {
 private fun EditorToolbarButtonPreviewDisabled() {
     TackleScreenPreview {
         EditorToolbarButton(
-            iconResource = drawable.editor_attachment,
-            contentDescriptionResource = string.editor_content_description_attach,
+            iconResource = Res.drawable.editor_attachment,
+            contentDescriptionResource = Res.string.editor_content_description_attach,
             isActive = false,
             isEnabled = false,
-            modifier = Modifier
-                .padding(all = 4.dp)
-                .size(size = 64.dp),
+            modifier = Modifier.size(size = 64.dp),
         )
     }
 }
@@ -93,12 +86,10 @@ private fun EditorToolbarButtonPreviewDisabled() {
 private fun EditorToolbarButtonPreviewActive() {
     TackleScreenPreview {
         EditorToolbarButton(
-            iconResource = drawable.editor_attachment,
-            contentDescriptionResource = string.editor_content_description_attach,
+            iconResource = Res.drawable.editor_attachment,
+            contentDescriptionResource = Res.string.editor_content_description_attach,
             isActive = true,
-            modifier = Modifier
-                .padding(all = 4.dp)
-                .size(size = 64.dp),
+            modifier = Modifier.size(size = 64.dp),
         )
     }
 }
