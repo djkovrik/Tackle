@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -56,9 +57,10 @@ internal fun CustomPollChoice(
                     ),
                 )
             },
+            shape = RoundedCornerShape(size = 8.dp),
             colors = OutlinedTextFieldDefaults.colors(
                 unfocusedBorderColor = MaterialTheme.colorScheme.secondary.copy(alpha = 0.5f),
-                focusedBorderColor = MaterialTheme.colorScheme.secondary.copy(alpha = 0.75f),
+                focusedBorderColor = MaterialTheme.colorScheme.secondary.copy(alpha = 0.7f),
             ),
         )
 

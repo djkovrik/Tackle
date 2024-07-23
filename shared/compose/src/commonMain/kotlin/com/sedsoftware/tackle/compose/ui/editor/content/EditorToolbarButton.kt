@@ -39,7 +39,7 @@ internal fun EditorToolbarButton(
                 .clip(shape = CircleShape)
                 .background(
                     color = if (isActive)
-                        MaterialTheme.colorScheme.secondaryContainer
+                        MaterialTheme.colorScheme.primaryContainer
                     else
                         MaterialTheme.colorScheme.surface
                 ),
@@ -47,7 +47,7 @@ internal fun EditorToolbarButton(
             Icon(
                 painter = painterResource(resource = iconResource),
                 contentDescription = stringResource(resource = contentDescriptionResource),
-                tint = MaterialTheme.colorScheme.secondary,
+                tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.padding(all = 8.dp),
             )
         }
@@ -62,7 +62,7 @@ private fun EditorToolbarButtonPreviewNormal() {
             iconResource = Res.drawable.editor_attachment,
             contentDescriptionResource = Res.string.editor_content_description_attach,
             isActive = false,
-            modifier = Modifier.size(size = 64.dp),
+            modifier = Modifier.size(size = 48.dp),
         )
     }
 }
@@ -76,7 +76,7 @@ private fun EditorToolbarButtonPreviewDisabled() {
             contentDescriptionResource = Res.string.editor_content_description_attach,
             isActive = false,
             isEnabled = false,
-            modifier = Modifier.size(size = 64.dp),
+            modifier = Modifier.size(size = 48.dp),
         )
     }
 }
@@ -89,7 +89,7 @@ private fun EditorToolbarButtonPreviewActive() {
             iconResource = Res.drawable.editor_attachment,
             contentDescriptionResource = Res.string.editor_content_description_attach,
             isActive = true,
-            modifier = Modifier.size(size = 64.dp),
+            modifier = Modifier.size(size = 48.dp),
         )
     }
 }

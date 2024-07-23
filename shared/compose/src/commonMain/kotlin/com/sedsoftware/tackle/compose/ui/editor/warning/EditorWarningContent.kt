@@ -40,7 +40,7 @@ internal fun EditorWarningContent(
     onTextClear: () -> Unit = {},
 ) {
     val indicatorColor: Color = MaterialTheme.colorScheme.error
-    val indicatorWidth: Dp = 10.dp
+    val indicatorWidth: Dp = 8.dp
     val cornerRadius: Dp = 6.dp
 
     Box(

@@ -8,9 +8,11 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -35,6 +37,8 @@ import com.sedsoftware.tackle.editor.emojis.EditorEmojisComponent
 import com.sedsoftware.tackle.editor.header.EditorHeaderComponent
 import com.sedsoftware.tackle.editor.integration.EditorTabComponentPreview
 import com.sedsoftware.tackle.editor.poll.EditorPollComponent
+import com.sedsoftware.tackle.editor.poll.model.PollChoiceOption
+import com.sedsoftware.tackle.editor.poll.model.PollDuration
 import com.sedsoftware.tackle.editor.warning.EditorWarningComponent
 import io.github.vinceglb.filekit.compose.PickerResultLauncher
 import io.github.vinceglb.filekit.compose.rememberFilePickerLauncher
@@ -69,104 +73,106 @@ internal fun EditorTabContent(
             onVisibilityPickerRequest = { component.header.onStatusVisibilityPickerRequested(true) },
         )
 
-        // Content
-        Column(
-            verticalArrangement = Arrangement.Bottom,
+        // Scrollable part
+        LazyColumn(
+            verticalArrangement = Arrangement.Top,
             modifier = modifier
+                .padding(horizontal = 16.dp)
+                .weight(1f, true),
         ) {
-
-            // Scrollable part
-            LazyColumn(
-                verticalArrangement = Arrangement.Top,
-                modifier = modifier
-                    .padding(horizontal = 16.dp)
-                    .weight(1f, true),
-            ) {
-                // Input
+            // Warning
+            if (warningModel.warningContentVisible) {
                 item {
-                    TextField(
-                        value = TextFieldValue(
-                            text = editorModel.statusText,
-                            selection = TextRange(
-                                start = editorModel.statusTextSelection.first,
-                                end = editorModel.statusTextSelection.second
-                            ),
-                        ),
-                        onValueChange = { component.onTextInput(it.text, it.selection.min to it.selection.max) },
-                        maxLines = 6,
-                        textStyle = MaterialTheme.typography.bodyLarge,
-                        placeholder = {
-                            Text(
-                                text = stringResource(Res.string.editor_input_hint),
-                                style = MaterialTheme.typography.bodyLarge,
-                                color = MaterialTheme.colorScheme.onSurface.copy(
-                                    alpha = 0.5f,
-                                ),
-                            )
-                        },
-                        modifier = modifier.fillMaxWidth()
+                    EditorWarningContent(
+                        text = warningModel.text,
+                        modifier = Modifier,
+                        onTextInput = component.warning::onTextInput,
+                        onTextClear = component.warning::onClearTextInput,
                     )
-                }
-
-                // Warning
-                if (warningModel.warningContentVisible) {
-                    item {
-                        EditorWarningContent(
-                            text = warningModel.text,
-                            onTextInput = component.warning::onTextInput,
-                            onTextClear = component.warning::onClearTextInput,
-                            modifier = Modifier,
-                        )
-                    }
-                }
-
-                // Poll
-                if (pollModel.pollContentVisible) {
-                    item {
-                        EditorPollContent(
-                            model = pollModel,
-                            modifier = modifier,
-                            onAddNewItem = component.poll::onAddPollOptionClick,
-                            onDeleteItem = component.poll::onDeletePollOptionClick,
-                            onMultiselectEnabled = component.poll::onMultiselectEnabled,
-                            onDurationSelected = component.poll::onDurationSelected,
-                            onTextInput = component.poll::onTextInput,
-                            onDurationPickerCall = { component.poll.onDurationPickerRequested(true) },
-                            onDurationPickerCancel = { component.poll.onDurationPickerRequested(false) },
-                        )
-                    }
                 }
             }
 
-            // Fixed at bottom
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = modifier.padding(horizontal = 8.dp)
-            ) {
-                // Toolbar
-                EditorToolbar(
-                    items = buildToolbarState(attachmentsModel, emojisModel, pollModel, warningModel),
-                    onClick = { type: EditorToolbarItem.Type ->
-                        when (type) {
-                            EditorToolbarItem.Type.ATTACH -> launcher.launch()
-                            EditorToolbarItem.Type.EMOJIS -> component.onEmojisButtonClicked()
-                            EditorToolbarItem.Type.POLL -> component.onPollButtonClicked()
-                            EditorToolbarItem.Type.WARNING -> component.onWarningButtonClicked()
-                            EditorToolbarItem.Type.SCHEDULE -> TODO()
-                        }
+            // Input
+            item {
+                OutlinedTextField(
+                    value = TextFieldValue(
+                        text = editorModel.statusText,
+                        selection = TextRange(
+                            start = editorModel.statusTextSelection.first,
+                            end = editorModel.statusTextSelection.second
+                        ),
+                    ),
+                    onValueChange = { component.onTextInput(it.text, it.selection.min to it.selection.max) },
+                    maxLines = 6,
+                    textStyle = MaterialTheme.typography.bodyLarge,
+                    placeholder = {
+                        Text(
+                            text = stringResource(Res.string.editor_input_hint),
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = MaterialTheme.colorScheme.onSurface.copy(
+                                alpha = 0.5f,
+                            ),
+                        )
                     },
-                    modifier = Modifier,
+                    shape = RoundedCornerShape(size = 8.dp),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        unfocusedBorderColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f),
+                        focusedBorderColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.7f),
+                    ),
+                    modifier = Modifier
+                        .padding(vertical = 8.dp)
+                        .fillMaxWidth()
                 )
+            }
 
-                Spacer(modifier = Modifier.weight(1f, true))
+            // Toolbar
+            item {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                ) {
+                    // Toolbar
+                    EditorToolbar(
+                        items = buildToolbarState(attachmentsModel, emojisModel, pollModel, warningModel),
+                        onClick = { type: EditorToolbarItem.Type ->
+                            when (type) {
+                                EditorToolbarItem.Type.ATTACH -> launcher.launch()
+                                EditorToolbarItem.Type.EMOJIS -> component.onEmojisButtonClicked()
+                                EditorToolbarItem.Type.POLL -> component.onPollButtonClicked()
+                                EditorToolbarItem.Type.WARNING -> component.onWarningButtonClicked()
+                                EditorToolbarItem.Type.SCHEDULE -> TODO()
+                            }
+                        },
+                        modifier = Modifier,
+                    )
 
-                // Counter
-                Text(
-                    text = "${editorModel.statusCharactersLeft}",
-                    style = MaterialTheme.typography.titleSmall,
-                    color = MaterialTheme.colorScheme.secondary,
-                    modifier = Modifier.padding(all = 8.dp),
-                )
+                    Spacer(modifier = Modifier.weight(1f, true))
+
+                    // Counter
+                    Text(
+                        text = "${editorModel.statusCharactersLeft}",
+                        style = MaterialTheme.typography.titleSmall,
+                        color = MaterialTheme.colorScheme.secondary,
+                        modifier = Modifier,
+                    )
+                }
+            }
+
+            // Poll
+            if (pollModel.pollContentVisible) {
+                item {
+                    EditorPollContent(
+                        model = pollModel,
+                        modifier = Modifier.padding(vertical = 16.dp),
+                        onAddNewItem = component.poll::onAddPollOptionClick,
+                        onDeleteItem = component.poll::onDeletePollOptionClick,
+                        onMultiselectEnabled = component.poll::onMultiselectEnabled,
+                        onDurationSelected = component.poll::onDurationSelected,
+                        onTextInput = component.poll::onTextInput,
+                        onDurationPickerCall = { component.poll.onDurationPickerRequested(true) },
+                        onDurationPickerCancel = { component.poll.onDurationPickerRequested(false) },
+                    )
+                }
             }
         }
 
@@ -174,6 +180,7 @@ internal fun EditorTabContent(
         if (headerModel.localePickerDisplayed) {
             LanguageSelectorDialog(
                 model = headerModel,
+                modifier = Modifier,
                 onDismissRequest = {
                     component.header.onLocalePickerRequested(false)
                 },
@@ -181,12 +188,12 @@ internal fun EditorTabContent(
                     component.header.onLocaleSelected(locale)
                     component.header.onLocalePickerRequested(false)
                 },
-                modifier = modifier,
             )
         }
 
         if (headerModel.statusVisibilityPickerDisplayed) {
             VisibilitySelectorDialog(
+                modifier = Modifier,
                 onDismissRequest = {
                     component.header.onStatusVisibilityPickerRequested(false)
                 },
@@ -194,9 +201,38 @@ internal fun EditorTabContent(
                     component.header.onStatusVisibilitySelected(visibility)
                     component.header.onStatusVisibilityPickerRequested(false)
                 },
-                modifier = modifier,
             )
         }
+    }
+}
+
+@Preview
+@Composable
+private fun EditorTabContentPreviewEverything() {
+    TackleScreenPreview {
+        EditorTabContent(
+            component = EditorTabComponentPreview(
+                attachmentsButtonAvailable = false,
+                emojisButtonAvailable = true,
+                avatar = "https://mastodon.social/avatars/original/missing.png",
+                nickname = "djkovrik",
+                domain = "mastodon.social",
+                selectedLocale = AppLocale("English", "en"),
+                statusCharactersLeft = 123,
+                pollOptions = listOf(
+                    PollChoiceOption(id = "1", text = "Some text here"),
+                    PollChoiceOption(id = "2", text = "Another text here"),
+                    PollChoiceOption(id = "3", text = ""),
+                ),
+                multiselectEnabled = true,
+                duration = PollDuration.ONE_DAY,
+                insertionAvailable = true,
+                deletionAvailable = true,
+                pollButtonAvailable = true,
+                pollContentVisible = true,
+                warningContentVisible = true,
+            )
+        )
     }
 }
 
@@ -218,3 +254,53 @@ private fun EditorTabContentPreviewIdle() {
         )
     }
 }
+
+@Preview
+@Composable
+private fun EditorTabContentPreviewPoll() {
+    TackleScreenPreview {
+        EditorTabContent(
+            component = EditorTabComponentPreview(
+                attachmentsButtonAvailable = false,
+                emojisButtonAvailable = true,
+                avatar = "https://mastodon.social/avatars/original/missing.png",
+                nickname = "djkovrik",
+                domain = "mastodon.social",
+                selectedLocale = AppLocale("English", "en"),
+                statusCharactersLeft = 123,
+                pollOptions = listOf(
+                    PollChoiceOption(id = "1", text = "Some text here"),
+                    PollChoiceOption(id = "2", text = "Another text here"),
+                    PollChoiceOption(id = "3", text = ""),
+                ),
+                multiselectEnabled = true,
+                duration = PollDuration.ONE_DAY,
+                insertionAvailable = true,
+                deletionAvailable = true,
+                pollButtonAvailable = true,
+                pollContentVisible = true,
+            )
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun EditorTabContentPreviewWarning() {
+    TackleScreenPreview {
+        EditorTabContent(
+            component = EditorTabComponentPreview(
+                attachmentsButtonAvailable = true,
+                emojisButtonAvailable = true,
+                pollButtonAvailable = true,
+                avatar = "https://mastodon.social/avatars/original/missing.png",
+                nickname = "djkovrik",
+                domain = "mastodon.social",
+                selectedLocale = AppLocale("English", "en"),
+                statusCharactersLeft = 123,
+                warningContentVisible = true,
+            )
+        )
+    }
+}
+

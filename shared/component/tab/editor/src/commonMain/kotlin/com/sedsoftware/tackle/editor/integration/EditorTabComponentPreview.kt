@@ -38,7 +38,7 @@ class EditorTabComponentPreview(
     localePickerDisplayed: Boolean = false,
     statusVisibility: StatusVisibility = StatusVisibility.PUBLIC,
     statusVisibilityPickerDisplayed: Boolean = false,
-    options: List<PollChoiceOption> = emptyList(),
+    pollOptions: List<PollChoiceOption> = emptyList(),
     multiselectEnabled: Boolean = false,
     duration: PollDuration = PollDuration.FIVE_MINUTES,
     availableDurations: List<PollDuration> = emptyList(),
@@ -83,7 +83,7 @@ class EditorTabComponentPreview(
 
     override val poll: EditorPollComponent =
         EditorPollComponentPreview(
-            options = options,
+            options = pollOptions,
             multiselectEnabled = multiselectEnabled,
             duration = duration,
             availableDurations = availableDurations,

@@ -19,14 +19,13 @@ internal fun EditorToolbar(
 ) {
     Row(modifier = modifier) {
         items.forEach { item ->
-            Box(modifier = Modifier.padding(all = 4.dp)) {
+            Box(modifier = Modifier.padding(end = 4.dp)) {
                 EditorToolbarButton(
                     iconResource = item.type.getIcon(),
                     contentDescriptionResource = item.type.getContentDescription(),
                     isActive = item.active,
                     isEnabled = item.enabled,
                     onClick = { onClick.invoke(item.type) },
-                    modifier = Modifier.size(size = 48.dp),
                 )
             }
         }

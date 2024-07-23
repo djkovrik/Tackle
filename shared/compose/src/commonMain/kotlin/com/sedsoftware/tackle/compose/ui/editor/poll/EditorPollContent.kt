@@ -49,15 +49,15 @@ internal fun EditorPollContent(
     onDurationPickerCall: () -> Unit = {},
     onDurationPickerCancel: () -> Unit = {},
 ) {
-    Column {
+    Column(modifier = modifier) {
         model.options.forEachIndexed { index, pollOption ->
             CustomPollChoice(
                 index = index,
                 option = pollOption,
+                modifier = Modifier.padding(vertical = 4.dp),
                 deletionAvailable = model.deletionAvailable,
                 onTextInput = onTextInput,
                 onDelete = { onDeleteItem.invoke(pollOption.id) },
-                modifier = modifier.padding(vertical = 4.dp),
             )
         }
 
@@ -65,18 +65,18 @@ internal fun EditorPollContent(
             // Add icon
             Box(
                 contentAlignment = Alignment.Center,
-                modifier = modifier
+                modifier = Modifier
                     .size(size = 48.dp)
                     .clip(shape = CircleShape)
                     .clickable(onClick = { if (model.insertionAvailable) onAddNewItem.invoke() })
-                    .background(color = MaterialTheme.colorScheme.primaryContainer, shape = CircleShape),
+                    .background(color = MaterialTheme.colorScheme.secondaryContainer, shape = CircleShape),
             ) {
                 Icon(
                     painter = painterResource(resource = Res.drawable.editor_close),
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                    tint = MaterialTheme.colorScheme.onSecondaryContainer,
                     modifier = Modifier
-                        .size(size = 24.dp)
+                        .size(size = 20.dp)
                         .rotate(degrees = 45f)
                         .alpha(alpha = if (model.insertionAvailable) 1f else 0.5f)
                 )
@@ -87,11 +87,11 @@ internal fun EditorPollContent(
             // Duration picker
             Box(
                 contentAlignment = Alignment.Center,
-                modifier = modifier
+                modifier = Modifier
                     .height(height = 48.dp)
                     .clip(shape = RoundedCornerShape(size = 32.dp))
                     .clickable(onClick = onDurationPickerCall)
-                    .background(color = MaterialTheme.colorScheme.primaryContainer, shape = RoundedCornerShape(size = 32.dp)),
+                    .background(color = MaterialTheme.colorScheme.secondaryContainer, shape = RoundedCornerShape(size = 32.dp)),
             ) {
                 Text(
                     text = stringResource(resource = model.duration.getTitle()),
