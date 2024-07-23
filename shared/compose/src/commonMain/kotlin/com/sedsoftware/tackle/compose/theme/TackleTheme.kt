@@ -12,12 +12,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.unit.dp
-import com.seiko.imageloader.ImageLoader
-import com.seiko.imageloader.LocalImageLoader
-import com.seiko.imageloader.component.setupDefaultComponents
-import com.seiko.imageloader.intercept.bitmapMemoryCacheConfig
-import com.seiko.imageloader.intercept.imageMemoryCacheConfig
-import com.seiko.imageloader.intercept.painterMemoryCacheConfig
 
 internal val LocalThemeIsDark = compositionLocalOf { mutableStateOf(true) }
 

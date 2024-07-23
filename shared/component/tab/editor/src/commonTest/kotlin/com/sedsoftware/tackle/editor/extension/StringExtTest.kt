@@ -14,7 +14,7 @@ class StringExtTest {
         // given
         val emoji = EmojiStub.single
         val enteredText = "Some input text "
-        val expectedText = "Some input text ${emoji.shortcode}"
+        val expectedText = "Some input text :${emoji.shortcode}:"
         val currentSelection = enteredText.length to enteredText.length
         val limit = 123
 
@@ -36,7 +36,7 @@ class StringExtTest {
         // given
         val emoji = EmojiStub.single
         val enteredText = "Some input text"
-        val expectedText = "Some${emoji.shortcode} input text"
+        val expectedText = "Some:${emoji.shortcode}: input text"
         val currentSelection = 4 to 4
         val limit = 123
 
@@ -58,7 +58,7 @@ class StringExtTest {
         // given
         val emoji = EmojiStub.single
         val enteredText = "Some input text "
-        val expectedText = "Some input text ${emoji.shortcode}".take(20)
+        val expectedText = "Some input text :${emoji.shortcode}:".take(20)
         val currentSelection = enteredText.length to enteredText.length
         val limit = 20
 
@@ -80,7 +80,7 @@ class StringExtTest {
         // given
         val emoji = EmojiStub.single
         val enteredText = "Some input text"
-        val expectedText = "Some${emoji.shortcode} input text".take(20)
+        val expectedText = "Some:${emoji.shortcode}: input text".take(20)
         val currentSelection = 4 to 4
         val limit = 20
 
@@ -104,6 +104,7 @@ class StringExtTest {
         val enteredText = "Some input text "
         val currentSelection = enteredText.length to enteredText.length
         val limit = 123
+        val additionalLength = 2
 
         val state = EditorTabStore.State(
             statusText = enteredText,
@@ -115,8 +116,8 @@ class StringExtTest {
         // when
         val result = enteredText.getNewPosition(emoji, state)
         // then
-        assertThat(result.first).isEqualTo(currentSelection.second + emoji.shortcode.length)
-        assertThat(result.second).isEqualTo(currentSelection.second + emoji.shortcode.length)
+        assertThat(result.first).isEqualTo(currentSelection.second + emoji.shortcode.length + additionalLength)
+        assertThat(result.second).isEqualTo(currentSelection.second + emoji.shortcode.length + additionalLength)
     }
 
     @Test
@@ -126,6 +127,7 @@ class StringExtTest {
         val enteredText = "Some input text"
         val currentSelection = 4 to 4
         val limit = 123
+        val additionalLength = 2
 
         val state = EditorTabStore.State(
             statusText = enteredText,
@@ -136,8 +138,8 @@ class StringExtTest {
 
         // when
         val result = enteredText.getNewPosition(emoji, state)
-        assertThat(result.first).isEqualTo(currentSelection.second + emoji.shortcode.length)
-        assertThat(result.second).isEqualTo(currentSelection.second + emoji.shortcode.length)
+        assertThat(result.first).isEqualTo(currentSelection.second + emoji.shortcode.length + additionalLength)
+        assertThat(result.second).isEqualTo(currentSelection.second + emoji.shortcode.length + additionalLength)
     }
 
     @Test
@@ -169,6 +171,7 @@ class StringExtTest {
         val enteredText = "Some input text"
         val currentSelection = 4 to 4
         val limit = 20
+        val additionalLength = 2
 
         val state = EditorTabStore.State(
             statusText = enteredText,
@@ -179,8 +182,8 @@ class StringExtTest {
 
         // when
         val result = enteredText.getNewPosition(emoji, state)
-        assertThat(result.first).isEqualTo(currentSelection.second + emoji.shortcode.length)
-        assertThat(result.second).isEqualTo(currentSelection.second + emoji.shortcode.length)
+        assertThat(result.first).isEqualTo(currentSelection.second + emoji.shortcode.length + additionalLength)
+        assertThat(result.second).isEqualTo(currentSelection.second + emoji.shortcode.length + additionalLength)
     }
 
     @Test
@@ -190,6 +193,7 @@ class StringExtTest {
         val enteredText = "Some input text "
         val currentSelection = enteredText.length to enteredText.length
         val limit = 123
+        val additionalLength = 2
 
         val state = EditorTabStore.State(
             statusText = enteredText,
@@ -201,7 +205,7 @@ class StringExtTest {
         // when
         val result = enteredText.getNewLength(emoji, state)
         // then
-        assertThat(result).isEqualTo(enteredText.length + emoji.shortcode.length)
+        assertThat(result).isEqualTo(enteredText.length + emoji.shortcode.length + additionalLength)
     }
 
     @Test

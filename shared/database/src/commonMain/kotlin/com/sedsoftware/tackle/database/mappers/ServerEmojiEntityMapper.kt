@@ -5,7 +5,8 @@ import com.sedsoftware.tackle.domain.model.CustomEmoji
 
 internal object ServerEmojiEntityMapper {
 
-    fun map(from: List<ServerEmojiEntity>): List<CustomEmoji> = from.map(::mapItem)
+    fun map(from: List<ServerEmojiEntity>): Map<String, List<CustomEmoji>> =
+        from.map(::mapItem).filter { it.visibleInPicker }.sortedBy { it.category.isNotBlank() }.groupBy { it.category }
 
     private fun mapItem(from: ServerEmojiEntity): CustomEmoji =
         CustomEmoji(

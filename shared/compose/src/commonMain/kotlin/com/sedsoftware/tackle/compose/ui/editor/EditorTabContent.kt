@@ -6,13 +6,17 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -25,6 +29,7 @@ import com.sedsoftware.tackle.compose.model.EditorToolbarItem
 import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
 import com.sedsoftware.tackle.compose.ui.editor.content.EditorToolbar
 import com.sedsoftware.tackle.compose.ui.editor.content.buildToolbarState
+import com.sedsoftware.tackle.compose.ui.editor.emoji.EditorEmojisContent
 import com.sedsoftware.tackle.compose.ui.editor.header.EditorHeaderContent
 import com.sedsoftware.tackle.compose.ui.editor.header.content.LanguageSelectorDialog
 import com.sedsoftware.tackle.compose.ui.editor.header.content.VisibilitySelectorDialog
@@ -63,6 +68,8 @@ internal fun EditorTabContent(
     val launcher: PickerResultLauncher = rememberFilePickerLauncher(mode = PickerMode.Multiple()) { files: List<PlatformFile>? ->
         files?.let { component.attachments.onFilesSelected(it) }
     }
+
+    val bottomSheetState: SheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
     Column {
         // Header
@@ -170,13 +177,13 @@ internal fun EditorTabContent(
                         onDurationSelected = component.poll::onDurationSelected,
                         onTextInput = component.poll::onTextInput,
                         onDurationPickerCall = { component.poll.onDurationPickerRequested(true) },
-                        onDurationPickerCancel = { component.poll.onDurationPickerRequested(false) },
+                        onDurationPickerClose = { component.poll.onDurationPickerRequested(false) },
                     )
                 }
             }
         }
 
-        // Dialogs
+        // Locale dialog
         if (headerModel.localePickerDisplayed) {
             LanguageSelectorDialog(
                 model = headerModel,
@@ -191,6 +198,7 @@ internal fun EditorTabContent(
             )
         }
 
+        // Visibility dialog
         if (headerModel.statusVisibilityPickerDisplayed) {
             VisibilitySelectorDialog(
                 modifier = Modifier,
@@ -202,6 +210,21 @@ internal fun EditorTabContent(
                     component.header.onStatusVisibilityPickerRequested(false)
                 },
             )
+        }
+
+        // Emoji bottom sheet
+        if (emojisModel.emojisContentVisible) {
+            ModalBottomSheet(
+                containerColor = MaterialTheme.colorScheme.background,
+                onDismissRequest = component::onEmojisButtonClicked,
+                sheetState = bottomSheetState,
+            ) {
+                EditorEmojisContent(
+                    emojis = emojisModel.emojis,
+                    modifier = Modifier.height(height = 360.dp),
+                    onClick = component.emojis::onEmojiClicked,
+                )
+            }
         }
     }
 }

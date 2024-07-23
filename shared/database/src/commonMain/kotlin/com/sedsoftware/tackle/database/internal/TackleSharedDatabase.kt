@@ -48,7 +48,7 @@ internal class TackleSharedDatabase(
         }
     }
 
-    override suspend fun observeEmojis(): Flow<List<CustomEmoji>> =
+    override suspend fun observeEmojis(): Flow<Map<String, List<CustomEmoji>>> =
         queries.selectEmojis(currentDomain)
             .asFlow()
             .mapToList(coroutineContext)

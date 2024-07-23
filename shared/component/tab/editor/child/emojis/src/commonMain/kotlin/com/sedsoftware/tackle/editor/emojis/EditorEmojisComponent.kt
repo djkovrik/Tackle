@@ -11,7 +11,7 @@ interface EditorEmojisComponent {
     fun toggleComponentVisibility()
 
     data class Model(
-        val emojis: List<CustomEmoji>,
+        val emojis: Map<String, List<CustomEmoji>>,
         val emojisButtonAvailable: Boolean,
         val emojisContentVisible: Boolean,
     )

@@ -27,13 +27,14 @@ import tackle.shared.compose.generated.resources.editor_poll_duration
 internal fun CustomPollDurationDialog(
     model: EditorPollComponent.Model,
     modifier: Modifier = Modifier,
-    onDismissRequest: () -> Unit = {},
+    onDismiss: () -> Unit = {},
     onConfirmation: (PollDuration) -> Unit = {},
 ) {
-    Dialog(onDismissRequest = { onDismissRequest() }) {
+    Dialog(onDismissRequest = { onDismiss() }) {
         CustomPollDurationDialogContent(
             availableDurations = model.availableDurations,
             selectedDuration = model.duration,
+            onDismiss = onDismiss,
             onConfirmation = onConfirmation,
             modifier = modifier,
         )
@@ -45,18 +46,18 @@ private fun CustomPollDurationDialogContent(
     availableDurations: List<PollDuration>,
     selectedDuration: PollDuration,
     modifier: Modifier = Modifier,
-    onDismissRequest: () -> Unit = {},
+    onDismiss: () -> Unit = {},
     onConfirmation: (PollDuration) -> Unit = {},
 ) {
     Card(
         modifier = Modifier.padding(all = 16.dp),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(size = 16.dp),
     ) {
-        Column(modifier = Modifier.width(width = 240.dp)) {
+        Column(modifier = Modifier.width(width = 260.dp)) {
             Text(
-                text = stringResource(Res.string.editor_poll_duration),
+                text = stringResource(resource = Res.string.editor_poll_duration),
                 color = MaterialTheme.colorScheme.secondary,
-                style = MaterialTheme.typography.bodyLarge,
+                style = MaterialTheme.typography.titleSmall,
                 modifier = Modifier.padding(start = 16.dp, top = 8.dp)
             )
 
@@ -74,7 +75,7 @@ private fun CustomPollDurationDialogContent(
                         checked = item == selectedDuration,
                         onClick = {
                             onConfirmation.invoke(item)
-                            onDismissRequest.invoke()
+                            onDismiss.invoke()
                         },
                     )
                 }

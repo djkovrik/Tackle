@@ -60,6 +60,7 @@
     <string name="editor_content_description_poll">Poll</string>
     <string name="editor_content_description_warning">Sensitive content</string>
     <string name="editor_content_description_schedule">Scheduled post</string>
+    <string name="editor_no_category">No category</string>
 
     <!-- Editor poll -->
     <string name="editor_poll_option">Option</string>
@@ -75,9 +76,6 @@
     <string name="editor_poll_duration_day">1 day</string>
     <string name="editor_poll_duration_two_days">2 days</string>
     <string name="editor_poll_duration_three_days">3 days</string>
-    <string name="editor_poll_duration_four_days">4 days</string>
-    <string name="editor_poll_duration_five_days">5 days</string>
-    <string name="editor_poll_duration_six_days">6 days</string>
     <string name="editor_poll_duration_seven_days">7 days</string>
     <string name="editor_poll_duration_fourteen_days">14 days</string>
     <string name="editor_poll_duration_thirty_days">30 days</string>

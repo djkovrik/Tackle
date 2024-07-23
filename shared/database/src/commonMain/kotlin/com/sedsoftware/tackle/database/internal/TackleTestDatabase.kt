@@ -5,6 +5,7 @@ import com.sedsoftware.tackle.domain.model.CustomEmoji
 import com.sedsoftware.tackle.domain.model.Instance
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.map
 
 internal class TackleTestDatabase : TackleDatabase {
     private val emojiCache: Flow<List<CustomEmoji>>
@@ -25,6 +26,9 @@ internal class TackleTestDatabase : TackleDatabase {
         _instanceInfoCache.value = info
     }
 
-    override suspend fun observeEmojis(): Flow<List<CustomEmoji>> = emojiCache
+    override suspend fun observeEmojis(): Flow<Map<String, List<CustomEmoji>>> = emojiCache.map(::mapList)
+
     override suspend fun getCachedInstanceInfo(): Flow<Instance> = instanceInfoCache
+
+    private fun mapList(from: List<CustomEmoji>): Map<String, List<CustomEmoji>> = from.groupBy { it.category }
 }

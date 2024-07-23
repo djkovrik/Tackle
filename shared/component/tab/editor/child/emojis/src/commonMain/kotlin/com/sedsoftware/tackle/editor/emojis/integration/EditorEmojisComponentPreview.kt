@@ -15,7 +15,7 @@ class EditorEmojisComponentPreview(
     override val model: Value<Model> =
         MutableValue(
             Model(
-                emojis = emojis,
+                emojis = emojis.groupBy { it.category },
                 emojisButtonAvailable = emojisButtonAvailable,
                 emojisContentVisible = emojisContentVisible,
             )

@@ -61,7 +61,7 @@ internal class EditorTabStoreTest : StoreTest<Intent, State, Label>() {
         store.init()
         store.accept(Intent.OnEmojiSelect(emoji))
         // then
-        assertThat(store.state.statusText).isEqualTo(emoji.shortcode)
+        assertThat(store.state.statusText).isEqualTo(":${emoji.shortcode}:")
     }
 
     @Test
@@ -89,6 +89,3 @@ internal class EditorTabStoreTest : StoreTest<Intent, State, Label>() {
             ioContext = Dispatchers.Unconfined,
         ).create(autoInit = false)
 }
-
-//data class OnTextInput(val text: String, val selection: Pair<Int, Int>) : Intent()
-//data class OnEmojiSelect(val emoji: CustomEmoji) : Intent()

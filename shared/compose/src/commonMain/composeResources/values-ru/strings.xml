@@ -57,6 +57,7 @@
     <string name="editor_content_description_poll">Опрос</string>
     <string name="editor_content_description_warning">Чувствительный контент</string>
     <string name="editor_content_description_schedule">Отложенный пост</string>
+    <string name="editor_no_category">No category</string>
 
     <!-- Editor poll -->
     <string name="editor_poll_option">Вариант</string>
@@ -72,9 +73,6 @@
     <string name="editor_poll_duration_day">1 день</string>
     <string name="editor_poll_duration_two_days">2 дня</string>
     <string name="editor_poll_duration_three_days">3 дня</string>
-    <string name="editor_poll_duration_four_days">4 дня</string>
-    <string name="editor_poll_duration_five_days">5 дней</string>
-    <string name="editor_poll_duration_six_days">6 дней</string>
     <string name="editor_poll_duration_seven_days">7 дней</string>
     <string name="editor_poll_duration_fourteen_days">14 дней</string>
     <string name="editor_poll_duration_thirty_days">30 дней</string>

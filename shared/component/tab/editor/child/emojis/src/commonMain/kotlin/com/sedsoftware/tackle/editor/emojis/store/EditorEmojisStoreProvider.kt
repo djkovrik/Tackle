@@ -61,8 +61,8 @@ internal class EditorEmojisStoreProvider(
             reducer = { msg ->
                 when (msg) {
                     is Msg.EmojisListUpdated -> copy(
-                        emojis = msg.list,
-                        emojisAvailable = msg.list.isNotEmpty(),
+                        emojis = msg.emojis,
+                            emojisAvailable = msg.emojis.isNotEmpty(),
                     )
 
                     is Msg.ComponentVisibilityToggled -> copy(
@@ -78,7 +78,7 @@ internal class EditorEmojisStoreProvider(
     }
 
     private sealed interface Msg {
-        data class EmojisListUpdated(val list: List<CustomEmoji>) : Msg
+        data class EmojisListUpdated(val emojis: Map<String, List<CustomEmoji>>) : Msg
         data object ComponentVisibilityToggled : Msg
     }
 }

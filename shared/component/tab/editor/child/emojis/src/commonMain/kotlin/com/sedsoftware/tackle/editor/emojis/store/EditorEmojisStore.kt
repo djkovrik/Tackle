@@ -13,7 +13,7 @@ internal interface EditorEmojisStore : Store<Intent, State, Label> {
     }
 
     data class State(
-        val emojis: List<CustomEmoji> = emptyList(),
+        val emojis: Map<String, List<CustomEmoji>> = emptyMap(),
         val emojisAvailable: Boolean = false,
         val emojisVisible: Boolean = false,
     )

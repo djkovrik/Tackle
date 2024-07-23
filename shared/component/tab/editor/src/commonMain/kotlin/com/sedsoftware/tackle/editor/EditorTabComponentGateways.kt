@@ -22,7 +22,7 @@ interface EditorTabComponentGateways {
 
     interface Database {
         suspend fun cacheServerEmojis(list: List<CustomEmoji>)
-        suspend fun observeCachedEmojis(): Flow<List<CustomEmoji>>
+        suspend fun observeCachedEmojis(): Flow<Map<String, List<CustomEmoji>>>
         suspend fun getCachedInstanceInfo(): Flow<Instance>
     }
 

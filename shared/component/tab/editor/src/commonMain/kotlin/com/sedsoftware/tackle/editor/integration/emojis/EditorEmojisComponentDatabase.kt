@@ -10,5 +10,5 @@ internal class EditorEmojisComponentDatabase(
 ) : EditorEmojisGateways.Database {
 
     override suspend fun insertEmojis(list: List<CustomEmoji>) = database.cacheServerEmojis(list)
-    override suspend fun observeEmojis(): Flow<List<CustomEmoji>> = database.observeCachedEmojis()
+    override suspend fun observeEmojis(): Flow<Map<String, List<CustomEmoji>>> = database.observeCachedEmojis()
 }

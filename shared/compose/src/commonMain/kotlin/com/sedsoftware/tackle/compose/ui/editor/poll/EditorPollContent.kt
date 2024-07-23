@@ -47,7 +47,7 @@ internal fun EditorPollContent(
     onDurationSelected: (PollDuration) -> Unit = {},
     onTextInput: (String, String) -> Unit = { _, _ -> },
     onDurationPickerCall: () -> Unit = {},
-    onDurationPickerCancel: () -> Unit = {},
+    onDurationPickerClose: () -> Unit = {},
 ) {
     Column(modifier = modifier) {
         model.options.forEachIndexed { index, pollOption ->
@@ -123,7 +123,7 @@ internal fun EditorPollContent(
     if (model.durationPickerVisible) {
         CustomPollDurationDialog(
             model = model,
-            onDismissRequest = onDurationPickerCancel,
+            onDismiss = onDurationPickerClose,
             onConfirmation = onDurationSelected,
             modifier = Modifier,
         )

@@ -26,7 +26,7 @@ internal class EditorEmojisManager(
         }
     }
 
-    suspend fun observeCachedEmojis(): Flow<List<CustomEmoji>> {
+    suspend fun observeCachedEmojis(): Flow<Map<String, List<CustomEmoji>>> {
         return database.observeEmojis()
     }
 
