@@ -12,13 +12,14 @@
     <string name="common_retrying">Повторная попытка</string>
     <string name="common_redirecting">Перенаправление</string>
     <string name="common_cancel">Отмена</string>
+    <string name="common_delete">Удалить</string>
     <string name="common_error_no_internet">Интернет соединение отсутствует</string>
     <string name="common_error_server">Ошибка сервера</string>
     <string name="common_error_serialization">Ошибка сериализации данных</string>
     <string name="common_error_file_size_limit">Файл слишком большой</string>
     <string name="common_error_file_type_unknown">Данный тип файлов не поддерживается</string>
     <string name="common_error_file_not_available">Файл недоступен</string>
-    <string name="common_error_attachments_limit">Максимальное количество вложений</string>
+    <string name="common_error_attachments_limit">Достигнуто максимальное количество вложений</string>
     <string name="common_error_unknown">Что-то пошло не так</string>
 
     <!-- Auth component -->
@@ -76,4 +77,10 @@
     <string name="editor_poll_duration_seven_days">7 дней</string>
     <string name="editor_poll_duration_fourteen_days">14 дней</string>
     <string name="editor_poll_duration_thirty_days">30 дней</string>
+
+    <!-- Editor attachments -->
+    <string name="editor_attachment_audio">Аудио</string>
+    <string name="editor_attachment_image">Изображение</string>
+    <string name="editor_attachment_video">Видео</string>
+    <string name="editor_attachment_unknown">Неизвестный</string>
 </resources>

@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.sedsoftware.tackle.compose.model.EditorToolbarItem
 import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
+import com.sedsoftware.tackle.compose.ui.editor.attachment.EditorAttachmentsContent
 import com.sedsoftware.tackle.compose.ui.editor.content.EditorToolbar
 import com.sedsoftware.tackle.compose.ui.editor.content.buildToolbarState
 import com.sedsoftware.tackle.compose.ui.editor.emoji.EditorEmojisContent
@@ -160,6 +161,18 @@ internal fun EditorTabContent(
                         text = "${editorModel.statusCharactersLeft}",
                         style = MaterialTheme.typography.titleSmall,
                         color = MaterialTheme.colorScheme.secondary,
+                        modifier = Modifier,
+                    )
+                }
+            }
+
+            // Attachments
+            if (attachmentsModel.attachmentsContentVisible) {
+                item {
+                    EditorAttachmentsContent(
+                        model = attachmentsModel,
+                        onDelete = component.attachments::onFileDeleted,
+                        onRetry = component.attachments::onFileRetry,
                         modifier = Modifier,
                     )
                 }

@@ -15,13 +15,14 @@
     <string name="common_retrying">Retrying</string>
     <string name="common_redirecting">Redirecting</string>
     <string name="common_cancel">Cancel</string>
+    <string name="common_delete">Delete</string>
     <string name="common_error_no_internet">No internet connection</string>
     <string name="common_error_server">Server error</string>
     <string name="common_error_serialization">Serialization error</string>
     <string name="common_error_file_size_limit">File is too big</string>
     <string name="common_error_file_type_unknown">File type is not supported</string>
     <string name="common_error_file_not_available">File not available</string>
-    <string name="common_error_attachments_limit">Max possible attachments</string>
+    <string name="common_error_attachments_limit">Max possible attachments already</string>
     <string name="common_error_unknown">Something went wrong</string>
 
     <!-- Auth component -->
@@ -79,4 +80,10 @@
     <string name="editor_poll_duration_seven_days">7 days</string>
     <string name="editor_poll_duration_fourteen_days">14 days</string>
     <string name="editor_poll_duration_thirty_days">30 days</string>
+
+    <!-- Editor attachments -->
+    <string name="editor_attachment_audio">Audio</string>
+    <string name="editor_attachment_image">Image</string>
+    <string name="editor_attachment_video">Video</string>
+    <string name="editor_attachment_unknown">Unknown</string>
 </resources>
