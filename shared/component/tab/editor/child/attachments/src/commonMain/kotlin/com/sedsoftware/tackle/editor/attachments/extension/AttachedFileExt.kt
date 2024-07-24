@@ -25,6 +25,9 @@ internal fun List<AttachedFile>.updateServerCopy(id: String, newCopy: MediaAttac
 internal fun List<AttachedFile>.updateProgress(progress: UploadProgress): List<AttachedFile> =
     map { if (it.id == progress.id) it.copy(uploadProgress = progress.value) else it }
 
+internal fun List<AttachedFile>.getById(id: String): AttachedFile? =
+    firstOrNull { it.id == id }
+
 internal fun List<AttachedFile>.delete(id: String): List<AttachedFile> =
     filterNot { it.id == id }
 

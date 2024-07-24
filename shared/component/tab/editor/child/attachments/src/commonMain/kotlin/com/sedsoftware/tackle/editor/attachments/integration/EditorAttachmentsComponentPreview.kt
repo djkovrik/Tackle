@@ -27,6 +27,7 @@ class EditorAttachmentsComponentPreview(
     override fun onFilesSelected(files: List<PlatformFile>) = Unit
     override fun onFilesSelectedWrapped(files: List<PlatformFileWrapper>) = Unit
     override fun onFileDeleted(id: String) = Unit
+    override fun onFileRetry(id: String) = Unit
     override fun changeComponentAvailability(available: Boolean) = Unit
     override fun updateInstanceConfig(config: Config) = Unit
 }

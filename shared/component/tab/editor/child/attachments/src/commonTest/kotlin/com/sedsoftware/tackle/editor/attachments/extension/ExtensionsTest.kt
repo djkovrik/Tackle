@@ -162,6 +162,21 @@ class ExtensionsTest {
     }
 
     @Test
+    fun `get should return correct file`() = runTest {
+        // given
+        val list = listOf(
+            attachedFileStub.copy(id = "11", status = LOADING),
+            attachedFileStub.copy(id = "22", status = ERROR),
+            attachedFileStub.copy(id = "33", status = PENDING),
+            attachedFileStub.copy(id = "44", status = LOADING),
+        )
+        // when
+        val target = list.getById(id = "33")
+        // then
+        assertThat(target).isEqualTo(list[2])
+    }
+
+    @Test
     fun `wrap should create PlatformWrapper`() = runTest {
         // given
         val name = "file.mp4"

@@ -11,6 +11,7 @@ import com.sedsoftware.tackle.domain.model.PlatformFileWrapper
 import com.sedsoftware.tackle.editor.attachments.domain.EditorAttachmentsManager
 import com.sedsoftware.tackle.editor.attachments.extension.delete
 import com.sedsoftware.tackle.editor.attachments.extension.firstPending
+import com.sedsoftware.tackle.editor.attachments.extension.getById
 import com.sedsoftware.tackle.editor.attachments.extension.hasPending
 import com.sedsoftware.tackle.editor.attachments.extension.updateProgress
 import com.sedsoftware.tackle.editor.attachments.extension.updateServerCopy
@@ -124,6 +125,28 @@ internal class EditorAttachmentsStoreProvider(
                     val currentAttachmentsCount = state().selectedFiles.size
                     publish(Label.AttachmentsCountUpdated(currentAttachmentsCount - 1))
                     dispatch(Msg.FileDeleted(it.id))
+                }
+
+                onIntent<Intent.OnFileRetry> {
+                    state().selectedFiles.getById(id = it.id)?.let { target ->
+                        dispatch(Msg.AttachmentStatusChanged(target.id, AttachedFile.Status.LOADING))
+
+                        launch {
+                            unwrap(
+                                result = withContext(ioContext) { manager.upload(target) },
+                                onSuccess = { mediaAttachment: MediaAttachment ->
+                                    dispatch(Msg.AttachmentStatusChanged(target.id, AttachedFile.Status.LOADED))
+                                    dispatch(Msg.AttachmentLoaded(target.id, mediaAttachment))
+                                    forward(Action.UploadNextPendingAttachment)
+                                },
+                                onError = { throwable: Throwable ->
+                                    dispatch(Msg.AttachmentStatusChanged(target.id, AttachedFile.Status.ERROR))
+                                    publish(Label.ErrorCaught(throwable))
+                                    forward(Action.UploadNextPendingAttachment)
+                                }
+                            )
+                        }
+                    }
                 }
 
                 onIntent<Intent.ChangeComponentAvailability> { dispatch(Msg.ComponentAvailabilityChanged(it.available)) }

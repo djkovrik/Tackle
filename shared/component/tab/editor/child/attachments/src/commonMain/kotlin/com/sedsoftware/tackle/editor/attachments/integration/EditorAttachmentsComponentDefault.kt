@@ -76,6 +76,10 @@ class EditorAttachmentsComponentDefault(
         store.accept(EditorAttachmentsStore.Intent.OnFileDeleted(id))
     }
 
+    override fun onFileRetry(id: String) {
+        store.accept(EditorAttachmentsStore.Intent.OnFileRetry(id))
+    }
+
     override fun changeComponentAvailability(available: Boolean) {
         store.accept(EditorAttachmentsStore.Intent.ChangeComponentAvailability(available))
     }

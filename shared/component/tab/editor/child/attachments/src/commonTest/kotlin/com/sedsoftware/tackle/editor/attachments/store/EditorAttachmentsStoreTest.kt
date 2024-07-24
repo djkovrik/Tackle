@@ -193,6 +193,34 @@ internal class EditorAttachmentsStoreTest : StoreTest<Intent, State, Label>() {
         assertThat(labels).contains(Label.AttachmentsCountUpdated(files.size - 1))
     }
 
+    @Test
+    fun `retry should relaunch download`() = runTest {
+        // given
+        val files1 = listOf(
+            PlatformFileStubs.imageNormal.copy(name = "test1.jpg"),
+            PlatformFileStubs.imageNormal.copy(name = "test2.jpg"),
+            PlatformFileStubs.imageNormal.copy(name = "test3.jpg"),
+        )
+
+        val files2 = listOf(
+            PlatformFileStubs.imageNormal.copy(name = "test4.jpg"),
+        )
+
+        // when
+        store.init()
+        store.accept(UpdateInstanceConfig(InstanceConfigStub.config))
+        store.accept(Intent.OnFilesSelected(files1))
+        api.shouldThrowException = true
+        store.accept(Intent.OnFilesSelected(files2))
+        // then
+        assertThat(store.state.selectedFiles.count { it.status == AttachedFile.Status.ERROR }).isEqualTo(files2.size)
+        // and when
+        api.shouldThrowException = false
+        val target = store.state.selectedFiles.first { it.status == AttachedFile.Status.ERROR }
+        store.accept(Intent.OnFileRetry(target.id))
+        // then
+        assertThat(store.state.selectedFiles.count { it.status == AttachedFile.Status.ERROR }).isEqualTo(0)
+    }
 
     override fun createStore(): Store<Intent, State, Label> =
         EditorAttachmentsStoreProvider(

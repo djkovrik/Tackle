@@ -13,6 +13,7 @@ internal interface EditorAttachmentsStore : Store<Intent, State, Label> {
     sealed class Intent {
         data class OnFilesSelected(val files: List<PlatformFileWrapper>) : Intent()
         data class OnFileDeleted(val id: String) : Intent()
+        data class OnFileRetry(val id: String) : Intent()
         data class ChangeComponentAvailability(val available: Boolean) : Intent()
         data class UpdateInstanceConfig(val config: Instance.Config) : Intent()
     }

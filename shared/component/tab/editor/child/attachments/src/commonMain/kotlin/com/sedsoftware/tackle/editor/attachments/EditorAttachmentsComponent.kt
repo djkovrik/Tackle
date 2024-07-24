@@ -13,6 +13,7 @@ interface EditorAttachmentsComponent {
     fun onFilesSelected(files: List<PlatformFile>)
     fun onFilesSelectedWrapped(files: List<PlatformFileWrapper>)
     fun onFileDeleted(id: String)
+    fun onFileRetry(id: String)
     fun changeComponentAvailability(available: Boolean)
     fun updateInstanceConfig(config: Instance.Config)
 
