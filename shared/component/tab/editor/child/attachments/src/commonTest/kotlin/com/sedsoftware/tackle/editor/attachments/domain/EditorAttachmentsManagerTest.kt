@@ -48,6 +48,7 @@ class EditorAttachmentsManagerTest {
                 path = "",
                 mimeType = "image/jpeg",
                 size = 123L,
+                sizeLabel = "123 B",
                 readBytes = { ByteArray(0) },
             ),
             status = AttachedFile.Status.PENDING,

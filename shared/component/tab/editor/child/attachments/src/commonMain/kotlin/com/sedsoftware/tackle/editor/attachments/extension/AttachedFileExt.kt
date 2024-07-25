@@ -6,6 +6,7 @@ import com.sedsoftware.tackle.editor.attachments.model.AttachedFile
 import com.sedsoftware.tackle.editor.attachments.model.UploadProgress
 import com.sedsoftware.tackle.utils.FileUtils
 import com.sedsoftware.tackle.utils.extension.orZero
+import com.sedsoftware.tackle.utils.extension.toHumanReadableSize
 
 internal val List<AttachedFile>.hasPending: Boolean
     get() = count { it.status == AttachedFile.Status.PENDING } > 0
@@ -37,12 +38,16 @@ internal fun wrap(
     path: String?,
     getSize: () -> Long?,
     readBytes: suspend () -> ByteArray,
-): PlatformFileWrapper =
-    PlatformFileWrapper(
+): PlatformFileWrapper {
+    val size = getSize()
+
+    return PlatformFileWrapper(
         name = name,
         extension = extension,
         path = path.orEmpty(),
         mimeType = FileUtils.getMimeTypeByExtension(extension),
-        size = getSize().orZero(),
+        size = size.orZero(),
+        sizeLabel = size.toHumanReadableSize(),
         readBytes = readBytes,
     )
+}

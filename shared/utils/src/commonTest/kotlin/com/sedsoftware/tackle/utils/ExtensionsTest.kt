@@ -136,6 +136,7 @@ class ExtensionsTest {
             path = "",
             mimeType = "audio/ogg",
             size = 0L,
+            sizeLabel = "",
             readBytes = { ByteArray(0) })
 
         val image = PlatformFileWrapper(
@@ -144,6 +145,7 @@ class ExtensionsTest {
             path = "",
             mimeType = "image/jpeg",
             size = 0L,
+            sizeLabel = "",
             readBytes = { ByteArray(0) })
 
         val video = PlatformFileWrapper(
@@ -152,6 +154,7 @@ class ExtensionsTest {
             path = "",
             mimeType = "video/mp4",
             size = 0L,
+            sizeLabel = "",
             readBytes = { ByteArray(0) })
         // when
         // then

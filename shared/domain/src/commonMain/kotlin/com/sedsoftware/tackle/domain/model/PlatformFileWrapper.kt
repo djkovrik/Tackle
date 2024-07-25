@@ -6,5 +6,6 @@ data class PlatformFileWrapper(
     val path: String,
     val mimeType: String,
     val size: Long,
+    val sizeLabel: String,
     val readBytes: suspend () -> ByteArray,
 )

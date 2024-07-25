@@ -10,6 +10,7 @@ internal object PlatformFileStubs {
         path = "",
         mimeType = "image/jpeg",
         size = 12345L,
+        sizeLabel = "",
         readBytes = { ByteArray(0) },
     )
 
@@ -19,6 +20,7 @@ internal object PlatformFileStubs {
         path = "",
         mimeType = "image/jpeg",
         size = 1234567890L,
+        sizeLabel = "",
         readBytes = { ByteArray(0) },
     )
 
@@ -28,6 +30,7 @@ internal object PlatformFileStubs {
         path = "",
         mimeType = "image/jpeg",
         size = 0L,
+        sizeLabel = "",
         readBytes = { ByteArray(0) },
     )
 
@@ -37,6 +40,7 @@ internal object PlatformFileStubs {
         path = "",
         mimeType = "video/mp4",
         size = 12345L,
+        sizeLabel = "",
         readBytes = { ByteArray(0) },
     )
 
@@ -46,6 +50,7 @@ internal object PlatformFileStubs {
         path = "",
         mimeType = "video/mp4",
         size = 1234567890L,
+        sizeLabel = "",
         readBytes = { ByteArray(0) },
     )
 
@@ -55,6 +60,7 @@ internal object PlatformFileStubs {
         path = "",
         mimeType = "image/vnd.adobe.photoshop",
         size = 12345L,
+        sizeLabel = "",
         readBytes = { ByteArray(0) },
     )
 }

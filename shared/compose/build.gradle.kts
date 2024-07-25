@@ -18,6 +18,7 @@ kotlin {
 
         commonMain.dependencies {
             implementation(project(":shared:domain"))
+            implementation(project(":shared:utils"))
 
             implementation(project(":shared:component:root"))
             implementation(project(":shared:component:auth"))

@@ -169,6 +169,7 @@ class EditorTabComponentTest : ComponentTest<EditorTabComponent>() {
             path = "",
             mimeType = "image/jpeg",
             size = 12345L,
+            sizeLabel = "",
             readBytes = { ByteArray(0) },
         )
 

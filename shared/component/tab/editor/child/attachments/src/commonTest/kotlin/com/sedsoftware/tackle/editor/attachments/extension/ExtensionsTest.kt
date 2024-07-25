@@ -191,6 +191,7 @@ class ExtensionsTest {
         assertThat(wrapped.extension).isEqualTo(extension)
         assertThat(wrapped.path).isEqualTo(path)
         assertThat(wrapped.size).isEqualTo(getSize.invoke())
+        assertThat(wrapped.sizeLabel).isEqualTo("123.0 b")
         assertThat(wrapped.mimeType).isEqualTo("video/mp4")
     }
 }
