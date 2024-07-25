@@ -7,3 +7,17 @@
 
 Work In Progress
 
+### Used libraries
+* [Compose Multiplatform](https://github.com/JetBrains/compose-multiplatform)
+* [Compose Image Loader](https://github.com/qdsfdhvh/compose-imageloader)
+* [MVIKotlin](https://github.com/arkivanov/MVIKotlin/)
+* [Decompose](https://github.com/arkivanov/Decompose/)
+* [Ktor](https://github.com/ktorio/ktor)
+* [SqlDelight](https://github.com/cashapp/sqldelight)
+* [Multiplatform Settings](https://github.com/russhwolf/multiplatform-settings)
+* [FileKit](https://github.com/vinceglb/FileKit)
+* [Kotlin Multiplatform OIDC](https://github.com/kalinjul/kotlin-multiplatform-oidc)
+
+### Used resources
+
+* [Icons from Grand Iconic](https://www.flaticon.com/authors/grand-iconic/black-outline?author_id=5014&type=standard)
