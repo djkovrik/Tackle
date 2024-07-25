@@ -2,13 +2,17 @@ package com.sedsoftware.tackle.editor.integration
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.childContext
+import com.arkivanov.decompose.value.Value
+import com.arkivanov.decompose.value.operator.map
 import com.arkivanov.essenty.lifecycle.doOnDestroy
 import com.arkivanov.mvikotlin.core.instancekeeper.getStore
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.labels
 import com.sedsoftware.tackle.domain.ComponentOutput
 import com.sedsoftware.tackle.domain.api.TackleDispatchers
+import com.sedsoftware.tackle.domain.model.CustomEmoji
 import com.sedsoftware.tackle.editor.EditorTabComponent
+import com.sedsoftware.tackle.editor.EditorTabComponent.Model
 import com.sedsoftware.tackle.editor.EditorTabComponentGateways
 import com.sedsoftware.tackle.editor.attachments.EditorAttachmentsComponent
 import com.sedsoftware.tackle.editor.attachments.integration.EditorAttachmentsComponentDefault
@@ -30,6 +34,7 @@ import com.sedsoftware.tackle.editor.store.EditorTabStore.Label
 import com.sedsoftware.tackle.editor.store.EditorTabStoreProvider
 import com.sedsoftware.tackle.editor.warning.EditorWarningComponent
 import com.sedsoftware.tackle.editor.warning.integration.EditorWarningComponentDefault
+import com.sedsoftware.tackle.utils.extension.asValue
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
@@ -47,10 +52,7 @@ class EditorTabComponentDefault(
 
     override val attachments: EditorAttachmentsComponent =
         EditorAttachmentsComponentDefault(
-            componentContext = childContext(
-                key = "Editor attachments",
-                lifecycle = lifecycle
-            ),
+            componentContext = childContext(key = "Editor attachments"),
             storeFactory = storeFactory,
             api = EditorAttachmentsComponentApi(api),
             dispatchers = dispatchers,
@@ -59,10 +61,7 @@ class EditorTabComponentDefault(
 
     override val emojis: EditorEmojisComponent =
         EditorEmojisComponentDefault(
-            componentContext = childContext(
-                key = "Editor emojis",
-                lifecycle = lifecycle
-            ),
+            componentContext = childContext(key = "Editor emojis"),
             storeFactory = storeFactory,
             api = EditorEmojisComponentApi(api),
             database = EditorEmojisComponentDatabase(database),
@@ -73,10 +72,7 @@ class EditorTabComponentDefault(
 
     override val header: EditorHeaderComponent =
         EditorHeaderComponentDefault(
-            componentContext = childContext(
-                key = "Editor header",
-                lifecycle = lifecycle
-            ),
+            componentContext = childContext(key = "Editor header"),
             storeFactory = storeFactory,
             settings = EditorHeaderComponentSettings(settings),
             tools = EditorHeaderComponentTools(tools),
@@ -86,20 +82,14 @@ class EditorTabComponentDefault(
 
     override val poll: EditorPollComponent =
         EditorPollComponentDefault(
-            componentContext = childContext(
-                key = "Editor poll",
-                lifecycle = lifecycle
-            ),
+            componentContext = childContext(key = "Editor poll"),
             storeFactory = storeFactory,
             dispatchers = dispatchers,
         )
 
     override val warning: EditorWarningComponent =
         EditorWarningComponentDefault(
-            componentContext = childContext(
-                key = "Editor warning",
-                lifecycle = lifecycle
-            ),
+            componentContext = childContext(key = "Editor warning"),
             storeFactory = storeFactory,
             dispatchers = dispatchers,
         )
@@ -137,9 +127,38 @@ class EditorTabComponentDefault(
         }
     }
 
+    override val model: Value<Model> = store.asValue().map(stateToModel)
+
+    override fun onTextInput(text: String, selection: Pair<Int, Int>) {
+        store.accept(EditorTabStore.Intent.OnTextInput(text, selection))
+    }
+
+    override fun onEmojiSelected(emoji: CustomEmoji) {
+        store.accept(EditorTabStore.Intent.OnEmojiSelect(emoji))
+    }
+
+    override fun onPollButtonClicked() {
+        val isPollVisibleNow = poll.model.value.pollContentVisible
+        attachments.changeComponentAvailability(available = isPollVisibleNow)
+        poll.toggleComponentVisibility()
+    }
+
+    override fun onEmojisButtonClicked() {
+        emojis.toggleComponentVisibility()
+    }
+
+    override fun onWarningButtonClicked() {
+        warning.toggleComponentVisibility()
+    }
+
+    override fun onSendButtonClicked() {
+        TODO("Status sending is not implemented yet")
+    }
+
     private fun onChildOutput(output: ComponentOutput) {
         when (output) {
-            is ComponentOutput.StatusEditor.EmojiSelected -> TODO("Emoji selected")
+            is ComponentOutput.StatusEditor.AttachmentsCountUpdated -> poll.changeComponentAvailability(available = output.count == 0)
+            is ComponentOutput.StatusEditor.EmojiSelected -> onEmojiSelected(output.emoji)
             else -> editorOutput(output)
         }
     }

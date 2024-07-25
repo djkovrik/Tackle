@@ -23,8 +23,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
-import com.sedsoftware.tackle.compose.model.getIcon
-import com.sedsoftware.tackle.compose.model.getTitle
+import com.sedsoftware.tackle.compose.extension.getIcon
+import com.sedsoftware.tackle.compose.extension.getTitle
 import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
 import com.sedsoftware.tackle.compose.ui.editor.header.content.ActionBarIcon
 import com.sedsoftware.tackle.compose.ui.editor.header.content.ActionBarIconWithText
@@ -108,7 +108,7 @@ internal fun EditorHeaderContent(
                         .background(color = MaterialTheme.colorScheme.primary)
                 ) {
                     Image(
-                        painter = rememberImagePainter(model.avatar),
+                        painter = rememberImagePainter(url = model.avatar),
                         contentDescription = null,
                         contentScale = ContentScale.Crop,
                         modifier = Modifier

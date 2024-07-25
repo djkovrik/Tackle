@@ -1,4 +1,4 @@
-package com.sedsoftware.tackle.compose.widget
+package com.sedsoftware.tackle.compose.custom
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.material3.MaterialTheme

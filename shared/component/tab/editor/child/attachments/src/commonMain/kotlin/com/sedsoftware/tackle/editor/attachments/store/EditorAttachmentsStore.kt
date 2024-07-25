@@ -12,7 +12,9 @@ internal interface EditorAttachmentsStore : Store<Intent, State, Label> {
 
     sealed class Intent {
         data class OnFilesSelected(val files: List<PlatformFileWrapper>) : Intent()
-        data class ChangeFeatureState(val available: Boolean) : Intent()
+        data class OnFileDeleted(val id: String) : Intent()
+        data class OnFileRetry(val id: String) : Intent()
+        data class ChangeComponentAvailability(val available: Boolean) : Intent()
         data class UpdateInstanceConfig(val config: Instance.Config) : Intent()
     }
 
@@ -21,11 +23,13 @@ internal interface EditorAttachmentsStore : Store<Intent, State, Label> {
         val configLoaded: Boolean = false,
         val selectedFiles: List<AttachedFile> = emptyList(),
         val attachmentsAtLimit: Boolean = false,
-        val attachmentsAvailable: Boolean = false,
+        val attachmentsAvailable: Boolean = true,
+        val attachmentsVisible: Boolean = false,
         val hasUploadInProgress: Boolean = false,
     )
 
     sealed class Label {
+        data class AttachmentsCountUpdated(val count: Int) : Label()
         data class ErrorCaught(val throwable: Throwable) : Label()
     }
 }

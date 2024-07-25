@@ -14,6 +14,6 @@ internal class EditorAttachmentsComponentApi(
         onUpload: (Int) -> Unit,
         thumbnail: PlatformFileWrapper?,
         description: String?,
-        focus: String?
+        focus: String?,
     ): MediaAttachment = api.sendFile(file, onUpload, thumbnail, description)
 }

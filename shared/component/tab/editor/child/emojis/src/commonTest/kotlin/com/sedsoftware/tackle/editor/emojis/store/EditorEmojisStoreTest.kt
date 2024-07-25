@@ -1,6 +1,7 @@
 package com.sedsoftware.tackle.editor.emojis.store
 
 import assertk.assertThat
+import assertk.assertions.isFalse
 import assertk.assertions.isNotEmpty
 import assertk.assertions.isTrue
 import com.arkivanov.mvikotlin.core.store.Store
@@ -17,7 +18,7 @@ import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 
-internal class EditorEmojisStoreTest : StoreTest<Nothing, EditorEmojisStore.State, EditorEmojisStore.Label>() {
+internal class EditorEmojisStoreTest : StoreTest<EditorEmojisStore.Intent, EditorEmojisStore.State, EditorEmojisStore.Label>() {
 
     private val api: EditorEmojisApiStub = EditorEmojisApiStub()
     private val db: EditorEmojisDatabaseStub = EditorEmojisDatabaseStub()
@@ -54,11 +55,25 @@ internal class EditorEmojisStoreTest : StoreTest<Nothing, EditorEmojisStore.Stat
         // when
         store.init()
         // then
-        assertThat(store.state.emojiPickerAvailable).isTrue()
+        assertThat(store.state.emojisAvailable).isTrue()
         assertThat(store.state.emojis).isNotEmpty()
     }
 
-    override fun createStore(): Store<Nothing, EditorEmojisStore.State, EditorEmojisStore.Label> =
+    @Test
+    fun `ToggleComponentVisibility should change visibility state`() = runTest {
+        // given
+        // when
+        store.init()
+        store.accept(EditorEmojisStore.Intent.ToggleComponentVisibility)
+        // then
+        assertThat(store.state.emojisVisible).isTrue()
+        // when
+        store.accept(EditorEmojisStore.Intent.ToggleComponentVisibility)
+        // then
+        assertThat(store.state.emojisVisible).isFalse()
+    }
+
+    override fun createStore(): Store<EditorEmojisStore.Intent, EditorEmojisStore.State, EditorEmojisStore.Label> =
         EditorEmojisStoreProvider(
             storeFactory = DefaultStoreFactory(),
             manager = manager,

@@ -18,7 +18,7 @@ import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 
-class MainComponentTest : ComponentTest<MainComponentDefault>() {
+class MainComponentTest : ComponentTest<MainComponent>() {
 
     private val unauthorizedApi: UnauthorizedApi = mock<UnauthorizedApi>()
     private val authorizedApi: AuthorizedApi = mock<AuthorizedApi>()
@@ -89,7 +89,7 @@ class MainComponentTest : ComponentTest<MainComponentDefault>() {
         assertThat(component.childStack.active.instance).hasClass(MainComponent.Child.TabNotifications::class)
     }
 
-    override fun createComponent(): MainComponentDefault =
+    override fun createComponent(): MainComponent =
         MainComponentDefault(
             componentContext = DefaultComponentContext(lifecycle),
             storeFactory = DefaultStoreFactory(),

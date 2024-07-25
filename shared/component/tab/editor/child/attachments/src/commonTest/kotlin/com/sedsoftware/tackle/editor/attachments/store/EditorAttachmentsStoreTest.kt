@@ -1,6 +1,8 @@
 package com.sedsoftware.tackle.editor.attachments.store
 
 import assertk.assertThat
+import assertk.assertions.contains
+import assertk.assertions.containsNone
 import assertk.assertions.hasClass
 import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
@@ -42,15 +44,15 @@ internal class EditorAttachmentsStoreTest : StoreTest<Intent, State, Label>() {
     }
 
     @Test
-    fun `ChangeFeatureState should change feature availability`() = runTest {
+    fun `ChangeFeatureAvailability should change feature availability`() = runTest {
         // given
         // when
         store.init()
-        store.accept(Intent.ChangeFeatureState(true))
+        store.accept(Intent.ChangeComponentAvailability(true))
         // then
         assertThat(store.state.attachmentsAvailable).isTrue()
         // and when
-        store.accept(Intent.ChangeFeatureState(false))
+        store.accept(Intent.ChangeComponentAvailability(false))
         // then
         assertThat(store.state.attachmentsAvailable).isFalse()
     }
@@ -83,6 +85,7 @@ internal class EditorAttachmentsStoreTest : StoreTest<Intent, State, Label>() {
         assertThat(store.state.selectedFiles.size).isEqualTo(files.size)
         assertThat(store.state.attachmentsAtLimit).isTrue()
         assertThat(store.state.selectedFiles.hasPending).isFalse()
+        assertThat(labels).contains(Label.AttachmentsCountUpdated(files.size))
     }
 
     @Test
@@ -166,6 +169,57 @@ internal class EditorAttachmentsStoreTest : StoreTest<Intent, State, Label>() {
         store.accept(Intent.OnFilesSelected(files))
         // then
         assertThat(store.state.selectedFiles.count { it.status == AttachedFile.Status.ERROR }).isEqualTo(files.size)
+    }
+
+    @Test
+    fun `delete should remove target file`() = runTest {
+        // given
+        val files = listOf(
+            PlatformFileStubs.imageNormal.copy(name = "test1.jpg"),
+            PlatformFileStubs.imageNormal.copy(name = "test2.jpg"),
+            PlatformFileStubs.imageNormal.copy(name = "test3.jpg"),
+            PlatformFileStubs.imageNormal.copy(name = "test4.jpg"),
+        )
+        // when
+        store.init()
+        store.accept(UpdateInstanceConfig(InstanceConfigStub.config))
+        store.accept(Intent.OnFilesSelected(files))
+        // given
+        val fileToDelete = store.state.selectedFiles[1]
+        // when
+        store.accept(Intent.OnFileDeleted(fileToDelete.id))
+        // then
+        assertThat(store.state.selectedFiles).containsNone(fileToDelete)
+        assertThat(labels).contains(Label.AttachmentsCountUpdated(files.size - 1))
+    }
+
+    @Test
+    fun `retry should relaunch download`() = runTest {
+        // given
+        val files1 = listOf(
+            PlatformFileStubs.imageNormal.copy(name = "test1.jpg"),
+            PlatformFileStubs.imageNormal.copy(name = "test2.jpg"),
+            PlatformFileStubs.imageNormal.copy(name = "test3.jpg"),
+        )
+
+        val files2 = listOf(
+            PlatformFileStubs.imageNormal.copy(name = "test4.jpg"),
+        )
+
+        // when
+        store.init()
+        store.accept(UpdateInstanceConfig(InstanceConfigStub.config))
+        store.accept(Intent.OnFilesSelected(files1))
+        api.shouldThrowException = true
+        store.accept(Intent.OnFilesSelected(files2))
+        // then
+        assertThat(store.state.selectedFiles.count { it.status == AttachedFile.Status.ERROR }).isEqualTo(files2.size)
+        // and when
+        api.shouldThrowException = false
+        val target = store.state.selectedFiles.first { it.status == AttachedFile.Status.ERROR }
+        store.accept(Intent.OnFileRetry(target.id))
+        // then
+        assertThat(store.state.selectedFiles.count { it.status == AttachedFile.Status.ERROR }).isEqualTo(0)
     }
 
     override fun createStore(): Store<Intent, State, Label> =

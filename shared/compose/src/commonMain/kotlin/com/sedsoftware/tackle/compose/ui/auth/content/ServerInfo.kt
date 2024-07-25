@@ -16,7 +16,7 @@ import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
 internal fun ServerInfo(
     name: String,
     description: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Card(
         colors = CardDefaults.cardColors(

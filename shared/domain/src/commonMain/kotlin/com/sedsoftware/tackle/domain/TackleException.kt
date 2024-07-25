@@ -9,7 +9,7 @@ sealed class TackleException(
     data object MissedRegistrationData : TackleException()
 
     class NetworkException(
-        cause: Throwable
+        cause: Throwable,
     ) : TackleException(
         cause = cause,
         action = Action.SHOW_MESSAGE,
@@ -29,13 +29,13 @@ sealed class TackleException(
     )
 
     class SerializationException(
-        cause: Throwable
+        cause: Throwable,
     ) : TackleException(
         cause = cause,
         action = Action.SHOW_MESSAGE,
     )
 
-    data object FileSizeExceeded: TackleException(action = Action.SHOW_MESSAGE)
+    data object FileSizeExceeded : TackleException(action = Action.SHOW_MESSAGE)
 
     data object FileTypeNotSupported : TackleException(action = Action.SHOW_MESSAGE)
 
@@ -44,7 +44,7 @@ sealed class TackleException(
     class AttachmentsLimitExceeded(val limit: Int) : TackleException(action = Action.SHOW_MESSAGE)
 
     class Unknown(
-        cause: Throwable
+        cause: Throwable,
     ) : TackleException(
         cause = cause,
         action = Action.SHOW_MESSAGE,

@@ -12,7 +12,7 @@ internal class StatusResponse(
     @SerialName("account") val account: AccountResponse,
     @SerialName("content") val content: String,
     @SerialName("visibility") val visibility: StatusVisibilityRemote = StatusVisibilityRemote.UNKNOWN,
-    @SerialName("sensitive") val sensitive: Boolean ,
+    @SerialName("sensitive") val sensitive: Boolean,
     @SerialName("spoiler_text") val spoilerText: String,
     @SerialName("media_attachments") val mediaAttachments: List<MediaAttachmentResponse> = emptyList(),
     @SerialName("application") val application: ApplicationResponse? = null,

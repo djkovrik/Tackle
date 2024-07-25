@@ -13,7 +13,7 @@ import com.sedsoftware.tackle.notifications.NotificationsTabComponent
 @Composable
 internal fun NotificationsTabContent(
     component: NotificationsTabComponent,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Box(
         contentAlignment = Alignment.Center,

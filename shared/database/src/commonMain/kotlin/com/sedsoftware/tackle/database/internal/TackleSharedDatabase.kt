@@ -19,7 +19,7 @@ import kotlin.coroutines.CoroutineContext
 internal class TackleSharedDatabase(
     private val currentDomainProvider: () -> String,
     private val coroutineContext: CoroutineContext,
-    private val driver: SqlDriver
+    private val driver: SqlDriver,
 ) : TackleDatabase {
 
     private val currentDomain: String
@@ -48,7 +48,7 @@ internal class TackleSharedDatabase(
         }
     }
 
-    override suspend fun observeEmojis(): Flow<List<CustomEmoji>> =
+    override suspend fun observeEmojis(): Flow<Map<String, List<CustomEmoji>>> =
         queries.selectEmojis(currentDomain)
             .asFlow()
             .mapToList(coroutineContext)

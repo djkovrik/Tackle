@@ -2,8 +2,8 @@ package com.sedsoftware.tackle.network.internal
 
 import com.sedsoftware.tackle.domain.api.AuthorizedApi
 import com.sedsoftware.tackle.domain.model.Account
-import com.sedsoftware.tackle.domain.model.PlatformFileWrapper
 import com.sedsoftware.tackle.domain.model.MediaAttachment
+import com.sedsoftware.tackle.domain.model.PlatformFileWrapper
 import com.sedsoftware.tackle.network.mappers.AccountMapper
 import com.sedsoftware.tackle.network.mappers.MediaAttachmentMapper
 import com.sedsoftware.tackle.network.response.AccountResponse
@@ -34,7 +34,7 @@ internal class TackleAuthorizedApi(
         onUpload: (Int) -> Unit,
         thumbnail: PlatformFileWrapper?,
         description: String?,
-        focus: String?
+        focus: String?,
     ): MediaAttachment =
         doRequest<MediaAttachmentResponse, MediaAttachment>(
             requestUrl = "$instanceUrl/api/v2/media",

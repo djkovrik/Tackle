@@ -57,8 +57,12 @@ class EditorPollComponentDefault(
         store.accept(EditorPollStore.Intent.OnDeletePollOption(id))
     }
 
-    override fun changeFeatureState(available: Boolean) {
-        store.accept(EditorPollStore.Intent.ChangePollState(available))
+    override fun changeComponentAvailability(available: Boolean) {
+        store.accept(EditorPollStore.Intent.ChangeComponentAvailability(available))
+    }
+
+    override fun toggleComponentVisibility() {
+        store.accept(EditorPollStore.Intent.ToggleComponentVisibility)
     }
 
     override fun updateInstanceConfig(config: Config) {

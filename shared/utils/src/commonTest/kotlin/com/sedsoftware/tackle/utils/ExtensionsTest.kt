@@ -12,6 +12,7 @@ import com.sedsoftware.tackle.utils.extension.isUnauthorized
 import com.sedsoftware.tackle.utils.extension.isVideo
 import com.sedsoftware.tackle.utils.extension.orFalse
 import com.sedsoftware.tackle.utils.extension.orZero
+import com.sedsoftware.tackle.utils.extension.toHumanReadableSize
 import com.sedsoftware.tackle.utils.extension.toLocalDate
 import com.sedsoftware.tackle.utils.extension.toLocalDateTime
 import kotlinx.coroutines.test.runTest
@@ -135,6 +136,7 @@ class ExtensionsTest {
             path = "",
             mimeType = "audio/ogg",
             size = 0L,
+            sizeLabel = "",
             readBytes = { ByteArray(0) })
 
         val image = PlatformFileWrapper(
@@ -143,6 +145,7 @@ class ExtensionsTest {
             path = "",
             mimeType = "image/jpeg",
             size = 0L,
+            sizeLabel = "",
             readBytes = { ByteArray(0) })
 
         val video = PlatformFileWrapper(
@@ -151,6 +154,7 @@ class ExtensionsTest {
             path = "",
             mimeType = "video/mp4",
             size = 0L,
+            sizeLabel = "",
             readBytes = { ByteArray(0) })
         // when
         // then
@@ -165,5 +169,37 @@ class ExtensionsTest {
         assertThat(video.isAudio).isFalse()
         assertThat(video.isImage).isFalse()
         assertThat(video.isVideo).isTrue()
+    }
+
+    @Test
+    fun `toHumanReadableSize should format long values as decimal`() = runTest {
+        // given
+        val bytes = 123L
+        val kilobytes = 12345L
+        val megabytes = 45678901L
+        // when
+        val bytesFormatted = bytes.toHumanReadableSize()
+        val kilobytesFormatted = kilobytes.toHumanReadableSize()
+        val megabytesFormatted = megabytes.toHumanReadableSize()
+        // then
+        assertThat(bytesFormatted).isEqualTo("123.0 b")
+        assertThat(kilobytesFormatted).isEqualTo("12.3 Kb")
+        assertThat(megabytesFormatted).isEqualTo("45.7 Mb")
+    }
+
+    @Test
+    fun `toHumanReadableSize should format long values as binary`() = runTest {
+        // given
+        val bytes = 123L
+        val kilobytes = 12345L
+        val megabytes = 45678901L
+        // when
+        val bytesFormatted = bytes.toHumanReadableSize(useBinary = true)
+        val kilobytesFormatted = kilobytes.toHumanReadableSize(useBinary = true)
+        val megabytesFormatted = megabytes.toHumanReadableSize(useBinary = true)
+        // then
+        assertThat(bytesFormatted).isEqualTo("123.0 b")
+        assertThat(kilobytesFormatted).isEqualTo("12.1 Kb")
+        assertThat(megabytesFormatted).isEqualTo("43.6 Mb")
     }
 }

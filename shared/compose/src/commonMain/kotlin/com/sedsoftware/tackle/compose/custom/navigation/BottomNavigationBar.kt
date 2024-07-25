@@ -1,4 +1,4 @@
-package com.sedsoftware.tackle.compose.widget.navigation
+package com.sedsoftware.tackle.compose.custom.navigation
 
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState

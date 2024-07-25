@@ -76,7 +76,7 @@ internal class AuthStoreProvider(
                                 if (isAuthorized) {
                                     forward(Action.CheckCurrentCredentials)
                                 } else {
-                                    dispatch(Msg.CredentialsStateChanged(newState =  CredentialsState.UNAUTHORIZED))
+                                    dispatch(Msg.CredentialsStateChanged(newState = CredentialsState.UNAUTHORIZED))
                                 }
                             },
                             onError = { throwable ->

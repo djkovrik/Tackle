@@ -9,7 +9,9 @@ import com.sedsoftware.tackle.domain.model.Instance
 import com.sedsoftware.tackle.domain.model.MediaAttachment
 import com.sedsoftware.tackle.domain.model.PlatformFileWrapper
 import com.sedsoftware.tackle.editor.attachments.domain.EditorAttachmentsManager
+import com.sedsoftware.tackle.editor.attachments.extension.delete
 import com.sedsoftware.tackle.editor.attachments.extension.firstPending
+import com.sedsoftware.tackle.editor.attachments.extension.getById
 import com.sedsoftware.tackle.editor.attachments.extension.hasPending
 import com.sedsoftware.tackle.editor.attachments.extension.updateProgress
 import com.sedsoftware.tackle.editor.attachments.extension.updateServerCopy
@@ -115,9 +117,39 @@ internal class EditorAttachmentsStoreProvider(
                         dispatch(Msg.UploadQueueStarted)
                         forward(Action.UploadNextPendingAttachment)
                     }
+
+                    publish(Label.AttachmentsCountUpdated(newSelectionSize))
                 }
 
-                onIntent<Intent.ChangeFeatureState> { dispatch(Msg.FeatureStateChanged(it.available)) }
+                onIntent<Intent.OnFileDeleted> {
+                    val currentAttachmentsCount = state().selectedFiles.size
+                    publish(Label.AttachmentsCountUpdated(currentAttachmentsCount - 1))
+                    dispatch(Msg.FileDeleted(it.id))
+                }
+
+                onIntent<Intent.OnFileRetry> {
+                    state().selectedFiles.getById(id = it.id)?.let { target ->
+                        dispatch(Msg.AttachmentStatusChanged(target.id, AttachedFile.Status.LOADING))
+
+                        launch {
+                            unwrap(
+                                result = withContext(ioContext) { manager.upload(target) },
+                                onSuccess = { mediaAttachment: MediaAttachment ->
+                                    dispatch(Msg.AttachmentStatusChanged(target.id, AttachedFile.Status.LOADED))
+                                    dispatch(Msg.AttachmentLoaded(target.id, mediaAttachment))
+                                    forward(Action.UploadNextPendingAttachment)
+                                },
+                                onError = { throwable: Throwable ->
+                                    dispatch(Msg.AttachmentStatusChanged(target.id, AttachedFile.Status.ERROR))
+                                    publish(Label.ErrorCaught(throwable))
+                                    forward(Action.UploadNextPendingAttachment)
+                                }
+                            )
+                        }
+                    }
+                }
+
+                onIntent<Intent.ChangeComponentAvailability> { dispatch(Msg.ComponentAvailabilityChanged(it.available)) }
 
                 onIntent<Intent.UpdateInstanceConfig> { dispatch(Msg.InstanceConfigAvailable(it.config)) }
             },
@@ -153,8 +185,13 @@ internal class EditorAttachmentsStoreProvider(
                         hasUploadInProgress = false,
                     )
 
-                    is Msg.FeatureStateChanged -> copy(
+                    is Msg.ComponentAvailabilityChanged -> copy(
                         attachmentsAvailable = msg.available,
+                    )
+
+                    is Msg.FileDeleted -> copy(
+                        selectedFiles = selectedFiles.delete(msg.id),
+                        attachmentsAtLimit = false,
                     )
                 }
             }
@@ -174,6 +211,7 @@ internal class EditorAttachmentsStoreProvider(
         data class AttachmentLoaded(val id: String, val serverAttachment: MediaAttachment) : Msg
         data object UploadQueueStarted : Msg
         data object UploadQueueCompleted : Msg
-        data class FeatureStateChanged(val available: Boolean) : Msg
+        data class ComponentAvailabilityChanged(val available: Boolean) : Msg
+        data class FileDeleted(val id: String) : Msg
     }
 }

@@ -1,4 +1,4 @@
-package com.sedsoftware.tackle.compose.widget
+package com.sedsoftware.tackle.compose.custom
 
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode

@@ -10,7 +10,7 @@ interface EditorAttachmentsGateways {
             onUpload: (Int) -> Unit = {},
             thumbnail: PlatformFileWrapper? = null,
             description: String? = null,
-            focus: String? = null
+            focus: String? = null,
         ): MediaAttachment
     }
 }

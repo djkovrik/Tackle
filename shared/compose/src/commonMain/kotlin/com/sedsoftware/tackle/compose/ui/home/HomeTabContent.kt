@@ -13,7 +13,7 @@ import com.sedsoftware.tackle.home.HomeTabComponent
 @Composable
 internal fun HomeTabContent(
     component: HomeTabComponent,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Box(
         contentAlignment = Alignment.Center,

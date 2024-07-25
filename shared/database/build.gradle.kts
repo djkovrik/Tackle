@@ -13,8 +13,6 @@ sqldelight {
 }
 
 kotlin {
-    task("testClasses")
-
     sourceSets {
         commonMain {
             dependencies {

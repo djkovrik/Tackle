@@ -12,13 +12,14 @@
     <string name="common_retrying">Повторная попытка</string>
     <string name="common_redirecting">Перенаправление</string>
     <string name="common_cancel">Отмена</string>
+    <string name="common_delete">Удалить</string>
     <string name="common_error_no_internet">Интернет соединение отсутствует</string>
     <string name="common_error_server">Ошибка сервера</string>
     <string name="common_error_serialization">Ошибка сериализации данных</string>
     <string name="common_error_file_size_limit">Файл слишком большой</string>
     <string name="common_error_file_type_unknown">Данный тип файлов не поддерживается</string>
     <string name="common_error_file_not_available">Файл недоступен</string>
-    <string name="common_error_attachments_limit">Максимальное количество вложений</string>
+    <string name="common_error_attachments_limit">Достигнуто максимальное количество вложений</string>
     <string name="common_error_unknown">Что-то пошло не так</string>
 
     <!-- Auth component -->
@@ -41,6 +42,8 @@
     <string name="main_tab_notifications">Уведомления</string>
 
     <!-- Editor component -->
+    <string name="editor_input_hint">О чем думаете?</string>
+    <string name="editor_warning_hint">Предупреждение о чувствительном контенте</string>
     <string name="editor_language_default">По умолчанию</string>
     <string name="editor_status_visibility_public">Публичный</string>
     <string name="editor_status_visibility_public_desc">Виден публично, включен в публичные подборки</string>
@@ -50,4 +53,35 @@
     <string name="editor_status_visibility_private_desc">Виден только подписчикам и упомянутым пользователям</string>
     <string name="editor_status_visibility_direct">Личный</string>
     <string name="editor_status_visibility_direct_desc">Виден только упомянутым пользователям</string>
+    <string name="editor_content_description_attach">Прикрепить файл</string>
+    <string name="editor_content_description_emoji">Смайлы</string>
+    <string name="editor_content_description_poll">Опрос</string>
+    <string name="editor_content_description_warning">Чувствительный контент</string>
+    <string name="editor_content_description_schedule">Отложенный пост</string>
+    <string name="editor_no_category">No category</string>
+
+    <!-- Editor poll -->
+    <string name="editor_poll_option">Вариант</string>
+    <string name="editor_poll_multiple">Разрешить множественный выбор</string>
+    <string name="editor_poll_duration">Длительность</string>
+    <string name="editor_poll_duration_five_minutes">5 минут</string>
+    <string name="editor_poll_duration_ten_minutes">10 минут</string>
+    <string name="editor_poll_duration_thirty_minutes">30 минут</string>
+    <string name="editor_poll_duration_hour">1 час</string>
+    <string name="editor_poll_duration_three_hours">3 часа</string>
+    <string name="editor_poll_duration_six_hours">6 часов</string>
+    <string name="editor_poll_duration_twelve_hours">12 часов</string>
+    <string name="editor_poll_duration_day">1 день</string>
+    <string name="editor_poll_duration_two_days">2 дня</string>
+    <string name="editor_poll_duration_three_days">3 дня</string>
+    <string name="editor_poll_duration_seven_days">7 дней</string>
+    <string name="editor_poll_duration_fourteen_days">14 дней</string>
+    <string name="editor_poll_duration_thirty_days">30 дней</string>
+
+    <!-- Editor attachments -->
+    <string name="editor_attachment_audio">Аудио</string>
+    <string name="editor_attachment_image">Изображение</string>
+    <string name="editor_attachment_video">Видео</string>
+    <string name="editor_attachment_unknown">Файл</string>
+    <string name="editor_attachment_failed">Ошибка отправки</string>
 </resources>

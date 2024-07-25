@@ -1,4 +1,4 @@
-package com.sedsoftware.tackle.compose.widget
+package com.sedsoftware.tackle.compose.custom
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.PaddingValues

@@ -3,7 +3,7 @@ package com.sedsoftware.tackle.editor.poll
 import com.arkivanov.decompose.value.Value
 import com.sedsoftware.tackle.domain.model.Instance
 import com.sedsoftware.tackle.editor.poll.model.PollDuration
-import com.sedsoftware.tackle.editor.poll.model.PollOption
+import com.sedsoftware.tackle.editor.poll.model.PollChoiceOption
 
 interface EditorPollComponent {
 
@@ -15,11 +15,12 @@ interface EditorPollComponent {
     fun onTextInput(id: String, text: String)
     fun onAddPollOptionClick()
     fun onDeletePollOptionClick(id: String)
-    fun changeFeatureState(available: Boolean)
+    fun changeComponentAvailability(available: Boolean)
+    fun toggleComponentVisibility()
     fun updateInstanceConfig(config: Instance.Config)
 
     data class Model(
-        val options: List<PollOption>,
+        val options: List<PollChoiceOption>,
         val multiselectEnabled: Boolean,
         val duration: PollDuration,
         val availableDurations: List<PollDuration>,
@@ -27,6 +28,6 @@ interface EditorPollComponent {
         val insertionAvailable: Boolean,
         val deletionAvailable: Boolean,
         val pollButtonAvailable: Boolean,
-        val maxOptionTextLength: Int,
+        val pollContentVisible: Boolean,
     )
 }

@@ -10,7 +10,7 @@ interface EditorEmojisGateways {
 
     interface Database {
         suspend fun insertEmojis(list: List<CustomEmoji>)
-        suspend fun observeEmojis(): Flow<List<CustomEmoji>>
+        suspend fun observeEmojis(): Flow<Map<String, List<CustomEmoji>>>
     }
 
     interface Settings {

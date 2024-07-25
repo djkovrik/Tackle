@@ -1,9 +1,12 @@
 package com.sedsoftware.tackle.editor.integration
 
+import com.arkivanov.decompose.value.MutableValue
+import com.arkivanov.decompose.value.Value
 import com.sedsoftware.tackle.domain.model.AppLocale
 import com.sedsoftware.tackle.domain.model.CustomEmoji
 import com.sedsoftware.tackle.domain.model.type.StatusVisibility
 import com.sedsoftware.tackle.editor.EditorTabComponent
+import com.sedsoftware.tackle.editor.EditorTabComponent.Model
 import com.sedsoftware.tackle.editor.attachments.EditorAttachmentsComponent
 import com.sedsoftware.tackle.editor.attachments.integration.EditorAttachmentsComponentPreview
 import com.sedsoftware.tackle.editor.attachments.model.AttachedFile
@@ -14,15 +17,20 @@ import com.sedsoftware.tackle.editor.header.integration.EditorHeaderComponentPre
 import com.sedsoftware.tackle.editor.poll.EditorPollComponent
 import com.sedsoftware.tackle.editor.poll.integration.EditorPollComponentPreview
 import com.sedsoftware.tackle.editor.poll.model.PollDuration
-import com.sedsoftware.tackle.editor.poll.model.PollOption
+import com.sedsoftware.tackle.editor.poll.model.PollChoiceOption
 import com.sedsoftware.tackle.editor.warning.EditorWarningComponent
 import com.sedsoftware.tackle.editor.warning.integration.EditorWarningComponentPreview
 
 class EditorTabComponentPreview(
     attachments: List<AttachedFile> = emptyList(),
-    attachmentsAvailable: Boolean = true,
+    attachmentsButtonAvailable: Boolean = true,
+    attachmentsContentVisible: Boolean = false,
+    emojis: List<CustomEmoji> = emptyList(),
+    emojisButtonAvailable: Boolean = false,
+    emojisContentVisible: Boolean = false,
     avatar: String = "",
     nickname: String = "",
+    domain: String = "",
     recommendedLocale: AppLocale = AppLocale.empty(),
     selectedLocale: AppLocale = AppLocale.empty(),
     availableLocales: List<AppLocale> = emptyList(),
@@ -30,36 +38,40 @@ class EditorTabComponentPreview(
     localePickerDisplayed: Boolean = false,
     statusVisibility: StatusVisibility = StatusVisibility.PUBLIC,
     statusVisibilityPickerDisplayed: Boolean = false,
-    emojis: List<CustomEmoji> = emptyList(),
-    emojiPickerAvailable: Boolean = false,
-    options: List<PollOption> = emptyList(),
+    pollOptions: List<PollChoiceOption> = emptyList(),
     multiselectEnabled: Boolean = false,
     duration: PollDuration = PollDuration.FIVE_MINUTES,
     availableDurations: List<PollDuration> = emptyList(),
     durationPickerVisible: Boolean = false,
     insertionAvailable: Boolean = false,
     deletionAvailable: Boolean = false,
-    pollButtonAvailable: Boolean = false,
-    maxOptionTextLength: Int = 1,
+    pollButtonAvailable: Boolean = true,
+    pollContentVisible: Boolean = false,
     warningText: String = "",
+    warningContentVisible: Boolean = false,
+    statusText: String = "",
+    statusCharactersLeft: Int = -1,
 ) : EditorTabComponent {
 
     override val attachments: EditorAttachmentsComponent =
         EditorAttachmentsComponentPreview(
             attachments = attachments,
-            available = attachmentsAvailable,
+            attachmentsButtonAvailable = attachmentsButtonAvailable,
+            attachmentsContentVisible = attachmentsContentVisible,
         )
 
     override val emojis: EditorEmojisComponent =
         EditorEmojisComponentPreview(
             emojis = emojis,
-            emojiPickerAvailable = emojiPickerAvailable,
+            emojisButtonAvailable = emojisButtonAvailable,
+            emojisContentVisible = emojisContentVisible,
         )
 
     override val header: EditorHeaderComponent =
         EditorHeaderComponentPreview(
             avatar = avatar,
             nickname = nickname,
+            domain = domain,
             recommendedLocale = recommendedLocale,
             selectedLocale = selectedLocale,
             availableLocales = availableLocales,
@@ -71,7 +83,7 @@ class EditorTabComponentPreview(
 
     override val poll: EditorPollComponent =
         EditorPollComponentPreview(
-            options = options,
+            options = pollOptions,
             multiselectEnabled = multiselectEnabled,
             duration = duration,
             availableDurations = availableDurations,
@@ -79,9 +91,28 @@ class EditorTabComponentPreview(
             insertionAvailable = insertionAvailable,
             deletionAvailable = deletionAvailable,
             pollButtonAvailable = pollButtonAvailable,
-            maxOptionTextLength = maxOptionTextLength,
+            pollContentVisible = pollContentVisible,
         )
 
     override val warning: EditorWarningComponent =
-        EditorWarningComponentPreview(warningText)
+        EditorWarningComponentPreview(
+            warningText = warningText,
+            warningContentVisible = warningContentVisible,
+        )
+
+    override val model: Value<Model> =
+        MutableValue(
+            Model(
+                statusText = statusText,
+                statusTextSelection = (0 to statusText.length),
+                statusCharactersLeft = statusCharactersLeft,
+            )
+        )
+
+    override fun onTextInput(text: String, selection: Pair<Int, Int>) = Unit
+    override fun onEmojiSelected(emoji: CustomEmoji) = Unit
+    override fun onPollButtonClicked() = Unit
+    override fun onEmojisButtonClicked() = Unit
+    override fun onWarningButtonClicked() = Unit
+    override fun onSendButtonClicked() = Unit
 }

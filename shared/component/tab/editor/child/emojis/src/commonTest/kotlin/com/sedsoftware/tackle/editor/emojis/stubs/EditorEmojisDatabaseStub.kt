@@ -13,5 +13,5 @@ class EditorEmojisDatabaseStub : EditorEmojisGateways.Database {
         cachedEmoji = list
     }
 
-    override suspend fun observeEmojis(): Flow<List<CustomEmoji>> = flowOf(cachedEmoji)
+    override suspend fun observeEmojis(): Flow<Map<String, List<CustomEmoji>>> = flowOf(cachedEmoji.groupBy { it.category })
 }

@@ -13,7 +13,7 @@ import com.sedsoftware.tackle.explore.ExploreTabComponent
 @Composable
 internal fun ExploreTabContent(
     component: ExploreTabComponent,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Box(
         contentAlignment = Alignment.Center,

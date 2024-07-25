@@ -21,11 +21,17 @@ internal class EditorWarningStoreProvider(
             autoInit = autoInit,
             executorFactory = coroutineExecutorFactory(mainContext) {
                 onIntent<Intent.OnTextInput> { dispatch(Msg.TextInput(it.text)) }
+
+                onIntent<Intent.ToggleComponentVisibility> { dispatch(Msg.ComponentVisibilityToggled) }
             },
             reducer = { msg ->
                 when (msg) {
                     is Msg.TextInput -> copy(
                         text = msg.text,
+                    )
+
+                    is Msg.ComponentVisibilityToggled -> copy(
+                        warningVisible = !warningVisible,
                     )
                 }
             }
@@ -33,5 +39,6 @@ internal class EditorWarningStoreProvider(
 
     private sealed interface Msg {
         data class TextInput(val text: String) : Msg
+        data object ComponentVisibilityToggled : Msg
     }
 }

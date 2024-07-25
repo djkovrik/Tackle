@@ -22,14 +22,14 @@ import com.arkivanov.decompose.extensions.compose.stack.animation.stackAnimation
 import com.sedsoftware.tackle.compose.core.exceptionToString
 import com.sedsoftware.tackle.compose.ui.auth.AuthContent
 import com.sedsoftware.tackle.compose.ui.main.MainContent
-import com.sedsoftware.tackle.compose.widget.CustomSnackBar
+import com.sedsoftware.tackle.compose.custom.CustomSnackBar
 import com.sedsoftware.tackle.root.RootComponent
 import com.sedsoftware.tackle.root.RootComponent.Child
 
 @Composable
 fun RootContent(
     component: RootComponent,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val snackbarHostState: SnackbarHostState = remember { SnackbarHostState() }
 

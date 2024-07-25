@@ -19,8 +19,7 @@ import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
-import tackle.shared.compose.generated.resources.Res.drawable
-import tackle.shared.compose.generated.resources.Res.string
+import tackle.shared.compose.generated.resources.Res
 import tackle.shared.compose.generated.resources.editor_status_visibility_public
 import tackle.shared.compose.generated.resources.editor_status_visibility_public_desc
 import tackle.shared.compose.generated.resources.visibility_public
@@ -72,9 +71,9 @@ internal fun VisibilitySelectorItem(
 private fun VisibilitySelectorItemPreviewLight() {
     TackleScreenPreview {
         VisibilitySelectorItem(
-            iconRes = drawable.visibility_public,
-            textRes = string.editor_status_visibility_public,
-            descriptionRes = string.editor_status_visibility_public_desc,
+            iconRes = Res.drawable.visibility_public,
+            textRes = Res.string.editor_status_visibility_public,
+            descriptionRes = Res.string.editor_status_visibility_public_desc,
         )
     }
 }
@@ -84,9 +83,9 @@ private fun VisibilitySelectorItemPreviewLight() {
 private fun VisibilitySelectorItemPreviewDark() {
     TackleScreenPreview(darkTheme = true) {
         VisibilitySelectorItem(
-            iconRes = drawable.visibility_public,
-            textRes = string.editor_status_visibility_public,
-            descriptionRes = string.editor_status_visibility_public_desc,
+            iconRes = Res.drawable.visibility_public,
+            textRes = Res.string.editor_status_visibility_public,
+            descriptionRes = Res.string.editor_status_visibility_public_desc,
         )
     }
 }

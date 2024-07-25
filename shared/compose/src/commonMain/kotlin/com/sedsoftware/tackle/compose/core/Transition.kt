@@ -1,4 +1,5 @@
 @file:Suppress("MagicNumber")
+
 package com.sedsoftware.tackle.compose.core
 
 import androidx.compose.animation.core.CubicBezierEasing
@@ -22,7 +23,7 @@ internal fun InfiniteTransition.fractionTransition(
     delayMillis: Int = 0,
     offsetMillis: Int = 0,
     repeatMode: RepeatMode = RepeatMode.Restart,
-    easing: Easing = FastOutSlowInEasing
+    easing: Easing = FastOutSlowInEasing,
 ): State<Float> {
     return animateFloat(
         initialValue = initialValue,

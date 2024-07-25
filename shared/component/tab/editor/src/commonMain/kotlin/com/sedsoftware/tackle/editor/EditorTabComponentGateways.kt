@@ -1,7 +1,7 @@
 package com.sedsoftware.tackle.editor
 
-import com.sedsoftware.tackle.domain.model.CustomEmoji
 import com.sedsoftware.tackle.domain.model.AppLocale
+import com.sedsoftware.tackle.domain.model.CustomEmoji
 import com.sedsoftware.tackle.domain.model.Instance
 import com.sedsoftware.tackle.domain.model.MediaAttachment
 import com.sedsoftware.tackle.domain.model.PlatformFileWrapper
@@ -13,16 +13,16 @@ interface EditorTabComponentGateways {
 
         suspend fun sendFile(
             file: PlatformFileWrapper,
-            onUpload : (Int) -> Unit = {},
+            onUpload: (Int) -> Unit = {},
             thumbnail: PlatformFileWrapper? = null,
             description: String? = null,
-            focus: String? = null
+            focus: String? = null,
         ): MediaAttachment
     }
 
     interface Database {
         suspend fun cacheServerEmojis(list: List<CustomEmoji>)
-        suspend fun observeCachedEmojis(): Flow<List<CustomEmoji>>
+        suspend fun observeCachedEmojis(): Flow<Map<String, List<CustomEmoji>>>
         suspend fun getCachedInstanceInfo(): Flow<Instance>
     }
 

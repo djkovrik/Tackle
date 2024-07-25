@@ -160,4 +160,38 @@ class ExtensionsTest {
         // then
         assertThat(newList).containsNone(targetItem)
     }
+
+    @Test
+    fun `get should return correct file`() = runTest {
+        // given
+        val list = listOf(
+            attachedFileStub.copy(id = "11", status = LOADING),
+            attachedFileStub.copy(id = "22", status = ERROR),
+            attachedFileStub.copy(id = "33", status = PENDING),
+            attachedFileStub.copy(id = "44", status = LOADING),
+        )
+        // when
+        val target = list.getById(id = "33")
+        // then
+        assertThat(target).isEqualTo(list[2])
+    }
+
+    @Test
+    fun `wrap should create PlatformWrapper`() = runTest {
+        // given
+        val name = "file.mp4"
+        val extension = "mp4"
+        val path = "pa/th"
+        val getSize = { 123L }
+        val readBytes = { ByteArray(0) }
+        // when
+        val wrapped = wrap(name, extension, path, getSize, readBytes)
+        // then
+        assertThat(wrapped.name).isEqualTo(name)
+        assertThat(wrapped.extension).isEqualTo(extension)
+        assertThat(wrapped.path).isEqualTo(path)
+        assertThat(wrapped.size).isEqualTo(getSize.invoke())
+        assertThat(wrapped.sizeLabel).isEqualTo("123.0 b")
+        assertThat(wrapped.mimeType).isEqualTo("video/mp4")
+    }
 }

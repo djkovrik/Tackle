@@ -7,7 +7,7 @@ import com.sedsoftware.tackle.main.MainComponent
 import com.sedsoftware.tackle.main.model.TackleNavigationTab
 
 class MainComponentPreview(
-    child: MainComponent.Child
+    child: MainComponent.Child,
 ) : MainComponent {
 
     override val childStack: Value<ChildStack<*, MainComponent.Child>> =

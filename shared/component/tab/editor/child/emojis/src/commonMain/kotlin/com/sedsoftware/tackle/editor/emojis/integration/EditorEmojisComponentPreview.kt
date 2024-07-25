@@ -8,16 +8,19 @@ import com.sedsoftware.tackle.editor.emojis.EditorEmojisComponent.Model
 
 class EditorEmojisComponentPreview(
     emojis: List<CustomEmoji> = emptyList(),
-    emojiPickerAvailable: Boolean = false,
+    emojisButtonAvailable: Boolean = false,
+    emojisContentVisible: Boolean = false,
 ) : EditorEmojisComponent {
 
     override val model: Value<Model> =
         MutableValue(
             Model(
-                emojis = emojis,
-                emojiPickerAvailable = emojiPickerAvailable,
+                emojis = emojis.groupBy { it.category },
+                emojisButtonAvailable = emojisButtonAvailable,
+                emojisContentVisible = emojisContentVisible,
             )
         )
 
     override fun onEmojiClicked(emoji: CustomEmoji) = Unit
+    override fun toggleComponentVisibility() = Unit
 }

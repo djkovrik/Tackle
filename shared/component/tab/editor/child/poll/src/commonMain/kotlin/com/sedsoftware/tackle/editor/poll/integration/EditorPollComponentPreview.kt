@@ -6,18 +6,18 @@ import com.sedsoftware.tackle.domain.model.Instance.Config
 import com.sedsoftware.tackle.editor.poll.EditorPollComponent
 import com.sedsoftware.tackle.editor.poll.EditorPollComponent.Model
 import com.sedsoftware.tackle.editor.poll.model.PollDuration
-import com.sedsoftware.tackle.editor.poll.model.PollOption
+import com.sedsoftware.tackle.editor.poll.model.PollChoiceOption
 
 class EditorPollComponentPreview(
-    options: List<PollOption> = emptyList(),
+    options: List<PollChoiceOption> = emptyList(),
     multiselectEnabled: Boolean = false,
     duration: PollDuration = PollDuration.FIVE_MINUTES,
     availableDurations: List<PollDuration> = emptyList(),
     durationPickerVisible: Boolean = false,
     insertionAvailable: Boolean = false,
     deletionAvailable: Boolean = false,
-    pollButtonAvailable: Boolean = false,
-    maxOptionTextLength: Int = 1,
+    pollButtonAvailable: Boolean = true,
+    pollContentVisible: Boolean = false,
 ) : EditorPollComponent {
 
     override val model: Value<Model> =
@@ -31,7 +31,7 @@ class EditorPollComponentPreview(
                 insertionAvailable = insertionAvailable,
                 deletionAvailable = deletionAvailable,
                 pollButtonAvailable = pollButtonAvailable,
-                maxOptionTextLength = maxOptionTextLength,
+                pollContentVisible = pollContentVisible,
             )
         )
 
@@ -41,6 +41,7 @@ class EditorPollComponentPreview(
     override fun onTextInput(id: String, text: String) = Unit
     override fun onAddPollOptionClick() = Unit
     override fun onDeletePollOptionClick(id: String) = Unit
-    override fun changeFeatureState(available: Boolean) = Unit
+    override fun changeComponentAvailability(available: Boolean) = Unit
+    override fun toggleComponentVisibility() = Unit
     override fun updateInstanceConfig(config: Config) = Unit
 }

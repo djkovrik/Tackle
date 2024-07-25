@@ -7,7 +7,7 @@ import com.sedsoftware.tackle.domain.model.Instance
 import com.sedsoftware.tackle.editor.poll.domain.EditorPollManager
 import com.sedsoftware.tackle.editor.poll.extension.applyInput
 import com.sedsoftware.tackle.editor.poll.model.PollDuration
-import com.sedsoftware.tackle.editor.poll.model.PollOption
+import com.sedsoftware.tackle.editor.poll.model.PollChoiceOption
 import com.sedsoftware.tackle.editor.poll.store.EditorPollStore.Intent
 import com.sedsoftware.tackle.editor.poll.store.EditorPollStore.State
 import com.sedsoftware.tackle.utils.StoreCreate
@@ -23,8 +23,8 @@ internal class EditorPollStoreProvider(
     private val ioContext: CoroutineContext,
 ) {
 
-    private val emptyPollOption: PollOption
-        get() = PollOption(id = generateUUID(), text = "")
+    private val emptyPollOption: PollChoiceOption
+        get() = PollChoiceOption(id = generateUUID(), text = "")
 
     @StoreCreate
     fun create(autoInit: Boolean = true): EditorPollStore =
@@ -46,11 +46,19 @@ internal class EditorPollStoreProvider(
                 }
 
                 onIntent<Intent.OnRequestDurationPicker> { dispatch(Msg.DurationDialogVisibilityChanged(it.show)) }
+
                 onIntent<Intent.OnDurationSelected> { dispatch(Msg.DurationSelected(it.duration)) }
+
                 onIntent<Intent.OnMultiselectEnabled> { dispatch(Msg.MultiselectEnabled(it.enabled)) }
-                onIntent<Intent.ChangePollState> { dispatch(Msg.PollAvailabilityChanged(it.available)) }
+
+                onIntent<Intent.ChangeComponentAvailability> { dispatch(Msg.ComponentAvailabilityChanged(it.available)) }
+
+                onIntent<Intent.ToggleComponentVisibility> { dispatch(Msg.ComponentVisibilityToggled) }
+
                 onIntent<Intent.OnTextInput> { dispatch(Msg.TextInput(it.id, it.text)) }
+
                 onIntent<Intent.OnAddPollOption> { dispatch(Msg.PollOptionAdded) }
+
                 onIntent<Intent.OnDeletePollOption> { dispatch(Msg.PollOptionDeleted(it.id)) }
             },
             reducer = { msg ->
@@ -61,6 +69,7 @@ internal class EditorPollStoreProvider(
                         options = listOf(emptyPollOption, emptyPollOption),
                         insertionAvailable = true,
                         deletionAvailable = false,
+                        maxTextOptionLength = msg.config.polls.maxCharactersPerOption,
                     )
 
                     is Msg.DurationsAvailable -> copy(
@@ -80,12 +89,16 @@ internal class EditorPollStoreProvider(
                         multiselectEnabled = msg.enabled,
                     )
 
-                    is Msg.PollAvailabilityChanged -> copy(
+                    is Msg.ComponentAvailabilityChanged -> copy(
                         pollAvailable = msg.available,
                     )
 
+                    is Msg.ComponentVisibilityToggled -> copy(
+                        pollVisible = !pollVisible,
+                    )
+
                     is Msg.TextInput -> copy(
-                        options = options.applyInput(msg.id, msg.text),
+                        options = options.applyInput(msg.id, msg.text.take(maxTextOptionLength)),
                     )
 
                     is Msg.PollOptionAdded -> copy(
@@ -113,7 +126,8 @@ internal class EditorPollStoreProvider(
         data class DurationDialogVisibilityChanged(val visible: Boolean) : Msg
         data class DurationSelected(val duration: PollDuration) : Msg
         data class MultiselectEnabled(val enabled: Boolean) : Msg
-        data class PollAvailabilityChanged(val available: Boolean) : Msg
+        data class ComponentAvailabilityChanged(val available: Boolean) : Msg
+        data object ComponentVisibilityToggled : Msg
         data class TextInput(val id: String, val text: String) : Msg
         data object PollOptionAdded : Msg
         data class PollOptionDeleted(val id: String) : Msg

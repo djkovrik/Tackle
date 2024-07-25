@@ -3,6 +3,8 @@ package com.sedsoftware.tackle.editor.warning.integration
 import assertk.assertThat
 import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
+import assertk.assertions.isFalse
+import assertk.assertions.isTrue
 import com.arkivanov.decompose.DefaultComponentContext
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import com.sedsoftware.tackle.editor.warning.EditorWarningComponent
@@ -12,7 +14,7 @@ import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 
-class EditorWarningComponentTest : ComponentTest<EditorWarningComponentDefault>() {
+class EditorWarningComponentTest : ComponentTest<EditorWarningComponent>() {
 
     private val activeModel: EditorWarningComponent.Model
         get() = component.model.value
@@ -26,13 +28,6 @@ class EditorWarningComponentTest : ComponentTest<EditorWarningComponentDefault>(
     fun after() {
         afterTest()
     }
-
-    override fun createComponent(): EditorWarningComponentDefault =
-        EditorWarningComponentDefault(
-            componentContext = DefaultComponentContext(lifecycle),
-            storeFactory = DefaultStoreFactory(),
-            dispatchers = testDispatchers,
-        )
 
     @Test
     fun `onTextInput should update model text`() = runTest {
@@ -50,8 +45,28 @@ class EditorWarningComponentTest : ComponentTest<EditorWarningComponentDefault>(
         val text = "test text"
         // when
         component.onTextInput(text)
-        component.clearTextInput()
+        component.onClearTextInput()
         // then
         assertThat(activeModel.text).isEmpty()
     }
+
+    @Test
+    fun `toggleComponentVisibility should update content visibility`() = runTest {
+        // given
+        // when
+        component.toggleComponentVisibility()
+        // then
+        assertThat(activeModel.warningContentVisible).isTrue()
+        // when
+        component.toggleComponentVisibility()
+        // then
+        assertThat(activeModel.warningContentVisible).isFalse()
+    }
+
+    override fun createComponent(): EditorWarningComponent =
+        EditorWarningComponentDefault(
+            componentContext = DefaultComponentContext(lifecycle),
+            storeFactory = DefaultStoreFactory(),
+            dispatchers = testDispatchers,
+        )
 }
