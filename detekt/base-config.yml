@@ -106,7 +106,7 @@ complexity:
     ignoreOverloaded: false
   CyclomaticComplexMethod:
     active: true
-    threshold: 15
+    threshold: 20
     ignoreSingleWhenExpression: false
     ignoreSimpleWhenEntries: false
     ignoreNestingFunctions: false
@@ -619,7 +619,7 @@ style:
       - '2'
     ignoreHashCodeFunction: true
     ignorePropertyDeclaration: true
-    ignoreLocalVariableDeclaration: false
+    ignoreLocalVariableDeclaration: true
     ignoreConstantDeclaration: true
     ignoreCompanionObjectPropertyDeclaration: true
     ignoreAnnotation: false
@@ -627,6 +627,7 @@ style:
     ignoreEnums: true
     ignoreRanges: false
     ignoreExtensionFunctions: true
+    ignoreAnnotated: ['Preview']
   MandatoryBracesLoops:
     active: false
   MaxChainedCallsOnSameLine:

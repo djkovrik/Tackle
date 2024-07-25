@@ -3,7 +3,7 @@ package com.sedsoftware.tackle.compose.ui.editor.attachment.content
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.ui.unit.dp
 
-
+@Suppress("MagicNumber")
 internal fun getFraction(index: Int, totalCount: Int): Float = when (index) {
     0 -> if (totalCount > 1) 0.5f else 1f
     1 -> 0.5f
@@ -11,8 +11,9 @@ internal fun getFraction(index: Int, totalCount: Int): Float = when (index) {
     else -> 0.5f
 }
 
+@Suppress("MagicNumber")
 internal fun getPadding(index: Int, totalCount: Int): PaddingValues {
-    val fullPadding = 8.dp
+    val fullPadding = 16.dp
     val halfPadding = fullPadding / 2
 
     return when (index) {

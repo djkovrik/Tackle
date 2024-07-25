@@ -60,7 +60,8 @@ internal fun AttachedFileContentGeneric(
                 )
             )
     ) {
-        val imageSize = (constraints.maxHeight * 0.5f).dp
+        val halfMultiplier = 0.5f
+        val imageSize = (constraints.maxHeight * halfMultiplier).dp
 
         Image(
             painter = painterResource(

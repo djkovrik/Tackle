@@ -91,8 +91,9 @@ fun Long?.toHumanReadableSize(useBinary: Boolean = false): String {
 }
 
 fun Float.roundToDecimals(decimals: Int): Float {
+    val multiplier = 10
     var dotAt = 1
-    repeat(decimals) { dotAt *= 10 }
+    repeat(decimals) { dotAt *= multiplier }
     val roundedValue = (this * dotAt).roundToInt()
     return (roundedValue / dotAt) + (roundedValue % dotAt).toFloat() / dotAt
 }

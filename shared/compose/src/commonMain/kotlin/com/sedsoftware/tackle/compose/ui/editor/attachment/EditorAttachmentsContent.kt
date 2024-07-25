@@ -69,7 +69,7 @@ private fun EditorAttachmentsContentOneFilePreview() {
 private fun EditorAttachmentsContentTwoFilesPreview() {
     val platformFile = PlatformFileWrapper("", "", "", "", 0L, "12 Mb") { ByteArray(0) }
     val attachments = listOf(
-        AttachedFile("id", platformFile.copy(mimeType = "image"), AttachedFile.Status.LOADED, 25),
+        AttachedFile("id", platformFile.copy(mimeType = "image"), AttachedFile.Status.LOADED, uploadProgress = 25),
         AttachedFile("id", platformFile.copy(mimeType = "video"), AttachedFile.Status.LOADED, 50),
     )
 

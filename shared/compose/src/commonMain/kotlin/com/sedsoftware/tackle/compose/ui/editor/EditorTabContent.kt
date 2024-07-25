@@ -87,16 +87,14 @@ internal fun EditorTabContent(
         // Scrollable part
         LazyColumn(
             verticalArrangement = Arrangement.Top,
-            modifier = modifier
-                .padding(horizontal = 16.dp)
-                .weight(1f, true),
+            modifier = modifier.weight(1f, true),
         ) {
             // Warning
             item {
                 if (warningModel.warningContentVisible) {
                     EditorWarningContent(
                         text = warningModel.text,
-                        modifier = Modifier,
+                        modifier = Modifier.padding(horizontal = 16.dp),
                         onTextInput = component.warning::onTextInput,
                         onTextClear = component.warning::onClearTextInput,
                     )
@@ -131,7 +129,7 @@ internal fun EditorTabContent(
                         focusedBorderColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.7f),
                     ),
                     modifier = Modifier
-                        .padding(vertical = 8.dp)
+                        .padding(start = 16.dp, top = 16.dp, end = 16.dp, bottom = 8.dp)
                         .fillMaxWidth()
                 )
             }
@@ -140,7 +138,7 @@ internal fun EditorTabContent(
             item {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
+                    modifier = Modifier.padding(horizontal = 16.dp),
                 ) {
                     // Toolbar
                     EditorToolbar(
@@ -186,7 +184,7 @@ internal fun EditorTabContent(
                 AnimatedVisibility(visible = pollModel.pollContentVisible) {
                     EditorPollContent(
                         model = pollModel,
-                        modifier = Modifier.padding(vertical = 16.dp),
+                        modifier = Modifier.padding(start = 16.dp, top = 16.dp, end = 8.dp, bottom = 16.dp),
                         onAddNewItem = component.poll::onAddPollOptionClick,
                         onDeleteItem = component.poll::onDeletePollOptionClick,
                         onMultiselectEnabled = component.poll::onMultiselectEnabled,

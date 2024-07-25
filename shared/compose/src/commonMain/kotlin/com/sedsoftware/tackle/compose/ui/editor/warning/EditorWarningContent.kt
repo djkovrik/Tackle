@@ -103,7 +103,7 @@ internal fun EditorWarningContent(
                     ),
                 )
             },
-            modifier = modifier
+            modifier = Modifier
                 .padding(horizontal = 8.dp, vertical = 4.dp)
                 .fillMaxWidth()
                 .clip(shape = RoundedCornerShape(size = cornerRadius)),
