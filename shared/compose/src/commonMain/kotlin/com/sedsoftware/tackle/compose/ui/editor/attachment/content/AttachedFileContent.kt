@@ -1,6 +1,5 @@
 package com.sedsoftware.tackle.compose.ui.editor.attachment.content
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -39,7 +38,6 @@ import org.jetbrains.compose.resources.stringResource
 import tackle.shared.compose.generated.resources.Res
 import tackle.shared.compose.generated.resources.editor_attachment_failed
 import tackle.shared.compose.generated.resources.editor_delete
-import tackle.shared.compose.generated.resources.editor_retry
 import tackle.shared.compose.generated.resources.preview_sample
 
 @Composable
@@ -62,7 +60,6 @@ internal fun AttachedFileContent(
 
     Column(
         modifier = modifier
-            .fillMaxWidth()
             .border(
                 width = 1.dp,
                 color = MaterialTheme.colorScheme.primary.copy(
@@ -103,6 +100,7 @@ internal fun AttachedFileContent(
             // Upload failed indicator
             if (attachment.hasError) {
                 AttachedFileUploadFailed(
+                    onClick = onRetry,
                     indicatorSize = 48.dp,
                     modifier = Modifier
                         .padding(all = 16.dp)
@@ -162,23 +160,12 @@ internal fun AttachedFileContent(
                         } else {
                             MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.75f)
                         },
-                        style = MaterialTheme.typography.bodyMedium,
+                        style = MaterialTheme.typography.bodySmall,
                         modifier = Modifier.padding(horizontal = 16.dp),
                     )
                 }
 
                 Spacer(modifier = Modifier.weight(weight = 1f, fill = true))
-
-                AnimatedVisibility(visible = attachment.hasError) {
-                    IconButton(onClick = onRetry) {
-                        Icon(
-                            painterResource(resource = Res.drawable.editor_retry),
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                            modifier = Modifier.size(size = 24.dp),
-                        )
-                    }
-                }
 
                 IconButton(onClick = onDelete) {
                     Icon(
@@ -197,7 +184,7 @@ internal fun AttachedFileContent(
 internal fun AttachmentPreviewImageStub() {
     Image(
         painter = painterResource(resource = Res.drawable.preview_sample),
-        contentScale = ContentScale.FillWidth,
+        contentScale = ContentScale.Crop,
         contentDescription = null,
     )
 }

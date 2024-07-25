@@ -54,7 +54,7 @@ internal fun EditorEmojisContent(
                         color = MaterialTheme.colorScheme.onSecondaryContainer,
                         style = MaterialTheme.typography.bodyMedium,
                         modifier = Modifier.fillMaxSize()
-                            .background(color = MaterialTheme.colorScheme.secondaryContainer)
+                            .background(color = MaterialTheme.colorScheme.surfaceVariant)
                             .fillMaxWidth()
                             .padding(all = 8.dp)
                     )

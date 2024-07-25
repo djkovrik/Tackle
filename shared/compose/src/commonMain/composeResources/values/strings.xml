@@ -85,6 +85,6 @@
     <string name="editor_attachment_audio">Audio</string>
     <string name="editor_attachment_image">Image</string>
     <string name="editor_attachment_video">Video</string>
-    <string name="editor_attachment_unknown">Unknown file type</string>
-    <string name="editor_attachment_failed">Failed to upload</string>
+    <string name="editor_attachment_unknown">File</string>
+    <string name="editor_attachment_failed">Upload error</string>
 </resources>

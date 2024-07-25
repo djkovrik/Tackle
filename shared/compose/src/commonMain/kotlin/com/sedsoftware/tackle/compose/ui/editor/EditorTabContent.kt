@@ -1,5 +1,6 @@
 package com.sedsoftware.tackle.compose.ui.editor
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -37,8 +38,10 @@ import com.sedsoftware.tackle.compose.ui.editor.header.content.VisibilitySelecto
 import com.sedsoftware.tackle.compose.ui.editor.poll.EditorPollContent
 import com.sedsoftware.tackle.compose.ui.editor.warning.EditorWarningContent
 import com.sedsoftware.tackle.domain.model.AppLocale
+import com.sedsoftware.tackle.domain.model.PlatformFileWrapper
 import com.sedsoftware.tackle.editor.EditorTabComponent
 import com.sedsoftware.tackle.editor.attachments.EditorAttachmentsComponent
+import com.sedsoftware.tackle.editor.attachments.model.AttachedFile
 import com.sedsoftware.tackle.editor.emojis.EditorEmojisComponent
 import com.sedsoftware.tackle.editor.header.EditorHeaderComponent
 import com.sedsoftware.tackle.editor.integration.EditorTabComponentPreview
@@ -89,8 +92,8 @@ internal fun EditorTabContent(
                 .weight(1f, true),
         ) {
             // Warning
-            if (warningModel.warningContentVisible) {
-                item {
+            item {
+                if (warningModel.warningContentVisible) {
                     EditorWarningContent(
                         text = warningModel.text,
                         modifier = Modifier,
@@ -167,8 +170,8 @@ internal fun EditorTabContent(
             }
 
             // Attachments
-            if (attachmentsModel.attachmentsContentVisible) {
-                item {
+            item {
+                AnimatedVisibility(visible = attachmentsModel.attachmentsContentVisible) {
                     EditorAttachmentsContent(
                         model = attachmentsModel,
                         onDelete = component.attachments::onFileDeleted,
@@ -179,8 +182,8 @@ internal fun EditorTabContent(
             }
 
             // Poll
-            if (pollModel.pollContentVisible) {
-                item {
+            item {
+                AnimatedVisibility(visible = pollModel.pollContentVisible) {
                     EditorPollContent(
                         model = pollModel,
                         modifier = Modifier.padding(vertical = 16.dp),
@@ -245,10 +248,11 @@ internal fun EditorTabContent(
 @Preview
 @Composable
 private fun EditorTabContentPreviewEverything() {
+    val platformFile = PlatformFileWrapper("", "", "", "", 0L, "123 Mb") { ByteArray(0) }
+
     TackleScreenPreview {
         EditorTabContent(
             component = EditorTabComponentPreview(
-                attachmentsButtonAvailable = false,
                 emojisButtonAvailable = true,
                 avatar = "https://mastodon.social/avatars/original/missing.png",
                 nickname = "djkovrik",
@@ -267,6 +271,12 @@ private fun EditorTabContentPreviewEverything() {
                 pollButtonAvailable = true,
                 pollContentVisible = true,
                 warningContentVisible = true,
+                attachmentsContentVisible = true,
+                attachmentsButtonAvailable = true,
+                attachments = listOf(
+                    AttachedFile("id", platformFile.copy(mimeType = "audio"), AttachedFile.Status.LOADING, 25),
+                    AttachedFile("id", platformFile.copy(mimeType = "video"), AttachedFile.Status.ERROR, 100),
+                )
             )
         )
     }
@@ -286,6 +296,34 @@ private fun EditorTabContentPreviewIdle() {
                 domain = "mastodon.social",
                 selectedLocale = AppLocale("English", "en"),
                 statusCharactersLeft = 123,
+            )
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun EditorTabContentPreviewAttachments() {
+    val platformFile = PlatformFileWrapper("", "", "", "", 0L, "123 Mb") { ByteArray(0) }
+
+    TackleScreenPreview {
+        EditorTabContent(
+            component = EditorTabComponentPreview(
+                emojisButtonAvailable = true,
+                pollButtonAvailable = true,
+                avatar = "https://mastodon.social/avatars/original/missing.png",
+                nickname = "djkovrik",
+                domain = "mastodon.social",
+                selectedLocale = AppLocale("English", "en"),
+                statusCharactersLeft = 123,
+                attachmentsContentVisible = true,
+                attachmentsButtonAvailable = false,
+                attachments = listOf(
+                    AttachedFile("id", platformFile.copy(mimeType = "audio"), AttachedFile.Status.LOADING, 25),
+                    AttachedFile("id", platformFile.copy(mimeType = "image"), AttachedFile.Status.LOADED, 100),
+                    AttachedFile("id", platformFile.copy(mimeType = "video"), AttachedFile.Status.PENDING, 0),
+                    AttachedFile("id", platformFile.copy(mimeType = "unknown"), AttachedFile.Status.ERROR, 100),
+                )
             )
         )
     }
@@ -339,4 +377,3 @@ private fun EditorTabContentPreviewWarning() {
         )
     }
 }
-

@@ -82,6 +82,6 @@
     <string name="editor_attachment_audio">Аудио</string>
     <string name="editor_attachment_image">Изображение</string>
     <string name="editor_attachment_video">Видео</string>
-    <string name="editor_attachment_unknown">Неизвестный тип файла</string>
-    <string name="editor_attachment_failed">Не удалось отправить</string>
+    <string name="editor_attachment_unknown">Файл</string>
+    <string name="editor_attachment_failed">Ошибка отправки</string>
 </resources>
