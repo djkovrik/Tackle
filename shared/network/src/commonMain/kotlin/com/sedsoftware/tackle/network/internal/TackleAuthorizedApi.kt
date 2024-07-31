@@ -130,6 +130,7 @@ internal class TackleAuthorizedApi(
             parameters {
                 append("q", query)
                 append("type", type)
+
                 resolve?.let { append("resolve", "$it") }
                 following?.let { append("following", "$it") }
                 accountId?.let { append("account_id", it) }

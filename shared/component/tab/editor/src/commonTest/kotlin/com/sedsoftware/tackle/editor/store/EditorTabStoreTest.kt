@@ -14,6 +14,7 @@ import com.sedsoftware.tackle.editor.domain.EditorTabManager
 import com.sedsoftware.tackle.editor.store.EditorTabStore.Intent
 import com.sedsoftware.tackle.editor.store.EditorTabStore.Label
 import com.sedsoftware.tackle.editor.store.EditorTabStore.State
+import com.sedsoftware.tackle.editor.stubs.EditorTabComponentApiStub
 import com.sedsoftware.tackle.editor.stubs.EditorTabComponentDatabaseStub
 import com.sedsoftware.tackle.editor.stubs.EmojiStub
 import com.sedsoftware.tackle.editor.stubs.InstanceStub
@@ -26,8 +27,9 @@ import kotlin.test.Test
 
 internal class EditorTabStoreTest : StoreTest<Intent, State, Label>() {
 
+    private val api: EditorTabComponentApiStub = EditorTabComponentApiStub()
     private val database: EditorTabComponentGateways.Database = EditorTabComponentDatabaseStub()
-    private val manager: EditorTabManager = EditorTabManager(database)
+    private val manager: EditorTabManager = EditorTabManager(api, database)
 
     @BeforeTest
     fun before() {

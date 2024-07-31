@@ -8,7 +8,8 @@ import com.sedsoftware.tackle.database.InstanceInfoEntity
 import com.sedsoftware.tackle.database.TackleAppDatabase
 import com.sedsoftware.tackle.database.TackleAppDatabaseQueries
 import com.sedsoftware.tackle.database.mappers.InstanceInfoEntityMapper
-import com.sedsoftware.tackle.database.mappers.ServerEmojiEntityMapper
+import com.sedsoftware.tackle.database.mappers.ServerEmojiCategorizedMapper
+import com.sedsoftware.tackle.database.mappers.ServerEmojiListMapper
 import com.sedsoftware.tackle.domain.api.TackleDatabase
 import com.sedsoftware.tackle.domain.model.CustomEmoji
 import com.sedsoftware.tackle.domain.model.Instance
@@ -52,7 +53,14 @@ internal class TackleSharedDatabase(
         queries.selectEmojis(currentDomain)
             .asFlow()
             .mapToList(coroutineContext)
-            .map(ServerEmojiEntityMapper::map)
+            .map(ServerEmojiCategorizedMapper::map)
+
+    override suspend fun findEmoji(query: String): Flow<List<CustomEmoji>> =
+        queries.selectEmojis(currentDomain)
+            .asFlow()
+            .mapToList(coroutineContext)
+            .map(ServerEmojiListMapper::map)
+            .map { list -> list.filter { it.shortcode.contains(query) } }
 
     override suspend fun cacheInstanceInfo(info: Instance) {
         val entity: InstanceInfoEntity = InstanceInfoEntityMapper.toEntity(info)

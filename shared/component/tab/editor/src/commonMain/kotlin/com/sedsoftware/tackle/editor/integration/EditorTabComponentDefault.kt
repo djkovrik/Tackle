@@ -98,7 +98,7 @@ class EditorTabComponentDefault(
         instanceKeeper.getStore {
             EditorTabStoreProvider(
                 storeFactory = storeFactory,
-                manager = EditorTabManager(database),
+                manager = EditorTabManager(api, database),
                 mainContext = dispatchers.main,
                 ioContext = dispatchers.io,
             ).create()
