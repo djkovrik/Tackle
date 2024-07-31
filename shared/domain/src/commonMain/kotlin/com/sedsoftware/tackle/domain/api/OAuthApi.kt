@@ -7,8 +7,8 @@ interface OAuthApi {
      *
      * @param id Client id obtained from  createApp call, see [UnauthorizedApi]
      * @param secret Client secret obtained from  createApp call, see [UnauthorizedApi]
-     * @param uri redirect uri
-     * @param scopes oauth scopes
+     * @param uri Redirect uri
+     * @param scopes OAuth scopes
      *
      * @return access token
      */

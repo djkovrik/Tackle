@@ -3,6 +3,7 @@ package com.sedsoftware.tackle.domain.api
 import com.sedsoftware.tackle.domain.model.Account
 import com.sedsoftware.tackle.domain.model.MediaAttachment
 import com.sedsoftware.tackle.domain.model.PlatformFileWrapper
+import com.sedsoftware.tackle.domain.model.Search
 
 interface AuthorizedApi {
 
@@ -21,10 +22,10 @@ interface AuthorizedApi {
      *
      * Requires Authorization Bearer header with the access token and write:media scope
      *
-     * @param data the file to be attached, encoded using multipart form data. The file must have a MIME type.
-     * @param onUpload callback being called during file uploading, triggered with the current uploading progress in percents
-     * @param thumbnail the custom thumbnail of the media to be attached, encoded using multipart form data.
-     * @param description a plain-text description of the media, for accessibility purposes.
+     * @param file The file to be attached, encoded using multipart form data. The file must have a MIME type.
+     * @param onUpload Callback being called during file uploading, triggered with the current uploading progress in percents
+     * @param thumbnail The custom thumbnail of the media to be attached, encoded using multipart form data.
+     * @param description A plain-text description of the media, for accessibility purposes.
      * @param focus Two floating points (x,y), comma-delimited, ranging from -1.0 to 1.0
      *
      * @see <a href="https://docs.joinmastodon.org/methods/media/#v2">Upload media as an attachment</a>
@@ -44,7 +45,7 @@ interface AuthorizedApi {
      *
      * Requires Authorization Bearer header with the access token and write:media scope
      *
-     * @param id the id of the MediaAttachment in the database.
+     * @param id The id of the MediaAttachment in the database.
      *
      * @see <a href="https://docs.joinmastodon.org/methods/media/#get">Get media attachment</a>
      */
@@ -55,10 +56,10 @@ interface AuthorizedApi {
      *
      * Requires Authorization Bearer header with the access token and write:media scope
      *
-     * @param id the id of the MediaAttachment in the database.
-     * @param thumbnail the custom thumbnail of the media to be attached, encoded using multipart form data.
-     * @param description a plain-text description of the media, for accessibility purposes.
-     * @param focus two floating points (x,y), comma-delimited, ranging from -1.0 to 1.0
+     * @param id The id of the MediaAttachment in the database.
+     * @param thumbnail The custom thumbnail of the media to be attached, encoded using multipart form data.
+     * @param description A plain-text description of the media, for accessibility purposes.
+     * @param focus Two floating points (x,y), comma-delimited, ranging from -1.0 to 1.0
      *
      * @see <a href="https://docs.joinmastodon.org/methods/media/#update">Update media attachment</a>
      */
@@ -68,4 +69,33 @@ interface AuthorizedApi {
         description: String? = null,
         focus: String? = null,
     ): MediaAttachment
+
+    /**
+     * Search for content in accounts, statuses and hashtags.
+     *
+     * @param query The search query
+     * @param type Specify whether to search for only accounts, hashtags, statuses
+     * @param resolve Only relevant if type includes accounts. If true and (a) the search query is for a remote account the local server
+     *                does not know about the account, WebFinger is used to try and resolve the account at someother.server. This provides
+     *                the best recall at higher latency. If false only accounts the server knows about are returned.
+     * @param following Only include accounts that the user is following? Defaults to false.
+     * @param accountId If provided, will only return statuses authored by this account.
+     * @param excludeUnreviewed Filter out unreviewed tags? Defaults to false. Use true when trying to find trending tags
+     * @param minId returns results immediately newer than this ID. In effect, sets a cursor at this ID and paginates forward
+     * @param maxId all results returned will be lesser than this ID. In effect, sets an upper bound on results
+     * @param limit maximum number of results to return, per type. Defaults to 20 results per category. Max 40 results per category
+     * @param offset skip the first n results
+     */
+    suspend fun search(
+        query: String,
+        type: String,
+        resolve: Boolean? = null,
+        following: Boolean? = null,
+        accountId: String? = null,
+        excludeUnreviewed: Boolean? = null,
+        minId: String? = null,
+        maxId: String? = null,
+        limit: Int? = null,
+        offset: Int? = null,
+    ): Search
 }
