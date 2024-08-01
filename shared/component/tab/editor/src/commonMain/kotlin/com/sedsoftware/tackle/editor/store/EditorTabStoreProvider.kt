@@ -10,11 +10,15 @@ import com.sedsoftware.tackle.editor.domain.EditorTabManager
 import com.sedsoftware.tackle.editor.extension.getNewLength
 import com.sedsoftware.tackle.editor.extension.getNewPosition
 import com.sedsoftware.tackle.editor.extension.insertEmoji
+import com.sedsoftware.tackle.editor.model.EditorInputHintItem
+import com.sedsoftware.tackle.editor.model.EditorInputHintRequest
 import com.sedsoftware.tackle.editor.store.EditorTabStore.Intent
 import com.sedsoftware.tackle.editor.store.EditorTabStore.Label
 import com.sedsoftware.tackle.editor.store.EditorTabStore.State
 import com.sedsoftware.tackle.utils.StoreCreate
 import com.sedsoftware.tackle.utils.extension.unwrap
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.coroutines.CoroutineContext
@@ -36,6 +40,8 @@ internal class EditorTabStoreProvider(
                 dispatch(Action.FetchCachedInstanceInfo)
             },
             executorFactory = coroutineExecutorFactory(mainContext) {
+                var suggestionJob: Job? = null
+
                 onAction<Action.FetchCachedInstanceInfo> {
                     launch {
                         unwrap(
@@ -52,7 +58,82 @@ internal class EditorTabStoreProvider(
                     }
                 }
 
-                onIntent<Intent.OnTextInput> { dispatch(Msg.TextInput(it.text, it.selection)) }
+                onAction<Action.CheckForInputHelper> {
+                    val currentState = state()
+                    val input = currentState.statusText
+                    val inputPosition = currentState.statusTextSelection
+                    val currentRequest = currentState.currentSuggestionRequest
+
+                    launch {
+                        val inputHintRequest = withContext(ioContext) { manager.checkForInputHint(input, inputPosition) }
+                        if (inputHintRequest != currentRequest) {
+                            dispatch(Msg.InputHintRequestUpdated(inputHintRequest))
+                        }
+
+                        when (inputHintRequest) {
+                            is EditorInputHintRequest.Accounts -> forward(Action.LoadAccountSuggestion(inputHintRequest.query))
+                            is EditorInputHintRequest.Emojis -> forward(Action.LoadEmojiSuggestion(inputHintRequest.query))
+                            is EditorInputHintRequest.HashTags -> forward(Action.LoadHashTagSuggestion(inputHintRequest.query))
+                            is EditorInputHintRequest.None -> Unit
+                        }
+                    }
+                }
+
+                onAction<Action.LoadAccountSuggestion> {
+                    suggestionJob?.cancel()
+                    suggestionJob = launch {
+                        delay(manager.getInputHintDelay())
+
+                        unwrap(
+                            result = withContext(ioContext) { manager.searchForAccounts(it.query) },
+                            onSuccess = { accounts: List<EditorInputHintItem> ->
+                                dispatch(Msg.SuggestionsLoaded(accounts))
+                            },
+                            onError = { throwable: Throwable ->
+                                publish(Label.ErrorCaught(throwable))
+                            }
+                        )
+                    }
+                }
+
+                onAction<Action.LoadEmojiSuggestion> {
+                    suggestionJob?.cancel()
+                    suggestionJob = launch {
+                        delay(manager.getInputHintDelay())
+
+                        unwrap(
+                            result = withContext(ioContext) { manager.searchForEmojis(it.query) },
+                            onSuccess = { emojis: List<EditorInputHintItem> ->
+                                dispatch(Msg.SuggestionsLoaded(emojis))
+                            },
+                            onError = { throwable: Throwable ->
+                                publish(Label.ErrorCaught(throwable))
+                            }
+                        )
+                    }
+                }
+
+                onAction<Action.LoadHashTagSuggestion> {
+                    suggestionJob?.cancel()
+                    suggestionJob = launch {
+                        delay(manager.getInputHintDelay())
+
+                        unwrap(
+                            result = withContext(ioContext) { manager.searchForHashTags(it.query) },
+                            onSuccess = { hashtags: List<EditorInputHintItem> ->
+                                dispatch(Msg.SuggestionsLoaded(hashtags))
+                            },
+                            onError = { throwable: Throwable ->
+                                publish(Label.ErrorCaught(throwable))
+                            }
+                        )
+                    }
+                }
+
+                onIntent<Intent.OnTextInput> {
+                    dispatch(Msg.TextInput(it.text, it.selection))
+                    forward(Action.CheckForInputHelper)
+                }
 
                 onIntent<Intent.OnEmojiSelect> { dispatch(Msg.EmojiSelected(it.emoji)) }
             },
@@ -87,12 +168,24 @@ internal class EditorTabStoreProvider(
                         statusTextSelection = statusText.getNewPosition(msg.emoji, this),
                         statusCharactersLeft = statusCharactersLimit - statusText.getNewLength(msg.emoji, this),
                     )
+
+                    is Msg.InputHintRequestUpdated -> copy(
+                        currentSuggestionRequest = msg.request,
+                    )
+
+                    is Msg.SuggestionsLoaded -> copy(
+                        suggestions = msg.suggestions,
+                    )
                 }
             }
         ) {}
 
     private sealed interface Action {
         data object FetchCachedInstanceInfo : Action
+        data object CheckForInputHelper : Action
+        data class LoadAccountSuggestion(val query: String) : Action
+        data class LoadEmojiSuggestion(val query: String) : Action
+        data class LoadHashTagSuggestion(val query: String) : Action
     }
 
     private sealed interface Msg {
@@ -100,6 +193,8 @@ internal class EditorTabStoreProvider(
         data class StatusCharactersLimitAvailable(val limit: Int) : Msg
         data class TextInput(val text: String, val selection: Pair<Int, Int>) : Msg
         data class EmojiSelected(val emoji: CustomEmoji) : Msg
+        data class InputHintRequestUpdated(val request: EditorInputHintRequest) : Msg
+        data class SuggestionsLoaded(val suggestions: List<EditorInputHintItem>) : Msg
     }
 
     private fun Msg.TextInput.exceedTheLimit(limit: Int): Boolean = limit - text.length < 0

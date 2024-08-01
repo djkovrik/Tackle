@@ -2,6 +2,7 @@ package com.sedsoftware.tackle.editor.store
 
 import assertk.assertThat
 import assertk.assertions.hasClass
+import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import assertk.assertions.isGreaterThan
 import assertk.assertions.isNotEmpty
@@ -11,11 +12,13 @@ import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import com.sedsoftware.tackle.editor.EditorTabComponentGateways
 import com.sedsoftware.tackle.editor.domain.EditorTabManager
+import com.sedsoftware.tackle.editor.model.EditorInputHintRequest
 import com.sedsoftware.tackle.editor.store.EditorTabStore.Intent
 import com.sedsoftware.tackle.editor.store.EditorTabStore.Label
 import com.sedsoftware.tackle.editor.store.EditorTabStore.State
 import com.sedsoftware.tackle.editor.stubs.EditorTabComponentApiStub
 import com.sedsoftware.tackle.editor.stubs.EditorTabComponentDatabaseStub
+import com.sedsoftware.tackle.editor.stubs.EditorTabComponentToolsStub
 import com.sedsoftware.tackle.editor.stubs.EmojiStub
 import com.sedsoftware.tackle.editor.stubs.InstanceStub
 import com.sedsoftware.tackle.utils.test.StoreTest
@@ -29,7 +32,8 @@ internal class EditorTabStoreTest : StoreTest<Intent, State, Label>() {
 
     private val api: EditorTabComponentApiStub = EditorTabComponentApiStub()
     private val database: EditorTabComponentGateways.Database = EditorTabComponentDatabaseStub()
-    private val manager: EditorTabManager = EditorTabManager(api, database)
+    private val tools: EditorTabComponentGateways.Tools = EditorTabComponentToolsStub()
+    private val manager: EditorTabManager = EditorTabManager(api, database, tools)
 
     @BeforeTest
     fun before() {
@@ -81,6 +85,108 @@ internal class EditorTabStoreTest : StoreTest<Intent, State, Label>() {
         assertThat(label).hasClass(Label.InstanceConfigLoaded::class)
         label as Label.InstanceConfigLoaded
         assertThat(label.config).isEqualTo(InstanceStub.config)
+    }
+
+    @Test
+    fun `OnTextInput should call for account hint suggestions`() = runTest {
+        // given
+        val text1 = "Some text"
+        val text2 = "Some text @"
+        val text3 = "Some text @a"
+        val text4 = "Some text @ab"
+
+        // when
+        store.init()
+        store.accept(Intent.OnTextInput(text1, text1.length to text1.length))
+        // then
+        assertThat(store.state.suggestions).isEmpty()
+
+        // when
+        store.init()
+        store.accept(Intent.OnTextInput(text2, text2.length to text2.length))
+        // then
+        assertThat(store.state.suggestions).isEmpty()
+
+        // when
+        store.init()
+        store.accept(Intent.OnTextInput(text3, text3.length to text3.length))
+        // then
+        assertThat(store.state.suggestions).isEmpty()
+
+        // when
+        store.init()
+        store.accept(Intent.OnTextInput(text4, text4.length to text4.length))
+        // then
+        assertThat(store.state.suggestions).isNotEmpty()
+        assertThat(store.state.currentSuggestionRequest).isEqualTo(EditorInputHintRequest.Accounts("@ab"))
+    }
+
+    @Test
+    fun `OnTextInput should call for emoji hint suggestions`() = runTest {
+        // given
+        val text1 = "Some text"
+        val text2 = "Some text :"
+        val text3 = "Some text :a"
+        val text4 = "Some text :ab"
+
+        // when
+        store.init()
+        store.accept(Intent.OnTextInput(text1, text1.length to text1.length))
+        // then
+        assertThat(store.state.suggestions).isEmpty()
+
+        // when
+        store.init()
+        store.accept(Intent.OnTextInput(text2, text2.length to text2.length))
+        // then
+        assertThat(store.state.suggestions).isEmpty()
+
+        // when
+        store.init()
+        store.accept(Intent.OnTextInput(text3, text3.length to text3.length))
+        // then
+        assertThat(store.state.suggestions).isEmpty()
+
+        // when
+        store.init()
+        store.accept(Intent.OnTextInput(text4, text4.length to text4.length))
+        // then
+        assertThat(store.state.suggestions).isNotEmpty()
+        assertThat(store.state.currentSuggestionRequest).isEqualTo(EditorInputHintRequest.Emojis(":ab"))
+    }
+
+    @Test
+    fun `OnTextInput should call for hashtag hint suggestions`() = runTest {
+        // given
+        val text1 = "Some text"
+        val text2 = "Some text #"
+        val text3 = "Some text #a"
+        val text4 = "Some text #ab"
+
+        // when
+        store.init()
+        store.accept(Intent.OnTextInput(text1, text1.length to text1.length))
+        // then
+        assertThat(store.state.suggestions).isEmpty()
+
+        // when
+        store.init()
+        store.accept(Intent.OnTextInput(text2, text2.length to text2.length))
+        // then
+        assertThat(store.state.suggestions).isEmpty()
+
+        // when
+        store.init()
+        store.accept(Intent.OnTextInput(text3, text3.length to text3.length))
+        // then
+        assertThat(store.state.suggestions).isEmpty()
+
+        // when
+        store.init()
+        store.accept(Intent.OnTextInput(text4, text4.length to text4.length))
+        // then
+        assertThat(store.state.suggestions).isNotEmpty()
+        assertThat(store.state.currentSuggestionRequest).isEqualTo(EditorInputHintRequest.HashTags("#ab"))
     }
 
     override fun createStore(): Store<Intent, State, Label> =

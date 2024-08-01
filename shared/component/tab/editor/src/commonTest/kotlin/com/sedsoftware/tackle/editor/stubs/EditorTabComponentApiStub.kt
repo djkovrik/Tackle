@@ -4,7 +4,7 @@ import com.sedsoftware.tackle.domain.model.CustomEmoji
 import com.sedsoftware.tackle.domain.model.MediaAttachment
 import com.sedsoftware.tackle.domain.model.PlatformFileWrapper
 import com.sedsoftware.tackle.domain.model.Search
-import com.sedsoftware.tackle.domain.model.Tag
+import com.sedsoftware.tackle.domain.model.HashTag
 import com.sedsoftware.tackle.domain.model.type.MediaAttachmentType
 import com.sedsoftware.tackle.editor.EditorTabComponentGateways
 import com.sedsoftware.tackle.utils.test.StubWithException
@@ -20,10 +20,10 @@ class EditorTabComponentApiStub : StubWithException(), EditorTabComponentGateway
                 AccountStub.accountDetails.copy(id = "4", username = "name4"),
             ),
             hashtags = listOf(
-                Tag("Tag1", "url1", emptyList(), following = false, trendable = false, usable = true, requiresReview = false),
-                Tag("Tag2", "url2", emptyList(), following = false, trendable = false, usable = true, requiresReview = false),
-                Tag("Tag3", "url3", emptyList(), following = false, trendable = false, usable = true, requiresReview = false),
-                Tag("Tag4", "url4", emptyList(), following = false, trendable = false, usable = true, requiresReview = false),
+                HashTag("Tag1", "url1", emptyList(), following = false, trendable = false, usable = true, requiresReview = false),
+                HashTag("Tag2", "url2", emptyList(), following = false, trendable = false, usable = true, requiresReview = false),
+                HashTag("Tag3", "url3", emptyList(), following = false, trendable = false, usable = true, requiresReview = false),
+                HashTag("Tag4", "url4", emptyList(), following = false, trendable = false, usable = true, requiresReview = false),
             ),
             statuses = emptyList(),
         )

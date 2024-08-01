@@ -4,10 +4,10 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-internal class TagResponse(
+internal class HashTagResponse(
     @SerialName("name") val name: String,
     @SerialName("url") val url: String,
-    @SerialName("history") val history: List<TagHistoryResponse>,
+    @SerialName("history") val history: List<HashTagHistoryResponse>,
     @SerialName("following") val following: Boolean = false,
     @SerialName("trendable") val trendable: Boolean = true,
     @SerialName("usable") val usable: Boolean = true,
@@ -15,7 +15,7 @@ internal class TagResponse(
 )
 
 @Serializable
-internal class TagHistoryResponse(
+internal class HashTagHistoryResponse(
     @SerialName("day") val day: String,
     @SerialName("uses") val uses: String,
     @SerialName("accounts") val accounts: String,

@@ -13,4 +13,10 @@ internal class EditorTabComponentTools(
 
     override fun getAvailableLocales(): List<AppLocale> =
         platformTools.getAvailableLocales()
+
+    override fun getInputHintDelay(): Long = INPUT_HINT_APPEARANCE_DELAY
+
+    private companion object {
+        const val INPUT_HINT_APPEARANCE_DELAY = 500L
+    }
 }

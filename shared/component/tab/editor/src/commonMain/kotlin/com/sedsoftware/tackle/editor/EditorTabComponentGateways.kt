@@ -53,5 +53,6 @@ interface EditorTabComponentGateways {
     interface Tools {
         fun getCurrentLocale(): AppLocale
         fun getAvailableLocales(): List<AppLocale>
+        fun getInputHintDelay(): Long
     }
 }

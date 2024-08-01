@@ -7,5 +7,5 @@ import kotlinx.serialization.Serializable
 internal class SearchResponse(
     @SerialName("accounts") val accounts: List<AccountResponse> = emptyList(),
     @SerialName("statuses") val statuses: List<StatusResponse> = emptyList(),
-    @SerialName("hashtags") val hashtags: List<TagResponse> = emptyList(),
+    @SerialName("hashtags") val hashtags: List<HashTagResponse> = emptyList(),
 )

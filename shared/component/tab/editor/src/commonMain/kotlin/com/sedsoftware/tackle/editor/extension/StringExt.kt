@@ -28,4 +28,3 @@ internal fun String.getNewLength(emoji: CustomEmoji, state: EditorTabStore.State
     if (newLength > limit) newLength = limit
     return newLength
 }
-
