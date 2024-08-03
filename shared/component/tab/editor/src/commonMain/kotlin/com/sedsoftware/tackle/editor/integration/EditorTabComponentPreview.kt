@@ -14,10 +14,11 @@ import com.sedsoftware.tackle.editor.emojis.EditorEmojisComponent
 import com.sedsoftware.tackle.editor.emojis.integration.EditorEmojisComponentPreview
 import com.sedsoftware.tackle.editor.header.EditorHeaderComponent
 import com.sedsoftware.tackle.editor.header.integration.EditorHeaderComponentPreview
+import com.sedsoftware.tackle.editor.model.EditorInputHintItem
 import com.sedsoftware.tackle.editor.poll.EditorPollComponent
 import com.sedsoftware.tackle.editor.poll.integration.EditorPollComponentPreview
-import com.sedsoftware.tackle.editor.poll.model.PollDuration
 import com.sedsoftware.tackle.editor.poll.model.PollChoiceOption
+import com.sedsoftware.tackle.editor.poll.model.PollDuration
 import com.sedsoftware.tackle.editor.warning.EditorWarningComponent
 import com.sedsoftware.tackle.editor.warning.integration.EditorWarningComponentPreview
 
@@ -111,8 +112,8 @@ class EditorTabComponentPreview(
 
     override fun onTextInput(text: String, selection: Pair<Int, Int>) = Unit
     override fun onEmojiSelected(emoji: CustomEmoji) = Unit
+    override fun onInputHintSelected(hint: EditorInputHintItem) = Unit
     override fun onPollButtonClicked() = Unit
     override fun onEmojisButtonClicked() = Unit
     override fun onWarningButtonClicked() = Unit
-    override fun onSendButtonClicked() = Unit
 }

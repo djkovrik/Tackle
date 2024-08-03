@@ -83,15 +83,16 @@ internal class EditorTabManager(
         // find upper bound
         for (index in currentPosition..inputText.lastIndex) {
             character = inputText[index]
-            endIndex = index
 
             if (character.isWhitespace()) {
                 break
             }
+
+            endIndex = index
         }
 
         // get sequence
-        val sequence = inputText.subSequence(startIndex, endIndex + 1).toString().trim()
+        val sequence = inputText.substring(startIndex, endIndex + 1)
         val sequenceLongEnough = sequence.length >= MINIMAL_INPUT_HELP_LENGTH
 
         return when {

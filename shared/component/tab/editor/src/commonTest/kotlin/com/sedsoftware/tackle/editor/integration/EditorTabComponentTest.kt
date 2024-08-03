@@ -15,6 +15,7 @@ import com.sedsoftware.tackle.editor.EditorTabComponent
 import com.sedsoftware.tackle.editor.attachments.EditorAttachmentsComponent
 import com.sedsoftware.tackle.editor.emojis.EditorEmojisComponent
 import com.sedsoftware.tackle.editor.header.EditorHeaderComponent
+import com.sedsoftware.tackle.editor.model.EditorInputHintItem
 import com.sedsoftware.tackle.editor.poll.EditorPollComponent
 import com.sedsoftware.tackle.editor.stubs.EditorTabComponentApiStub
 import com.sedsoftware.tackle.editor.stubs.EditorTabComponentDatabaseStub
@@ -143,6 +144,22 @@ class EditorTabComponentTest : ComponentTest<EditorTabComponent>() {
         component.onEmojisButtonClicked()
         // then
         assertThat(emojisActiveModel.emojisContentVisible).isFalse()
+    }
+
+    @Test
+    fun `onInputHintSelected updates input state`() = runTest {
+        // given
+        val inputText = "Some text and test #hash"
+        val inputTextSelection = inputText.length to inputText.length
+        val expectedText = "Some text and test #hashtag"
+        val hint = EditorInputHintItem.HashTag("hashtag")
+        // when
+        component.attachments.updateInstanceConfig(InstanceStub.config)
+        component.poll.updateInstanceConfig(InstanceStub.config)
+        component.onTextInput(inputText, inputTextSelection)
+        component.onInputHintSelected(hint)
+        // then
+        assertThat(editorActiveModel.statusText).isEqualTo(expectedText)
     }
 
     @Test

@@ -10,6 +10,7 @@ import com.sedsoftware.tackle.editor.domain.EditorTabManager
 import com.sedsoftware.tackle.editor.extension.getNewLength
 import com.sedsoftware.tackle.editor.extension.getNewPosition
 import com.sedsoftware.tackle.editor.extension.insertEmoji
+import com.sedsoftware.tackle.editor.extension.insertHint
 import com.sedsoftware.tackle.editor.model.EditorInputHintItem
 import com.sedsoftware.tackle.editor.model.EditorInputHintRequest
 import com.sedsoftware.tackle.editor.store.EditorTabStore.Intent
@@ -136,6 +137,7 @@ internal class EditorTabStoreProvider(
                 }
 
                 onIntent<Intent.OnEmojiSelect> { dispatch(Msg.EmojiSelected(it.emoji)) }
+                onIntent<Intent.OnInputHintSelect> { dispatch(Msg.InputHintSelected(it.hint)) }
             },
             reducer = { msg ->
                 when (msg) {
@@ -176,6 +178,12 @@ internal class EditorTabStoreProvider(
                     is Msg.SuggestionsLoaded -> copy(
                         suggestions = msg.suggestions,
                     )
+
+                    is Msg.InputHintSelected -> copy(
+                        statusText = statusText.insertHint(msg.hint, this),
+                        statusTextSelection = statusText.getNewPosition(msg.hint, this),
+                        statusCharactersLeft = statusCharactersLimit - statusText.getNewLength(msg.hint, this),
+                    )
                 }
             }
         ) {}
@@ -195,6 +203,7 @@ internal class EditorTabStoreProvider(
         data class EmojiSelected(val emoji: CustomEmoji) : Msg
         data class InputHintRequestUpdated(val request: EditorInputHintRequest) : Msg
         data class SuggestionsLoaded(val suggestions: List<EditorInputHintItem>) : Msg
+        data class InputHintSelected(val hint: EditorInputHintItem) : Msg
     }
 
     private fun Msg.TextInput.exceedTheLimit(limit: Int): Boolean = limit - text.length < 0

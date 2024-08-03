@@ -12,6 +12,7 @@ import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import com.sedsoftware.tackle.editor.EditorTabComponentGateways
 import com.sedsoftware.tackle.editor.domain.EditorTabManager
+import com.sedsoftware.tackle.editor.model.EditorInputHintItem
 import com.sedsoftware.tackle.editor.model.EditorInputHintRequest
 import com.sedsoftware.tackle.editor.store.EditorTabStore.Intent
 import com.sedsoftware.tackle.editor.store.EditorTabStore.Label
@@ -187,6 +188,25 @@ internal class EditorTabStoreTest : StoreTest<Intent, State, Label>() {
         // then
         assertThat(store.state.suggestions).isNotEmpty()
         assertThat(store.state.currentSuggestionRequest).isEqualTo(EditorInputHintRequest.HashTags("#ab"))
+    }
+
+    @Test
+    fun `OnInputHintSelect inserts input hing`() = runTest {
+        // given
+        val hint = EditorInputHintItem.Account("", "testtest", "")
+        val text = "Some text @tes"
+        val expectedText = "Some text @testtest"
+        val selection = text.length to text.length
+        // when
+        store.init()
+        store.accept(Intent.OnTextInput(text, selection))
+        // then
+        assertThat(store.state.currentSuggestionRequest).isEqualTo(EditorInputHintRequest.Accounts("@tes"))
+        // and when
+        store.accept(Intent.OnInputHintSelect(hint))
+        // then
+        assertThat(store.state.statusText).isEqualTo(expectedText)
+        assertThat(store.state.statusTextSelection).isEqualTo(expectedText.length to expectedText.length)
     }
 
     override fun createStore(): Store<Intent, State, Label> =

@@ -14,6 +14,7 @@ interface EditorTabStore : Store<Intent, State, Label> {
     sealed class Intent {
         data class OnTextInput(val text: String, val selection: Pair<Int, Int>) : Intent()
         data class OnEmojiSelect(val emoji: CustomEmoji) : Intent()
+        data class OnInputHintSelect(val hint: EditorInputHintItem) : Intent()
     }
 
     data class State(

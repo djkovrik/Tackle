@@ -27,6 +27,7 @@ import com.sedsoftware.tackle.editor.integration.emojis.EditorEmojisComponentDat
 import com.sedsoftware.tackle.editor.integration.emojis.EditorEmojisComponentSettings
 import com.sedsoftware.tackle.editor.integration.header.EditorHeaderComponentSettings
 import com.sedsoftware.tackle.editor.integration.header.EditorHeaderComponentTools
+import com.sedsoftware.tackle.editor.model.EditorInputHintItem
 import com.sedsoftware.tackle.editor.poll.EditorPollComponent
 import com.sedsoftware.tackle.editor.poll.integration.EditorPollComponentDefault
 import com.sedsoftware.tackle.editor.store.EditorTabStore
@@ -137,6 +138,10 @@ class EditorTabComponentDefault(
         store.accept(EditorTabStore.Intent.OnEmojiSelect(emoji))
     }
 
+    override fun onInputHintSelected(hint: EditorInputHintItem) {
+        store.accept(EditorTabStore.Intent.OnInputHintSelect(hint))
+    }
+
     override fun onPollButtonClicked() {
         val isPollVisibleNow = poll.model.value.pollContentVisible
         attachments.changeComponentAvailability(available = isPollVisibleNow)
@@ -149,10 +154,6 @@ class EditorTabComponentDefault(
 
     override fun onWarningButtonClicked() {
         warning.toggleComponentVisibility()
-    }
-
-    override fun onSendButtonClicked() {
-        TODO("Status sending is not implemented yet")
     }
 
     private fun onChildOutput(output: ComponentOutput) {
