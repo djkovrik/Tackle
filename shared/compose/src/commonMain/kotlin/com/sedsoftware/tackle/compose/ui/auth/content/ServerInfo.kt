@@ -44,8 +44,8 @@ internal fun ServerInfo(
     }
 }
 
-@Composable
 @Preview
+@Composable
 private fun PreviewServerInfoLight() {
     TackleScreenPreview {
         ServerInfo(
@@ -55,8 +55,8 @@ private fun PreviewServerInfoLight() {
     }
 }
 
-@Composable
 @Preview
+@Composable
 private fun PreviewServerInfoDark() {
     TackleScreenPreview(darkTheme = true) {
         ServerInfo(

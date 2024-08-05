@@ -51,14 +51,14 @@ internal fun ScreenFailedToConnect(
                 modifier = modifier
             ) {
                 Image(
-                    painter = painterResource(Res.drawable.auth_retry),
+                    painter = painterResource(resource = Res.drawable.auth_retry),
                     contentDescription = null,
                     contentScale = ContentScale.FillBounds,
                     modifier = modifier.size(size = 128.dp),
                 )
 
                 Text(
-                    text = stringResource(Res.string.auth_failed_to_connect),
+                    text = stringResource(resource = Res.string.auth_failed_to_connect),
                     color = MaterialTheme.colorScheme.primary,
                     style = MaterialTheme.typography.bodyLarge,
                     textAlign = TextAlign.Right,
@@ -81,7 +81,7 @@ internal fun ScreenFailedToConnect(
                     exit = fadeOut() + slideOutVertically { it },
                 ) {
                     LoadingDotsText(
-                        text = stringResource(Res.string.common_retrying),
+                        text = stringResource(resource = Res.string.common_retrying),
                         color = MaterialTheme.colorScheme.secondary,
                         modifier = modifier
                     )
@@ -96,31 +96,11 @@ internal fun ScreenFailedToConnect(
                         .navigationBarsPadding(),
                 ) {
                     Text(
-                        text = stringResource(Res.string.common_retry),
+                        text = stringResource(resource = Res.string.common_retry),
                         modifier = modifier,
                     )
                 }
             }
         }
-    }
-}
-
-@Preview
-@Composable
-private fun FailedToConnectPreviewIdle() {
-    TackleScreenPreview {
-        ScreenFailedToConnect(
-            isRetrying = false,
-        )
-    }
-}
-
-@Preview
-@Composable
-private fun FailedToConnectPreviewRetrying() {
-    TackleScreenPreview {
-        ScreenFailedToConnect(
-            isRetrying = true,
-        )
     }
 }

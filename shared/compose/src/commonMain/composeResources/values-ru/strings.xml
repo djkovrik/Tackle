@@ -11,6 +11,7 @@
     <string name="common_retry">Повторить</string>
     <string name="common_retrying">Повторная попытка</string>
     <string name="common_redirecting">Перенаправление</string>
+    <string name="common_wait">Пожалуйста, подождите</string>
     <string name="common_cancel">Отмена</string>
     <string name="common_delete">Удалить</string>
     <string name="common_error_no_internet">Интернет соединение отсутствует</string>

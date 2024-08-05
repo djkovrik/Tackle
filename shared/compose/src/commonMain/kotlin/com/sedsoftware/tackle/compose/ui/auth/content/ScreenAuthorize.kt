@@ -5,7 +5,6 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
-import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -38,9 +37,6 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.sedsoftware.tackle.auth.AuthComponent
-import com.sedsoftware.tackle.auth.integration.AuthComponentPreview
-import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
-import com.sedsoftware.tackle.compose.ui.auth.AuthContent
 import com.sedsoftware.tackle.compose.custom.CustomOutlinedTextField
 import com.sedsoftware.tackle.compose.custom.LoadingDotsText
 import org.jetbrains.compose.resources.painterResource
@@ -60,14 +56,16 @@ import tackle.shared.compose.generated.resources.default_server
 @Composable
 internal fun ScreenAuthorize(
     model: AuthComponent.Model,
-    component: AuthComponent,
     modifier: Modifier = Modifier,
+    onTextInput: (String) -> Unit = {},
+    onLearnMoreClick: () -> Unit = {},
+    onAuthenticateClick: () -> Unit = {},
 ) {
     val focusManager: FocusManager = LocalFocusManager.current
     val keyboardController: SoftwareKeyboardController? = LocalSoftwareKeyboardController.current
     val clearFocus = remember { { focusManager.clearFocus() } }
     val hideKeyboard = remember { { keyboardController?.hide() } }
-    val defaultServer: String = stringResource(Res.string.default_server)
+    val defaultServer: String = stringResource(resource = Res.string.default_server)
 
     Column(modifier = modifier.fillMaxSize()) {
         Column(
@@ -78,14 +76,14 @@ internal fun ScreenAuthorize(
                 .weight(weight = 0.5f)
         ) {
             Text(
-                text = stringResource(Res.string.app_label),
+                text = stringResource(resource = Res.string.app_label),
                 color = MaterialTheme.colorScheme.primary,
                 style = MaterialTheme.typography.headlineLarge,
                 modifier = modifier.padding(all = 32.dp),
             )
 
             Image(
-                painter = painterResource(Res.drawable.auth_logo),
+                painter = painterResource(resource = Res.drawable.auth_logo),
                 contentDescription = null,
                 contentScale = ContentScale.FillBounds,
                 modifier = modifier.size(size = 128.dp),
@@ -102,7 +100,7 @@ internal fun ScreenAuthorize(
             Column(modifier = modifier.width(width = inputAndInfoWidth)) {
                 CustomOutlinedTextField(
                     value = model.textInput,
-                    onValueChange = component::onTextInput,
+                    onValueChange = onTextInput,
                     textStyle = MaterialTheme.typography.bodyLarge.copy(
                         color = MaterialTheme.colorScheme.onBackground,
                     ),
@@ -113,9 +111,9 @@ internal fun ScreenAuthorize(
                     label = {
                         Text(
                             text = if (!model.isServerInfoError) {
-                                stringResource(Res.string.auth_server_address)
+                                stringResource(resource = Res.string.auth_server_address)
                             } else {
-                                stringResource(Res.string.auth_server_address_wrong)
+                                stringResource(resource = Res.string.auth_server_address_wrong)
                             },
                             color = if (!model.isServerInfoError) {
                                 MaterialTheme.colorScheme.outline
@@ -145,32 +143,32 @@ internal fun ScreenAuthorize(
 
                 Row(modifier = modifier.fillMaxWidth()) {
                     Text(
-                        text = stringResource(Res.string.auth_server_recommended),
+                        text = stringResource(resource = Res.string.auth_server_recommended),
                         color = MaterialTheme.colorScheme.secondary,
                         style = MaterialTheme.typography.labelLarge,
                         textAlign = TextAlign.Left,
                         modifier = modifier
                             .padding(all = 8.dp)
                             .weight(weight = 0.5f)
-                            .clickable(onClick = { component.onTextInput(defaultServer) }),
+                            .clickable(onClick = { onTextInput.invoke(defaultServer) }),
                     )
 
                     Text(
-                        text = stringResource(Res.string.auth_learn_more),
+                        text = stringResource(resource = Res.string.auth_learn_more),
                         color = MaterialTheme.colorScheme.secondary,
                         style = MaterialTheme.typography.labelLarge,
                         textAlign = TextAlign.Right,
                         modifier = modifier
                             .padding(all = 8.dp)
                             .weight(weight = 0.5f)
-                            .clickable(onClick = { component.onShowLearnMore() }),
+                            .clickable(onClick = onLearnMoreClick),
                     )
                 }
             }
 
             AnimatedVisibility(visible = model.isLoadingServerInfo) {
                 LoadingDotsText(
-                    text = stringResource(Res.string.auth_server_info_fetch),
+                    text = stringResource(resource = Res.string.auth_server_info_fetch),
                     color = MaterialTheme.colorScheme.secondary,
                     modifier = modifier,
                 )
@@ -197,7 +195,7 @@ internal fun ScreenAuthorize(
                 exit = fadeOut() + slideOutVertically { it },
             ) {
                 LoadingDotsText(
-                    text = stringResource(Res.string.common_redirecting),
+                    text = stringResource(resource = Res.string.common_redirecting),
                     color = MaterialTheme.colorScheme.secondary,
                     modifier = modifier,
                 )
@@ -206,13 +204,13 @@ internal fun ScreenAuthorize(
             Button(
                 enabled = model.isServerInfoLoaded && !model.isOauthFlowActive,
                 shape = MaterialTheme.shapes.large,
-                onClick = component::onAuthenticateClick,
+                onClick = onAuthenticateClick,
                 modifier = modifier
                     .padding(all = 16.dp)
                     .navigationBarsPadding(),
             ) {
                 Text(
-                    text = stringResource(Res.string.common_continue),
+                    text = stringResource(resource = Res.string.common_continue),
                     modifier = modifier,
                 )
             }
@@ -221,49 +219,3 @@ internal fun ScreenAuthorize(
 }
 
 private val inputAndInfoWidth = 320.dp
-
-@Composable
-@Preview
-private fun PreviewAuthContentIdleLight() {
-    TackleScreenPreview {
-        AuthContent(
-            component = AuthComponentPreview()
-        )
-    }
-}
-
-@Composable
-@Preview
-private fun PreviewAuthContentIdleDark() {
-    TackleScreenPreview(darkTheme = true) {
-        AuthContent(
-            component = AuthComponentPreview()
-        )
-    }
-}
-
-@Composable
-@Preview
-private fun PreviewAuthContentWithServerLight() {
-    TackleScreenPreview {
-        AuthContent(
-            component = AuthComponentPreview(
-                textInput = "mastodon.social",
-                isServerInfoLoaded = true,
-            )
-        )
-    }
-}
-
-@Composable
-@Preview
-private fun PreviewAuthContentWithServerDark() {
-    TackleScreenPreview(darkTheme = true) {
-        AuthContent(
-            component = AuthComponentPreview(
-                textInput = "mastodon.social",
-                isServerInfoLoaded = true,
-            )
-        )
-    }
-}

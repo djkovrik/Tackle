@@ -191,7 +191,7 @@ internal class EditorTabStoreTest : StoreTest<Intent, State, Label>() {
     }
 
     @Test
-    fun `OnInputHintSelect inserts input hing`() = runTest {
+    fun `OnInputHintSelect inserts input hint`() = runTest {
         // given
         val hint = EditorInputHintItem.Account("", "testtest", "")
         val text = "Some text @tes"
