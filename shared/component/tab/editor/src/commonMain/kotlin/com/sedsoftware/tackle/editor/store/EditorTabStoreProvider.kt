@@ -173,6 +173,11 @@ internal class EditorTabStoreProvider(
 
                     is Msg.InputHintRequestUpdated -> copy(
                         currentSuggestionRequest = msg.request,
+                        suggestions = if (msg.request !is EditorInputHintRequest.None) {
+                            suggestions
+                        } else {
+                            emptyList()
+                        },
                     )
 
                     is Msg.SuggestionsLoaded -> copy(

@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
@@ -35,6 +37,9 @@ import com.sedsoftware.tackle.compose.model.EditorToolbarItem
 import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
 import com.sedsoftware.tackle.compose.ui.editor.attachment.EditorAttachmentsContent
 import com.sedsoftware.tackle.compose.ui.editor.content.EditorToolbar
+import com.sedsoftware.tackle.compose.ui.editor.content.InputHintAccount
+import com.sedsoftware.tackle.compose.ui.editor.content.InputHintEmoji
+import com.sedsoftware.tackle.compose.ui.editor.content.InputHintHashTag
 import com.sedsoftware.tackle.compose.ui.editor.content.buildToolbarState
 import com.sedsoftware.tackle.compose.ui.editor.emoji.EditorEmojisContent
 import com.sedsoftware.tackle.compose.ui.editor.header.EditorHeaderContent
@@ -50,6 +55,7 @@ import com.sedsoftware.tackle.editor.attachments.model.AttachedFile
 import com.sedsoftware.tackle.editor.emojis.EditorEmojisComponent
 import com.sedsoftware.tackle.editor.header.EditorHeaderComponent
 import com.sedsoftware.tackle.editor.integration.EditorTabComponentPreview
+import com.sedsoftware.tackle.editor.model.EditorInputHintItem
 import com.sedsoftware.tackle.editor.poll.EditorPollComponent
 import com.sedsoftware.tackle.editor.poll.model.PollChoiceOption
 import com.sedsoftware.tackle.editor.poll.model.PollDuration
@@ -124,10 +130,46 @@ internal fun EditorTabContent(
                 if (warningModel.warningContentVisible) {
                     EditorWarningContent(
                         text = warningModel.text,
-                        modifier = Modifier.padding(horizontal = 16.dp),
+                        modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
                         onTextInput = component.warning::onTextInput,
                         onTextClear = component.warning::onClearTextInput,
                     )
+                }
+            }
+
+            // Hints
+            item {
+                AnimatedVisibility(visible = editorModel.suggestions.isNotEmpty()) {
+                    LazyRow(
+                        modifier = modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 8.dp)
+                    ) {
+                        items(
+                            items = editorModel.suggestions,
+                            key = { it.hashCode() },
+                        ) { item: EditorInputHintItem ->
+                            when (item) {
+                                is EditorInputHintItem.Account ->
+                                    InputHintAccount(
+                                        hint = item,
+                                        onClick = { component.onInputHintSelected(item) },
+                                    )
+
+                                is EditorInputHintItem.Emoji ->
+                                    InputHintEmoji(
+                                        hint = item,
+                                        onClick = { component.onInputHintSelected(item) },
+                                    )
+
+                                is EditorInputHintItem.HashTag ->
+                                    InputHintHashTag(
+                                        hint = item,
+                                        onClick = { component.onInputHintSelected(item) },
+                                    )
+                            }
+                        }
+                    }
                 }
             }
 
@@ -159,7 +201,7 @@ internal fun EditorTabContent(
                         focusedBorderColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.7f),
                     ),
                     modifier = Modifier
-                        .padding(start = 16.dp, top = 16.dp, end = 16.dp, bottom = 8.dp)
+                        .padding(start = 16.dp, end = 16.dp, bottom = 8.dp)
                         .fillMaxWidth()
                 )
             }
@@ -287,6 +329,11 @@ private fun EditorTabContentPreviewEverything() {
                 domain = "mastodon.social",
                 selectedLocale = AppLocale("English", "en"),
                 statusCharactersLeft = 123,
+                suggestions = listOf(
+                    EditorInputHintItem.HashTag("abc"),
+                    EditorInputHintItem.HashTag("defghij"),
+                    EditorInputHintItem.HashTag("kl"),
+                ),
                 pollOptions = listOf(
                     PollChoiceOption(id = "1", text = "Some text here"),
                     PollChoiceOption(id = "2", text = "Another text here"),
@@ -408,7 +455,7 @@ private fun EditorTabContentPreviewWarning() {
 
 @Preview
 @Composable
-private fun EditorTabContentPreviewAccountAndHashTag() {
+private fun EditorTabContentAccountAndHashTagPreview() {
     TackleScreenPreview {
         EditorTabContent(
             component = EditorTabComponentPreview(
@@ -421,6 +468,11 @@ private fun EditorTabContentPreviewAccountAndHashTag() {
                 selectedLocale = AppLocale("English", "en"),
                 statusCharactersLeft = 123,
                 statusText = "This is @mention and #hashTag here.",
+                suggestions = listOf(
+                    EditorInputHintItem.HashTag("abc"),
+                    EditorInputHintItem.HashTag("defghij"),
+                    EditorInputHintItem.HashTag("kl"),
+                )
             )
         )
     }

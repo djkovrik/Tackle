@@ -52,6 +52,7 @@ class EditorTabComponentPreview(
     warningContentVisible: Boolean = false,
     statusText: String = "",
     statusCharactersLeft: Int = -1,
+    suggestions: List<EditorInputHintItem> = emptyList(),
 ) : EditorTabComponent {
 
     override val attachments: EditorAttachmentsComponent =
@@ -107,6 +108,7 @@ class EditorTabComponentPreview(
                 statusText = statusText,
                 statusTextSelection = (statusText.length to statusText.length),
                 statusCharactersLeft = statusCharactersLeft,
+                suggestions = suggestions,
             )
         )
 

@@ -8,5 +8,6 @@ internal val stateToModel: (State) -> Model = {
         statusText = it.statusText,
         statusTextSelection = it.statusTextSelection,
         statusCharactersLeft = it.statusCharactersLeft,
+        suggestions = it.suggestions,
     )
 }
