@@ -22,8 +22,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.sedsoftware.tackle.compose.model.EditorToolbarItem
@@ -75,6 +80,31 @@ internal fun EditorTabContent(
 
     val bottomSheetState: SheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
+    val annotatedText: AnnotatedString = buildAnnotatedString {
+        val regex = Regex("(@\\w+) | #\\w+")
+        var lastIndex = 0
+
+        regex.findAll(editorModel.statusText).forEach { result ->
+            append(editorModel.statusText.substring(lastIndex, result.range.first))
+            pushStringAnnotation(tag = "USER_TAG", annotation = result.value)
+
+            withStyle(
+                style = SpanStyle(
+                    color = MaterialTheme.colorScheme.secondary,
+                    fontWeight = FontWeight.Bold,
+                )
+            ) {
+                append(result.value)
+            }
+
+            pop()
+
+            lastIndex = result.range.last + 1
+        }
+
+        append(editorModel.statusText.substring(lastIndex))
+    }
+
     Column {
         // Header
         EditorHeaderContent(
@@ -105,7 +135,7 @@ internal fun EditorTabContent(
             item {
                 OutlinedTextField(
                     value = TextFieldValue(
-                        text = editorModel.statusText,
+                        annotatedString = annotatedText,
                         selection = TextRange(
                             start = editorModel.statusTextSelection.first,
                             end = editorModel.statusTextSelection.second
@@ -371,6 +401,26 @@ private fun EditorTabContentPreviewWarning() {
                 selectedLocale = AppLocale("English", "en"),
                 statusCharactersLeft = 123,
                 warningContentVisible = true,
+            )
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun EditorTabContentPreviewAccountAndHashTag() {
+    TackleScreenPreview {
+        EditorTabContent(
+            component = EditorTabComponentPreview(
+                attachmentsButtonAvailable = true,
+                emojisButtonAvailable = true,
+                pollButtonAvailable = true,
+                avatar = "https://mastodon.social/avatars/original/missing.png",
+                nickname = "djkovrik",
+                domain = "mastodon.social",
+                selectedLocale = AppLocale("English", "en"),
+                statusCharactersLeft = 123,
+                statusText = "This is @mention and #hashTag here.",
             )
         )
     }

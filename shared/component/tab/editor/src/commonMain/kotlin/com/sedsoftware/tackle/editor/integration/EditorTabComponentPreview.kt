@@ -105,7 +105,7 @@ class EditorTabComponentPreview(
         MutableValue(
             Model(
                 statusText = statusText,
-                statusTextSelection = (0 to statusText.length),
+                statusTextSelection = (statusText.length to statusText.length),
                 statusCharactersLeft = statusCharactersLeft,
             )
         )
