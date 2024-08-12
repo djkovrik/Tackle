@@ -89,7 +89,7 @@ internal class EditorTabStoreProvider(
                             is EditorInputHintRequest.Accounts -> forward(Action.LoadAccountSuggestion(inputHintRequest.query))
                             is EditorInputHintRequest.Emojis -> forward(Action.LoadEmojiSuggestion(inputHintRequest.query))
                             is EditorInputHintRequest.HashTags -> forward(Action.LoadHashTagSuggestion(inputHintRequest.query))
-                            is EditorInputHintRequest.None -> Unit
+                            is EditorInputHintRequest.None -> suggestionJob?.cancel()
                         }
                     }
                 }
@@ -98,9 +98,10 @@ internal class EditorTabStoreProvider(
                     suggestionJob?.cancel()
                     suggestionJob = launch {
                         delay(manager.getInputHintDelay())
+                        val query = it.query.trim('@')
 
                         unwrap(
-                            result = withContext(ioContext) { manager.searchForAccounts(it.query) },
+                            result = withContext(ioContext) { manager.searchForAccounts(query) },
                             onSuccess = { accounts: List<EditorInputHintItem> ->
                                 dispatch(Msg.SuggestionsLoaded(accounts))
                             },
@@ -115,9 +116,10 @@ internal class EditorTabStoreProvider(
                     suggestionJob?.cancel()
                     suggestionJob = launch {
                         delay(manager.getInputHintDelay())
+                        val query = it.query.trim(':')
 
                         unwrap(
-                            result = withContext(ioContext) { manager.searchForEmojis(it.query) },
+                            result = withContext(ioContext) { manager.searchForEmojis(query) },
                             onSuccess = { emojis: List<EditorInputHintItem> ->
                                 dispatch(Msg.SuggestionsLoaded(emojis))
                             },
@@ -132,9 +134,10 @@ internal class EditorTabStoreProvider(
                     suggestionJob?.cancel()
                     suggestionJob = launch {
                         delay(manager.getInputHintDelay())
+                        val query = it.query.trim('#')
 
                         unwrap(
-                            result = withContext(ioContext) { manager.searchForHashTags(it.query) },
+                            result = withContext(ioContext) { manager.searchForHashTags(query) },
                             onSuccess = { hashtags: List<EditorInputHintItem> ->
                                 dispatch(Msg.SuggestionsLoaded(hashtags))
                             },
@@ -150,8 +153,12 @@ internal class EditorTabStoreProvider(
                     forward(Action.CheckForInputHelper)
                 }
 
+                onIntent<Intent.OnInputHintSelect> {
+                    dispatch(Msg.InputHintSelected(it.hint))
+                    forward(Action.CheckForInputHelper)
+                }
+
                 onIntent<Intent.OnEmojiSelect> { dispatch(Msg.EmojiSelected(it.emoji)) }
-                onIntent<Intent.OnInputHintSelect> { dispatch(Msg.InputHintSelected(it.hint)) }
                 onIntent<Intent.OnRequestDatePicker> { dispatch(Msg.DateDialogVisibilityChanged(it.show)) }
                 onIntent<Intent.OnScheduleDate> { dispatch(Msg.ScheduleDateSelected(it.millis)) }
                 onIntent<Intent.OnRequestTimePicker> { dispatch(Msg.TimeDialogVisibilityChanged(it.show)) }

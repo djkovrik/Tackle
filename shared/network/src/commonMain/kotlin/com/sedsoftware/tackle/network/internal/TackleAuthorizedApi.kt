@@ -18,7 +18,6 @@ import io.ktor.client.request.setBody
 import io.ktor.http.Headers
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
-import io.ktor.http.parameters
 
 internal class TackleAuthorizedApi(
     domainProvider: () -> String,
@@ -127,18 +126,20 @@ internal class TackleAuthorizedApi(
             authenticated = true,
             responseMapper = SearchMapper::map,
         ) {
-            parameters {
-                append("q", query)
-                append("type", type)
+            url {
+                with(parameters) {
+                    append("q", query)
+                    append("type", type)
 
-                resolve?.let { append("resolve", "$it") }
-                following?.let { append("following", "$it") }
-                accountId?.let { append("account_id", it) }
-                excludeUnreviewed?.let { append("exclude_unreviewed", "$it") }
-                minId?.let { append("minId", it) }
-                maxId?.let { append("maxId", it) }
-                limit?.let { append("limit", "$it") }
-                offset?.let { append("offset", "$it") }
+                    resolve?.let { append("resolve", "$it") }
+                    following?.let { append("following", "$it") }
+                    accountId?.let { append("account_id", it) }
+                    excludeUnreviewed?.let { append("exclude_unreviewed", "$it") }
+                    minId?.let { append("minId", it) }
+                    maxId?.let { append("maxId", it) }
+                    limit?.let { append("limit", "$it") }
+                    offset?.let { append("offset", "$it") }
+                }
             }
         }
 
