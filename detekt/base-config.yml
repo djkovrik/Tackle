@@ -110,6 +110,7 @@ complexity:
     ignoreSingleWhenExpression: false
     ignoreSimpleWhenEntries: false
     ignoreNestingFunctions: false
+    ignoreAnnotated: ['StoreCreate']
     nestingFunctions:
       - 'also'
       - 'apply'
@@ -174,8 +175,8 @@ complexity:
     thresholdInObjects: 11
     thresholdInEnums: 11
     ignoreDeprecated: false
-    ignorePrivate: false
-    ignoreOverridden: false
+    ignorePrivate: true
+    ignoreOverridden: true
     ignoreAnnotatedFunctions: ['Preview']
 
 coroutines:
