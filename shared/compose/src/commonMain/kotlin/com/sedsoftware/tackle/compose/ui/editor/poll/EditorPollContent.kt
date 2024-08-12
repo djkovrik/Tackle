@@ -116,7 +116,7 @@ internal fun EditorPollContent(
             )
 
             Text(
-                text = stringResource(Res.string.editor_poll_multiple),
+                text = stringResource(resource = Res.string.editor_poll_multiple),
                 color = MaterialTheme.colorScheme.secondary,
                 style = MaterialTheme.typography.titleSmall,
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),

@@ -14,10 +14,11 @@ import com.sedsoftware.tackle.editor.emojis.EditorEmojisComponent
 import com.sedsoftware.tackle.editor.emojis.integration.EditorEmojisComponentPreview
 import com.sedsoftware.tackle.editor.header.EditorHeaderComponent
 import com.sedsoftware.tackle.editor.header.integration.EditorHeaderComponentPreview
+import com.sedsoftware.tackle.editor.model.EditorInputHintItem
 import com.sedsoftware.tackle.editor.poll.EditorPollComponent
 import com.sedsoftware.tackle.editor.poll.integration.EditorPollComponentPreview
-import com.sedsoftware.tackle.editor.poll.model.PollDuration
 import com.sedsoftware.tackle.editor.poll.model.PollChoiceOption
+import com.sedsoftware.tackle.editor.poll.model.PollDuration
 import com.sedsoftware.tackle.editor.warning.EditorWarningComponent
 import com.sedsoftware.tackle.editor.warning.integration.EditorWarningComponentPreview
 
@@ -51,6 +52,7 @@ class EditorTabComponentPreview(
     warningContentVisible: Boolean = false,
     statusText: String = "",
     statusCharactersLeft: Int = -1,
+    suggestions: List<EditorInputHintItem> = emptyList(),
 ) : EditorTabComponent {
 
     override val attachments: EditorAttachmentsComponent =
@@ -104,15 +106,26 @@ class EditorTabComponentPreview(
         MutableValue(
             Model(
                 statusText = statusText,
-                statusTextSelection = (0 to statusText.length),
+                statusTextSelection = (statusText.length to statusText.length),
                 statusCharactersLeft = statusCharactersLeft,
+                suggestions = suggestions,
+                datePickerVisible = false,
+                scheduledDate = 0L,
+                timePickerVisible = false,
+                scheduledHour = 0,
+                scheduledMinute = 0,
+                scheduledIn24hrFormat = false,
             )
         )
 
     override fun onTextInput(text: String, selection: Pair<Int, Int>) = Unit
     override fun onEmojiSelected(emoji: CustomEmoji) = Unit
+    override fun onInputHintSelected(hint: EditorInputHintItem) = Unit
     override fun onPollButtonClicked() = Unit
     override fun onEmojisButtonClicked() = Unit
     override fun onWarningButtonClicked() = Unit
-    override fun onSendButtonClicked() = Unit
+    override fun onScheduleDatePickerRequested(show: Boolean) = Unit
+    override fun onScheduleDateSelected(millis: Long) = Unit
+    override fun onScheduleTimePickerRequested(show: Boolean) = Unit
+    override fun onScheduleTimeSelected(hour: Int, minute: Int, formatIn24hr: Boolean) = Unit
 }

@@ -4,10 +4,13 @@ import com.sedsoftware.tackle.domain.api.AuthorizedApi
 import com.sedsoftware.tackle.domain.model.Account
 import com.sedsoftware.tackle.domain.model.MediaAttachment
 import com.sedsoftware.tackle.domain.model.PlatformFileWrapper
+import com.sedsoftware.tackle.domain.model.Search
 import com.sedsoftware.tackle.network.mappers.AccountMapper
 import com.sedsoftware.tackle.network.mappers.MediaAttachmentMapper
+import com.sedsoftware.tackle.network.mappers.SearchMapper
 import com.sedsoftware.tackle.network.response.AccountResponse
 import com.sedsoftware.tackle.network.response.MediaAttachmentResponse
+import com.sedsoftware.tackle.network.response.SearchResponse
 import io.ktor.client.plugins.onUpload
 import io.ktor.client.request.forms.MultiPartFormDataContent
 import io.ktor.client.request.forms.formData
@@ -103,6 +106,41 @@ internal class TackleAuthorizedApi(
                     },
                 )
             )
+        }
+
+    override suspend fun search(
+        query: String,
+        type: String,
+        resolve: Boolean?,
+        following: Boolean?,
+        accountId: String?,
+        excludeUnreviewed: Boolean?,
+        minId: String?,
+        maxId: String?,
+        limit: Int?,
+        offset: Int?,
+    ): Search =
+        doRequest<SearchResponse, Search>(
+            requestUrl = "$instanceUrl/api/v2/search",
+            requestMethod = HttpMethod.Get,
+            authenticated = true,
+            responseMapper = SearchMapper::map,
+        ) {
+            url {
+                with(parameters) {
+                    append("q", query)
+                    append("type", type)
+
+                    resolve?.let { append("resolve", "$it") }
+                    following?.let { append("following", "$it") }
+                    accountId?.let { append("account_id", it) }
+                    excludeUnreviewed?.let { append("exclude_unreviewed", "$it") }
+                    minId?.let { append("minId", it) }
+                    maxId?.let { append("maxId", it) }
+                    limit?.let { append("limit", "$it") }
+                    offset?.let { append("offset", "$it") }
+                }
+            }
         }
 
     companion object {

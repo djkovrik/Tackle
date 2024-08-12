@@ -15,6 +15,7 @@ import com.sedsoftware.tackle.editor.EditorTabComponent
 import com.sedsoftware.tackle.editor.attachments.EditorAttachmentsComponent
 import com.sedsoftware.tackle.editor.emojis.EditorEmojisComponent
 import com.sedsoftware.tackle.editor.header.EditorHeaderComponent
+import com.sedsoftware.tackle.editor.model.EditorInputHintItem
 import com.sedsoftware.tackle.editor.poll.EditorPollComponent
 import com.sedsoftware.tackle.editor.stubs.EditorTabComponentApiStub
 import com.sedsoftware.tackle.editor.stubs.EditorTabComponentDatabaseStub
@@ -146,6 +147,22 @@ class EditorTabComponentTest : ComponentTest<EditorTabComponent>() {
     }
 
     @Test
+    fun `onInputHintSelected updates input state`() = runTest {
+        // given
+        val inputText = "Some text and test #hash"
+        val inputTextSelection = inputText.length to inputText.length
+        val expectedText = "Some text and test #hashtag"
+        val hint = EditorInputHintItem.HashTag("hashtag")
+        // when
+        component.attachments.updateInstanceConfig(InstanceStub.config)
+        component.poll.updateInstanceConfig(InstanceStub.config)
+        component.onTextInput(inputText, inputTextSelection)
+        component.onInputHintSelected(hint)
+        // then
+        assertThat(editorActiveModel.statusText).isEqualTo(expectedText)
+    }
+
+    @Test
     fun `onWarningButtonClicked should display warning and update buttons`() = runTest {
         // given
         // when
@@ -187,6 +204,57 @@ class EditorTabComponentTest : ComponentTest<EditorTabComponent>() {
         // then
         assertThat(attachmentsActiveModel.attachmentsContentVisible).isTrue()
         assertThat(pollActiveModel.pollButtonAvailable).isFalse()
+    }
+
+    @Test
+    fun `onScheduleDatePickerRequested should control date picker`() = runTest {
+        // given
+        // when
+        component.onScheduleDatePickerRequested(true)
+        // then
+        assertThat(editorActiveModel.datePickerVisible).isTrue()
+        // and when
+        component.onScheduleDatePickerRequested(false)
+        // then
+        assertThat(editorActiveModel.datePickerVisible).isFalse()
+    }
+
+    @Test
+    fun `onScheduleDateSelected should update scheduled date`() = runTest {
+        // given
+        val newDate = 54321L
+        // when
+        component.onScheduleDateSelected(newDate)
+        // then
+        assertThat(editorActiveModel.scheduledDate).isEqualTo(newDate)
+    }
+
+    @Test
+    fun `onScheduleTimePickerRequested should control time picker`() = runTest {
+        // given
+        // when
+        component.onScheduleTimePickerRequested(true)
+        // then
+        assertThat(editorActiveModel.timePickerVisible).isTrue()
+        // and when
+        component.onScheduleTimePickerRequested(false)
+        // then
+        assertThat(editorActiveModel.timePickerVisible).isFalse()
+    }
+
+    @Test
+    fun `onScheduleTimeSelected should update scheduled date`() = runTest {
+        // given
+        // given
+        val hour = 16
+        val minute = 54
+        val format = false
+        // when
+        component.onScheduleTimeSelected(hour, minute, format)
+        // then
+        assertThat(editorActiveModel.scheduledHour).isEqualTo(hour)
+        assertThat(editorActiveModel.scheduledMinute).isEqualTo(minute)
+        assertThat(editorActiveModel.scheduledIn24hrFormat).isEqualTo(format)
     }
 
     override fun createComponent(): EditorTabComponentDefault =

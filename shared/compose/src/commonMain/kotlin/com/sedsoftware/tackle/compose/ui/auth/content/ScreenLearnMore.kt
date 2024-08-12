@@ -32,21 +32,21 @@ internal fun ScreenLearnMore(
             .padding(all = 16.dp)
     ) {
         Text(
-            text = stringResource(Res.string.mastodon_title),
+            text = stringResource(resource = Res.string.mastodon_title),
             color = MaterialTheme.colorScheme.primary,
             style = MaterialTheme.typography.headlineMedium,
             modifier = modifier.padding(bottom = 8.dp),
         )
 
         Text(
-            text = stringResource(Res.string.auth_mastodon_description),
+            text = stringResource(resource = Res.string.auth_mastodon_description),
             color = MaterialTheme.colorScheme.onBackground,
             style = MaterialTheme.typography.bodyLarge,
             modifier = modifier.padding(bottom = 16.dp),
         )
 
         Text(
-            text = stringResource(Res.string.auth_server_description),
+            text = stringResource(resource = Res.string.auth_server_description),
             color = MaterialTheme.colorScheme.onBackground,
             style = MaterialTheme.typography.bodyLarge,
             modifier = modifier.padding(bottom = 8.dp),
@@ -58,15 +58,14 @@ internal fun ScreenLearnMore(
                 .padding(bottom = 16.dp)
         ) {
             Text(
-                text = stringResource(Res.string.auth_no_account),
+                text = stringResource(resource = Res.string.auth_no_account),
                 color = MaterialTheme.colorScheme.onBackground,
                 style = MaterialTheme.typography.bodyLarge,
-                modifier = modifier
-                    .padding(top = 8.dp, bottom = 8.dp, end = 8.dp),
+                modifier = modifier.padding(top = 8.dp, bottom = 8.dp, end = 8.dp),
             )
 
             Text(
-                text = stringResource(Res.string.auth_join),
+                text = stringResource(resource = Res.string.auth_join),
                 textDecoration = TextDecoration.Underline,
                 color = MaterialTheme.colorScheme.primary,
                 style = MaterialTheme.typography.bodyLarge,
@@ -78,16 +77,16 @@ internal fun ScreenLearnMore(
     }
 }
 
-@Composable
 @Preview
+@Composable
 private fun PreviewLearnMoreBottomSheetLight() {
     TackleScreenPreview {
         ScreenLearnMore()
     }
 }
 
-@Composable
 @Preview
+@Composable
 private fun PreviewLearnMoreBottomSheetDark() {
     TackleScreenPreview(darkTheme = true) {
         ScreenLearnMore()

@@ -63,7 +63,7 @@ internal fun LanguageSelectorItem(
 
             if (default) {
                 Text(
-                    text = stringResource(Res.string.editor_language_default),
+                    text = stringResource(resource = Res.string.editor_language_default),
                     color = MaterialTheme.colorScheme.onBackground,
                     style = MaterialTheme.typography.bodySmall,
                 )

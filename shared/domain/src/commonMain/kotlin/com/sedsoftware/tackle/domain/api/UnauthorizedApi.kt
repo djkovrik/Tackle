@@ -19,10 +19,10 @@ interface UnauthorizedApi {
     /**
      * Creates a new application to obtain OAuth2 credentials.
      *
-     * @param client application name
-     * @param uri where the user should be redirected after authorization
-     * @param scopes space separated list of scopes
-     * @param website application website
+     * @param client Application name
+     * @param uri Where the user should be redirected after authorization
+     * @param scopes Space separated list of scopes
+     * @param website Application website
      *
      * @see <a href="https://docs.joinmastodon.org/methods/apps/#create">Create an application</a>
      */
@@ -31,11 +31,11 @@ interface UnauthorizedApi {
     /**
      * Obtains an access token to be used during API calls that are not public.
      *
-     * @param id client id received when app was created
-     * @param secret client secret received when app was created
-     * @param code code obtained during oauth authorization flow
+     * @param id Client id received when app was created
+     * @param secret Client secret received when app was created
+     * @param code Code obtained during oauth authorization flow
      * @param uri uri declared when app was created
-     * @param scopes list of oauth scopes
+     * @param scopes List of oauth scopes
      *
      * @see <a href="https://docs.joinmastodon.org/methods/oauth/#token">Obtain a token</a>
      */

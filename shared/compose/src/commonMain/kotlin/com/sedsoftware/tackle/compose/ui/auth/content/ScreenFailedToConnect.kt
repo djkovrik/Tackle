@@ -5,7 +5,6 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
-import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,7 +21,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
 import com.sedsoftware.tackle.compose.custom.LoadingDotsText
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -51,14 +49,14 @@ internal fun ScreenFailedToConnect(
                 modifier = modifier
             ) {
                 Image(
-                    painter = painterResource(Res.drawable.auth_retry),
+                    painter = painterResource(resource = Res.drawable.auth_retry),
                     contentDescription = null,
                     contentScale = ContentScale.FillBounds,
                     modifier = modifier.size(size = 128.dp),
                 )
 
                 Text(
-                    text = stringResource(Res.string.auth_failed_to_connect),
+                    text = stringResource(resource = Res.string.auth_failed_to_connect),
                     color = MaterialTheme.colorScheme.primary,
                     style = MaterialTheme.typography.bodyLarge,
                     textAlign = TextAlign.Right,
@@ -81,7 +79,7 @@ internal fun ScreenFailedToConnect(
                     exit = fadeOut() + slideOutVertically { it },
                 ) {
                     LoadingDotsText(
-                        text = stringResource(Res.string.common_retrying),
+                        text = stringResource(resource = Res.string.common_retrying),
                         color = MaterialTheme.colorScheme.secondary,
                         modifier = modifier
                     )
@@ -96,31 +94,11 @@ internal fun ScreenFailedToConnect(
                         .navigationBarsPadding(),
                 ) {
                     Text(
-                        text = stringResource(Res.string.common_retry),
+                        text = stringResource(resource = Res.string.common_retry),
                         modifier = modifier,
                     )
                 }
             }
         }
-    }
-}
-
-@Preview
-@Composable
-private fun FailedToConnectPreviewIdle() {
-    TackleScreenPreview {
-        ScreenFailedToConnect(
-            isRetrying = false,
-        )
-    }
-}
-
-@Preview
-@Composable
-private fun FailedToConnectPreviewRetrying() {
-    TackleScreenPreview {
-        ScreenFailedToConnect(
-            isRetrying = true,
-        )
     }
 }

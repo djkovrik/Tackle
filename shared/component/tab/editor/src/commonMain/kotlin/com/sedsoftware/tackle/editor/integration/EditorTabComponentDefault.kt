@@ -27,6 +27,7 @@ import com.sedsoftware.tackle.editor.integration.emojis.EditorEmojisComponentDat
 import com.sedsoftware.tackle.editor.integration.emojis.EditorEmojisComponentSettings
 import com.sedsoftware.tackle.editor.integration.header.EditorHeaderComponentSettings
 import com.sedsoftware.tackle.editor.integration.header.EditorHeaderComponentTools
+import com.sedsoftware.tackle.editor.model.EditorInputHintItem
 import com.sedsoftware.tackle.editor.poll.EditorPollComponent
 import com.sedsoftware.tackle.editor.poll.integration.EditorPollComponentDefault
 import com.sedsoftware.tackle.editor.store.EditorTabStore
@@ -98,7 +99,7 @@ class EditorTabComponentDefault(
         instanceKeeper.getStore {
             EditorTabStoreProvider(
                 storeFactory = storeFactory,
-                manager = EditorTabManager(database),
+                manager = EditorTabManager(api, database, tools),
                 mainContext = dispatchers.main,
                 ioContext = dispatchers.io,
             ).create()
@@ -137,6 +138,10 @@ class EditorTabComponentDefault(
         store.accept(EditorTabStore.Intent.OnEmojiSelect(emoji))
     }
 
+    override fun onInputHintSelected(hint: EditorInputHintItem) {
+        store.accept(EditorTabStore.Intent.OnInputHintSelect(hint))
+    }
+
     override fun onPollButtonClicked() {
         val isPollVisibleNow = poll.model.value.pollContentVisible
         attachments.changeComponentAvailability(available = isPollVisibleNow)
@@ -151,8 +156,20 @@ class EditorTabComponentDefault(
         warning.toggleComponentVisibility()
     }
 
-    override fun onSendButtonClicked() {
-        TODO("Status sending is not implemented yet")
+    override fun onScheduleDatePickerRequested(show: Boolean) {
+        store.accept(EditorTabStore.Intent.OnRequestDatePicker(show))
+    }
+
+    override fun onScheduleDateSelected(millis: Long) {
+        store.accept(EditorTabStore.Intent.OnScheduleDate(millis))
+    }
+
+    override fun onScheduleTimePickerRequested(show: Boolean) {
+        store.accept(EditorTabStore.Intent.OnRequestTimePicker(show))
+    }
+
+    override fun onScheduleTimeSelected(hour: Int, minute: Int, formatIn24hr: Boolean) {
+        store.accept(EditorTabStore.Intent.OnScheduleTime(hour, minute, formatIn24hr))
     }
 
     private fun onChildOutput(output: ComponentOutput) {

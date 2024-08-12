@@ -1,12 +1,14 @@
 package com.sedsoftware.tackle.compose.ui.editor.content
 
 import com.sedsoftware.tackle.compose.model.EditorToolbarItem
+import com.sedsoftware.tackle.editor.EditorTabComponent
 import com.sedsoftware.tackle.editor.attachments.EditorAttachmentsComponent
 import com.sedsoftware.tackle.editor.emojis.EditorEmojisComponent
 import com.sedsoftware.tackle.editor.poll.EditorPollComponent
 import com.sedsoftware.tackle.editor.warning.EditorWarningComponent
 
 internal fun buildToolbarState(
+    editor: EditorTabComponent.Model,
     attachments: EditorAttachmentsComponent.Model,
     emojis: EditorEmojisComponent.Model,
     poll: EditorPollComponent.Model,
@@ -34,7 +36,7 @@ internal fun buildToolbarState(
     ),
     EditorToolbarItem(
         type = EditorToolbarItem.Type.SCHEDULE,
-        active = false,
+        active = editor.datePickerVisible || editor.timePickerVisible,
         enabled = true,
     ),
 )

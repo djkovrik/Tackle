@@ -110,6 +110,7 @@ complexity:
     ignoreSingleWhenExpression: false
     ignoreSimpleWhenEntries: false
     ignoreNestingFunctions: false
+    ignoreAnnotated: ['StoreCreate']
     nestingFunctions:
       - 'also'
       - 'apply'
@@ -174,8 +175,8 @@ complexity:
     thresholdInObjects: 11
     thresholdInEnums: 11
     ignoreDeprecated: false
-    ignorePrivate: false
-    ignoreOverridden: false
+    ignorePrivate: true
+    ignoreOverridden: true
     ignoreAnnotatedFunctions: ['Preview']
 
 coroutines:
@@ -608,7 +609,7 @@ style:
     excludedFunctions: []
   LoopWithTooManyJumpStatements:
     active: true
-    maxJumpCount: 1
+    maxJumpCount: 2
   MagicNumber:
     active: true
     excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/androidUnitTest/**', '**/androidInstrumentedTest/**', '**/generated/**', '**/iosTest/**', '**/*.kts']
@@ -678,7 +679,7 @@ style:
     active: false
   ReturnCount:
     active: true
-    max: 2
+    max: 3
     excludedFunctions:
       - 'equals'
     excludeLabeled: false

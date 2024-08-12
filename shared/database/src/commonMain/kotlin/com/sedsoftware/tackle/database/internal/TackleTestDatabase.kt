@@ -28,6 +28,8 @@ internal class TackleTestDatabase : TackleDatabase {
 
     override suspend fun observeEmojis(): Flow<Map<String, List<CustomEmoji>>> = emojiCache.map(::mapList)
 
+    override suspend fun findEmoji(query: String): Flow<List<CustomEmoji>> = emojiCache
+
     override suspend fun getCachedInstanceInfo(): Flow<Instance> = instanceInfoCache
 
     private fun mapList(from: List<CustomEmoji>): Map<String, List<CustomEmoji>> = from.groupBy { it.category }

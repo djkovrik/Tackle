@@ -25,7 +25,7 @@ import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
 import com.sedsoftware.tackle.domain.model.AppLocale
 import com.sedsoftware.tackle.editor.header.EditorHeaderComponent
 import org.jetbrains.compose.resources.stringResource
-import tackle.shared.compose.generated.resources.Res.string
+import tackle.shared.compose.generated.resources.Res
 import tackle.shared.compose.generated.resources.common_cancel
 
 @Composable
@@ -99,7 +99,7 @@ private fun LanguageSelectorDialogContent(
             }
 
             Text(
-                text = stringResource(string.common_cancel),
+                text = stringResource(resource = Res.string.common_cancel),
                 color = MaterialTheme.colorScheme.secondary,
                 style = MaterialTheme.typography.bodyLarge,
                 modifier = Modifier

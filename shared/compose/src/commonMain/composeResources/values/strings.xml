@@ -14,6 +14,8 @@
     <string name="common_retry">Retry</string>
     <string name="common_retrying">Retrying</string>
     <string name="common_redirecting">Redirecting</string>
+    <string name="common_wait">Please, wait</string>
+    <string name="common_ok">OK</string>
     <string name="common_cancel">Cancel</string>
     <string name="common_delete">Delete</string>
     <string name="common_error_no_internet">No internet connection</string>

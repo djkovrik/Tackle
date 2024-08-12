@@ -12,5 +12,6 @@ internal class EditorTabComponentDatabase(
 
     override suspend fun cacheServerEmojis(list: List<CustomEmoji>) = database.insertEmojis(list)
     override suspend fun observeCachedEmojis(): Flow<Map<String, List<CustomEmoji>>> = database.observeEmojis()
+    override suspend fun findEmojis(query: String): Flow<List<CustomEmoji>> = database.findEmoji(query)
     override suspend fun getCachedInstanceInfo(): Flow<Instance> = database.getCachedInstanceInfo()
 }

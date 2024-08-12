@@ -72,7 +72,7 @@ internal fun EditorHeaderContent(
                 }
 
                 Text(
-                    text = stringResource(Res.string.main_tab_editor),
+                    text = stringResource(resource = Res.string.main_tab_editor),
                     color = MaterialTheme.colorScheme.primary,
                     style = MaterialTheme.typography.headlineSmall,
                 )
@@ -134,7 +134,7 @@ internal fun EditorHeaderContent(
                 Spacer(modifier = Modifier.weight(weight = 1f, fill = true))
 
                 ActionBarIconWithText(
-                    text = stringResource(model.statusVisibility.getTitle()),
+                    text = stringResource(resource = model.statusVisibility.getTitle()),
                     iconRes = model.statusVisibility.getIcon(),
                     backgroundColor = MaterialTheme.colorScheme.primaryContainer,
                     contentColor = MaterialTheme.colorScheme.onPrimaryContainer,

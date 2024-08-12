@@ -50,7 +50,7 @@ internal fun CustomPollChoice(
             modifier = Modifier.weight(weight = 1f, true),
             placeholder = {
                 Text(
-                    text = "${stringResource(Res.string.editor_poll_option)} ${index + 1}",
+                    text = "${stringResource(resource = Res.string.editor_poll_option)} ${index + 1}",
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onSurface.copy(
                         alpha = 0.5f,
