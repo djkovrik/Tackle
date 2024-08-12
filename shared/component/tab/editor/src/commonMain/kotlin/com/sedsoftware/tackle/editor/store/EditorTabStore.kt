@@ -8,7 +8,6 @@ import com.sedsoftware.tackle.editor.model.EditorInputHintRequest
 import com.sedsoftware.tackle.editor.store.EditorTabStore.Intent
 import com.sedsoftware.tackle.editor.store.EditorTabStore.Label
 import com.sedsoftware.tackle.editor.store.EditorTabStore.State
-import kotlinx.datetime.LocalDateTime
 
 interface EditorTabStore : Store<Intent, State, Label> {
 
@@ -18,6 +17,8 @@ interface EditorTabStore : Store<Intent, State, Label> {
         data class OnInputHintSelect(val hint: EditorInputHintItem) : Intent()
         data class OnRequestDatePicker(val show: Boolean) : Intent()
         data class OnScheduleDate(val millis: Long) : Intent()
+        data class OnRequestTimePicker(val show: Boolean) : Intent()
+        data class OnScheduleTime(val hour: Int, val minute: Int, val formatIn24hr: Boolean) : Intent()
     }
 
     data class State(
@@ -30,7 +31,11 @@ interface EditorTabStore : Store<Intent, State, Label> {
         val suggestions: List<EditorInputHintItem> = emptyList(),
         val currentSuggestionRequest: EditorInputHintRequest = EditorInputHintRequest.None,
         val datePickerVisible: Boolean = false,
-        val scheduledAt: Long = 0L,
+        val scheduledDate: Long = -1L,
+        val timePickerVisible: Boolean = false,
+        val scheduledHour: Int = -1,
+        val scheduledMinute: Int = -1,
+        val scheduledIn24hFormat: Boolean = true,
     )
 
     sealed class Label {

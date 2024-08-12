@@ -110,7 +110,11 @@ class EditorTabComponentPreview(
                 statusCharactersLeft = statusCharactersLeft,
                 suggestions = suggestions,
                 datePickerVisible = false,
-                scheduledAt = 0L,
+                scheduledDate = 0L,
+                timePickerVisible = false,
+                scheduledHour = 0,
+                scheduledMinute = 0,
+                scheduledIn24hrFormat = false,
             )
         )
 
@@ -122,4 +126,6 @@ class EditorTabComponentPreview(
     override fun onWarningButtonClicked() = Unit
     override fun onScheduleDatePickerRequested(show: Boolean) = Unit
     override fun onScheduleDateSelected(millis: Long) = Unit
+    override fun onScheduleTimePickerRequested(show: Boolean) = Unit
+    override fun onScheduleTimeSelected(hour: Int, minute: Int, formatIn24hr: Boolean) = Unit
 }

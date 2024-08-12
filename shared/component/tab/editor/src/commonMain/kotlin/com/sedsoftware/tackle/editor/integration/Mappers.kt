@@ -10,6 +10,10 @@ internal val stateToModel: (State) -> Model = {
         statusCharactersLeft = it.statusCharactersLeft,
         suggestions = it.suggestions,
         datePickerVisible = it.datePickerVisible,
-        scheduledAt = it.scheduledAt,
+        scheduledDate = it.scheduledDate,
+        timePickerVisible = it.timePickerVisible,
+        scheduledHour = it.scheduledHour,
+        scheduledMinute = it.scheduledMinute,
+        scheduledIn24hrFormat = it.scheduledIn24hFormat,
     )
 }

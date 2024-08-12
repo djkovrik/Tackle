@@ -13,13 +13,19 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.DatePickerState
+import androidx.compose.material3.DisplayMode
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.SelectableDates
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
+import androidx.compose.material3.TimePickerState
+import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -40,6 +46,8 @@ import com.sedsoftware.tackle.compose.ui.editor.content.EditorToolbar
 import com.sedsoftware.tackle.compose.ui.editor.content.InputHintAccount
 import com.sedsoftware.tackle.compose.ui.editor.content.InputHintEmoji
 import com.sedsoftware.tackle.compose.ui.editor.content.InputHintHashTag
+import com.sedsoftware.tackle.compose.ui.editor.content.ScheduleDatePickerDialog
+import com.sedsoftware.tackle.compose.ui.editor.content.ScheduleTimePickerDialog
 import com.sedsoftware.tackle.compose.ui.editor.content.buildToolbarState
 import com.sedsoftware.tackle.compose.ui.editor.emoji.EditorEmojisContent
 import com.sedsoftware.tackle.compose.ui.editor.header.EditorHeaderContent
@@ -49,6 +57,7 @@ import com.sedsoftware.tackle.compose.ui.editor.poll.EditorPollContent
 import com.sedsoftware.tackle.compose.ui.editor.warning.EditorWarningContent
 import com.sedsoftware.tackle.domain.model.AppLocale
 import com.sedsoftware.tackle.domain.model.PlatformFileWrapper
+import com.sedsoftware.tackle.domain.model.type.StatusVisibility
 import com.sedsoftware.tackle.editor.EditorTabComponent
 import com.sedsoftware.tackle.editor.attachments.EditorAttachmentsComponent
 import com.sedsoftware.tackle.editor.attachments.model.AttachedFile
@@ -60,10 +69,15 @@ import com.sedsoftware.tackle.editor.poll.EditorPollComponent
 import com.sedsoftware.tackle.editor.poll.model.PollChoiceOption
 import com.sedsoftware.tackle.editor.poll.model.PollDuration
 import com.sedsoftware.tackle.editor.warning.EditorWarningComponent
+import com.sedsoftware.tackle.utils.extension.orZero
 import io.github.vinceglb.filekit.compose.PickerResultLauncher
 import io.github.vinceglb.filekit.compose.rememberFilePickerLauncher
 import io.github.vinceglb.filekit.core.PickerMode
 import io.github.vinceglb.filekit.core.PlatformFile
+import kotlinx.datetime.Clock.System
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import org.jetbrains.compose.resources.stringResource
 import tackle.shared.compose.generated.resources.Res
 import tackle.shared.compose.generated.resources.editor_input_hint
@@ -73,6 +87,14 @@ internal fun EditorTabContent(
     component: EditorTabComponent,
     modifier: Modifier = Modifier,
 ) {
+    val todayDateTime: LocalDateTime by lazy {
+        System.now().toLocalDateTime(timeZone = TimeZone.currentSystemDefault())
+    }
+
+    val todayMillis: Long by lazy {
+        System.now().toEpochMilliseconds()
+    }
+
     val editorModel: EditorTabComponent.Model by component.model.subscribeAsState()
     val attachmentsModel: EditorAttachmentsComponent.Model by component.attachments.model.subscribeAsState()
     val emojisModel: EditorEmojisComponent.Model by component.emojis.model.subscribeAsState()
@@ -85,6 +107,28 @@ internal fun EditorTabContent(
     }
 
     val bottomSheetState: SheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+
+    val datePickerState: DatePickerState = rememberDatePickerState(
+        initialDisplayMode = DisplayMode.Picker,
+        initialSelectedDateMillis = editorModel.scheduledDate.takeIf { it > 0L },
+        selectableDates = object : SelectableDates {
+            override fun isSelectableYear(year: Int): Boolean {
+                val todayYear = todayDateTime.year
+                val max = todayYear + 3
+                return year in todayYear..max
+            }
+
+            override fun isSelectableDate(utcTimeMillis: Long): Boolean {
+                return utcTimeMillis >= todayMillis
+            }
+        }
+    )
+
+    val timePickerState: TimePickerState = rememberTimePickerState(
+        initialHour = editorModel.scheduledHour,
+        initialMinute = editorModel.scheduledMinute,
+        is24Hour = editorModel.scheduledIn24hrFormat,
+    )
 
     val annotatedText: AnnotatedString = buildAnnotatedString {
         val regex = Regex("(@\\w+) | #\\w+")
@@ -188,7 +232,7 @@ internal fun EditorTabContent(
                     textStyle = MaterialTheme.typography.bodyLarge,
                     placeholder = {
                         Text(
-                            text = stringResource(Res.string.editor_input_hint),
+                            text = stringResource(resource = Res.string.editor_input_hint),
                             style = MaterialTheme.typography.bodyLarge,
                             color = MaterialTheme.colorScheme.onSurface.copy(
                                 alpha = 0.5f,
@@ -214,14 +258,14 @@ internal fun EditorTabContent(
                 ) {
                     // Toolbar
                     EditorToolbar(
-                        items = buildToolbarState(attachmentsModel, emojisModel, pollModel, warningModel),
+                        items = buildToolbarState(editorModel, attachmentsModel, emojisModel, pollModel, warningModel),
                         onClick = { type: EditorToolbarItem.Type ->
                             when (type) {
                                 EditorToolbarItem.Type.ATTACH -> launcher.launch()
                                 EditorToolbarItem.Type.EMOJIS -> component.onEmojisButtonClicked()
                                 EditorToolbarItem.Type.POLL -> component.onPollButtonClicked()
                                 EditorToolbarItem.Type.WARNING -> component.onWarningButtonClicked()
-                                EditorToolbarItem.Type.SCHEDULE -> TODO()
+                                EditorToolbarItem.Type.SCHEDULE -> component.onScheduleDatePickerRequested(true)
                             }
                         },
                         modifier = Modifier,
@@ -277,7 +321,7 @@ internal fun EditorTabContent(
                 onDismissRequest = {
                     component.header.onLocalePickerRequested(false)
                 },
-                onConfirmation = { locale ->
+                onConfirmation = { locale: AppLocale ->
                     component.header.onLocaleSelected(locale)
                     component.header.onLocalePickerRequested(false)
                 },
@@ -291,12 +335,42 @@ internal fun EditorTabContent(
                 onDismissRequest = {
                     component.header.onStatusVisibilityPickerRequested(false)
                 },
-                onConfirmation = { visibility ->
+                onConfirmation = { visibility: StatusVisibility ->
                     component.header.onStatusVisibilitySelected(visibility)
                     component.header.onStatusVisibilityPickerRequested(false)
                 },
             )
         }
+
+        // Date picker dialog
+        if (editorModel.datePickerVisible) {
+            ScheduleDatePickerDialog(
+                datePickerState = datePickerState,
+                onDismissRequest = {
+                    component.onScheduleDatePickerRequested(false)
+                },
+                onConfirmation = {
+                    component.onScheduleDateSelected(datePickerState.selectedDateMillis.orZero())
+                    component.onScheduleDatePickerRequested(false)
+                    component.onScheduleTimePickerRequested(true)
+                }
+            )
+        }
+
+        // Time picker dialog
+        if (editorModel.timePickerVisible) {
+            ScheduleTimePickerDialog(
+                timePickerState = timePickerState,
+                onDismissRequest = {
+                    component.onScheduleTimePickerRequested(false)
+                },
+                onConfirmation = {
+                    component.onScheduleTimeSelected(timePickerState.hour, timePickerState.minute, timePickerState.is24hour)
+                    component.onScheduleTimePickerRequested(false)
+                }
+            )
+        }
+
 
         // Emoji bottom sheet
         if (emojisModel.emojisContentVisible) {

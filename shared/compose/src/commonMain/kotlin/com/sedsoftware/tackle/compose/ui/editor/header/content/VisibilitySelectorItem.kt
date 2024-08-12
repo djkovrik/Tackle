@@ -52,13 +52,13 @@ internal fun VisibilitySelectorItem(
                 .padding(horizontal = 16.dp, vertical = 8.dp)
         ) {
             Text(
-                text = stringResource(textRes),
+                text = stringResource(resource = textRes),
                 color = MaterialTheme.colorScheme.secondary,
                 style = MaterialTheme.typography.titleSmall,
             )
 
             Text(
-                text = stringResource(descriptionRes),
+                text = stringResource(resource = descriptionRes),
                 color = MaterialTheme.colorScheme.onBackground,
                 style = MaterialTheme.typography.bodyLarge,
             )

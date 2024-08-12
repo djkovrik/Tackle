@@ -96,7 +96,7 @@ internal fun EditorWarningContent(
             },
             placeholder = {
                 Text(
-                    text = stringResource(Res.string.editor_warning_hint),
+                    text = stringResource(resource = Res.string.editor_warning_hint),
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onSurface.copy(
                         alpha = 0.5f,

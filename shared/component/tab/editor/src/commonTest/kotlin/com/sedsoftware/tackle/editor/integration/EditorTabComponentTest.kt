@@ -226,7 +226,35 @@ class EditorTabComponentTest : ComponentTest<EditorTabComponent>() {
         // when
         component.onScheduleDateSelected(newDate)
         // then
-        assertThat(editorActiveModel.scheduledAt).isEqualTo(newDate)
+        assertThat(editorActiveModel.scheduledDate).isEqualTo(newDate)
+    }
+
+    @Test
+    fun `onScheduleTimePickerRequested should control time picker`() = runTest {
+        // given
+        // when
+        component.onScheduleTimePickerRequested(true)
+        // then
+        assertThat(editorActiveModel.timePickerVisible).isTrue()
+        // and when
+        component.onScheduleTimePickerRequested(false)
+        // then
+        assertThat(editorActiveModel.timePickerVisible).isFalse()
+    }
+
+    @Test
+    fun `onScheduleTimeSelected should update scheduled date`() = runTest {
+        // given
+        // given
+        val hour = 16
+        val minute = 54
+        val format = false
+        // when
+        component.onScheduleTimeSelected(hour, minute, format)
+        // then
+        assertThat(editorActiveModel.scheduledHour).isEqualTo(hour)
+        assertThat(editorActiveModel.scheduledMinute).isEqualTo(minute)
+        assertThat(editorActiveModel.scheduledIn24hrFormat).isEqualTo(format)
     }
 
     override fun createComponent(): EditorTabComponentDefault =

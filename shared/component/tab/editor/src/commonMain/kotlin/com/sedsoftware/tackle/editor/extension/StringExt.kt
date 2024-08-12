@@ -77,9 +77,7 @@ internal fun String.insertHint(hint: EditorInputHintItem, state: EditorTabStore.
         currentText.substring(endIndex + 1),
     )
 
-    require(chunkedText.size == 3) { "Text should be split to three parts" }
     val result = chunkedText[0] + textToInsert + chunkedText[2]
-
     return result.take(limit)
 }
 

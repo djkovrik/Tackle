@@ -164,6 +164,14 @@ class EditorTabComponentDefault(
         store.accept(EditorTabStore.Intent.OnScheduleDate(millis))
     }
 
+    override fun onScheduleTimePickerRequested(show: Boolean) {
+        store.accept(EditorTabStore.Intent.OnRequestTimePicker(show))
+    }
+
+    override fun onScheduleTimeSelected(hour: Int, minute: Int, formatIn24hr: Boolean) {
+        store.accept(EditorTabStore.Intent.OnScheduleTime(hour, minute, formatIn24hr))
+    }
+
     private fun onChildOutput(output: ComponentOutput) {
         when (output) {
             is ComponentOutput.StatusEditor.AttachmentsCountUpdated -> poll.changeComponentAvailability(available = output.count == 0)

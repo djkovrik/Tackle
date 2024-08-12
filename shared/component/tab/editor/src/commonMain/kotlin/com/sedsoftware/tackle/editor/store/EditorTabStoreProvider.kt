@@ -22,6 +22,10 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlinx.datetime.Clock.System
+import kotlinx.datetime.Instant
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import kotlin.coroutines.CoroutineContext
 
 internal class EditorTabStoreProvider(
@@ -29,7 +33,11 @@ internal class EditorTabStoreProvider(
     private val manager: EditorTabManager,
     private val mainContext: CoroutineContext,
     private val ioContext: CoroutineContext,
+    private val today: () -> Instant = { System.now() },
 ) {
+    private val todayInstant: Instant by lazy {
+        today.invoke()
+    }
 
     @StoreCreate
     fun create(autoInit: Boolean = true): EditorTabStore =
@@ -39,6 +47,7 @@ internal class EditorTabStoreProvider(
             autoInit = autoInit,
             bootstrapper = coroutineBootstrapper {
                 dispatch(Action.FetchCachedInstanceInfo)
+                dispatch(Action.InitCurrentTime)
             },
             executorFactory = coroutineExecutorFactory(mainContext) {
                 var suggestionJob: Job? = null
@@ -57,6 +66,11 @@ internal class EditorTabStoreProvider(
                             }
                         )
                     }
+                }
+
+                onAction<Action.InitCurrentTime> {
+                    val currentDate = todayInstant.toLocalDateTime(timeZone = TimeZone.currentSystemDefault())
+                    dispatch(Msg.CurrentTimeLoaded(currentDate.hour, currentDate.minute))
                 }
 
                 onAction<Action.CheckForInputHelper> {
@@ -140,6 +154,8 @@ internal class EditorTabStoreProvider(
                 onIntent<Intent.OnInputHintSelect> { dispatch(Msg.InputHintSelected(it.hint)) }
                 onIntent<Intent.OnRequestDatePicker> { dispatch(Msg.DateDialogVisibilityChanged(it.show)) }
                 onIntent<Intent.OnScheduleDate> { dispatch(Msg.ScheduleDateSelected(it.millis)) }
+                onIntent<Intent.OnRequestTimePicker> { dispatch(Msg.TimeDialogVisibilityChanged(it.show)) }
+                onIntent<Intent.OnScheduleTime> { dispatch(Msg.ScheduleTimeSelected(it.hour, it.minute, it.formatIn24hr)) }
             },
             reducer = { msg ->
                 when (msg) {
@@ -151,6 +167,12 @@ internal class EditorTabStoreProvider(
 
                     is Msg.StatusCharactersLimitAvailable -> copy(
                         statusCharactersLeft = msg.limit,
+                    )
+
+                    is Msg.CurrentTimeLoaded -> copy(
+                        scheduledHour = msg.hour,
+                        scheduledMinute = msg.minute,
+                        scheduledIn24hFormat = true,
                     )
 
                     is Msg.TextInput -> copy(
@@ -197,7 +219,17 @@ internal class EditorTabStoreProvider(
                     )
 
                     is Msg.ScheduleDateSelected -> copy(
-                        scheduledAt = msg.millis,
+                        scheduledDate = msg.millis,
+                    )
+
+                    is Msg.TimeDialogVisibilityChanged -> copy(
+                        timePickerVisible = msg.visible,
+                    )
+
+                    is Msg.ScheduleTimeSelected -> copy(
+                        scheduledHour = msg.hour,
+                        scheduledMinute = msg.minute,
+                        scheduledIn24hFormat = msg.formatIn24hr,
                     )
                 }
             }
@@ -209,11 +241,13 @@ internal class EditorTabStoreProvider(
         data class LoadAccountSuggestion(val query: String) : Action
         data class LoadEmojiSuggestion(val query: String) : Action
         data class LoadHashTagSuggestion(val query: String) : Action
+        data object InitCurrentTime : Action
     }
 
     private sealed interface Msg {
         data class CachedInstanceLoaded(val instance: Instance) : Msg
         data class StatusCharactersLimitAvailable(val limit: Int) : Msg
+        data class CurrentTimeLoaded(val hour: Int, val minute: Int) : Msg
         data class TextInput(val text: String, val selection: Pair<Int, Int>) : Msg
         data class EmojiSelected(val emoji: CustomEmoji) : Msg
         data class InputHintRequestUpdated(val request: EditorInputHintRequest) : Msg
@@ -221,6 +255,8 @@ internal class EditorTabStoreProvider(
         data class InputHintSelected(val hint: EditorInputHintItem) : Msg
         data class DateDialogVisibilityChanged(val visible: Boolean) : Msg
         data class ScheduleDateSelected(val millis: Long) : Msg
+        data class TimeDialogVisibilityChanged(val visible: Boolean) : Msg
+        data class ScheduleTimeSelected(val hour: Int, val minute: Int, val formatIn24hr: Boolean) : Msg
     }
 
     private fun Msg.TextInput.exceedTheLimit(limit: Int): Boolean = limit - text.length < 0

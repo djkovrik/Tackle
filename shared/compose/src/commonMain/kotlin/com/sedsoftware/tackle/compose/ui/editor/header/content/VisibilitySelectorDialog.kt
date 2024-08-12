@@ -22,7 +22,7 @@ import com.sedsoftware.tackle.compose.extension.getTitle
 import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
 import com.sedsoftware.tackle.domain.model.type.StatusVisibility
 import org.jetbrains.compose.resources.stringResource
-import tackle.shared.compose.generated.resources.Res.string
+import tackle.shared.compose.generated.resources.Res
 import tackle.shared.compose.generated.resources.common_cancel
 
 @Composable
@@ -84,7 +84,7 @@ private fun VisibilitySelectorDialogContent(
             }
 
             Text(
-                text = stringResource(string.common_cancel),
+                text = stringResource(resource = Res.string.common_cancel),
                 color = MaterialTheme.colorScheme.secondary,
                 style = MaterialTheme.typography.bodyLarge,
                 modifier = Modifier

@@ -26,6 +26,7 @@ import com.sedsoftware.tackle.editor.stubs.InstanceStub
 import com.sedsoftware.tackle.utils.test.StoreTest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.runTest
+import kotlinx.datetime.Instant
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -45,6 +46,20 @@ internal class EditorTabStoreTest : StoreTest<Intent, State, Label>() {
     @AfterTest
     fun after() {
         afterTest()
+    }
+
+    private val todayMock: Instant by lazy {
+        Instant.parse("2024-08-12T12:34:56.475+03")
+    }
+
+    @Test
+    fun `store init should initialize current hour and minute`() = runTest {
+        // given
+        // when
+        store.init()
+        // then
+        assertThat(store.state.scheduledHour).isEqualTo(12)
+        assertThat(store.state.scheduledMinute).isEqualTo(34)
     }
 
     @Test
@@ -232,7 +247,36 @@ internal class EditorTabStoreTest : StoreTest<Intent, State, Label>() {
         store.init()
         store.accept(Intent.OnScheduleDate(newDate))
         // then
-        assertThat(store.state.scheduledAt).isEqualTo(newDate)
+        assertThat(store.state.scheduledDate).isEqualTo(newDate)
+    }
+
+    @Test
+    fun `OnRequestTimePicker should update dialog visibility`() = runTest {
+        // given
+        // when
+        store.init()
+        store.accept(Intent.OnRequestTimePicker(true))
+        // then
+        assertThat(store.state.timePickerVisible).isTrue()
+        // and when
+        store.accept(Intent.OnRequestTimePicker(false))
+        // then
+        assertThat(store.state.timePickerVisible).isFalse()
+    }
+
+    @Test
+    fun `OnScheduleTime should update scheduled time`() = runTest {
+        // given
+        val hour = 16
+        val minute = 54
+        val format = false
+        // when
+        store.init()
+        store.accept(Intent.OnScheduleTime(hour, minute, format))
+        // then
+        assertThat(store.state.scheduledHour).isEqualTo(hour)
+        assertThat(store.state.scheduledMinute).isEqualTo(minute)
+        assertThat(store.state.scheduledIn24hFormat).isEqualTo(format)
     }
 
     override fun createStore(): Store<Intent, State, Label> =
@@ -241,5 +285,6 @@ internal class EditorTabStoreTest : StoreTest<Intent, State, Label>() {
             manager = manager,
             mainContext = Dispatchers.Unconfined,
             ioContext = Dispatchers.Unconfined,
+            today = { todayMock },
         ).create(autoInit = false)
 }
