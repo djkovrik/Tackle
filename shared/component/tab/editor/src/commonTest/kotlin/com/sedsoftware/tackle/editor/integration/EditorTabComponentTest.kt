@@ -206,6 +206,29 @@ class EditorTabComponentTest : ComponentTest<EditorTabComponent>() {
         assertThat(pollActiveModel.pollButtonAvailable).isFalse()
     }
 
+    @Test
+    fun `onScheduleDatePickerRequested should control date picker`() = runTest {
+        // given
+        // when
+        component.onScheduleDatePickerRequested(true)
+        // then
+        assertThat(editorActiveModel.datePickerVisible).isTrue()
+        // and when
+        component.onScheduleDatePickerRequested(false)
+        // then
+        assertThat(editorActiveModel.datePickerVisible).isFalse()
+    }
+
+    @Test
+    fun `onScheduleDateSelected should update scheduled date`() = runTest {
+        // given
+        val newDate = 54321L
+        // when
+        component.onScheduleDateSelected(newDate)
+        // then
+        assertThat(editorActiveModel.scheduledAt).isEqualTo(newDate)
+    }
+
     override fun createComponent(): EditorTabComponentDefault =
         EditorTabComponentDefault(
             componentContext = DefaultComponentContext(lifecycle),

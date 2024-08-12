@@ -4,6 +4,7 @@ import assertk.assertThat
 import assertk.assertions.hasClass
 import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
+import assertk.assertions.isFalse
 import assertk.assertions.isGreaterThan
 import assertk.assertions.isNotEmpty
 import assertk.assertions.isNotEqualTo
@@ -191,7 +192,7 @@ internal class EditorTabStoreTest : StoreTest<Intent, State, Label>() {
     }
 
     @Test
-    fun `OnInputHintSelect inserts input hint`() = runTest {
+    fun `OnInputHintSelect should insert input hint`() = runTest {
         // given
         val hint = EditorInputHintItem.Account("", "testtest", "")
         val text = "Some text @tes"
@@ -207,6 +208,31 @@ internal class EditorTabStoreTest : StoreTest<Intent, State, Label>() {
         // then
         assertThat(store.state.statusText).isEqualTo(expectedText)
         assertThat(store.state.statusTextSelection).isEqualTo(expectedText.length to expectedText.length)
+    }
+
+    @Test
+    fun `OnRequestDatePicker should update dialog visibility`() = runTest {
+        // given
+        // when
+        store.init()
+        store.accept(Intent.OnRequestDatePicker(true))
+        // then
+        assertThat(store.state.datePickerVisible).isTrue()
+        // and when
+        store.accept(Intent.OnRequestDatePicker(false))
+        // then
+        assertThat(store.state.datePickerVisible).isFalse()
+    }
+
+    @Test
+    fun `OnScheduleDate should update scheduled date`() = runTest {
+        // given
+        val newDate = 1234567L
+        // when
+        store.init()
+        store.accept(Intent.OnScheduleDate(newDate))
+        // then
+        assertThat(store.state.scheduledAt).isEqualTo(newDate)
     }
 
     override fun createStore(): Store<Intent, State, Label> =

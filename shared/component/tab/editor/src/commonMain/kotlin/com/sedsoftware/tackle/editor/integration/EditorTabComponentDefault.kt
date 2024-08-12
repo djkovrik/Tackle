@@ -156,6 +156,14 @@ class EditorTabComponentDefault(
         warning.toggleComponentVisibility()
     }
 
+    override fun onScheduleDatePickerRequested(show: Boolean) {
+        store.accept(EditorTabStore.Intent.OnRequestDatePicker(show))
+    }
+
+    override fun onScheduleDateSelected(millis: Long) {
+        store.accept(EditorTabStore.Intent.OnScheduleDate(millis))
+    }
+
     private fun onChildOutput(output: ComponentOutput) {
         when (output) {
             is ComponentOutput.StatusEditor.AttachmentsCountUpdated -> poll.changeComponentAvailability(available = output.count == 0)

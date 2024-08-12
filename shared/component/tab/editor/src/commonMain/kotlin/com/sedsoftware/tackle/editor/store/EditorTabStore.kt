@@ -8,6 +8,7 @@ import com.sedsoftware.tackle.editor.model.EditorInputHintRequest
 import com.sedsoftware.tackle.editor.store.EditorTabStore.Intent
 import com.sedsoftware.tackle.editor.store.EditorTabStore.Label
 import com.sedsoftware.tackle.editor.store.EditorTabStore.State
+import kotlinx.datetime.LocalDateTime
 
 interface EditorTabStore : Store<Intent, State, Label> {
 
@@ -15,6 +16,8 @@ interface EditorTabStore : Store<Intent, State, Label> {
         data class OnTextInput(val text: String, val selection: Pair<Int, Int>) : Intent()
         data class OnEmojiSelect(val emoji: CustomEmoji) : Intent()
         data class OnInputHintSelect(val hint: EditorInputHintItem) : Intent()
+        data class OnRequestDatePicker(val show: Boolean) : Intent()
+        data class OnScheduleDate(val millis: Long) : Intent()
     }
 
     data class State(
@@ -26,6 +29,8 @@ interface EditorTabStore : Store<Intent, State, Label> {
         val instanceInfoLoaded: Boolean = false,
         val suggestions: List<EditorInputHintItem> = emptyList(),
         val currentSuggestionRequest: EditorInputHintRequest = EditorInputHintRequest.None,
+        val datePickerVisible: Boolean = false,
+        val scheduledAt: Long = 0L,
     )
 
     sealed class Label {

@@ -109,6 +109,8 @@ class EditorTabComponentPreview(
                 statusTextSelection = (statusText.length to statusText.length),
                 statusCharactersLeft = statusCharactersLeft,
                 suggestions = suggestions,
+                datePickerVisible = false,
+                scheduledAt = 0L,
             )
         )
 
@@ -118,4 +120,6 @@ class EditorTabComponentPreview(
     override fun onPollButtonClicked() = Unit
     override fun onEmojisButtonClicked() = Unit
     override fun onWarningButtonClicked() = Unit
+    override fun onScheduleDatePickerRequested(show: Boolean) = Unit
+    override fun onScheduleDateSelected(millis: Long) = Unit
 }

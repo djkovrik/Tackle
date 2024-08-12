@@ -8,6 +8,7 @@ import com.sedsoftware.tackle.editor.header.EditorHeaderComponent
 import com.sedsoftware.tackle.editor.model.EditorInputHintItem
 import com.sedsoftware.tackle.editor.poll.EditorPollComponent
 import com.sedsoftware.tackle.editor.warning.EditorWarningComponent
+import kotlinx.datetime.LocalDateTime
 
 interface EditorTabComponent {
     val attachments: EditorAttachmentsComponent
@@ -24,11 +25,15 @@ interface EditorTabComponent {
     fun onPollButtonClicked()
     fun onEmojisButtonClicked()
     fun onWarningButtonClicked()
+    fun onScheduleDatePickerRequested(show: Boolean)
+    fun onScheduleDateSelected(millis: Long)
 
     data class Model(
         val statusText: String,
         val statusTextSelection: Pair<Int, Int>,
         val statusCharactersLeft: Int,
         val suggestions: List<EditorInputHintItem>,
+        val datePickerVisible: Boolean,
+        val scheduledAt: Long,
     )
 }

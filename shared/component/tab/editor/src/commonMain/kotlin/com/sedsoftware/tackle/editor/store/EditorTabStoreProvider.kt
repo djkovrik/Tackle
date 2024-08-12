@@ -138,6 +138,8 @@ internal class EditorTabStoreProvider(
 
                 onIntent<Intent.OnEmojiSelect> { dispatch(Msg.EmojiSelected(it.emoji)) }
                 onIntent<Intent.OnInputHintSelect> { dispatch(Msg.InputHintSelected(it.hint)) }
+                onIntent<Intent.OnRequestDatePicker> { dispatch(Msg.DateDialogVisibilityChanged(it.show)) }
+                onIntent<Intent.OnScheduleDate> { dispatch(Msg.ScheduleDateSelected(it.millis)) }
             },
             reducer = { msg ->
                 when (msg) {
@@ -189,6 +191,14 @@ internal class EditorTabStoreProvider(
                         statusTextSelection = statusText.getNewPosition(msg.hint, this),
                         statusCharactersLeft = statusCharactersLimit - statusText.getNewLength(msg.hint, this),
                     )
+
+                    is Msg.DateDialogVisibilityChanged -> copy(
+                        datePickerVisible = msg.visible,
+                    )
+
+                    is Msg.ScheduleDateSelected -> copy(
+                        scheduledAt = msg.millis,
+                    )
                 }
             }
         ) {}
@@ -209,6 +219,8 @@ internal class EditorTabStoreProvider(
         data class InputHintRequestUpdated(val request: EditorInputHintRequest) : Msg
         data class SuggestionsLoaded(val suggestions: List<EditorInputHintItem>) : Msg
         data class InputHintSelected(val hint: EditorInputHintItem) : Msg
+        data class DateDialogVisibilityChanged(val visible: Boolean) : Msg
+        data class ScheduleDateSelected(val millis: Long) : Msg
     }
 
     private fun Msg.TextInput.exceedTheLimit(limit: Int): Boolean = limit - text.length < 0
