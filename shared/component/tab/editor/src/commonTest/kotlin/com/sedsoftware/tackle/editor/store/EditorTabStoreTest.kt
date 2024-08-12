@@ -26,7 +26,7 @@ import com.sedsoftware.tackle.editor.stubs.InstanceStub
 import com.sedsoftware.tackle.utils.test.StoreTest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.runTest
-import kotlinx.datetime.Instant
+import kotlinx.datetime.LocalDateTime
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -48,8 +48,8 @@ internal class EditorTabStoreTest : StoreTest<Intent, State, Label>() {
         afterTest()
     }
 
-    private val todayMock: Instant by lazy {
-        Instant.parse("2024-08-12T12:34:56.475+03")
+    private val todayMock: LocalDateTime by lazy {
+        LocalDateTime.parse("2024-08-12T12:34:56.120")
     }
 
     @Test

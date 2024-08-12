@@ -23,7 +23,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock.System
-import kotlinx.datetime.Instant
+import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import kotlin.coroutines.CoroutineContext
@@ -33,9 +33,9 @@ internal class EditorTabStoreProvider(
     private val manager: EditorTabManager,
     private val mainContext: CoroutineContext,
     private val ioContext: CoroutineContext,
-    private val today: () -> Instant = { System.now() },
+    private val today: () -> LocalDateTime = { System.now().toLocalDateTime(timeZone = TimeZone.currentSystemDefault()) },
 ) {
-    private val todayInstant: Instant by lazy {
+    private val todayDateTime: LocalDateTime by lazy {
         today.invoke()
     }
 
@@ -69,8 +69,7 @@ internal class EditorTabStoreProvider(
                 }
 
                 onAction<Action.InitCurrentTime> {
-                    val currentDate = todayInstant.toLocalDateTime(timeZone = TimeZone.currentSystemDefault())
-                    dispatch(Msg.CurrentTimeLoaded(currentDate.hour, currentDate.minute))
+                    dispatch(Msg.CurrentTimeLoaded(todayDateTime.hour, todayDateTime.minute))
                 }
 
                 onAction<Action.CheckForInputHelper> {
