@@ -1,23 +1,25 @@
 package com.sedsoftware.tackle.domain
 
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.launch
 
 class TackleExceptionHandler(private val logoutAction: () -> Unit = {}) {
 
     val messaging: Flow<TackleException>
         get() = _messaging
 
-    private val _messaging: MutableStateFlow<TackleException> = MutableStateFlow(TackleException.Empty)
+    private val _messaging: MutableSharedFlow<TackleException> = MutableSharedFlow()
 
-    private val exceptionActions: Map<TackleException.Action, (TackleException) -> Unit> = mapOf(
-        TackleException.Action.SHOW_MESSAGE to { _messaging.value = it },
+    private val exceptionActions: Map<TackleException.Action, suspend (TackleException) -> Unit> = mapOf(
+        TackleException.Action.SHOW_MESSAGE to { _messaging.emit(it) },
         TackleException.Action.LOGOUT to { logoutAction.invoke() },
     )
 
-    fun consume(throwable: Throwable) {
+    fun consume(throwable: Throwable, scope: CoroutineScope) {
         val target = throwable.wrap()
-        exceptionActions[target.action]?.invoke(target)
+        scope.launch { exceptionActions[target.action]?.invoke(target) }
     }
 
     private fun Throwable.wrap(): TackleException =

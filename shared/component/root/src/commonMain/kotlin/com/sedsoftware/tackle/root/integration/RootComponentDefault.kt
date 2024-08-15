@@ -6,6 +6,7 @@ import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.router.stack.replaceCurrent
 import com.arkivanov.decompose.value.Value
+import com.arkivanov.essenty.lifecycle.doOnDestroy
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.sedsoftware.tackle.auth.AuthComponent
 import com.sedsoftware.tackle.auth.integration.AuthComponentDefault
@@ -27,11 +28,14 @@ import com.sedsoftware.tackle.root.integration.auth.AuthComponentApi
 import com.sedsoftware.tackle.root.integration.auth.AuthComponentDatabase
 import com.sedsoftware.tackle.root.integration.auth.AuthComponentSettings
 import com.sedsoftware.tackle.root.integration.auth.AuthComponentTools
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.serialization.Serializable
 
 class RootComponentDefault internal constructor(
     componentContext: ComponentContext,
+    dispatchers: TackleDispatchers,
     private val authComponent: (ComponentContext, (ComponentOutput) -> Unit) -> AuthComponent,
     private val mainComponent: (ComponentContext, (ComponentOutput) -> Unit) -> MainComponent,
 ) : RootComponent, ComponentContext by componentContext {
@@ -48,6 +52,7 @@ class RootComponentDefault internal constructor(
         dispatchers: TackleDispatchers,
     ) : this(
         componentContext = componentContext,
+        dispatchers = dispatchers,
         authComponent = { childContext, output ->
             AuthComponentDefault(
                 componentContext = childContext,
@@ -74,6 +79,14 @@ class RootComponentDefault internal constructor(
             )
         },
     )
+
+    private val scope: CoroutineScope = CoroutineScope(dispatchers.main)
+
+    init {
+        lifecycle.doOnDestroy {
+            scope.cancel()
+        }
+    }
 
     private val navigation: StackNavigation<Config> = StackNavigation()
 
@@ -105,7 +118,7 @@ class RootComponentDefault internal constructor(
     private fun onComponentOutput(output: ComponentOutput) {
         when (output) {
             is ComponentOutput.Auth.NavigateToMainScreen -> navigation.replaceCurrent(Config.Main)
-            is ComponentOutput.Common.ErrorCaught -> exceptionHandler.consume(output.throwable)
+            is ComponentOutput.Common.ErrorCaught -> exceptionHandler.consume(output.throwable, scope)
             else -> Unit
         }
     }
