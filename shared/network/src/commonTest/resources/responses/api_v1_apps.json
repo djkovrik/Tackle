@@ -1,0 +1,9 @@
+{
+  "id": "1234567",
+  "name": "Test App",
+  "website": "http://some.web",
+  "redirect_uri": "urn:ietf:wg:oauth:2.0:oob",
+  "client_id": "yyyy-yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy",
+  "client_secret": "xxxxxxxxxxxxxxxxxxxxx",
+  "vapid_key": "xxx-xxxxxxx-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-xxxxxxxx_xxxxxxxx="
+}

@@ -1,0 +1,6 @@
+{
+  "access_token": "ZA-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+  "token_type": "Bearer",
+  "scope": "read write follow push",
+  "created_at": 1573979017
+}

@@ -27,6 +27,8 @@ internal class AccountResponse(
     @SerialName("limited") val limited: Boolean = false,
     @SerialName("created_at") val createdAt: String = "",
     @SerialName("last_status_at") val lastStatusAt: String = "",
+    @SerialName("url") val url: String = "",
+    @SerialName("uri") val uri: String = "",
     @SerialName("statuses_count") val statusesCount: Long,
     @SerialName("followers_count") val followersCount: Long,
     @SerialName("following_count") val followingCount: Long,

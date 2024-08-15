@@ -21,6 +21,8 @@ internal object AccountMapper {
             acct = from.acct,
             displayName = from.displayName,
             note = from.note,
+            url = from.url,
+            uri = from.uri,
             avatar = from.avatar,
             avatarStatic = from.avatarStatic,
             header = from.header,
