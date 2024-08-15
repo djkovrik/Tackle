@@ -4,11 +4,6 @@ import com.sedsoftware.tackle.domain.model.Account
 import com.sedsoftware.tackle.domain.model.CredentialAccountSource
 import com.sedsoftware.tackle.domain.model.type.CredentialPrivacy
 import com.sedsoftware.tackle.network.response.AccountResponse
-import com.sedsoftware.tackle.network.response.type.CredentialPrivacyRemote.DIRECT
-import com.sedsoftware.tackle.network.response.type.CredentialPrivacyRemote.PRIVATE
-import com.sedsoftware.tackle.network.response.type.CredentialPrivacyRemote.PUBLIC
-import com.sedsoftware.tackle.network.response.type.CredentialPrivacyRemote.UNKNOWN
-import com.sedsoftware.tackle.network.response.type.CredentialPrivacyRemote.UNLISTED
 import com.sedsoftware.tackle.utils.extension.toLocalDate
 import com.sedsoftware.tackle.utils.extension.toLocalDateTime
 
@@ -46,13 +41,8 @@ internal object AccountMapper {
                 CredentialAccountSource(
                     note = credentials.note,
                     fields = credentials.fields.map(FieldMapper::map),
-                    privacy = when (credentials.privacy) {
-                        PUBLIC -> CredentialPrivacy.PUBLIC
-                        UNLISTED -> CredentialPrivacy.UNLISTED
-                        PRIVATE -> CredentialPrivacy.PRIVATE
-                        DIRECT -> CredentialPrivacy.DIRECT
-                        UNKNOWN -> CredentialPrivacy.UNKNOWN
-                    },
+                    privacy = CredentialPrivacy.entries.firstOrNull { it.name.lowercase() == credentials.privacy }
+                        ?: CredentialPrivacy.UNKNOWN,
                     sensitive = credentials.sensitive,
                     language = credentials.language,
                     followRequestsCount = credentials.followRequestsCount,

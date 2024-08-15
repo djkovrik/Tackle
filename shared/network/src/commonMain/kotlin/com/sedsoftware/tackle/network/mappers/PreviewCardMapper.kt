@@ -3,7 +3,6 @@ package com.sedsoftware.tackle.network.mappers
 import com.sedsoftware.tackle.domain.model.PreviewCard
 import com.sedsoftware.tackle.domain.model.type.PreviewCardType
 import com.sedsoftware.tackle.network.response.PreviewCardResponse
-import com.sedsoftware.tackle.network.response.type.PreviewCardTypeRemote
 
 internal object PreviewCardMapper {
 
@@ -12,13 +11,7 @@ internal object PreviewCardMapper {
             url = from.url,
             title = from.title,
             description = from.description,
-            type = when (from.type) {
-                PreviewCardTypeRemote.LINK -> PreviewCardType.LINK
-                PreviewCardTypeRemote.PHOTO -> PreviewCardType.PHOTO
-                PreviewCardTypeRemote.VIDEO -> PreviewCardType.VIDEO
-                PreviewCardTypeRemote.RICH -> PreviewCardType.RICH
-                PreviewCardTypeRemote.UNKNOWN -> PreviewCardType.UNKNOWN
-            },
+            type = PreviewCardType.entries.firstOrNull { it.name.lowercase() == from.type } ?: PreviewCardType.UNKNOWN,
             authorName = from.authorName,
             authorUrl = from.authorUrl,
             providerName = from.providerName,

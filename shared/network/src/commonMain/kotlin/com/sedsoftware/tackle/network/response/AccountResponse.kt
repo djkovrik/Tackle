@@ -1,6 +1,5 @@
 package com.sedsoftware.tackle.network.response
 
-import com.sedsoftware.tackle.network.response.type.CredentialPrivacyRemote
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -47,7 +46,7 @@ internal class FieldResponse(
 internal class CredentialAccountSourceResponse(
     @SerialName("note") val note: String = "",
     @SerialName("fields") val fields: List<FieldResponse> = emptyList(),
-    @SerialName("privacy") val privacy: CredentialPrivacyRemote = CredentialPrivacyRemote.UNKNOWN,
+    @SerialName("privacy") val privacy: String = "",
     @SerialName("sensitive") val sensitive: Boolean = false,
     @SerialName("language") val language: String = "",
     @SerialName("follow_requests_count") val followRequestsCount: Long = 0L,

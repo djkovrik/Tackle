@@ -10,15 +10,6 @@ import com.sedsoftware.tackle.network.response.FilterKeywordResponse
 import com.sedsoftware.tackle.network.response.FilterResponse
 import com.sedsoftware.tackle.network.response.FilterResultResponse
 import com.sedsoftware.tackle.network.response.FilterStatusResponse
-import com.sedsoftware.tackle.network.response.type.FilterActionsRemote
-import com.sedsoftware.tackle.network.response.type.FilterActionsRemote.HIDE
-import com.sedsoftware.tackle.network.response.type.FilterActionsRemote.WARN
-import com.sedsoftware.tackle.network.response.type.FilterContextRemote.ACCOUNT
-import com.sedsoftware.tackle.network.response.type.FilterContextRemote.HOME
-import com.sedsoftware.tackle.network.response.type.FilterContextRemote.NOTIFICATIONS
-import com.sedsoftware.tackle.network.response.type.FilterContextRemote.PUBLIC
-import com.sedsoftware.tackle.network.response.type.FilterContextRemote.THREAD
-import com.sedsoftware.tackle.network.response.type.FilterContextRemote.UNKNOWN
 import com.sedsoftware.tackle.utils.extension.toLocalDateTime
 
 internal object FilterResultMapper {
@@ -34,21 +25,10 @@ internal object FilterResultMapper {
         Filter(
             id = from.id,
             title = from.title,
-            context = from.context.map { context ->
-                when (context) {
-                    HOME -> FilterContext.HOME
-                    NOTIFICATIONS -> FilterContext.NOTIFICATIONS
-                    PUBLIC -> FilterContext.PUBLIC
-                    THREAD -> FilterContext.THREAD
-                    ACCOUNT -> FilterContext.ACCOUNT
-                    UNKNOWN -> FilterContext.UNKNOWN
-                }
+            context = from.context.map { contextItem ->
+                FilterContext.entries.firstOrNull { it.name.lowercase() == contextItem } ?: FilterContext.UNKNOWN
             },
-            filterAction = when (from.filterAction) {
-                WARN -> FilterAction.WARN
-                HIDE -> FilterAction.HIDE
-                FilterActionsRemote.UNKNOWN -> FilterAction.UNKNOWN
-            },
+            filterAction = FilterAction.entries.firstOrNull { it.name.lowercase() == from.filterAction } ?: FilterAction.UNKNOWN,
             keywords = from.keywords.map(FilterResultMapper::mapKeyword),
             statuses = from.statuses.map(FilterResultMapper::mapStatus),
             expiresAt = from.expiresAt.toLocalDateTime(),

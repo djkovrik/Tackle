@@ -24,7 +24,7 @@ class ExtensionsTest {
             id = "123",
             file = PlatformFileStubs.imageNormal,
             status = PENDING,
-            uploadProgress = 12,
+            uploadProgress = 0.12f,
             serverCopy = null,
         )
 
@@ -137,7 +137,7 @@ class ExtensionsTest {
             attachedFileStub.copy(id = "4", status = LOADING),
         )
         val targetItemIndex = 2
-        val progress = 75
+        val progress = 0.75f
         // when
         val newList = list.updateProgress(UploadProgress(list[targetItemIndex].id, progress))
         // then

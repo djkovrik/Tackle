@@ -11,6 +11,8 @@ import com.sedsoftware.tackle.network.mappers.SearchMapper
 import com.sedsoftware.tackle.network.response.AccountResponse
 import com.sedsoftware.tackle.network.response.MediaAttachmentResponse
 import com.sedsoftware.tackle.network.response.SearchResponse
+import io.github.aakira.napier.DebugAntilog
+import io.github.aakira.napier.Napier
 import io.ktor.client.plugins.onUpload
 import io.ktor.client.request.forms.MultiPartFormDataContent
 import io.ktor.client.request.forms.formData
@@ -24,6 +26,10 @@ internal class TackleAuthorizedApi(
     tokenProvider: () -> String,
 ) : BaseApi(domainProvider = domainProvider, tokenProvider = tokenProvider), AuthorizedApi {
 
+    init {
+        Napier.base(DebugAntilog())
+    }
+
     override suspend fun verifyCredentials(): Account =
         doRequest<AccountResponse, Account>(
             requestUrl = "$instanceUrl/api/v1/accounts/verify_credentials",
@@ -34,7 +40,7 @@ internal class TackleAuthorizedApi(
 
     override suspend fun sendFile(
         file: PlatformFileWrapper,
-        onUpload: (Int) -> Unit,
+        onUpload: (Float) -> Unit,
         thumbnail: PlatformFileWrapper?,
         description: String?,
         focus: String?,
@@ -68,9 +74,18 @@ internal class TackleAuthorizedApi(
                     },
                 )
             )
-            onUpload { bytesSentTotal: Long, contentLength: Long ->
-                val progress: Int = (bytesSentTotal / contentLength).toInt() * ONE_HUNDRED_PERCENTS
-                onUpload.invoke(progress)
+
+            var currentProgress = 0f
+            var realProgress = 0f
+
+            onUpload { sendTotal: Long, contentLength: Long ->
+                realProgress = sendTotal.toFloat() / contentLength.toFloat()
+                Napier.d("PROGRESS: currentProgress $currentProgress, realProgress $realProgress, contentLength $contentLength, sendTotal $sendTotal")
+                if (sendTotal == contentLength || realProgress >= currentProgress + PROGRESS_STEP) {
+                    currentProgress += PROGRESS_STEP
+                    if (currentProgress > 1f) currentProgress = 1f
+                    onUpload.invoke(currentProgress)
+                }
             }
         }
 
@@ -144,6 +159,6 @@ internal class TackleAuthorizedApi(
         }
 
     companion object {
-        const val ONE_HUNDRED_PERCENTS = 100
+        const val PROGRESS_STEP = 0.05f
     }
 }

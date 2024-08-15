@@ -1,6 +1,5 @@
 package com.sedsoftware.tackle.network.response
 
-import com.sedsoftware.tackle.network.response.type.PreviewCardTypeRemote
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -9,7 +8,7 @@ internal class PreviewCardResponse(
     @SerialName("url") val url: String,
     @SerialName("title") val title: String,
     @SerialName("description") val description: String,
-    @SerialName("type") val type: PreviewCardTypeRemote = PreviewCardTypeRemote.UNKNOWN,
+    @SerialName("type") val type: String = "",
     @SerialName("author_name") val authorName: String,
     @SerialName("author_url") val authorUrl: String,
     @SerialName("provider_name") val providerName: String,

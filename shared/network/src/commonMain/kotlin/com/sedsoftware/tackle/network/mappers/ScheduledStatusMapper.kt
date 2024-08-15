@@ -5,11 +5,6 @@ import com.sedsoftware.tackle.domain.model.ScheduledStatusParams
 import com.sedsoftware.tackle.domain.model.type.StatusVisibility
 import com.sedsoftware.tackle.network.response.ScheduledStatusParamsResponse
 import com.sedsoftware.tackle.network.response.ScheduledStatusResponse
-import com.sedsoftware.tackle.network.response.type.StatusVisibilityRemote.DIRECT
-import com.sedsoftware.tackle.network.response.type.StatusVisibilityRemote.PRIVATE
-import com.sedsoftware.tackle.network.response.type.StatusVisibilityRemote.PUBLIC
-import com.sedsoftware.tackle.network.response.type.StatusVisibilityRemote.UNKNOWN
-import com.sedsoftware.tackle.network.response.type.StatusVisibilityRemote.UNLISTED
 import com.sedsoftware.tackle.utils.extension.toLocalDateTime
 
 internal object ScheduledStatusMapper {
@@ -28,13 +23,7 @@ internal object ScheduledStatusMapper {
             mediaIds = from.mediaIds,
             sensitive = from.sensitive,
             spoilerText = from.spoilerText,
-            visibility = when (from.visibility) {
-                PUBLIC -> StatusVisibility.PUBLIC
-                UNLISTED -> StatusVisibility.UNLISTED
-                PRIVATE -> StatusVisibility.PRIVATE
-                DIRECT -> StatusVisibility.DIRECT
-                UNKNOWN -> StatusVisibility.UNKNOWN
-            },
+            visibility = StatusVisibility.entries.firstOrNull { it.name.lowercase() == from.visibility } ?: StatusVisibility.UNKNOWN,
             inReplyToId = from.inReplyToId,
             language = from.language,
             applicationId = from.applicationId,

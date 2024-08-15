@@ -1,5 +1,6 @@
 package com.sedsoftware.tackle.compose.ui.editor.attachment.content
 
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -18,6 +19,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ProgressIndicatorDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -52,6 +54,14 @@ internal fun AttachedFileContent(
     previewImage: @Composable (() -> Unit)? = null,
 ) {
     var imageData by remember { mutableStateOf(ByteArray(0)) }
+    var progress by remember { mutableStateOf(0.0f) }
+
+    val animatedProgress: Float = animateFloatAsState(
+        targetValue = progress,
+        animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec,
+    ).value
+
+    progress = attachment.uploadProgress
 
     LaunchedEffect(attachment.id) {
         if (attachment.file.isImage) {
@@ -126,7 +136,7 @@ internal fun AttachedFileContent(
         ) {
             // Progress
             LinearProgressIndicator(
-                progress = { attachment.uploadProgress / 100f },
+                progress = { animatedProgress },
                 color = MaterialTheme.colorScheme.primary,
                 trackColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.25f),
                 modifier = Modifier
@@ -205,7 +215,7 @@ private fun AttachedFileContentPreview() {
         readBytes = { ByteArray(0) },
     )
 
-    val image = AttachedFile(id = "id", file = platformFile, status = AttachedFile.Status.LOADING, uploadProgress = 75)
+    val image = AttachedFile(id = "id", file = platformFile, status = AttachedFile.Status.LOADING, uploadProgress = 0.75f)
 
     TackleScreenPreview {
         Column {
@@ -242,7 +252,7 @@ private fun AttachedFileContentPlaceholdersPreview() {
         readBytes = { ByteArray(0) },
     )
 
-    val image = AttachedFile(id = "id", file = platformFile, status = AttachedFile.Status.LOADING, uploadProgress = 75)
+    val image = AttachedFile(id = "id", file = platformFile, status = AttachedFile.Status.LOADING, uploadProgress = 0.75f)
 
     TackleScreenPreview {
         Column {

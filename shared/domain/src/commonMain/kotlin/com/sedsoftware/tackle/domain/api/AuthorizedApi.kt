@@ -33,7 +33,7 @@ interface AuthorizedApi {
      */
     suspend fun sendFile(
         file: PlatformFileWrapper,
-        onUpload: (Int) -> Unit = {},
+        onUpload: (Float) -> Unit = {},
         thumbnail: PlatformFileWrapper? = null,
         description: String? = null,
         focus: String? = null,

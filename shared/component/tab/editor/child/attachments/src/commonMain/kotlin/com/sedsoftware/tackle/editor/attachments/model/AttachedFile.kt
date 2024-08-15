@@ -7,7 +7,7 @@ data class AttachedFile(
     val id: String,
     val file: PlatformFileWrapper,
     val status: Status,
-    val uploadProgress: Int = 0,
+    val uploadProgress: Float = 0f,
     val serverCopy: MediaAttachment? = null,
 ) {
     enum class Status {

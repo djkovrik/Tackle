@@ -11,6 +11,8 @@ object AccountStub {
         acct = "djkovrik",
         displayName = "djkovrik",
         note = "123",
+        url = "url",
+        uri = "uri",
         avatar = "url",
         avatarStatic = "url",
         header = "url",

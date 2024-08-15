@@ -9,20 +9,13 @@ import com.sedsoftware.tackle.network.response.MediaAttachmentFocusResponse
 import com.sedsoftware.tackle.network.response.MediaAttachmentInfoResponse
 import com.sedsoftware.tackle.network.response.MediaAttachmentMetaResponse
 import com.sedsoftware.tackle.network.response.MediaAttachmentResponse
-import com.sedsoftware.tackle.network.response.type.MediaAttachmentTypeRemote
 
 internal object MediaAttachmentMapper {
 
     fun map(from: MediaAttachmentResponse): MediaAttachment =
         MediaAttachment(
             id = from.id,
-            type = when (from.type) {
-                MediaAttachmentTypeRemote.IMAGE -> MediaAttachmentType.IMAGE
-                MediaAttachmentTypeRemote.GIF -> MediaAttachmentType.GIF
-                MediaAttachmentTypeRemote.VIDEO -> MediaAttachmentType.VIDEO
-                MediaAttachmentTypeRemote.AUDIO -> MediaAttachmentType.AUDIO
-                MediaAttachmentTypeRemote.UNKNOWN -> MediaAttachmentType.UNKNOWN
-            },
+            type = MediaAttachmentType.entries.firstOrNull { it.name.lowercase() == from.type } ?: MediaAttachmentType.UNKNOWN,
             url = from.url,
             previewUrl = from.previewUrl,
             remoteUrl = from.remoteUrl,

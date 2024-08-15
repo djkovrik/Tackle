@@ -1,7 +1,5 @@
 package com.sedsoftware.tackle.network.response
 
-import com.sedsoftware.tackle.network.response.type.FilterActionsRemote
-import com.sedsoftware.tackle.network.response.type.FilterContextRemote
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -16,8 +14,8 @@ internal class FilterResultResponse(
 internal class FilterResponse(
     @SerialName("id") val id: String = "",
     @SerialName("title") val title: String = "",
-    @SerialName("context") val context: List<FilterContextRemote> = emptyList(),
-    @SerialName("filter_action") val filterAction: FilterActionsRemote = FilterActionsRemote.UNKNOWN,
+    @SerialName("context") val context: List<String> = emptyList(),
+    @SerialName("filter_action") val filterAction: String = "",
     @SerialName("keywords") val keywords: List<FilterKeywordResponse> = emptyList(),
     @SerialName("statuses") val statuses: List<FilterStatusResponse> = emptyList(),
     @SerialName("expires_at") val expiresAt: String = "",
