@@ -141,12 +141,70 @@ object FileUtils {
         )
     }
 
+    private val other: Map<String, String> by lazy {
+        mapOf(
+            "pdf" to "application/pdf",
+            "swf" to "application/x-shockwave-flash",
+            "class" to "application/java",
+            "tar" to "application/x-tar",
+            "zip" to "application/zip",
+            "gz" to "application/x-gzip",
+            "gzip" to "application/x-gzip",
+            "rar" to "application/rar",
+            "7z" to "application/x-7z-compressed",
+            "doc" to "application/msword",
+            "pot" to "application/vnd.ms-powerpoint",
+            "pps" to "application/vnd.ms-powerpoint",
+            "ppt" to "application/vnd.ms-powerpoint",
+            "wri" to "application/vnd.ms-write",
+            "xla" to "application/vnd.ms-excel",
+            "xls" to "application/vnd.ms-excel",
+            "xlt" to "application/vnd.ms-excel",
+            "xlw" to "application/vnd.ms-excel",
+            "mdb" to "application/vnd.ms-access",
+            "mpp" to "application/vnd.ms-project",
+            "docx" to "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            "docm" to "application/vnd.ms-word.document.macroEnabled.12",
+            "dotx" to "application/vnd.openxmlformats-officedocument.wordprocessingml.template",
+            "dotm" to "application/vnd.ms-word.template.macroEnabled.12",
+            "xlsx" to "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            "xlsm" to "application/vnd.ms-excel.sheet.macroEnabled.12",
+            "xlsb" to "application/vnd.ms-excel.sheet.binary.macroEnabled.12",
+            "xltx" to "application/vnd.openxmlformats-officedocument.spreadsheetml.template",
+            "xltm" to "application/vnd.ms-excel.template.macroEnabled.12",
+            "xlam" to "application/vnd.ms-excel.addin.macroEnabled.12",
+            "pptx" to "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+            "pptm" to "application/vnd.ms-powerpoint.presentation.macroEnabled.12",
+            "ppsx" to "application/vnd.openxmlformats-officedocument.presentationml.slideshow",
+            "ppsm" to "application/vnd.ms-powerpoint.slideshow.macroEnabled.12",
+            "potx" to "application/vnd.openxmlformats-officedocument.presentationml.template",
+            "potm" to "application/vnd.ms-powerpoint.template.macroEnabled.12",
+            "ppam" to "application/vnd.ms-powerpoint.addin.macroEnabled.12",
+            "sldx" to "application/vnd.openxmlformats-officedocument.presentationml.slide",
+            "sldm" to "application/vnd.ms-powerpoint.slide.macroEnabled.12",
+            "onetoc" to "application/onenote",
+            "onetoc2" to "application/onenote",
+            "onetmp" to "application/onenote",
+            "onepkg" to "application/onenote",
+            "oxps" to "application/oxps",
+            "xps" to "application/vnd.ms-xpsdocument",
+            "odt" to "application/vnd.oasis.opendocument.text",
+            "odp" to "application/vnd.oasis.opendocument.presentation",
+            "ods" to "application/vnd.oasis.opendocument.spreadsheet",
+            "odg" to "application/vnd.oasis.opendocument.graphics",
+            "odc" to "application/vnd.oasis.opendocument.chart",
+            "odb" to "application/vnd.oasis.opendocument.database",
+            "odf" to "application/vnd.oasis.opendocument.formula",
+        )
+    }
+
     fun getMimeTypeByExtension(ext: String): String {
         val key: String = ext.lowercase()
         return when {
             images.containsKey(key) -> images[key]!!
             video.containsKey(key) -> video[key]!!
             audio.containsKey(key) -> audio[key]!!
+            other.containsKey(key) -> other[key]!!
             else -> "application/octet-stream"
         }
     }
