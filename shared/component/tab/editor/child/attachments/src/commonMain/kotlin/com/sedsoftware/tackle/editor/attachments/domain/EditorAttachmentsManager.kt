@@ -10,17 +10,12 @@ import com.sedsoftware.tackle.editor.attachments.model.UploadProgress
 import com.sedsoftware.tackle.utils.extension.isImage
 import com.sedsoftware.tackle.utils.extension.isVideo
 import com.sedsoftware.tackle.utils.generateUUID
-import io.github.aakira.napier.DebugAntilog
-import io.github.aakira.napier.Napier
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 
 internal class EditorAttachmentsManager(
     private val api: EditorAttachmentsGateways.Api,
 ) {
-    init {
-        Napier.base(DebugAntilog())
-    }
 
     private val uploadProgress: MutableStateFlow<UploadProgress> =
         MutableStateFlow(UploadProgress("", 0f))
@@ -75,6 +70,5 @@ internal class EditorAttachmentsManager(
 
     private fun updateProgress(id: String, progress: Float) {
         uploadProgress.value = UploadProgress(id, progress)
-        Napier.d("PROGRESS: Current $progress for ID $id")
     }
 }

@@ -1,4 +1,4 @@
-package com.sedsoftware.tackle.network.mappers
+package com.sedsoftware.tackle.network.mapper
 
 import com.sedsoftware.tackle.domain.model.Token
 import com.sedsoftware.tackle.network.response.TokenResponse

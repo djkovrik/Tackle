@@ -5,14 +5,12 @@ import com.sedsoftware.tackle.domain.model.Account
 import com.sedsoftware.tackle.domain.model.MediaAttachment
 import com.sedsoftware.tackle.domain.model.PlatformFileWrapper
 import com.sedsoftware.tackle.domain.model.Search
-import com.sedsoftware.tackle.network.mappers.AccountMapper
-import com.sedsoftware.tackle.network.mappers.MediaAttachmentMapper
-import com.sedsoftware.tackle.network.mappers.SearchMapper
+import com.sedsoftware.tackle.network.mapper.AccountMapper
+import com.sedsoftware.tackle.network.mapper.MediaAttachmentMapper
+import com.sedsoftware.tackle.network.mapper.SearchMapper
 import com.sedsoftware.tackle.network.response.AccountResponse
 import com.sedsoftware.tackle.network.response.MediaAttachmentResponse
 import com.sedsoftware.tackle.network.response.SearchResponse
-import io.github.aakira.napier.DebugAntilog
-import io.github.aakira.napier.Napier
 import io.ktor.client.plugins.onUpload
 import io.ktor.client.request.forms.MultiPartFormDataContent
 import io.ktor.client.request.forms.formData
@@ -26,9 +24,6 @@ internal class TackleAuthorizedApi(
     tokenProvider: () -> String,
 ) : BaseApi(domainProvider = domainProvider, tokenProvider = tokenProvider), AuthorizedApi {
 
-    init {
-        Napier.base(DebugAntilog())
-    }
 
     override suspend fun verifyCredentials(): Account =
         doRequest<AccountResponse, Account>(
@@ -80,7 +75,6 @@ internal class TackleAuthorizedApi(
 
             onUpload { sendTotal: Long, contentLength: Long ->
                 realProgress = sendTotal.toFloat() / contentLength.toFloat()
-                Napier.d("PROGRESS: currentProgress $currentProgress, realProgress $realProgress, contentLength $contentLength, sendTotal $sendTotal")
                 if (sendTotal == contentLength || realProgress >= currentProgress + PROGRESS_STEP) {
                     currentProgress += PROGRESS_STEP
                     if (currentProgress > 1f) currentProgress = 1f

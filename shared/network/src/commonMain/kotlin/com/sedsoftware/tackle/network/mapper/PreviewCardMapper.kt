@@ -1,4 +1,4 @@
-package com.sedsoftware.tackle.network.mappers
+package com.sedsoftware.tackle.network.mapper
 
 import com.sedsoftware.tackle.domain.model.PreviewCard
 import com.sedsoftware.tackle.domain.model.type.PreviewCardType

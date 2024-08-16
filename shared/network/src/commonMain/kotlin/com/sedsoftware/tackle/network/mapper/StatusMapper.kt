@@ -1,4 +1,4 @@
-package com.sedsoftware.tackle.network.mappers
+package com.sedsoftware.tackle.network.mapper
 
 import com.sedsoftware.tackle.domain.model.Status
 import com.sedsoftware.tackle.domain.model.StatusMention
@@ -44,8 +44,7 @@ internal object StatusMapper {
             bookmarked = from.bookmarked,
             pinned = from.pinned,
             filtered = from.filtered.map(FilterResultMapper::map),
-
-            )
+        )
 
     private fun mapMention(from: StatusMentionResponse): StatusMention =
         StatusMention(

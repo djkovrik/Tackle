@@ -1,4 +1,4 @@
-package com.sedsoftware.tackle.network.mappers
+package com.sedsoftware.tackle.network.mapper
 
 import com.sedsoftware.tackle.domain.model.MediaAttachment
 import com.sedsoftware.tackle.domain.model.MediaAttachmentFocus

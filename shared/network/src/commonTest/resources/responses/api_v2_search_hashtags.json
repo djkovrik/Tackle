@@ -1,0 +1,174 @@
+{
+  "accounts": [],
+  "statuses": [],
+  "hashtags": [
+    {
+      "name": "test",
+      "url": "https://mastodon.social/tags/test",
+      "history": [
+        {
+          "day": "1723766400",
+          "accounts": "1",
+          "uses": "1"
+        },
+        {
+          "day": "1723680000",
+          "accounts": "8",
+          "uses": "13"
+        },
+        {
+          "day": "1723593600",
+          "accounts": "8",
+          "uses": "21"
+        },
+        {
+          "day": "1723507200",
+          "accounts": "2",
+          "uses": "2"
+        },
+        {
+          "day": "1723420800",
+          "accounts": "6",
+          "uses": "18"
+        },
+        {
+          "day": "1723334400",
+          "accounts": "6",
+          "uses": "31"
+        },
+        {
+          "day": "1723248000",
+          "accounts": "3",
+          "uses": "3"
+        }
+      ],
+      "following": false
+    },
+    {
+      "name": "testing",
+      "url": "https://mastodon.social/tags/testing",
+      "history": [
+        {
+          "day": "1723766400",
+          "accounts": "0",
+          "uses": "0"
+        },
+        {
+          "day": "1723680000",
+          "accounts": "7",
+          "uses": "9"
+        },
+        {
+          "day": "1723593600",
+          "accounts": "6",
+          "uses": "7"
+        },
+        {
+          "day": "1723507200",
+          "accounts": "5",
+          "uses": "5"
+        },
+        {
+          "day": "1723420800",
+          "accounts": "7",
+          "uses": "7"
+        },
+        {
+          "day": "1723334400",
+          "accounts": "4",
+          "uses": "4"
+        },
+        {
+          "day": "1723248000",
+          "accounts": "7",
+          "uses": "8"
+        }
+      ],
+      "following": false
+    },
+    {
+      "name": "tests",
+      "url": "https://mastodon.social/tags/tests",
+      "history": [
+        {
+          "day": "1723766400",
+          "accounts": "0",
+          "uses": "0"
+        },
+        {
+          "day": "1723680000",
+          "accounts": "0",
+          "uses": "0"
+        },
+        {
+          "day": "1723593600",
+          "accounts": "3",
+          "uses": "5"
+        },
+        {
+          "day": "1723507200",
+          "accounts": "0",
+          "uses": "0"
+        },
+        {
+          "day": "1723420800",
+          "accounts": "1",
+          "uses": "1"
+        },
+        {
+          "day": "1723334400",
+          "accounts": "0",
+          "uses": "0"
+        },
+        {
+          "day": "1723248000",
+          "accounts": "0",
+          "uses": "0"
+        }
+      ],
+      "following": false
+    },
+    {
+      "name": "testspiel",
+      "url": "https://mastodon.social/tags/testspiel",
+      "history": [
+        {
+          "day": "1723766400",
+          "accounts": "0",
+          "uses": "0"
+        },
+        {
+          "day": "1723680000",
+          "accounts": "0",
+          "uses": "0"
+        },
+        {
+          "day": "1723593600",
+          "accounts": "0",
+          "uses": "0"
+        },
+        {
+          "day": "1723507200",
+          "accounts": "1",
+          "uses": "3"
+        },
+        {
+          "day": "1723420800",
+          "accounts": "1",
+          "uses": "1"
+        },
+        {
+          "day": "1723334400",
+          "accounts": "0",
+          "uses": "0"
+        },
+        {
+          "day": "1723248000",
+          "accounts": "4",
+          "uses": "4"
+        }
+      ],
+      "following": false
+    }
+  ]
+}

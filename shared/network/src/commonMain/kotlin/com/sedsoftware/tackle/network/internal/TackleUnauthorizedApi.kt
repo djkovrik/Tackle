@@ -5,10 +5,10 @@ import com.sedsoftware.tackle.domain.model.Application
 import com.sedsoftware.tackle.domain.model.CustomEmoji
 import com.sedsoftware.tackle.domain.model.Instance
 import com.sedsoftware.tackle.domain.model.Token
-import com.sedsoftware.tackle.network.mappers.ApplicationMapper
-import com.sedsoftware.tackle.network.mappers.CustomEmojiMapper
-import com.sedsoftware.tackle.network.mappers.InstanceMapper
-import com.sedsoftware.tackle.network.mappers.TokenMapper
+import com.sedsoftware.tackle.network.mapper.ApplicationMapper
+import com.sedsoftware.tackle.network.mapper.CustomEmojiMapper
+import com.sedsoftware.tackle.network.mapper.InstanceMapper
+import com.sedsoftware.tackle.network.mapper.TokenMapper
 import com.sedsoftware.tackle.network.request.ApplicationRequest
 import com.sedsoftware.tackle.network.request.TokenRequest
 import com.sedsoftware.tackle.network.response.ApplicationResponse
