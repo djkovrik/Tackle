@@ -17,6 +17,11 @@ kotlin {
                 implementation(libs.oidc.appsupport)
             }
         }
+        commonTest {
+            dependencies {
+                implementation(libs.lib.okio)
+            }
+        }
         androidMain {
             dependencies {
                 implementation(libs.ktor.client.android)

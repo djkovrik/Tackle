@@ -423,8 +423,8 @@ private fun EditorTabContentPreviewEverything() {
                 attachmentsContentVisible = true,
                 attachmentsButtonAvailable = true,
                 attachments = listOf(
-                    AttachedFile("id", platformFile.copy(mimeType = "audio"), AttachedFile.Status.LOADING, 25),
-                    AttachedFile("id", platformFile.copy(mimeType = "video"), AttachedFile.Status.ERROR, 100),
+                    AttachedFile("id", platformFile.copy(mimeType = "audio"), AttachedFile.Status.LOADING, 0.25f),
+                    AttachedFile("id", platformFile.copy(mimeType = "video"), AttachedFile.Status.ERROR, 1f),
                 )
             )
         )
@@ -468,10 +468,10 @@ private fun EditorTabContentPreviewAttachments() {
                 attachmentsContentVisible = true,
                 attachmentsButtonAvailable = false,
                 attachments = listOf(
-                    AttachedFile("id", platformFile.copy(mimeType = "audio"), AttachedFile.Status.LOADING, 25),
-                    AttachedFile("id", platformFile.copy(mimeType = "image"), AttachedFile.Status.LOADED, 100),
-                    AttachedFile("id", platformFile.copy(mimeType = "video"), AttachedFile.Status.PENDING, 0),
-                    AttachedFile("id", platformFile.copy(mimeType = "unknown"), AttachedFile.Status.ERROR, 100),
+                    AttachedFile("id", platformFile.copy(mimeType = "audio"), AttachedFile.Status.LOADING, 0.25f),
+                    AttachedFile("id", platformFile.copy(mimeType = "image"), AttachedFile.Status.LOADED, 1f),
+                    AttachedFile("id", platformFile.copy(mimeType = "video"), AttachedFile.Status.PENDING, 0f),
+                    AttachedFile("id", platformFile.copy(mimeType = "unknown"), AttachedFile.Status.ERROR, 1f),
                 )
             )
         )

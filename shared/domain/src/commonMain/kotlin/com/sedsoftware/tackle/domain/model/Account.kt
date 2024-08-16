@@ -10,6 +10,8 @@ data class Account(
     val acct: String,
     val displayName: String,
     val note: String,
+    val url: String,
+    val uri: String,
     val avatar: String,
     val avatarStatic: String,
     val header: String,

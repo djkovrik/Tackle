@@ -1,0 +1,174 @@
+{
+  "accounts": [
+    {
+      "id": "109360379831758566",
+      "username": "test",
+      "acct": "test@lemmy.ml",
+      "display_name": "test",
+      "locked": false,
+      "bot": false,
+      "discoverable": false,
+      "indexable": false,
+      "group": true,
+      "created_at": "2019-04-20T00:00:00.000Z",
+      "note": "<p>For when you need to see what happens.</p>\n<p>You can help us test patch releases at   <a href=\"https://enterprise.lemmy.ml\" rel=\"nofollow noopener noreferrer\" target=\"_blank\">enterprise.lemmy.ml</a></p>\n<p>Also there are two more testing instances:<br>\n<a href=\"https://voyager.lemmy.ml\" rel=\"nofollow noopener noreferrer\" target=\"_blank\">voyager.lemmy.ml</a><br>\n<a href=\"https://ds9.lemmy.ml/\" rel=\"nofollow noopener noreferrer\" target=\"_blank\">ds9.lemmy.ml</a></p>\n",
+      "url": "https://lemmy.ml/c/test",
+      "uri": "https://lemmy.ml/c/test",
+      "avatar": "https://files.mastodon.social/cache/accounts/avatars/109/360/379/831/758/566/original/8653bc89dac6dae1.png",
+      "avatar_static": "https://files.mastodon.social/cache/accounts/avatars/109/360/379/831/758/566/original/8653bc89dac6dae1.png",
+      "header": "https://mastodon.social/headers/original/missing.png",
+      "header_static": "https://mastodon.social/headers/original/missing.png",
+      "followers_count": 813,
+      "following_count": 0,
+      "statuses_count": 428,
+      "last_status_at": "2024-08-15",
+      "hide_collections": true,
+      "emojis": [
+        {
+          "shortcode": "aaaa",
+          "url": "https://files.mastodon.social/custom_emojis/images/000/007/118/original/aaaa.png",
+          "static_url": "https://files.mastodon.social/custom_emojis/images/000/007/118/static/aaaa.png",
+          "visible_in_picker": true,
+          "category": "Cats"
+        }
+      ],
+      "fields": []
+    },
+    {
+      "id": "109740005384377857",
+      "username": "BleacherReport",
+      "acct": "BleacherReport@sportsbots.xyz",
+      "display_name": "Bleacher Report :verified_business: 🤖",
+      "locked": false,
+      "bot": true,
+      "discoverable": true,
+      "indexable": false,
+      "group": false,
+      "created_at": "2007-03-10T00:00:00.000Z",
+      "note": "<p>Unofficial bot that mirrors Bleacher Report’s Twitter feed.</p><p>Test your CFB trivia knowledge. Can you get 10 in a row? 🏈⬇️</p>",
+      "url": "https://sportsbots.xyz/users/BleacherReport",
+      "uri": "https://sportsbots.xyz/users/BleacherReport",
+      "avatar": "https://files.mastodon.social/cache/accounts/avatars/109/740/005/384/377/857/original/d9f513bc02a23253.jpg",
+      "avatar_static": "https://files.mastodon.social/cache/accounts/avatars/109/740/005/384/377/857/original/d9f513bc02a23253.jpg",
+      "header": "https://mastodon.social/headers/original/missing.png",
+      "header_static": "https://mastodon.social/headers/original/missing.png",
+      "followers_count": 18430001,
+      "following_count": 800,
+      "statuses_count": 3035,
+      "last_status_at": "2024-08-16",
+      "hide_collections": false,
+      "emojis": [
+        {
+          "shortcode": "verified_business",
+          "url": "https://files.mastodon.social/cache/custom_emojis/images/000/512/920/original/23a3b761db06ee08.png",
+          "static_url": "https://files.mastodon.social/cache/custom_emojis/images/000/512/920/static/23a3b761db06ee08.png",
+          "visible_in_picker": true
+        }
+      ],
+      "fields": [
+        {
+          "name": "Twitter",
+          "value": "<a href=\"https://twitter.com/BleacherReport\" rel=\"nofollow noopener noreferrer\" target=\"_blank\"><span class=\"invisible\">https://</span><span class=\"\">twitter.com/BleacherReport</span></a>",
+          "verified_at": null
+        },
+        {
+          "name": "Twitter Verified",
+          "value": "Business",
+          "verified_at": null
+        },
+        {
+          "name": "Website",
+          "value": "<a href=\"https://play.bleacherreport.com/\" rel=\"nofollow noopener noreferrer\" target=\"_blank\"><span class=\"invisible\">https://</span><span class=\"\">play.bleacherreport.com/</span><span class=\"invisible\"></span></a>",
+          "verified_at": null
+        },
+        {
+          "name": "Managed by",
+          "value": "<span class=\"h-card\"><a href=\"https://mastodon.social/@sportsbots\" class=\"u-url mention\" rel=\"nofollow noopener noreferrer\" target=\"_blank\">@<span>sportsbots</span></a></span>",
+          "verified_at": null
+        },
+        {
+          "name": "Retention",
+          "value": "<span class=\"h-card\">90 days</span>",
+          "verified_at": null
+        }
+      ]
+    },
+    {
+      "id": "107745188082272896",
+      "username": "test",
+      "acct": "test@feddit.de",
+      "display_name": "Test",
+      "locked": false,
+      "bot": false,
+      "discoverable": false,
+      "indexable": false,
+      "group": true,
+      "created_at": "2022-01-02T00:00:00.000Z",
+      "note": "<p>Test Community</p>\n",
+      "url": "https://feddit.de/c/test",
+      "uri": "https://feddit.de/c/test",
+      "avatar": "https://files.mastodon.social/cache/accounts/avatars/107/745/188/082/272/896/original/59729c0f88f2cf82.png",
+      "avatar_static": "https://files.mastodon.social/cache/accounts/avatars/107/745/188/082/272/896/original/59729c0f88f2cf82.png",
+      "header": "https://files.mastodon.social/cache/accounts/headers/107/745/188/082/272/896/original/8756bb9aaa0a5eb2.png",
+      "header_static": "https://files.mastodon.social/cache/accounts/headers/107/745/188/082/272/896/original/8756bb9aaa0a5eb2.png",
+      "followers_count": 164,
+      "following_count": 0,
+      "statuses_count": 50,
+      "last_status_at": null,
+      "hide_collections": true,
+      "emojis": [],
+      "fields": []
+    },
+    {
+      "id": "110237707410556026",
+      "username": "testdouble",
+      "acct": "testdouble",
+      "display_name": "Test Double",
+      "locked": false,
+      "bot": false,
+      "discoverable": true,
+      "indexable": false,
+      "group": false,
+      "created_at": "2023-04-21T00:00:00.000Z",
+      "note": "<p>Our mission is to improve how the world builds software. And we do that by building both great software and great teams. We&#39;re a software development agency offering consulting services in custom software development, DevOps and product delivery. We help technology leaders get to a better place with software built to last. Legacy systems are unwound and detangled. Teams emerge happier and healthier. Leaders get maintainable software at a sustainable pace.</p>",
+      "url": "https://mastodon.social/@testdouble",
+      "uri": "https://mastodon.social/users/testdouble",
+      "avatar": "https://files.mastodon.social/accounts/avatars/110/237/707/410/556/026/original/67371d96c1c8a342.png",
+      "avatar_static": "https://files.mastodon.social/accounts/avatars/110/237/707/410/556/026/original/67371d96c1c8a342.png",
+      "header": "https://files.mastodon.social/accounts/headers/110/237/707/410/556/026/original/d8e6f03d6b5c95b8.jpg",
+      "header_static": "https://files.mastodon.social/accounts/headers/110/237/707/410/556/026/original/d8e6f03d6b5c95b8.jpg",
+      "followers_count": 503,
+      "following_count": 246,
+      "statuses_count": 217,
+      "last_status_at": "2024-08-14",
+      "hide_collections": false,
+      "noindex": false,
+      "emojis": [],
+      "roles": [],
+      "fields": [
+        {
+          "name": "Website",
+          "value": "<a href=\"https://testdouble.com\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">testdouble.com</span><span class=\"invisible\"></span></a>",
+          "verified_at": null
+        },
+        {
+          "name": "Contact",
+          "value": "<a href=\"https://testdouble.com/contact\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">testdouble.com/contact</span><span class=\"invisible\"></span></a>",
+          "verified_at": null
+        },
+        {
+          "name": "Careers",
+          "value": "<a href=\"https://testdouble.com/careers\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">testdouble.com/careers</span><span class=\"invisible\"></span></a>",
+          "verified_at": null
+        },
+        {
+          "name": "Agency",
+          "value": "<a href=\"https://testdouble.com/agency\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">testdouble.com/agency</span><span class=\"invisible\"></span></a>",
+          "verified_at": null
+        }
+      ]
+    }
+  ],
+  "statuses": [],
+  "hashtags": []
+}

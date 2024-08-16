@@ -1,0 +1,26 @@
+{
+  "id":"112966498800924058",
+  "type":"video",
+  "url":null,
+  "preview_url":"https://files.mastodon.social/media_attachments/files/112/966/498/800/924/058/small/16916c1f1676ba8c.png",
+  "remote_url":null,
+  "preview_remote_url":null,
+  "text_url":null,
+  "meta":{
+    "original":{
+      "width":1280,
+      "height":720,
+      "frame_rate":"30/1",
+      "duration":30.526667,
+      "bitrate":2578859
+    },
+    "small":{
+      "width":640,
+      "height":360,
+      "size":"640x360",
+      "aspect":1.7777777777777777
+    }
+  },
+  "description":null,
+  "blurhash":"U11o^O%hH;DNjFjYbbf,I8ROo$xvRjWXt7oL"
+}

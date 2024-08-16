@@ -16,8 +16,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 internal class EditorAttachmentsManager(
     private val api: EditorAttachmentsGateways.Api,
 ) {
+
     private val uploadProgress: MutableStateFlow<UploadProgress> =
-        MutableStateFlow(UploadProgress("", 0))
+        MutableStateFlow(UploadProgress("", 0f))
 
     fun observeUploadProgress(): Flow<UploadProgress> = uploadProgress
 
@@ -54,7 +55,7 @@ internal class EditorAttachmentsManager(
 
     suspend fun upload(
         attachment: AttachedFile,
-        onUpload: (Int) -> Unit = { updateProgress(attachment.id, it) },
+        onUpload: (Float) -> Unit = { updateProgress(attachment.id, it) },
     ): Result<MediaAttachment> = runCatching {
         val response: MediaAttachment = api.sendFile(
             file = attachment.file,
@@ -67,7 +68,7 @@ internal class EditorAttachmentsManager(
         return@runCatching response
     }
 
-    private fun updateProgress(id: String, progress: Int) {
+    private fun updateProgress(id: String, progress: Float) {
         uploadProgress.value = UploadProgress(id, progress)
     }
 }

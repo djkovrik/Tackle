@@ -44,6 +44,17 @@ fun RootContent(
         }
 
         Box(modifier = modifier.fillMaxSize()) {
+            Children(
+                stack = component.childStack,
+                animation = stackAnimation(animator = fade() + scale()),
+                modifier = modifier.fillMaxSize(),
+            ) {
+                when (val child = it.instance) {
+                    is Child.Auth -> AuthContent(component = child.component)
+                    is Child.Main -> MainContent(component = child.component)
+                }
+            }
+
             SnackbarHost(
                 hostState = snackbarHostState,
                 modifier = modifier
@@ -55,17 +66,6 @@ fun RootContent(
                     message = snackbarData.visuals.message,
                     modifier = modifier,
                 )
-            }
-
-            Children(
-                stack = component.childStack,
-                animation = stackAnimation(animator = fade() + scale()),
-                modifier = modifier.fillMaxSize(),
-            ) {
-                when (val child = it.instance) {
-                    is Child.Auth -> AuthContent(component = child.component)
-                    is Child.Main -> MainContent(component = child.component)
-                }
             }
         }
     }

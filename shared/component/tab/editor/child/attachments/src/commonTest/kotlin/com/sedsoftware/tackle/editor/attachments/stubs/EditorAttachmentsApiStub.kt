@@ -26,7 +26,7 @@ class EditorAttachmentsApiStub : StubWithException(), EditorAttachmentsGateways.
 
     override suspend fun sendFile(
         file: PlatformFileWrapper,
-        onUpload: (Int) -> Unit,
+        onUpload: (Float) -> Unit,
         thumbnail: PlatformFileWrapper?,
         description: String?,
         focus: String?,

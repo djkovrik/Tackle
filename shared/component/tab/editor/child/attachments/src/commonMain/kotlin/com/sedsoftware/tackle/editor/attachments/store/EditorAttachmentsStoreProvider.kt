@@ -10,9 +10,7 @@ import com.sedsoftware.tackle.domain.model.MediaAttachment
 import com.sedsoftware.tackle.domain.model.PlatformFileWrapper
 import com.sedsoftware.tackle.editor.attachments.domain.EditorAttachmentsManager
 import com.sedsoftware.tackle.editor.attachments.extension.delete
-import com.sedsoftware.tackle.editor.attachments.extension.firstPending
 import com.sedsoftware.tackle.editor.attachments.extension.getById
-import com.sedsoftware.tackle.editor.attachments.extension.hasPending
 import com.sedsoftware.tackle.editor.attachments.extension.updateProgress
 import com.sedsoftware.tackle.editor.attachments.extension.updateServerCopy
 import com.sedsoftware.tackle.editor.attachments.extension.updateStatus
@@ -23,6 +21,7 @@ import com.sedsoftware.tackle.editor.attachments.store.EditorAttachmentsStore.La
 import com.sedsoftware.tackle.editor.attachments.store.EditorAttachmentsStore.State
 import com.sedsoftware.tackle.utils.StoreCreate
 import com.sedsoftware.tackle.utils.extension.unwrap
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
@@ -46,6 +45,8 @@ internal class EditorAttachmentsStoreProvider(
                 dispatch(Action.ObserveUploadProgress)
             },
             executorFactory = coroutineExecutorFactory(mainContext) {
+                val uploadJobs = mutableMapOf<String, Job>()
+
                 onAction<Action.ObserveUploadProgress> {
                     launch {
                         manager.observeUploadProgress()
@@ -63,6 +64,7 @@ internal class EditorAttachmentsStoreProvider(
                             result = withContext(ioContext) { manager.prepare(it.file, config) },
                             onSuccess = { attachment: AttachedFile ->
                                 dispatch(Msg.AttachmentPrepared(attachment))
+                                forward(Action.UploadAttachment(attachment))
                             },
                             onError = { throwable: Throwable ->
                                 publish(Label.ErrorCaught(throwable))
@@ -71,30 +73,22 @@ internal class EditorAttachmentsStoreProvider(
                     }
                 }
 
-                onAction<Action.UploadNextPendingAttachment> {
-                    val current: List<AttachedFile> = state().selectedFiles
+                onAction<Action.UploadAttachment> {
+                    val target = it.attachment
+                    dispatch(Msg.AttachmentStatusChanged(target.id, AttachedFile.Status.LOADING))
 
-                    if (current.hasPending) {
-                        val target: AttachedFile = current.firstPending
-                        dispatch(Msg.AttachmentStatusChanged(target.id, AttachedFile.Status.LOADING))
-
-                        launch {
-                            unwrap(
-                                result = withContext(ioContext) { manager.upload(target) },
-                                onSuccess = { mediaAttachment: MediaAttachment ->
-                                    dispatch(Msg.AttachmentStatusChanged(target.id, AttachedFile.Status.LOADED))
-                                    dispatch(Msg.AttachmentLoaded(target.id, mediaAttachment))
-                                    forward(Action.UploadNextPendingAttachment)
-                                },
-                                onError = { throwable: Throwable ->
-                                    dispatch(Msg.AttachmentStatusChanged(target.id, AttachedFile.Status.ERROR))
-                                    publish(Label.ErrorCaught(throwable))
-                                    forward(Action.UploadNextPendingAttachment)
-                                }
-                            )
-                        }
-                    } else {
-                        dispatch(Msg.UploadQueueCompleted)
+                    uploadJobs[target.id] = launch {
+                        unwrap(
+                            result = withContext(ioContext) { manager.upload(target) },
+                            onSuccess = { mediaAttachment: MediaAttachment ->
+                                dispatch(Msg.AttachmentStatusChanged(target.id, AttachedFile.Status.LOADED))
+                                dispatch(Msg.AttachmentLoaded(target.id, mediaAttachment))
+                            },
+                            onError = { throwable: Throwable ->
+                                dispatch(Msg.AttachmentStatusChanged(target.id, AttachedFile.Status.ERROR))
+                                publish(Label.ErrorCaught(throwable))
+                            }
+                        )
                     }
                 }
 
@@ -113,11 +107,6 @@ internal class EditorAttachmentsStoreProvider(
                         forward(Action.PrepareAttachment(file))
                     }
 
-                    if (newSelectionSize > 0) {
-                        dispatch(Msg.UploadQueueStarted)
-                        forward(Action.UploadNextPendingAttachment)
-                    }
-
                     publish(Label.AttachmentsCountUpdated(newSelectionSize))
                 }
 
@@ -125,24 +114,23 @@ internal class EditorAttachmentsStoreProvider(
                     val currentAttachmentsCount = state().selectedFiles.size
                     publish(Label.AttachmentsCountUpdated(currentAttachmentsCount - 1))
                     dispatch(Msg.FileDeleted(it.id))
+                    uploadJobs[it.id]?.cancel()
                 }
 
                 onIntent<Intent.OnFileRetry> {
                     state().selectedFiles.getById(id = it.id)?.let { target ->
                         dispatch(Msg.AttachmentStatusChanged(target.id, AttachedFile.Status.LOADING))
 
-                        launch {
+                        uploadJobs[target.id] = launch {
                             unwrap(
                                 result = withContext(ioContext) { manager.upload(target) },
                                 onSuccess = { mediaAttachment: MediaAttachment ->
                                     dispatch(Msg.AttachmentStatusChanged(target.id, AttachedFile.Status.LOADED))
                                     dispatch(Msg.AttachmentLoaded(target.id, mediaAttachment))
-                                    forward(Action.UploadNextPendingAttachment)
                                 },
                                 onError = { throwable: Throwable ->
                                     dispatch(Msg.AttachmentStatusChanged(target.id, AttachedFile.Status.ERROR))
                                     publish(Label.ErrorCaught(throwable))
-                                    forward(Action.UploadNextPendingAttachment)
                                 }
                             )
                         }
@@ -160,6 +148,10 @@ internal class EditorAttachmentsStoreProvider(
                         configLoaded = true,
                     )
 
+                    is Msg.ComponentAvailabilityChanged -> copy(
+                        attachmentsAvailable = msg.available,
+                    )
+
                     is Msg.UploadProgressAvailable -> copy(
                         selectedFiles = selectedFiles.updateProgress(msg.progress)
                     )
@@ -169,29 +161,17 @@ internal class EditorAttachmentsStoreProvider(
                         attachmentsAtLimit = (selectedFiles.size + 1) >= config.statuses.maxMediaAttachments,
                     )
 
+                    is Msg.FileDeleted -> copy(
+                        selectedFiles = selectedFiles.delete(msg.id),
+                        attachmentsAtLimit = false,
+                    )
+
                     is Msg.AttachmentStatusChanged -> copy(
                         selectedFiles = selectedFiles.updateStatus(msg.id, msg.status)
                     )
 
                     is Msg.AttachmentLoaded -> copy(
                         selectedFiles = selectedFiles.updateServerCopy(msg.id, msg.serverAttachment)
-                    )
-
-                    is Msg.UploadQueueStarted -> copy(
-                        hasUploadInProgress = true,
-                    )
-
-                    is Msg.UploadQueueCompleted -> copy(
-                        hasUploadInProgress = false,
-                    )
-
-                    is Msg.ComponentAvailabilityChanged -> copy(
-                        attachmentsAvailable = msg.available,
-                    )
-
-                    is Msg.FileDeleted -> copy(
-                        selectedFiles = selectedFiles.delete(msg.id),
-                        attachmentsAtLimit = false,
                     )
                 }
             }
@@ -200,18 +180,16 @@ internal class EditorAttachmentsStoreProvider(
     private sealed interface Action {
         data object ObserveUploadProgress : Action
         data class PrepareAttachment(val file: PlatformFileWrapper) : Action
-        data object UploadNextPendingAttachment : Action
+        data class UploadAttachment(val attachment: AttachedFile) : Action
     }
 
     private sealed interface Msg {
         data class InstanceConfigAvailable(val config: Instance.Config) : Msg
+        data class ComponentAvailabilityChanged(val available: Boolean) : Msg
         data class UploadProgressAvailable(val progress: UploadProgress) : Msg
         data class AttachmentPrepared(val attachment: AttachedFile) : Msg
+        data class FileDeleted(val id: String) : Msg
         data class AttachmentStatusChanged(val id: String, val status: AttachedFile.Status) : Msg
         data class AttachmentLoaded(val id: String, val serverAttachment: MediaAttachment) : Msg
-        data object UploadQueueStarted : Msg
-        data object UploadQueueCompleted : Msg
-        data class ComponentAvailabilityChanged(val available: Boolean) : Msg
-        data class FileDeleted(val id: String) : Msg
     }
 }

@@ -36,6 +36,7 @@ sqlDelight = "2.0.2"
 oidc = "0.9.1"
 imageLoader = "1.8.1"
 fileKit = "0.7.0"
+okio = "3.9.0"
 
 # Testing
 assertk = "0.28.1"
@@ -83,6 +84,7 @@ lib-fileKit-core = { module = "io.github.vinceglb:filekit-core", version.ref = "
 lib-fileKit-compose = { module = "io.github.vinceglb:filekit-compose", version.ref = "fileKit" }
 lib-settings-core = { module = "com.russhwolf:multiplatform-settings", version.ref = "multiplatformSettings" }
 lib-settings-test = { module = "com.russhwolf:multiplatform-settings-test", version.ref = "multiplatformSettings" }
+lib-okio = { module = "com.squareup.okio:okio", version.ref = "okio" }
 
 lib-sqlDelight-coroutines = { module = "app.cash.sqldelight:coroutines-extensions", version.ref = "sqlDelight" }
 lib-sqlDelight-driver-android = { module = "app.cash.sqldelight:android-driver", version.ref = "sqlDelight" }

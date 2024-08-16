@@ -1,4 +1,3 @@
-import java.nio.file.Files
 import javax.xml.parsers.DocumentBuilderFactory
 
 plugins {
@@ -57,6 +56,7 @@ kover {
                     "com.sedsoftware.tackle.*.extension.*",
                     "com.sedsoftware.tackle.*.integration.*Default",
                     "com.sedsoftware.tackle.*.store.*",
+                    "com.sedsoftware.tackle.*.mapper.*",
                 )
             }
         }

@@ -25,6 +25,7 @@ import com.sedsoftware.tackle.utils.extension.isImage
 import com.sedsoftware.tackle.utils.extension.isVideo
 import com.seiko.imageloader.model.ImageRequest
 import com.seiko.imageloader.rememberImagePainter
+import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 import tackle.shared.compose.generated.resources.Res
 import tackle.shared.compose.generated.resources.editor_file_audio
@@ -37,17 +38,40 @@ internal fun AttachedFileImageThumbnail(
     imageData: ByteArray,
     modifier: Modifier = Modifier,
 ) {
-    Image(
-        painter = rememberImagePainter(request = ImageRequest(data = imageData)),
-        contentScale = ContentScale.Fit,
-        contentDescription = null,
-        modifier = modifier,
-    )
+    if (imageData.isNotEmpty()) {
+        Image(
+            painter = rememberImagePainter(request = ImageRequest(data = imageData)),
+            contentScale = ContentScale.Crop,
+            contentDescription = null,
+            modifier = modifier,
+        )
+    } else {
+        AttachedFilePlaceholder(
+            resource = Res.drawable.editor_file_image,
+            modifier = modifier,
+        )
+    }
 }
 
 @Composable
 internal fun AttachedFileContentGeneric(
     attachment: AttachedFile,
+    modifier: Modifier = Modifier,
+) {
+    AttachedFilePlaceholder(
+        resource = when {
+            attachment.file.isAudio -> Res.drawable.editor_file_audio
+            attachment.file.isImage -> Res.drawable.editor_file_image
+            attachment.file.isVideo -> Res.drawable.editor_file_video
+            else -> Res.drawable.editor_file_unknown
+        },
+        modifier = modifier,
+    )
+}
+
+@Composable
+private fun AttachedFilePlaceholder(
+    resource: DrawableResource,
     modifier: Modifier = Modifier,
 ) {
     BoxWithConstraints(
@@ -64,14 +88,7 @@ internal fun AttachedFileContentGeneric(
         val imageSize = (constraints.maxHeight * halfMultiplier).dp
 
         Image(
-            painter = painterResource(
-                resource = when {
-                    attachment.file.isAudio -> Res.drawable.editor_file_audio
-                    attachment.file.isImage -> Res.drawable.editor_file_image
-                    attachment.file.isVideo -> Res.drawable.editor_file_video
-                    else -> Res.drawable.editor_file_unknown
-                }
-            ),
+            painter = painterResource(resource = resource),
             contentScale = ContentScale.Fit,
             contentDescription = null,
             colorFilter = ColorFilter.tint(

@@ -50,8 +50,6 @@ sealed class TackleException(
         action = Action.SHOW_MESSAGE,
     )
 
-    data object Empty : TackleException()
-
     enum class Action {
         SHOW_MESSAGE,
         LOGOUT,

@@ -1,6 +1,5 @@
 package com.sedsoftware.tackle.network.response
 
-import com.sedsoftware.tackle.network.response.type.StatusVisibilityRemote
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -11,7 +10,7 @@ internal class StatusResponse(
     @SerialName("created_at") val createdAt: String,
     @SerialName("account") val account: AccountResponse,
     @SerialName("content") val content: String,
-    @SerialName("visibility") val visibility: StatusVisibilityRemote = StatusVisibilityRemote.UNKNOWN,
+    @SerialName("visibility") val visibility: String = "",
     @SerialName("sensitive") val sensitive: Boolean,
     @SerialName("spoiler_text") val spoilerText: String,
     @SerialName("media_attachments") val mediaAttachments: List<MediaAttachmentResponse> = emptyList(),
@@ -67,7 +66,7 @@ internal class ScheduledStatusParamsResponse(
     @SerialName("media_ids") val mediaIds: List<String> = emptyList(),
     @SerialName("sensitive") val sensitive: Boolean = false,
     @SerialName("spoiler_text") val spoilerText: String = "",
-    @SerialName("visibility") val visibility: StatusVisibilityRemote = StatusVisibilityRemote.UNKNOWN,
+    @SerialName("visibility") val visibility: String = "",
     @SerialName("in_reply_to_id") val inReplyToId: Long = 0L,
     @SerialName("language") val language: String = "",
     @SerialName("application_id") val applicationId: Int,

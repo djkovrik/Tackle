@@ -33,7 +33,7 @@ interface AuthorizedApi {
      */
     suspend fun sendFile(
         file: PlatformFileWrapper,
-        onUpload: (Int) -> Unit = {},
+        onUpload: (Float) -> Unit = {},
         thumbnail: PlatformFileWrapper? = null,
         description: String? = null,
         focus: String? = null,
@@ -85,6 +85,8 @@ interface AuthorizedApi {
      * @param maxId all results returned will be lesser than this ID. In effect, sets an upper bound on results
      * @param limit maximum number of results to return, per type. Defaults to 20 results per category. Max 40 results per category
      * @param offset skip the first n results
+     *
+     * @see <a href="https://docs.joinmastodon.org/methods/search/#v2">Perform a search</a>
      */
     suspend fun search(
         query: String,

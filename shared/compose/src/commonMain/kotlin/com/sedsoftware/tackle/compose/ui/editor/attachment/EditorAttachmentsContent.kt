@@ -48,7 +48,7 @@ internal fun EditorAttachmentsContent(
 private fun EditorAttachmentsContentOneFilePreview() {
     val platformFile = PlatformFileWrapper("", "", "", "", 0L, "12 Mb") { ByteArray(0) }
     val attachments = listOf(
-        AttachedFile("id", platformFile.copy(mimeType = "image"), AttachedFile.Status.LOADED, 25),
+        AttachedFile("id", platformFile.copy(mimeType = "image"), AttachedFile.Status.LOADED, 0.25f),
     )
 
     TackleScreenPreview {
@@ -69,8 +69,8 @@ private fun EditorAttachmentsContentOneFilePreview() {
 private fun EditorAttachmentsContentTwoFilesPreview() {
     val platformFile = PlatformFileWrapper("", "", "", "", 0L, "12 Mb") { ByteArray(0) }
     val attachments = listOf(
-        AttachedFile("id", platformFile.copy(mimeType = "image"), AttachedFile.Status.LOADED, uploadProgress = 25),
-        AttachedFile("id", platformFile.copy(mimeType = "video"), AttachedFile.Status.LOADED, 50),
+        AttachedFile("id", platformFile.copy(mimeType = "image"), AttachedFile.Status.LOADED, uploadProgress = 0.25f),
+        AttachedFile("id", platformFile.copy(mimeType = "video"), AttachedFile.Status.LOADED, 0.5f),
     )
 
     TackleScreenPreview {
@@ -91,9 +91,9 @@ private fun EditorAttachmentsContentTwoFilesPreview() {
 private fun EditorAttachmentsContentThreeFilesPreview() {
     val platformFile = PlatformFileWrapper("", "", "", "", 0L, "12 Mb") { ByteArray(0) }
     val attachments = listOf(
-        AttachedFile("id", platformFile.copy(mimeType = "image"), AttachedFile.Status.LOADED, 25),
-        AttachedFile("id", platformFile.copy(mimeType = "video"), AttachedFile.Status.LOADED, 50),
-        AttachedFile("id", platformFile.copy(mimeType = "audio"), AttachedFile.Status.LOADED, 75),
+        AttachedFile("id", platformFile.copy(mimeType = "image"), AttachedFile.Status.LOADED, 0.25f),
+        AttachedFile("id", platformFile.copy(mimeType = "video"), AttachedFile.Status.LOADED, 0.5f),
+        AttachedFile("id", platformFile.copy(mimeType = "audio"), AttachedFile.Status.LOADED, 0.75f),
     )
 
     TackleScreenPreview {
@@ -112,10 +112,10 @@ private fun EditorAttachmentsContentThreeFilesPreview() {
 private fun EditorAttachmentsContentFourFilesPreview() {
     val platformFile = PlatformFileWrapper("", "", "", "", 0L, "12 Mb") { ByteArray(0) }
     val attachments = listOf(
-        AttachedFile("id", platformFile.copy(mimeType = "image"), AttachedFile.Status.LOADED, 25),
-        AttachedFile("id", platformFile.copy(mimeType = "video"), AttachedFile.Status.LOADED, 50),
-        AttachedFile("id", platformFile.copy(mimeType = "audio"), AttachedFile.Status.LOADED, 75),
-        AttachedFile("id", platformFile.copy(mimeType = "abcs"), AttachedFile.Status.LOADED, 100),
+        AttachedFile("id", platformFile.copy(mimeType = "image"), AttachedFile.Status.LOADED, 0.25f),
+        AttachedFile("id", platformFile.copy(mimeType = "video"), AttachedFile.Status.LOADED, 0.5f),
+        AttachedFile("id", platformFile.copy(mimeType = "audio"), AttachedFile.Status.LOADED, 0.75f),
+        AttachedFile("id", platformFile.copy(mimeType = "abcs"), AttachedFile.Status.LOADED, 1f),
     )
 
     TackleScreenPreview {

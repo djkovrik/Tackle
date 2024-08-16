@@ -1,13 +1,12 @@
 package com.sedsoftware.tackle.network.response
 
-import com.sedsoftware.tackle.network.response.type.MediaAttachmentTypeRemote
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 internal class MediaAttachmentResponse(
     @SerialName("id") val id: String = "",
-    @SerialName("type") val type: MediaAttachmentTypeRemote = MediaAttachmentTypeRemote.UNKNOWN,
+    @SerialName("type") val type: String = "",
     @SerialName("url") val url: String = "",
     @SerialName("preview_url") val previewUrl: String = "",
     @SerialName("remote_url") val remoteUrl: String = "",
