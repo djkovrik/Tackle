@@ -25,7 +25,6 @@ import com.sedsoftware.tackle.compose.ui.main.MainContent
 import com.sedsoftware.tackle.compose.custom.CustomSnackBar
 import com.sedsoftware.tackle.root.RootComponent
 import com.sedsoftware.tackle.root.RootComponent.Child
-import kotlinx.coroutines.delay
 
 @Composable
 fun RootContent(
