@@ -50,6 +50,7 @@ kotlin {
 
             implementation(libs.lib.fileKit.compose)
             implementation(libs.lib.imageLoader)
+            implementation(libs.lib.blurhash)
         }
         androidMain.dependencies {
             implementation(libs.compose.ui.tooling.preview)
