@@ -70,7 +70,7 @@ internal fun AttachedFileContentGeneric(
 }
 
 @Composable
-private fun AttachedFilePlaceholder(
+internal fun AttachedFilePlaceholder(
     resource: DrawableResource,
     modifier: Modifier = Modifier,
 ) {

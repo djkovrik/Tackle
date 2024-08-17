@@ -17,6 +17,7 @@ Work In Progress
 * [Multiplatform Settings](https://github.com/russhwolf/multiplatform-settings)
 * [FileKit](https://github.com/vinceglb/FileKit)
 * [Kotlin Multiplatform OIDC](https://github.com/kalinjul/kotlin-multiplatform-oidc)
+* [blurhash](https://github.com/vanniktech/blurhash/)
 
 ### Used resources
 

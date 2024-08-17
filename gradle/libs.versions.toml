@@ -37,6 +37,7 @@ oidc = "0.9.1"
 imageLoader = "1.8.1"
 fileKit = "0.7.0"
 okio = "3.9.0"
+blurhash = "0.3.0"
 
 # Testing
 assertk = "0.28.1"
@@ -85,6 +86,7 @@ lib-fileKit-compose = { module = "io.github.vinceglb:filekit-compose", version.r
 lib-settings-core = { module = "com.russhwolf:multiplatform-settings", version.ref = "multiplatformSettings" }
 lib-settings-test = { module = "com.russhwolf:multiplatform-settings-test", version.ref = "multiplatformSettings" }
 lib-okio = { module = "com.squareup.okio:okio", version.ref = "okio" }
+lib-blurhash = { module = "com.vanniktech:blurhash", version.ref = "blurhash" }
 
 lib-sqlDelight-coroutines = { module = "app.cash.sqldelight:coroutines-extensions", version.ref = "sqlDelight" }
 lib-sqlDelight-driver-android = { module = "app.cash.sqldelight:android-driver", version.ref = "sqlDelight" }
