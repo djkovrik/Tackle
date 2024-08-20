@@ -85,7 +85,7 @@ internal class EditorAttachmentsStoreTest : StoreTest<Intent, State, Label>() {
         assertThat(store.state.selectedFiles.size).isEqualTo(files.size)
         assertThat(store.state.attachmentsAtLimit).isTrue()
         assertThat(store.state.selectedFiles.hasPending).isFalse()
-        assertThat(labels).contains(Label.AttachmentsCountUpdated(files.size))
+        assertThat(labels).contains(Label.PendingAttachmentsCountUpdated(files.size))
     }
 
     @Test
@@ -190,7 +190,7 @@ internal class EditorAttachmentsStoreTest : StoreTest<Intent, State, Label>() {
         store.accept(Intent.OnFileDeleted(fileToDelete.id))
         // then
         assertThat(store.state.selectedFiles).containsNone(fileToDelete)
-        assertThat(labels).contains(Label.AttachmentsCountUpdated(files.size - 1))
+        assertThat(labels).contains(Label.PendingAttachmentsCountUpdated(files.size - 1))
     }
 
     @Test

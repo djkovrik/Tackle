@@ -40,6 +40,7 @@ interface EditorTabStore : Store<Intent, State, Label> {
 
     sealed class Label {
         data class InstanceConfigLoaded(val config: Instance.Config) : Label()
+        data class TextUpdated(val text: String) : Label()
         data class ErrorCaught(val throwable: Throwable) : Label()
     }
 }

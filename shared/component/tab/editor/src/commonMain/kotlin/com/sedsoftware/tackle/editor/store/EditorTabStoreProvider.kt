@@ -150,17 +150,26 @@ internal class EditorTabStoreProvider(
                 onIntent<Intent.OnTextInput> {
                     dispatch(Msg.TextInput(it.text, it.selection))
                     forward(Action.CheckForInputHelper)
+                    publish(Label.TextUpdated(state().statusText))
                 }
 
                 onIntent<Intent.OnInputHintSelect> {
                     dispatch(Msg.InputHintSelected(it.hint))
                     forward(Action.CheckForInputHelper)
+                    publish(Label.TextUpdated(state().statusText))
                 }
 
-                onIntent<Intent.OnEmojiSelect> { dispatch(Msg.EmojiSelected(it.emoji)) }
+                onIntent<Intent.OnEmojiSelect> {
+                    dispatch(Msg.EmojiSelected(it.emoji))
+                    publish(Label.TextUpdated(state().statusText))
+                }
+
                 onIntent<Intent.OnRequestDatePicker> { dispatch(Msg.DateDialogVisibilityChanged(it.show)) }
+
                 onIntent<Intent.OnScheduleDate> { dispatch(Msg.ScheduleDateSelected(it.millis)) }
+
                 onIntent<Intent.OnRequestTimePicker> { dispatch(Msg.TimeDialogVisibilityChanged(it.show)) }
+
                 onIntent<Intent.OnScheduleTime> { dispatch(Msg.ScheduleTimeSelected(it.hour, it.minute, it.formatIn24hr)) }
             },
             reducer = { msg ->

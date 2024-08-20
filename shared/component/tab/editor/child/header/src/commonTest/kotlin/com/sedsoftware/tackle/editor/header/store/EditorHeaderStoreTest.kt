@@ -119,6 +119,19 @@ internal class EditorHeaderStoreTest : StoreTest<EditorHeaderStore.Intent, Edito
         assertThat(store.state.statusVisibility).isEqualTo(StatusVisibility.UNLISTED)
     }
 
+    @Test
+    fun `ChangeSendingAvailability should change sending state`() = runTest {
+        // given
+        // when
+        store.init()
+        store.accept(EditorHeaderStore.Intent.ChangeSendingAvailability(true))
+        // then
+        assertThat(store.state.sendingAvailable).isTrue()
+        // and when
+        store.accept(EditorHeaderStore.Intent.ChangeSendingAvailability(false))
+        // then
+        assertThat(store.state.sendingAvailable).isFalse()
+    }
 
     override fun createStore(): Store<EditorHeaderStore.Intent, EditorHeaderStore.State, EditorHeaderStore.Label> =
         EditorHeaderStoreProvider(

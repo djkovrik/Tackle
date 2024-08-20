@@ -29,7 +29,8 @@ internal interface EditorAttachmentsStore : Store<Intent, State, Label> {
     )
 
     sealed class Label {
-        data class AttachmentsCountUpdated(val count: Int) : Label()
+        data class PendingAttachmentsCountUpdated(val count: Int) : Label()
+        data class LoadedAttachmentsCountUpdated(val count: Int) : Label()
         data class ErrorCaught(val throwable: Throwable) : Label()
     }
 }

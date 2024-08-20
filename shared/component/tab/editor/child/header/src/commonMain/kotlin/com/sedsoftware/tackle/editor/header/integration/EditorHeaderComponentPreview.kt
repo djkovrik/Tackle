@@ -33,6 +33,7 @@ class EditorHeaderComponentPreview(
                 localePickerDisplayed = localePickerDisplayed,
                 statusVisibility = statusVisibility,
                 statusVisibilityPickerDisplayed = statusVisibilityPickerDisplayed,
+                sendButtonAvailable = true,
             )
         )
 
@@ -40,4 +41,5 @@ class EditorHeaderComponentPreview(
     override fun onLocaleSelected(language: AppLocale) = Unit
     override fun onStatusVisibilityPickerRequested(show: Boolean) = Unit
     override fun onStatusVisibilitySelected(visibility: StatusVisibility) = Unit
+    override fun changeSendingAvailability(available: Boolean) = Unit
 }

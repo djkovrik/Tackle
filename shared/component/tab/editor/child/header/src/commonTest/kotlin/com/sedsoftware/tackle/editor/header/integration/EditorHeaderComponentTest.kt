@@ -77,6 +77,19 @@ class EditorHeaderComponentTest : ComponentTest<EditorHeaderComponent>() {
         assertThat(activeModel.statusVisibility).isEqualTo(StatusVisibility.PUBLIC)
     }
 
+    @Test
+    fun `changeSendingAvailability should update send button state`() = runTest {
+        // given
+        // when
+        component.changeSendingAvailability(true)
+        // then
+        assertThat(activeModel.sendButtonAvailable).isTrue()
+        // and when
+        component.changeSendingAvailability(false)
+        // then
+        assertThat(activeModel.sendButtonAvailable).isFalse()
+    }
+
     override fun createComponent(): EditorHeaderComponent =
         EditorHeaderComponentDefault(
             componentContext = DefaultComponentContext(lifecycle),

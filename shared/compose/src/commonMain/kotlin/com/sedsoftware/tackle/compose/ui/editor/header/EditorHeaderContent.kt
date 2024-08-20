@@ -91,6 +91,7 @@ internal fun EditorHeaderContent(
 
                 ActionBarIcon(
                     iconRes = Res.drawable.editor_send,
+                    enabled = model.sendButtonAvailable,
                     backgroundColor = MaterialTheme.colorScheme.primaryContainer,
                     contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
                     onClick = onSendClick,
@@ -161,6 +162,7 @@ private fun EditorHeaderContentPreview() {
                 localePickerDisplayed = false,
                 statusVisibility = StatusVisibility.PUBLIC,
                 statusVisibilityPickerDisplayed = false,
+                sendButtonAvailable = false,
             ),
         )
     }
@@ -182,6 +184,7 @@ private fun EditorHeaderContentPreviewWithBack() {
                 localePickerDisplayed = false,
                 statusVisibility = StatusVisibility.PUBLIC,
                 statusVisibilityPickerDisplayed = false,
+                sendButtonAvailable = true,
             ),
             backIconVisible = true
         )

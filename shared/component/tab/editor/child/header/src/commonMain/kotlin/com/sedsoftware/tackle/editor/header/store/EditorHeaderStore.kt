@@ -14,6 +14,7 @@ internal interface EditorHeaderStore : Store<Intent, State, Label> {
         data class OnLocaleSelected(val language: AppLocale) : Intent()
         data class OnRequestVisibilityPicker(val show: Boolean) : Intent()
         data class OnVisibilityPickerSelected(val visibility: StatusVisibility) : Intent()
+        data class ChangeSendingAvailability(val available: Boolean) : Intent()
     }
 
     data class State(
@@ -27,6 +28,7 @@ internal interface EditorHeaderStore : Store<Intent, State, Label> {
         val localePickerDisplayed: Boolean = false,
         val statusVisibility: StatusVisibility = StatusVisibility.PUBLIC,
         val statusVisibilityPickerDisplayed: Boolean = false,
+        val sendingAvailable: Boolean = false,
     )
 
     sealed class Label {

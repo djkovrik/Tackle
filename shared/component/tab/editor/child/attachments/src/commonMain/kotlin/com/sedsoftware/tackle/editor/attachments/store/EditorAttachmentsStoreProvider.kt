@@ -83,6 +83,7 @@ internal class EditorAttachmentsStoreProvider(
                             onSuccess = { mediaAttachment: MediaAttachment ->
                                 dispatch(Msg.AttachmentStatusChanged(target.id, AttachedFile.Status.LOADED))
                                 dispatch(Msg.AttachmentLoaded(target.id, mediaAttachment))
+                                publish(Label.LoadedAttachmentsCountUpdated(state().selectedFiles.size))
                             },
                             onError = { throwable: Throwable ->
                                 dispatch(Msg.AttachmentStatusChanged(target.id, AttachedFile.Status.ERROR))
@@ -107,12 +108,13 @@ internal class EditorAttachmentsStoreProvider(
                         forward(Action.PrepareAttachment(file))
                     }
 
-                    publish(Label.AttachmentsCountUpdated(newSelectionSize))
+                    publish(Label.PendingAttachmentsCountUpdated(newSelectionSize))
                 }
 
                 onIntent<Intent.OnFileDeleted> {
                     val currentAttachmentsCount = state().selectedFiles.size
-                    publish(Label.AttachmentsCountUpdated(currentAttachmentsCount - 1))
+                    publish(Label.PendingAttachmentsCountUpdated(currentAttachmentsCount - 1))
+                    publish(Label.LoadedAttachmentsCountUpdated(currentAttachmentsCount - 1))
                     dispatch(Msg.FileDeleted(it.id))
                     uploadJobs[it.id]?.cancel()
                 }
@@ -127,6 +129,7 @@ internal class EditorAttachmentsStoreProvider(
                                 onSuccess = { mediaAttachment: MediaAttachment ->
                                     dispatch(Msg.AttachmentStatusChanged(target.id, AttachedFile.Status.LOADED))
                                     dispatch(Msg.AttachmentLoaded(target.id, mediaAttachment))
+                                    publish(Label.LoadedAttachmentsCountUpdated(state().selectedFiles.size))
                                 },
                                 onError = { throwable: Throwable ->
                                     dispatch(Msg.AttachmentStatusChanged(target.id, AttachedFile.Status.ERROR))

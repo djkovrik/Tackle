@@ -12,6 +12,7 @@ interface EditorHeaderComponent {
     fun onLocaleSelected(language: AppLocale)
     fun onStatusVisibilityPickerRequested(show: Boolean)
     fun onStatusVisibilitySelected(visibility: StatusVisibility)
+    fun changeSendingAvailability(available: Boolean)
 
     data class Model(
         val avatar: String,
@@ -24,5 +25,6 @@ interface EditorHeaderComponent {
         val localePickerDisplayed: Boolean,
         val statusVisibility: StatusVisibility,
         val statusVisibilityPickerDisplayed: Boolean,
+        val sendButtonAvailable: Boolean,
     )
 }

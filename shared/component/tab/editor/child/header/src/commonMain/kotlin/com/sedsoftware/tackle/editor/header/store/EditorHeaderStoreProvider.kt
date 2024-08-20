@@ -78,9 +78,7 @@ internal class EditorHeaderStoreProvider(
                     }
                 }
 
-                onIntent<Intent.OnRequestLocalePicker> {
-                    dispatch(Msg.LocaleDialogVisibilityChanged(it.show))
-                }
+                onIntent<Intent.OnRequestLocalePicker> { dispatch(Msg.LocaleDialogVisibilityChanged(it.show)) }
 
                 onIntent<Intent.OnLocaleSelected> {
                     launch {
@@ -96,13 +94,11 @@ internal class EditorHeaderStoreProvider(
                     }
                 }
 
-                onIntent<Intent.OnRequestVisibilityPicker> {
-                    dispatch(Msg.StatusDialogVisibilityChanged(it.show))
-                }
+                onIntent<Intent.OnRequestVisibilityPicker> { dispatch(Msg.StatusDialogVisibilityChanged(it.show)) }
 
-                onIntent<Intent.OnVisibilityPickerSelected> {
-                    dispatch(Msg.VisibilitySelected(it.visibility))
-                }
+                onIntent<Intent.OnVisibilityPickerSelected> { dispatch(Msg.VisibilitySelected(it.visibility)) }
+
+                onIntent<Intent.ChangeSendingAvailability> { dispatch(Msg.SendingAvailabilityChanged(it.available)) }
             },
             reducer = { msg ->
                 when (msg) {
@@ -137,6 +133,10 @@ internal class EditorHeaderStoreProvider(
                     is Msg.VisibilitySelected -> copy(
                         statusVisibility = msg.visibility,
                     )
+
+                    is Msg.SendingAvailabilityChanged -> copy(
+                        sendingAvailable = msg.available,
+                    )
                 }
             },
         ) {}
@@ -155,5 +155,6 @@ internal class EditorHeaderStoreProvider(
         data class LocaleSelected(val locale: AppLocale) : Msg
         data class StatusDialogVisibilityChanged(val visible: Boolean) : Msg
         data class VisibilitySelected(val visibility: StatusVisibility) : Msg
+        data class SendingAvailabilityChanged(val available: Boolean) : Msg
     }
 }

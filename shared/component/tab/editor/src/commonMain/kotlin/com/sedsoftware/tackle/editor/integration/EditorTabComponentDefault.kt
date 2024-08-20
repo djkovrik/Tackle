@@ -116,6 +116,11 @@ class EditorTabComponentDefault(
                         poll.updateInstanceConfig(label.config)
                     }
 
+                    is Label.TextUpdated -> {
+                        val inputIsNotEmpty = label.text.isNotEmpty()
+                        header.changeSendingAvailability(inputIsNotEmpty)
+                    }
+
                     is Label.ErrorCaught -> {
                         editorOutput(ComponentOutput.Common.ErrorCaught(label.throwable))
                     }
@@ -174,9 +179,20 @@ class EditorTabComponentDefault(
 
     private fun onChildOutput(output: ComponentOutput) {
         when (output) {
-            is ComponentOutput.StatusEditor.AttachmentsCountUpdated -> poll.changeComponentAvailability(available = output.count == 0)
-            is ComponentOutput.StatusEditor.EmojiSelected -> onEmojiSelected(output.emoji)
-            else -> editorOutput(output)
+            is ComponentOutput.StatusEditor.PendingAttachmentsCountUpdated -> {
+                poll.changeComponentAvailability(available = output.count == 0)
+            }
+
+            is ComponentOutput.StatusEditor.LoadedAttachmentsCountUpdated -> {
+                header.changeSendingAvailability(available = output.count != 0)
+            }
+
+            is ComponentOutput.StatusEditor.EmojiSelected -> {
+                onEmojiSelected(output.emoji)
+            }
+            else -> {
+                editorOutput(output)
+            }
         }
     }
 }

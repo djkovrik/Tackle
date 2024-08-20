@@ -15,5 +15,6 @@ internal val stateToModel: (State) -> Model = {
         localePickerDisplayed = it.localePickerDisplayed,
         statusVisibility = it.statusVisibility,
         statusVisibilityPickerDisplayed = it.statusVisibilityPickerDisplayed,
+        sendButtonAvailable = it.sendingAvailable,
     )
 }
