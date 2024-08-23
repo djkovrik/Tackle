@@ -1,10 +1,14 @@
 package com.sedsoftware.tackle.compose.ui.main
 
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.consumeWindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -36,18 +40,24 @@ internal fun MainContent(
         is MainComponent.Child.TabNotifications -> TackleNavigationTab.NOTIFICATIONS
     }
 
-    Column(modifier = modifier) {
+    Scaffold(
+        modifier = modifier.imePadding(),
+        bottomBar = {
+            BottomNavigationBar(
+                activeTab = activeTab,
+                modifier = Modifier.fillMaxWidth(),
+                onTabClick = component::onTabClicked,
+            )
+        },
+        contentWindowInsets = WindowInsets(0, 0, 0, 0)
+    ) { scaffoldPadding: PaddingValues ->
         ChildrenContent(
             component = component,
-            modifier = Modifier
-                .weight(weight = 1f)
-                .consumeWindowInsets(insets = WindowInsets.navigationBars)
-        )
-
-        BottomNavigationBar(
-            activeTab = activeTab,
-            modifier = Modifier.fillMaxWidth(),
-            onTabClick = component::onTabClicked,
+            modifier = modifier
+                .fillMaxSize()
+                .padding(paddingValues = scaffoldPadding)
+                .consumeWindowInsets(paddingValues = scaffoldPadding)
+                .systemBarsPadding(),
         )
     }
 }

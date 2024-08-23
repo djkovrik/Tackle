@@ -2,6 +2,7 @@ package com.sedsoftware.tackle.compose.ui.editor
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.desktop.ui.tooling.preview.Preview
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -30,6 +31,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextRange
@@ -182,42 +185,6 @@ internal fun EditorTabContent(
                 }
             }
 
-            // Hints
-            item {
-                AnimatedVisibility(visible = editorModel.suggestions.isNotEmpty()) {
-                    LazyRow(
-                        modifier = modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 8.dp)
-                    ) {
-                        items(
-                            items = editorModel.suggestions,
-                            key = { it.hashCode() },
-                        ) { item: EditorInputHintItem ->
-                            when (item) {
-                                is EditorInputHintItem.Account ->
-                                    InputHintAccount(
-                                        hint = item,
-                                        onClick = { component.onInputHintSelected(item) },
-                                    )
-
-                                is EditorInputHintItem.Emoji ->
-                                    InputHintEmoji(
-                                        hint = item,
-                                        onClick = { component.onInputHintSelected(item) },
-                                    )
-
-                                is EditorInputHintItem.HashTag ->
-                                    InputHintHashTag(
-                                        hint = item,
-                                        onClick = { component.onInputHintSelected(item) },
-                                    )
-                            }
-                        }
-                    }
-                }
-            }
-
             // Input
             item {
                 OutlinedTextField(
@@ -251,39 +218,6 @@ internal fun EditorTabContent(
                 )
             }
 
-            // Toolbar
-            item {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                ) {
-                    // Toolbar
-                    EditorToolbar(
-                        items = buildToolbarState(editorModel, attachmentsModel, emojisModel, pollModel, warningModel),
-                        onClick = { type: EditorToolbarItem.Type ->
-                            when (type) {
-                                EditorToolbarItem.Type.ATTACH -> launcher.launch()
-                                EditorToolbarItem.Type.EMOJIS -> component.onEmojisButtonClicked()
-                                EditorToolbarItem.Type.POLL -> component.onPollButtonClicked()
-                                EditorToolbarItem.Type.WARNING -> component.onWarningButtonClicked()
-                                EditorToolbarItem.Type.SCHEDULE -> component.onScheduleDatePickerRequested(true)
-                            }
-                        },
-                        modifier = Modifier,
-                    )
-
-                    Spacer(modifier = Modifier.weight(1f, true))
-
-                    // Counter
-                    Text(
-                        text = "${editorModel.statusCharactersLeft}",
-                        style = MaterialTheme.typography.titleSmall,
-                        color = MaterialTheme.colorScheme.secondary,
-                        modifier = Modifier,
-                    )
-                }
-            }
-
             // Attachments
             item {
                 AnimatedVisibility(visible = attachmentsModel.attachmentsContentVisible) {
@@ -315,122 +249,147 @@ internal fun EditorTabContent(
             }
         }
 
-        // Locale dialog
-        if (headerModel.localePickerDisplayed) {
-            LanguageSelectorDialog(
-                model = headerModel,
-                modifier = Modifier,
-                onDismissRequest = {
-                    component.header.onLocalePickerRequested(false)
-                },
-                onConfirmation = { locale: AppLocale ->
-                    component.header.onLocaleSelected(locale)
-                    component.header.onLocalePickerRequested(false)
-                },
-            )
-        }
-
-        // Visibility dialog
-        if (headerModel.statusVisibilityPickerDisplayed) {
-            VisibilitySelectorDialog(
-                modifier = Modifier,
-                onDismissRequest = {
-                    component.header.onStatusVisibilityPickerRequested(false)
-                },
-                onConfirmation = { visibility: StatusVisibility ->
-                    component.header.onStatusVisibilitySelected(visibility)
-                    component.header.onStatusVisibilityPickerRequested(false)
-                },
-            )
-        }
-
-        // Date picker dialog
-        if (editorModel.datePickerVisible) {
-            ScheduleDatePickerDialog(
-                datePickerState = datePickerState,
-                onDismissRequest = {
-                    component.onScheduleDatePickerRequested(false)
-                },
-                onConfirmation = {
-                    component.onScheduleDateSelected(datePickerState.selectedDateMillis.orZero())
-                    component.onScheduleDatePickerRequested(false)
-                    component.onScheduleTimePickerRequested(true)
-                }
-            )
-        }
-
-        // Time picker dialog
-        if (editorModel.timePickerVisible) {
-            ScheduleTimePickerDialog(
-                timePickerState = timePickerState,
-                onDismissRequest = {
-                    component.onScheduleTimePickerRequested(false)
-                },
-                onConfirmation = {
-                    component.onScheduleTimeSelected(timePickerState.hour, timePickerState.minute, timePickerState.is24hour)
-                    component.onScheduleTimePickerRequested(false)
-                }
-            )
-        }
-
-
-        // Emoji bottom sheet
-        if (emojisModel.emojisContentVisible) {
-            ModalBottomSheet(
-                containerColor = MaterialTheme.colorScheme.background,
-                onDismissRequest = component::onEmojisButtonClicked,
-                sheetState = bottomSheetState,
+        // Hints
+        AnimatedVisibility(visible = editorModel.suggestions.isNotEmpty()) {
+            LazyRow(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp)
             ) {
-                EditorEmojisContent(
-                    emojis = emojisModel.emojis,
-                    modifier = Modifier.height(height = 360.dp),
-                    onClick = component.emojis::onEmojiClicked,
-                )
+                items(
+                    items = editorModel.suggestions,
+                    key = { it.hashCode() },
+                ) { item: EditorInputHintItem ->
+                    when (item) {
+                        is EditorInputHintItem.Account ->
+                            InputHintAccount(
+                                hint = item,
+                                onClick = { component.onInputHintSelected(item) },
+                            )
+
+                        is EditorInputHintItem.Emoji ->
+                            InputHintEmoji(
+                                hint = item,
+                                onClick = { component.onInputHintSelected(item) },
+                            )
+
+                        is EditorInputHintItem.HashTag ->
+                            InputHintHashTag(
+                                hint = item,
+                                onClick = { component.onInputHintSelected(item) },
+                            )
+                    }
+                }
             }
         }
-    }
-}
 
-@Preview
-@Composable
-private fun EditorTabContentPreviewEverything() {
-    val platformFile = PlatformFileWrapper("", "", "", "", 0L, "123 Mb") { ByteArray(0) }
-
-    TackleScreenPreview {
-        EditorTabContent(
-            component = EditorTabComponentPreview(
-                emojisButtonAvailable = true,
-                avatar = "https://mastodon.social/avatars/original/missing.png",
-                nickname = "djkovrik",
-                domain = "mastodon.social",
-                selectedLocale = AppLocale("English", "en"),
-                statusCharactersLeft = 123,
-                suggestions = listOf(
-                    EditorInputHintItem.HashTag("abc"),
-                    EditorInputHintItem.HashTag("defghij"),
-                    EditorInputHintItem.HashTag("kl"),
-                ),
-                pollOptions = listOf(
-                    PollChoiceOption(id = "1", text = "Some text here"),
-                    PollChoiceOption(id = "2", text = "Another text here"),
-                    PollChoiceOption(id = "3", text = ""),
-                ),
-                multiselectEnabled = true,
-                duration = PollDuration.ONE_DAY,
-                insertionAvailable = true,
-                deletionAvailable = true,
-                pollButtonAvailable = true,
-                pollContentVisible = true,
-                warningContentVisible = true,
-                attachmentsContentVisible = true,
-                attachmentsButtonAvailable = true,
-                attachments = listOf(
-                    AttachedFile("id", platformFile.copy(mimeType = "audio"), AttachedFile.Status.LOADING, 0.25f),
-                    AttachedFile("id", platformFile.copy(mimeType = "video"), AttachedFile.Status.ERROR, 1f),
-                )
+        // Toolbar
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .background(color = MaterialTheme.colorScheme.surface)
+                .padding(start = 8.dp, end = 16.dp, top = 4.dp, bottom = 4.dp),
+        ) {
+            // Toolbar
+            EditorToolbar(
+                items = buildToolbarState(editorModel, attachmentsModel, emojisModel, pollModel, warningModel),
+                onClick = { type: EditorToolbarItem.Type ->
+                    when (type) {
+                        EditorToolbarItem.Type.ATTACH -> launcher.launch()
+                        EditorToolbarItem.Type.EMOJIS -> component.onEmojisButtonClicked()
+                        EditorToolbarItem.Type.POLL -> component.onPollButtonClicked()
+                        EditorToolbarItem.Type.WARNING -> component.onWarningButtonClicked()
+                        EditorToolbarItem.Type.SCHEDULE -> component.onScheduleDatePickerRequested(true)
+                    }
+                },
+                modifier = Modifier,
             )
+
+            Spacer(modifier = Modifier.weight(1f, true))
+
+            // Counter
+            Text(
+                text = "${editorModel.statusCharactersLeft}",
+                style = MaterialTheme.typography.titleSmall,
+                color = MaterialTheme.colorScheme.secondary,
+                modifier = Modifier,
+            )
+        }
+    }
+    // Locale dialog
+    if (headerModel.localePickerDisplayed) {
+        LanguageSelectorDialog(
+            model = headerModel,
+            modifier = Modifier,
+            onDismissRequest = {
+                component.header.onLocalePickerRequested(false)
+            },
+            onConfirmation = { locale: AppLocale ->
+                component.header.onLocaleSelected(locale)
+                component.header.onLocalePickerRequested(false)
+            },
         )
     }
+
+    // Visibility dialog
+    if (headerModel.statusVisibilityPickerDisplayed) {
+        VisibilitySelectorDialog(
+            modifier = Modifier,
+            onDismissRequest = {
+                component.header.onStatusVisibilityPickerRequested(false)
+            },
+            onConfirmation = { visibility: StatusVisibility ->
+                component.header.onStatusVisibilitySelected(visibility)
+                component.header.onStatusVisibilityPickerRequested(false)
+            },
+        )
+    }
+
+    // Date picker dialog
+    if (editorModel.datePickerVisible) {
+        ScheduleDatePickerDialog(
+            datePickerState = datePickerState,
+            onDismissRequest = {
+                component.onScheduleDatePickerRequested(false)
+            },
+            onConfirmation = {
+                component.onScheduleDateSelected(datePickerState.selectedDateMillis.orZero())
+                component.onScheduleDatePickerRequested(false)
+                component.onScheduleTimePickerRequested(true)
+            }
+        )
+    }
+
+    // Time picker dialog
+    if (editorModel.timePickerVisible) {
+        ScheduleTimePickerDialog(
+            timePickerState = timePickerState,
+            onDismissRequest = {
+                component.onScheduleTimePickerRequested(false)
+            },
+            onConfirmation = {
+                component.onScheduleTimeSelected(timePickerState.hour, timePickerState.minute, timePickerState.is24hour)
+                component.onScheduleTimePickerRequested(false)
+            }
+        )
+    }
+
+
+    // Emoji bottom sheet
+    if (emojisModel.emojisContentVisible) {
+        ModalBottomSheet(
+            containerColor = MaterialTheme.colorScheme.background,
+            onDismissRequest = component::onEmojisButtonClicked,
+            sheetState = bottomSheetState,
+        ) {
+            EditorEmojisContent(
+                emojis = emojisModel.emojis,
+                modifier = Modifier.height(height = 360.dp),
+                onClick = component.emojis::onEmojiClicked,
+            )
+        }
+    }
+
 }
 
 @Preview
@@ -548,6 +507,49 @@ private fun EditorTabContentAccountAndHashTagPreview() {
                     EditorInputHintItem.HashTag("abc"),
                     EditorInputHintItem.HashTag("defghij"),
                     EditorInputHintItem.HashTag("kl"),
+                )
+            )
+        )
+    }
+}
+
+
+@Preview
+@Composable
+private fun EditorTabContentPreviewEverything() {
+    val platformFile = PlatformFileWrapper("", "", "", "", 0L, "123 Mb") { ByteArray(0) }
+
+    TackleScreenPreview {
+        EditorTabContent(
+            component = EditorTabComponentPreview(
+                emojisButtonAvailable = true,
+                avatar = "https://mastodon.social/avatars/original/missing.png",
+                nickname = "djkovrik",
+                domain = "mastodon.social",
+                selectedLocale = AppLocale("English", "en"),
+                statusCharactersLeft = 123,
+                suggestions = listOf(
+                    EditorInputHintItem.HashTag("abc"),
+                    EditorInputHintItem.HashTag("defghij"),
+                    EditorInputHintItem.HashTag("kl"),
+                ),
+                pollOptions = listOf(
+                    PollChoiceOption(id = "1", text = "Some text here"),
+                    PollChoiceOption(id = "2", text = "Another text here"),
+                    PollChoiceOption(id = "3", text = ""),
+                ),
+                multiselectEnabled = true,
+                duration = PollDuration.ONE_DAY,
+                insertionAvailable = true,
+                deletionAvailable = true,
+                pollButtonAvailable = true,
+                pollContentVisible = true,
+                warningContentVisible = true,
+                attachmentsContentVisible = true,
+                attachmentsButtonAvailable = true,
+                attachments = listOf(
+                    AttachedFile("id", platformFile.copy(mimeType = "audio"), AttachedFile.Status.LOADING, 0.25f),
+                    AttachedFile("id", platformFile.copy(mimeType = "video"), AttachedFile.Status.ERROR, 1f),
                 )
             )
         )
