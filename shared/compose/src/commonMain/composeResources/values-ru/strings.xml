@@ -45,7 +45,7 @@
 
     <!-- Editor component -->
     <string name="editor_input_hint">О чем думаете?</string>
-    <string name="editor_warning_hint">Предупреждение о деликатном контенте</string>
+    <string name="editor_warning_hint">Предупреждение о контенте</string>
     <string name="editor_language_default">По умолчанию</string>
     <string name="editor_status_visibility_public">Публичный</string>
     <string name="editor_status_visibility_public_desc">Виден публично, включен в публичные подборки</string>
