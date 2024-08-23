@@ -20,3 +20,9 @@ internal fun AttachedFile.getTypeTitle(): StringResource = when {
 
 internal val AttachedFile.hasError: Boolean
     get() = status == AttachedFile.Status.ERROR
+
+internal val AttachedFile.hasProcessingVideo: Boolean
+    get() = serverCopy?.url.isNullOrEmpty() && file.isVideo && status == AttachedFile.Status.LOADED
+
+internal val AttachedFile.hasVideoThumbnail: Boolean
+    get() = file.isVideo && !serverCopy?.previewUrl.isNullOrEmpty()

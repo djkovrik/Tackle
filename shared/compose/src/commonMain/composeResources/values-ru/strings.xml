@@ -86,4 +86,5 @@
     <string name="editor_attachment_video">Видео</string>
     <string name="editor_attachment_unknown">Файл</string>
     <string name="editor_attachment_failed">Ошибка отправки</string>
+    <string name="editor_attachment_processing">Обработка</string>
 </resources>

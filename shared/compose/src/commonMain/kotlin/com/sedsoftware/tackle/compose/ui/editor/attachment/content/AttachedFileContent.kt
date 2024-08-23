@@ -1,8 +1,12 @@
 package com.sedsoftware.tackle.compose.ui.editor.attachment.content
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -39,8 +43,13 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import com.sedsoftware.tackle.compose.extension.getTypeTitle
 import com.sedsoftware.tackle.compose.extension.hasError
+import com.sedsoftware.tackle.compose.extension.hasProcessingVideo
+import com.sedsoftware.tackle.compose.extension.hasVideoThumbnail
+import com.sedsoftware.tackle.compose.model.AttachedFilePreviewType
 import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
+import com.sedsoftware.tackle.domain.model.MediaAttachment
 import com.sedsoftware.tackle.domain.model.PlatformFileWrapper
+import com.sedsoftware.tackle.domain.model.type.MediaAttachmentType
 import com.sedsoftware.tackle.editor.attachments.model.AttachedFile
 import com.sedsoftware.tackle.utils.extension.isImage
 import org.jetbrains.compose.resources.painterResource
@@ -59,8 +68,9 @@ internal fun AttachedFileContent(
     onDelete: () -> Unit = {},
     previewImage: @Composable (() -> Unit)? = null,
 ) {
-    var imageData by remember { mutableStateOf(ByteArray(0)) }
-    var progress by remember { mutableStateOf(0.0f) }
+    var imageData: ByteArray by remember { mutableStateOf(ByteArray(0)) }
+    var progress: Float by remember { mutableStateOf(0.0f) }
+    var showProcessingLabel: Boolean by remember { mutableStateOf(false) }
 
     val animatedProgress: Float by animateFloatAsState(
         targetValue = progress,
@@ -69,6 +79,11 @@ internal fun AttachedFileContent(
 
     val animatedProgressAlpha: Float by animateFloatAsState(
         targetValue = if (attachment.status == AttachedFile.Status.LOADED) 0.5f else 1f,
+        animationSpec = tween(easing = LinearEasing)
+    )
+
+    val animatedProcessingLabelAlpha: Float by animateFloatAsState(
+        targetValue = if (showProcessingLabel) 0.75f else 0f,
         animationSpec = tween(easing = LinearEasing)
     )
 
@@ -108,24 +123,39 @@ internal fun AttachedFileContent(
                 .fillMaxWidth()
                 .height(height = 200.dp)
         ) {
-            when {
-                // Preview stub
-                attachment.file.isImage && previewImage != null -> {
-                    previewImage.invoke()
-                }
-                // Preview from local copy
-                attachment.file.isImage && previewImage == null -> {
-                    AttachedFileImageThumbnail(
-                        imageData = imageData,
-                        modifier = Modifier,
-                    )
-                }
-                // Generic stub
-                else -> {
-                    AttachedFileContentGeneric(
-                        attachment = attachment,
-                        modifier = Modifier,
-                    )
+            AnimatedContent(
+                targetState = when {
+                    attachment.file.isImage && previewImage != null -> AttachedFilePreviewType.PREVIEW_STUB
+                    attachment.file.isImage && previewImage == null -> AttachedFilePreviewType.LOCAL_IMAGE
+                    attachment.hasVideoThumbnail -> AttachedFilePreviewType.VIDEO_THUMBNAIL
+                    else -> AttachedFilePreviewType.GENERIC_STUB
+                },
+                transitionSpec = {
+                    fadeIn() togetherWith fadeOut()
+                },
+            ) { state: AttachedFilePreviewType ->
+                when (state) {
+                    AttachedFilePreviewType.PREVIEW_STUB -> {
+                        previewImage?.invoke()
+                    }
+
+                    AttachedFilePreviewType.LOCAL_IMAGE -> {
+                        AttachedFileImageThumbnail(
+                            imageData = imageData,
+                        )
+                    }
+
+                    AttachedFilePreviewType.VIDEO_THUMBNAIL -> {
+                        AttachedFileVideoThumbnail(
+                            url = attachment.serverCopy?.previewUrl.orEmpty(),
+                        )
+                    }
+
+                    AttachedFilePreviewType.GENERIC_STUB -> {
+                        AttachedFileContentGeneric(
+                            attachment = attachment,
+                        )
+                    }
                 }
             }
 
@@ -139,6 +169,16 @@ internal fun AttachedFileContent(
                         .align(alignment = Alignment.TopEnd)
                 )
             }
+
+            // Attachment is being processed
+            AttachedFileProcessing(
+                modifier = Modifier
+                    .padding(all = 16.dp)
+                    .align(alignment = Alignment.BottomEnd)
+                    .alpha(alpha = animatedProcessingLabelAlpha)
+            )
+
+            showProcessingLabel = attachment.hasProcessingVideo
         }
 
         Column(
@@ -304,5 +344,41 @@ private fun AttachedFileContentPlaceholdersPreview() {
                 AttachedFileContent(attachment = image.copy(file = platformFile.copy(mimeType = "abc")))
             }
         }
+    }
+}
+
+@Preview
+@Composable
+private fun AttachedVideoProcessingPreview() {
+    val platformFile = PlatformFileWrapper(
+        name = "test.mp4",
+        extension = "mp4",
+        path = "",
+        mimeType = "video/mpeg",
+        size = 0L,
+        sizeLabel = "123 Mb",
+        readBytes = { ByteArray(0) },
+    )
+
+    val video = AttachedFile(
+        id = "id",
+        file = platformFile,
+        status = AttachedFile.Status.LOADED,
+        uploadProgress = 0.1f,
+        serverCopy = MediaAttachment(
+            id = "id",
+            type = MediaAttachmentType.VIDEO,
+            url = "",
+            previewUrl = "",
+            remoteUrl = "",
+            description = "",
+            blurhash = "",
+            meta = null,
+        )
+    )
+
+
+    TackleScreenPreview {
+        AttachedFileContent(attachment = video)
     }
 }

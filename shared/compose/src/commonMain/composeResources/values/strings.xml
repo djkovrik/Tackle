@@ -89,4 +89,5 @@
     <string name="editor_attachment_video">Video</string>
     <string name="editor_attachment_unknown">File</string>
     <string name="editor_attachment_failed">Upload error</string>
+    <string name="editor_attachment_processing">Processing</string>
 </resources>

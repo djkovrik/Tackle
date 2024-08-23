@@ -54,6 +54,21 @@ internal fun AttachedFileImageThumbnail(
 }
 
 @Composable
+internal fun AttachedFileVideoThumbnail(
+    url: String,
+    modifier: Modifier = Modifier,
+) {
+    if (url.isNotEmpty()) {
+        Image(
+            painter = rememberImagePainter(url = url),
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            modifier = modifier.fillMaxSize(),
+        )
+    }
+}
+
+@Composable
 internal fun AttachedFileContentGeneric(
     attachment: AttachedFile,
     modifier: Modifier = Modifier,
