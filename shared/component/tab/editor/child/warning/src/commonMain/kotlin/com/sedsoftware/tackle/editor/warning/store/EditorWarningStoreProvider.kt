@@ -33,6 +33,11 @@ internal class EditorWarningStoreProvider(
                     is Msg.ComponentVisibilityToggled -> copy(
                         warningVisible = !warningVisible,
                     )
+
+                    is Msg.StateReset -> copy(
+                        text = "",
+                        warningVisible = false,
+                    )
                 }
             }
         ) {}
@@ -40,5 +45,6 @@ internal class EditorWarningStoreProvider(
     private sealed interface Msg {
         data class TextInput(val text: String) : Msg
         data object ComponentVisibilityToggled : Msg
+        data object StateReset : Msg
     }
 }

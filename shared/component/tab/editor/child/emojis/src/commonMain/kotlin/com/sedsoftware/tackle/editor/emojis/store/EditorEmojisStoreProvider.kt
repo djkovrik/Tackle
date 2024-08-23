@@ -57,6 +57,8 @@ internal class EditorEmojisStoreProvider(
                 }
 
                 onIntent<Intent.ToggleComponentVisibility> { dispatch(Msg.ComponentVisibilityToggled) }
+
+                onIntent<Intent.ResetState> { dispatch(Msg.StateReset) }
             },
             reducer = { msg ->
                 when (msg) {
@@ -67,6 +69,10 @@ internal class EditorEmojisStoreProvider(
 
                     is Msg.ComponentVisibilityToggled -> copy(
                         emojisVisible = !emojisVisible,
+                    )
+
+                    is Msg.StateReset -> copy(
+                        emojisVisible = false,
                     )
                 }
             }
@@ -80,5 +86,6 @@ internal class EditorEmojisStoreProvider(
     private sealed interface Msg {
         data class EmojisListUpdated(val emojis: Map<String, List<CustomEmoji>>) : Msg
         data object ComponentVisibilityToggled : Msg
+        data object StateReset : Msg
     }
 }

@@ -30,4 +30,5 @@ class EditorAttachmentsComponentPreview(
     override fun onFileRetry(id: String) = Unit
     override fun changeComponentAvailability(available: Boolean) = Unit
     override fun updateInstanceConfig(config: Config) = Unit
+    override fun resetComponentState() = Unit
 }

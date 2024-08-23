@@ -16,6 +16,7 @@ internal interface EditorAttachmentsStore : Store<Intent, State, Label> {
         data class OnFileRetry(val id: String) : Intent()
         data class ChangeComponentAvailability(val available: Boolean) : Intent()
         data class UpdateInstanceConfig(val config: Instance.Config) : Intent()
+        data object ResetState : Intent()
     }
 
     data class State(

@@ -11,6 +11,7 @@ import com.arkivanov.mvikotlin.extensions.coroutines.labels
 import com.sedsoftware.tackle.domain.ComponentOutput
 import com.sedsoftware.tackle.domain.api.TackleDispatchers
 import com.sedsoftware.tackle.domain.model.CustomEmoji
+import com.sedsoftware.tackle.domain.model.NewStatusBundle
 import com.sedsoftware.tackle.editor.EditorTabComponent
 import com.sedsoftware.tackle.editor.EditorTabComponent.Model
 import com.sedsoftware.tackle.editor.EditorTabComponentGateways
@@ -95,6 +96,12 @@ class EditorTabComponentDefault(
             dispatchers = dispatchers,
         )
 
+    private val attachmentsModel: EditorAttachmentsComponent.Model get() = attachments.model.value
+    private val headerModel: EditorHeaderComponent.Model get() = header.model.value
+    private val pollModel: EditorPollComponent.Model get() = poll.model.value
+    private val warningModel: EditorWarningComponent.Model get() = warning.model.value
+    private val editorModel: EditorTabComponent.Model get() = model.value
+
     private val store: EditorTabStore =
         instanceKeeper.getStore {
             EditorTabStoreProvider(
@@ -119,6 +126,14 @@ class EditorTabComponentDefault(
                     is Label.TextUpdated -> {
                         val inputIsNotEmpty = label.text.isNotEmpty()
                         header.changeSendingAvailability(inputIsNotEmpty)
+                    }
+
+                    is Label.StatusSent -> {
+                        attachments.resetComponentState()
+                        emojis.resetComponentState()
+                        header.resetComponentState()
+                        poll.resetComponentState()
+                        warning.resetComponentState()
                     }
 
                     is Label.ErrorCaught -> {
@@ -178,7 +193,77 @@ class EditorTabComponentDefault(
     }
 
     override fun onSendButtonClicked() {
-        // ATTEMPT TO SEND DATA
+        val bundle: NewStatusBundle = NewStatusBundle.Builder()
+            .apply {
+                applyStatus(this)
+                applyLanguage(this)
+                applyVisibility(this)
+                applyMediaIds(this)
+                applyPollOptions(this)
+                applyIsSensitive(this)
+                applyScheduledDateTime(this)
+            }
+            .build()
+
+        store.accept(EditorTabStore.Intent.SendStatus(bundle))
+    }
+
+    private fun applyStatus(builder: NewStatusBundle.Builder): NewStatusBundle.Builder {
+        return if (editorModel.statusText.isNotEmpty()) {
+            builder.status(editorModel.statusText)
+        } else {
+            builder
+        }
+    }
+
+    private fun applyLanguage(builder: NewStatusBundle.Builder): NewStatusBundle.Builder {
+        return builder.language(headerModel.selectedLocale.languageCode)
+    }
+
+    private fun applyVisibility(builder: NewStatusBundle.Builder): NewStatusBundle.Builder {
+        return builder.visibility(headerModel.statusVisibility)
+    }
+
+    private fun applyMediaIds(builder: NewStatusBundle.Builder): NewStatusBundle.Builder {
+        val uploadedFiles = attachmentsModel.attachments.filter { it.serverCopy != null }.map { it.id }
+        return if (uploadedFiles.isNotEmpty()) {
+            builder.mediaIds(uploadedFiles)
+        } else {
+            builder
+        }
+    }
+
+    private fun applyPollOptions(builder: NewStatusBundle.Builder): NewStatusBundle.Builder {
+        return if (pollModel.pollContentVisible && pollModel.options.isNotEmpty()) {
+            builder
+                .pollOptions(pollModel.options.map { it.text })
+                .pollExpiresIn(pollModel.duration.seconds)
+                .pollAllowMultiple(pollModel.multiselectEnabled)
+                .pollHideTotals(pollModel.hideTotalsEnabled)
+        } else {
+            builder
+        }
+    }
+
+    private fun applyIsSensitive(builder: NewStatusBundle.Builder): NewStatusBundle.Builder {
+        return if (warningModel.warningContentVisible && warningModel.text.isNotEmpty()) {
+            builder
+                .sensitive(true)
+                .spoilerText(warningModel.text)
+        } else {
+            builder.sensitive(false)
+        }
+    }
+
+    private fun applyScheduledDateTime(builder: NewStatusBundle.Builder): NewStatusBundle.Builder {
+        return if (editorModel.scheduledDate > 0 && editorModel.scheduledHour >= 0 && editorModel.scheduledMinute >= 0) {
+            builder
+                .scheduledAtDate(editorModel.scheduledDate)
+                .scheduledAtHour(editorModel.scheduledHour)
+                .scheduledAtMinute(editorModel.scheduledMinute)
+        } else {
+            builder
+        }
     }
 
     private fun onChildOutput(output: ComponentOutput) {
@@ -194,6 +279,7 @@ class EditorTabComponentDefault(
             is ComponentOutput.StatusEditor.EmojiSelected -> {
                 onEmojiSelected(output.emoji)
             }
+
             else -> {
                 editorOutput(output)
             }

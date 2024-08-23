@@ -72,4 +72,8 @@ class EditorPollComponentDefault(
     override fun updateInstanceConfig(config: Config) {
         store.accept(EditorPollStore.Intent.UpdateInstanceConfig(config))
     }
+
+    override fun resetComponentState() {
+        store.accept(EditorPollStore.Intent.ResetState)
+    }
 }

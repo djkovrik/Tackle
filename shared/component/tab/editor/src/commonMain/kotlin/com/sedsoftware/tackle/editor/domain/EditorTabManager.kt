@@ -2,7 +2,9 @@ package com.sedsoftware.tackle.editor.domain
 
 import com.sedsoftware.tackle.domain.model.CustomEmoji
 import com.sedsoftware.tackle.domain.model.Instance
+import com.sedsoftware.tackle.domain.model.NewStatusBundle
 import com.sedsoftware.tackle.domain.model.Search
+import com.sedsoftware.tackle.domain.model.type.CreatedStatusType
 import com.sedsoftware.tackle.editor.EditorTabComponentGateways
 import com.sedsoftware.tackle.editor.model.EditorInputHintItem
 import com.sedsoftware.tackle.editor.model.EditorInputHintRequest
@@ -46,6 +48,10 @@ internal class EditorTabManager(
         )
 
         response.hashtags.map { it.toEditorInputHintHashTag() }
+    }
+
+    suspend fun sendStatus(status: NewStatusBundle): Result<CreatedStatusType> = runCatching {
+        TODO()
     }
 
     fun checkForInputHint(inputText: String, inputPosition: Pair<Int, Int>): EditorInputHintRequest {

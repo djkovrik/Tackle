@@ -4,8 +4,11 @@ import com.sedsoftware.tackle.domain.model.AppLocale
 import com.sedsoftware.tackle.domain.model.CustomEmoji
 import com.sedsoftware.tackle.domain.model.Instance
 import com.sedsoftware.tackle.domain.model.MediaAttachment
+import com.sedsoftware.tackle.domain.model.NewStatusBundle
 import com.sedsoftware.tackle.domain.model.PlatformFileWrapper
+import com.sedsoftware.tackle.domain.model.ScheduledStatus
 import com.sedsoftware.tackle.domain.model.Search
+import com.sedsoftware.tackle.domain.model.Status
 import kotlinx.coroutines.flow.Flow
 
 interface EditorTabComponentGateways {
@@ -32,6 +35,10 @@ interface EditorTabComponentGateways {
             limit: Int? = null,
             offset: Int? = null,
         ): Search
+
+        suspend fun sendStatus(bundle: NewStatusBundle): Status
+
+        suspend fun sendStatusScheduled(bundle: NewStatusBundle): ScheduledStatus
     }
 
     interface Database {

@@ -37,14 +37,13 @@ data class NewStatusBundle(
         private var scheduledAtMinute: Int = -1,
     ) {
 
-        fun uuid(uuid: String) = apply { this.uuid = uuid }
         fun status(status: String) = apply { this.status = status }
         fun language(language: String) = apply { this.language = language }
         fun visibility(visibility: StatusVisibility) = apply { this.visibility = visibility }
         fun mediaIds(mediaIds: List<String>) = apply { this.mediaIds = mediaIds }
         fun pollOptions(pollOptions: List<String>) = apply { this.pollOptions = pollOptions }
         fun pollExpiresIn(pollExpiresIn: Long) = apply { this.pollExpiresIn = pollExpiresIn }
-        fun pollExpiresIn(pollAllowMultiple: Boolean) = apply { this.pollAllowMultiple = pollAllowMultiple }
+        fun pollAllowMultiple(pollAllowMultiple: Boolean) = apply { this.pollAllowMultiple = pollAllowMultiple }
         fun pollHideTotals(pollHideTotals: Boolean) = apply { this.pollHideTotals = pollHideTotals }
         fun inReplyToId(inReplyToId: String) = apply { this.inReplyToId = inReplyToId }
         fun sensitive(sensitive: Boolean) = apply { this.sensitive = sensitive }

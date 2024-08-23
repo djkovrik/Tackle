@@ -3,8 +3,11 @@ package com.sedsoftware.tackle.network.internal
 import com.sedsoftware.tackle.domain.api.AuthorizedApi
 import com.sedsoftware.tackle.domain.model.Account
 import com.sedsoftware.tackle.domain.model.MediaAttachment
+import com.sedsoftware.tackle.domain.model.NewStatusBundle
 import com.sedsoftware.tackle.domain.model.PlatformFileWrapper
+import com.sedsoftware.tackle.domain.model.ScheduledStatus
 import com.sedsoftware.tackle.domain.model.Search
+import com.sedsoftware.tackle.domain.model.Status
 import com.sedsoftware.tackle.network.mapper.AccountMapper
 import com.sedsoftware.tackle.network.mapper.MediaAttachmentMapper
 import com.sedsoftware.tackle.network.mapper.SearchMapper
@@ -151,6 +154,14 @@ internal class TackleAuthorizedApi(
                 }
             }
         }
+
+    override suspend fun sendStatus(bundle: NewStatusBundle): Status {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun sendStatusScheduled(bundle: NewStatusBundle): ScheduledStatus {
+        TODO("Not yet implemented")
+    }
 
     companion object {
         const val PROGRESS_STEP = 0.05f

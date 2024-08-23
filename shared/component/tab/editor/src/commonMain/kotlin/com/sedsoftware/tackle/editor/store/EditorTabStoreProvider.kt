@@ -6,6 +6,7 @@ import com.arkivanov.mvikotlin.extensions.coroutines.coroutineBootstrapper
 import com.arkivanov.mvikotlin.extensions.coroutines.coroutineExecutorFactory
 import com.sedsoftware.tackle.domain.model.CustomEmoji
 import com.sedsoftware.tackle.domain.model.Instance
+import com.sedsoftware.tackle.domain.model.type.CreatedStatusType
 import com.sedsoftware.tackle.editor.domain.EditorTabManager
 import com.sedsoftware.tackle.editor.extension.getNewLength
 import com.sedsoftware.tackle.editor.extension.getNewPosition
@@ -171,6 +172,25 @@ internal class EditorTabStoreProvider(
                 onIntent<Intent.OnRequestTimePicker> { dispatch(Msg.TimeDialogVisibilityChanged(it.show)) }
 
                 onIntent<Intent.OnScheduleTime> { dispatch(Msg.ScheduleTimeSelected(it.hour, it.minute, it.formatIn24hr)) }
+
+                onIntent<Intent.SendStatus> {
+                    launch {
+                        unwrap(
+                            result = withContext(ioContext) { manager.sendStatus(it.bundle) },
+                            onSuccess = { statusType: CreatedStatusType ->
+                                dispatch(Msg.StatusSent)
+                                publish(Label.StatusSent)
+                                when (statusType) {
+                                    CreatedStatusType.NORMAL -> publish(Label.NavigateToHomeTab)
+                                    CreatedStatusType.SCHEDULED -> publish(Label.NavigateToScheduledStatuses)
+                                }
+                            },
+                            onError = { throwable: Throwable ->
+                                publish(Label.ErrorCaught(throwable))
+                            }
+                        )
+                    }
+                }
             },
             reducer = { msg ->
                 when (msg) {
@@ -246,6 +266,23 @@ internal class EditorTabStoreProvider(
                         scheduledMinute = msg.minute,
                         scheduledIn24hFormat = msg.formatIn24hr,
                     )
+
+                    is Msg.StatusSent -> copy(
+                        statusText = "",
+                        statusTextSelection = (0 to 0),
+                        statusCharactersLeft = -1,
+                        statusCharactersLimit = -1,
+                        instanceInfo = Instance.empty(),
+                        instanceInfoLoaded = false,
+                        suggestions = emptyList(),
+                        currentSuggestionRequest = EditorInputHintRequest.None,
+                        datePickerVisible = false,
+                        scheduledDate = -1L,
+                        timePickerVisible = false,
+                        scheduledHour = -1,
+                        scheduledMinute = -1,
+                        scheduledIn24hFormat = true,
+                    )
                 }
             }
         ) {}
@@ -272,6 +309,7 @@ internal class EditorTabStoreProvider(
         data class ScheduleDateSelected(val millis: Long) : Msg
         data class TimeDialogVisibilityChanged(val visible: Boolean) : Msg
         data class ScheduleTimeSelected(val hour: Int, val minute: Int, val formatIn24hr: Boolean) : Msg
+        data object StatusSent: Msg
     }
 
     private fun Msg.TextInput.exceedTheLimit(limit: Int): Boolean = limit - text.length < 0

@@ -23,4 +23,5 @@ class EditorEmojisComponentPreview(
 
     override fun onEmojiClicked(emoji: CustomEmoji) = Unit
     override fun toggleComponentVisibility() = Unit
+    override fun resetComponentState() = Unit
 }

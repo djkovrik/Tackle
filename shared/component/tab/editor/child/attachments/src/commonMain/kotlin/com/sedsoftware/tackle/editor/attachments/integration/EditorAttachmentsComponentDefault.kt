@@ -88,4 +88,8 @@ class EditorAttachmentsComponentDefault(
     override fun updateInstanceConfig(config: Instance.Config) {
         store.accept(EditorAttachmentsStore.Intent.UpdateInstanceConfig(config))
     }
+
+    override fun resetComponentState() {
+        store.accept(EditorAttachmentsStore.Intent.ResetState)
+    }
 }

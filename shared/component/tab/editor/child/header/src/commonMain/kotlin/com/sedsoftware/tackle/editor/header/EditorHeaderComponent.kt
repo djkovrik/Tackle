@@ -13,6 +13,7 @@ interface EditorHeaderComponent {
     fun onStatusVisibilityPickerRequested(show: Boolean)
     fun onStatusVisibilitySelected(visibility: StatusVisibility)
     fun changeSendingAvailability(available: Boolean)
+    fun resetComponentState()
 
     data class Model(
         val avatar: String,
