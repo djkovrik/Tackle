@@ -51,6 +51,8 @@ internal class EditorPollStoreProvider(
 
                 onIntent<Intent.OnMultiselectEnabled> { dispatch(Msg.MultiselectEnabled(it.enabled)) }
 
+                onIntent<Intent.OnHideTotalsEnabled> { dispatch(Msg.HideTotalsEnabled(it.enabled)) }
+
                 onIntent<Intent.ChangeComponentAvailability> { dispatch(Msg.ComponentAvailabilityChanged(it.available)) }
 
                 onIntent<Intent.ToggleComponentVisibility> { dispatch(Msg.ComponentVisibilityToggled) }
