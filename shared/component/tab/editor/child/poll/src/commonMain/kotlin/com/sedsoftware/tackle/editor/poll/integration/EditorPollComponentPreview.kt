@@ -25,6 +25,7 @@ class EditorPollComponentPreview(
             Model(
                 options = options,
                 multiselectEnabled = multiselectEnabled,
+                hideTotalsEnabled = false,
                 duration = duration,
                 availableDurations = availableDurations,
                 durationPickerVisible = durationPickerVisible,
@@ -38,6 +39,7 @@ class EditorPollComponentPreview(
     override fun onDurationPickerRequested(show: Boolean) = Unit
     override fun onDurationSelected(duration: PollDuration) = Unit
     override fun onMultiselectEnabled(enabled: Boolean) = Unit
+    override fun onHideTotalsEnabled(enabled: Boolean) = Unit
     override fun onTextInput(id: String, text: String) = Unit
     override fun onAddPollOptionClick() = Unit
     override fun onDeletePollOptionClick(id: String) = Unit

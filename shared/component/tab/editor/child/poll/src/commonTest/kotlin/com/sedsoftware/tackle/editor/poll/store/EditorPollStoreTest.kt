@@ -141,6 +141,20 @@ internal class EditorPollStoreTest : StoreTest<EditorPollStore.Intent, EditorPol
     }
 
     @Test
+    fun `OnHideTotalsEnabled should update state`() = runTest {
+        // given
+        // when
+        store.init()
+        store.accept(EditorPollStore.Intent.OnHideTotalsEnabled(true))
+        // then
+        assertThat(store.state.hideTotalsEnabled).isTrue()
+        // and when
+        store.accept(EditorPollStore.Intent.OnHideTotalsEnabled(false))
+        // then
+        assertThat(store.state.hideTotalsEnabled).isFalse()
+    }
+
+    @Test
     fun `OnTextInput should update related poll item`() = runTest {
         // given
         val text = "text text"

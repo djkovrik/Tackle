@@ -68,6 +68,7 @@
     <!-- Editor poll -->
     <string name="editor_poll_option">Option</string>
     <string name="editor_poll_multiple">Allow multiple choices</string>
+    <string name="editor_poll_hide_totals">Hide results until poll end</string>
     <string name="editor_poll_duration">Duration</string>
     <string name="editor_poll_duration_five_minutes">5 minutes</string>
     <string name="editor_poll_duration_ten_minutes">10 minutes</string>

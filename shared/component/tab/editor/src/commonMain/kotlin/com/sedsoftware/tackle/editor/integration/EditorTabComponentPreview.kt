@@ -128,4 +128,5 @@ class EditorTabComponentPreview(
     override fun onScheduleDateSelected(millis: Long) = Unit
     override fun onScheduleTimePickerRequested(show: Boolean) = Unit
     override fun onScheduleTimeSelected(hour: Int, minute: Int, formatIn24hr: Boolean) = Unit
+    override fun onSendButtonClicked() = Unit
 }

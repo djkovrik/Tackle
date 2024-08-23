@@ -89,6 +89,10 @@ internal class EditorPollStoreProvider(
                         multiselectEnabled = msg.enabled,
                     )
 
+                    is Msg.HideTotalsEnabled -> copy(
+                        hideTotalsEnabled = msg.enabled,
+                    )
+
                     is Msg.ComponentAvailabilityChanged -> copy(
                         pollAvailable = msg.available,
                     )
@@ -126,6 +130,7 @@ internal class EditorPollStoreProvider(
         data class DurationDialogVisibilityChanged(val visible: Boolean) : Msg
         data class DurationSelected(val duration: PollDuration) : Msg
         data class MultiselectEnabled(val enabled: Boolean) : Msg
+        data class HideTotalsEnabled(val enabled: Boolean) : Msg
         data class ComponentAvailabilityChanged(val available: Boolean) : Msg
         data object ComponentVisibilityToggled : Msg
         data class TextInput(val id: String, val text: String) : Msg

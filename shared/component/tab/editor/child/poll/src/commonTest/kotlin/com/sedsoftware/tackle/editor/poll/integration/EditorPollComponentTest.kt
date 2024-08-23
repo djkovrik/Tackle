@@ -68,6 +68,19 @@ class EditorPollComponentTest : ComponentTest<EditorPollComponent>() {
     }
 
     @Test
+    fun `onHideTotalsEnabled should enable multiselect`() = runTest {
+        // given
+        // when
+        component.onHideTotalsEnabled(true)
+        // then
+        assertThat(activeModel.hideTotalsEnabled).isTrue()
+        // and when
+        component.onHideTotalsEnabled(false)
+        // then
+        assertThat(activeModel.hideTotalsEnabled).isFalse()
+    }
+
+    @Test
     fun `onTextInput should update input`() = runTest {
         // given
         component.updateInstanceConfig(InstanceConfigStub.config)

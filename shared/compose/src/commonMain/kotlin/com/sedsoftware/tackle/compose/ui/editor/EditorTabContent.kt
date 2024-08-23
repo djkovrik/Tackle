@@ -162,12 +162,13 @@ internal fun EditorTabContent(
             modifier = modifier,
             onLocalePickerRequest = { component.header.onLocalePickerRequested(true) },
             onVisibilityPickerRequest = { component.header.onStatusVisibilityPickerRequested(true) },
+            onSendClick = { component.onSendButtonClicked() },
         )
 
         // Scrollable part
         LazyColumn(
             verticalArrangement = Arrangement.Top,
-            modifier = modifier.weight(1f, true),
+            modifier = modifier.weight(weight = 1f, fill = true),
         ) {
             // Warning
             item {
@@ -304,6 +305,7 @@ internal fun EditorTabContent(
                         onAddNewItem = component.poll::onAddPollOptionClick,
                         onDeleteItem = component.poll::onDeletePollOptionClick,
                         onMultiselectEnabled = component.poll::onMultiselectEnabled,
+                        onHideTotalsEnabled = component.poll::onHideTotalsEnabled,
                         onDurationSelected = component.poll::onDurationSelected,
                         onTextInput = component.poll::onTextInput,
                         onDurationPickerCall = { component.poll.onDurationPickerRequested(true) },

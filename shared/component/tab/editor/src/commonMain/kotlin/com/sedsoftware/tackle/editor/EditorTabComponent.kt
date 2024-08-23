@@ -28,6 +28,7 @@ interface EditorTabComponent {
     fun onScheduleDateSelected(millis: Long)
     fun onScheduleTimePickerRequested(show: Boolean)
     fun onScheduleTimeSelected(hour: Int, minute: Int, formatIn24hr: Boolean)
+    fun onSendButtonClicked()
 
     data class Model(
         val statusText: String,

@@ -177,6 +177,10 @@ class EditorTabComponentDefault(
         store.accept(EditorTabStore.Intent.OnScheduleTime(hour, minute, formatIn24hr))
     }
 
+    override fun onSendButtonClicked() {
+        // ATTEMPT TO SEND DATA
+    }
+
     private fun onChildOutput(output: ComponentOutput) {
         when (output) {
             is ComponentOutput.StatusEditor.PendingAttachmentsCountUpdated -> {

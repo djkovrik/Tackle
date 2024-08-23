@@ -45,7 +45,7 @@
 
     <!-- Editor component -->
     <string name="editor_input_hint">О чем думаете?</string>
-    <string name="editor_warning_hint">Предупреждение о чувствительном контенте</string>
+    <string name="editor_warning_hint">Предупреждение о деликатном контенте</string>
     <string name="editor_language_default">По умолчанию</string>
     <string name="editor_status_visibility_public">Публичный</string>
     <string name="editor_status_visibility_public_desc">Виден публично, включен в публичные подборки</string>
@@ -65,6 +65,7 @@
     <!-- Editor poll -->
     <string name="editor_poll_option">Вариант</string>
     <string name="editor_poll_multiple">Разрешить множественный выбор</string>
+    <string name="editor_poll_hide_totals">Скрывать результаты до окончания</string>
     <string name="editor_poll_duration">Длительность</string>
     <string name="editor_poll_duration_five_minutes">5 минут</string>
     <string name="editor_poll_duration_ten_minutes">10 минут</string>
