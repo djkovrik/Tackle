@@ -34,6 +34,7 @@ internal fun CustomOutlinedTextField(
     shape: Shape = OutlinedTextFieldDefaults.shape,
     colors: TextFieldColors = OutlinedTextFieldDefaults.colors(),
     label: @Composable (() -> Unit)? = null,
+    placeholder: @Composable (() -> Unit)? = null,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
 
@@ -62,6 +63,7 @@ internal fun CustomOutlinedTextField(
                 interactionSource = interactionSource,
                 colors = colors,
                 label = label,
+                placeholder = placeholder,
                 contentPadding = PaddingValues(horizontal = 16.dp, vertical = 4.dp),
                 container = {
                     OutlinedTextFieldDefaults.ContainerBox(

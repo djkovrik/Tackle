@@ -235,7 +235,7 @@ internal fun EditorTabContent(
                 AnimatedVisibility(visible = pollModel.pollContentVisible) {
                     EditorPollContent(
                         model = pollModel,
-                        modifier = Modifier.padding(start = 16.dp, top = 16.dp, end = 8.dp, bottom = 16.dp),
+                        modifier = Modifier.padding(start = 16.dp, top = 8.dp, end = 8.dp, bottom = 8.dp),
                         onAddNewItem = component.poll::onAddPollOptionClick,
                         onDeleteItem = component.poll::onDeletePollOptionClick,
                         onMultiselectEnabled = component.poll::onMultiselectEnabled,
