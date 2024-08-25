@@ -58,6 +58,19 @@ class EditorEmojisComponentTest : ComponentTest<EditorEmojisComponent>() {
         assertThat(activeModel.emojisContentVisible).isFalse()
     }
 
+    @Test
+    fun `resetComponentState should reset component state`() = runTest {
+        // given
+        // when
+        component.toggleComponentVisibility()
+        // then
+        assertThat(activeModel.emojisContentVisible).isTrue()
+        // when
+        component.resetComponentState()
+        // then
+        assertThat(activeModel.emojisContentVisible).isFalse()
+    }
+
     override fun createComponent(): EditorEmojisComponent =
         EditorEmojisComponentDefault(
             componentContext = DefaultComponentContext(lifecycle),

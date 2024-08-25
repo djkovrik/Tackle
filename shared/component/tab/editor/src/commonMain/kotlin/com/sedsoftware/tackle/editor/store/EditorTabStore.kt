@@ -45,7 +45,6 @@ interface EditorTabStore : Store<Intent, State, Label> {
         data class TextUpdated(val text: String) : Label()
         data class ErrorCaught(val throwable: Throwable) : Label()
         data object StatusSent : Label()
-        data object NavigateToHomeTab : Label()
-        data object NavigateToScheduledStatuses : Label()
+        data object ScheduledStatusSent : Label()
     }
 }

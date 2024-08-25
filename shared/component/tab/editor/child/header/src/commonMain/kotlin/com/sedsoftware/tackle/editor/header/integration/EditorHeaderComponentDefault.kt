@@ -79,4 +79,8 @@ class EditorHeaderComponentDefault(
     override fun changeSendingAvailability(available: Boolean) {
         store.accept(EditorHeaderStore.Intent.ChangeSendingAvailability(available))
     }
+
+    override fun resetComponentState() {
+        store.accept(EditorHeaderStore.Intent.ResetState)
+    }
 }

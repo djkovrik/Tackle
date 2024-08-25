@@ -129,11 +129,13 @@ class EditorTabComponentDefault(
                     }
 
                     is Label.StatusSent -> {
-                        attachments.resetComponentState()
-                        emojis.resetComponentState()
-                        header.resetComponentState()
-                        poll.resetComponentState()
-                        warning.resetComponentState()
+                        resetComponents()
+                        editorOutput(ComponentOutput.StatusEditor.StatusPublished)
+                    }
+
+                    is Label.ScheduledStatusSent -> {
+                        resetComponents()
+                        editorOutput(ComponentOutput.StatusEditor.ScheduledStatusPublished)
                     }
 
                     is Label.ErrorCaught -> {
@@ -193,16 +195,15 @@ class EditorTabComponentDefault(
     }
 
     override fun onSendButtonClicked() {
-        val bundle: NewStatusBundle = NewStatusBundle.Builder()
-            .apply {
-                applyStatus(this)
-                applyLanguage(this)
-                applyVisibility(this)
-                applyMediaIds(this)
-                applyPollOptions(this)
-                applyIsSensitive(this)
-                applyScheduledDateTime(this)
-            }
+        val bundle: NewStatusBundle = NewStatusBundle.Builder().apply {
+            applyStatus(this)
+            applyLanguage(this)
+            applyVisibility(this)
+            applyMediaIds(this)
+            applyPollOptions(this)
+            applyIsSensitive(this)
+            applyScheduledDateTime(this)
+        }
             .build()
 
         store.accept(EditorTabStore.Intent.SendStatus(bundle))
@@ -284,5 +285,13 @@ class EditorTabComponentDefault(
                 editorOutput(output)
             }
         }
+    }
+
+    private fun resetComponents() {
+        attachments.resetComponentState()
+        emojis.resetComponentState()
+        header.resetComponentState()
+        poll.resetComponentState()
+        warning.resetComponentState()
     }
 }

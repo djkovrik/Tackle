@@ -23,6 +23,8 @@ internal class EditorWarningStoreProvider(
                 onIntent<Intent.OnTextInput> { dispatch(Msg.TextInput(it.text)) }
 
                 onIntent<Intent.ToggleComponentVisibility> { dispatch(Msg.ComponentVisibilityToggled) }
+
+                onIntent<Intent.ResetState> { dispatch(Msg.StateReset) }
             },
             reducer = { msg ->
                 when (msg) {

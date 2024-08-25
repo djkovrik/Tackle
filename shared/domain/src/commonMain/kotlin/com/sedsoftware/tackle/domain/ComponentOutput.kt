@@ -12,6 +12,8 @@ sealed class ComponentOutput {
         data class EmojiSelected(val emoji: CustomEmoji) : StatusEditor()
         data class PendingAttachmentsCountUpdated(val count: Int) : StatusEditor()
         data class LoadedAttachmentsCountUpdated(val count: Int) : StatusEditor()
+        data object StatusPublished : StatusEditor()
+        data object ScheduledStatusPublished : StatusEditor()
     }
 
     sealed class Common : ComponentOutput() {

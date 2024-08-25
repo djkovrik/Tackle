@@ -3,6 +3,7 @@ package com.sedsoftware.tackle.editor.poll.integration
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
+import assertk.assertions.isNotEqualTo
 import assertk.assertions.isNotNull
 import assertk.assertions.isTrue
 import com.arkivanov.decompose.DefaultComponentContext
@@ -130,6 +131,31 @@ class EditorPollComponentTest : ComponentTest<EditorPollComponent>() {
         component.onDeletePollOptionClick(activeModel.options.first().id)
         // then
         assertThat(activeModel.options.size).isEqualTo(2)
+    }
+
+    @Test
+    fun `resetComponentState should reset component state`() = runTest {
+        // given
+        component.updateInstanceConfig(InstanceConfigStub.config)
+        // when
+        component.onDurationPickerRequested(true)
+        component.onAddPollOptionClick()
+        component.onAddPollOptionClick()
+        component.changeComponentAvailability(false)
+        component.onMultiselectEnabled(true)
+        component.onHideTotalsEnabled(true)
+        component.onDurationSelected(PollDuration.THIRTY_DAYS)
+        component.resetComponentState()
+        // then
+        assertThat(activeModel.options.size).isEqualTo(2)
+        assertThat(activeModel.insertionAvailable).isTrue()
+        assertThat(activeModel.deletionAvailable).isFalse()
+        assertThat(activeModel.pollButtonAvailable).isTrue()
+        assertThat(activeModel.pollContentVisible).isFalse()
+        assertThat(activeModel.multiselectEnabled).isFalse()
+        assertThat(activeModel.hideTotalsEnabled).isFalse()
+        assertThat(activeModel.durationPickerVisible).isFalse()
+        assertThat(activeModel.duration).isNotEqualTo(PollDuration.THIRTY_DAYS)
     }
 
     override fun createComponent(): EditorPollComponent =

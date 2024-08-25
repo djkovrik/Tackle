@@ -123,12 +123,20 @@ class MainComponentDefault internal constructor(
 
     private fun createChild(config: Config, componentContext: ComponentContext): Child =
         when (config) {
-            is Config.Home -> Child.TabHome(homeTabComponent(componentContext, mainComponentOutput))
-            is Config.Explore -> Child.TabExplore(exploreTabComponent(componentContext, mainComponentOutput))
-            is Config.Editor -> Child.TabEditor(editorTabComponent(componentContext, mainComponentOutput))
-            is Config.Publications -> Child.TabPublications(publicationsTabComponent(componentContext, mainComponentOutput))
-            is Config.Notifications -> Child.TabNotifications(notificationsTabComponent(componentContext, mainComponentOutput))
+            is Config.Home -> Child.TabHome(homeTabComponent(componentContext, ::onTabsOutput))
+            is Config.Explore -> Child.TabExplore(exploreTabComponent(componentContext, ::onTabsOutput))
+            is Config.Editor -> Child.TabEditor(editorTabComponent(componentContext, ::onTabsOutput))
+            is Config.Publications -> Child.TabPublications(publicationsTabComponent(componentContext, ::onTabsOutput))
+            is Config.Notifications -> Child.TabNotifications(notificationsTabComponent(componentContext, ::onTabsOutput))
         }
+
+    private fun onTabsOutput(output: ComponentOutput) {
+        when (output) {
+            is ComponentOutput.StatusEditor.StatusPublished -> navigation.bringToFront(Config.Home)
+            is ComponentOutput.StatusEditor.ScheduledStatusPublished -> navigation.bringToFront(Config.Home)
+            else -> mainComponentOutput(output)
+        }
+    }
 
     @Serializable
     private sealed interface Config {

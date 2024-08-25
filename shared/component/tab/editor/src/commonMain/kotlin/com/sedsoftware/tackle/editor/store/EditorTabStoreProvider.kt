@@ -179,10 +179,9 @@ internal class EditorTabStoreProvider(
                             result = withContext(ioContext) { manager.sendStatus(it.bundle) },
                             onSuccess = { statusType: CreatedStatusType ->
                                 dispatch(Msg.StatusSent)
-                                publish(Label.StatusSent)
                                 when (statusType) {
-                                    CreatedStatusType.NORMAL -> publish(Label.NavigateToHomeTab)
-                                    CreatedStatusType.SCHEDULED -> publish(Label.NavigateToScheduledStatuses)
+                                    CreatedStatusType.NORMAL -> publish(Label.StatusSent)
+                                    CreatedStatusType.SCHEDULED -> publish(Label.ScheduledStatusSent)
                                 }
                             },
                             onError = { throwable: Throwable ->
@@ -309,7 +308,7 @@ internal class EditorTabStoreProvider(
         data class ScheduleDateSelected(val millis: Long) : Msg
         data class TimeDialogVisibilityChanged(val visible: Boolean) : Msg
         data class ScheduleTimeSelected(val hour: Int, val minute: Int, val formatIn24hr: Boolean) : Msg
-        data object StatusSent: Msg
+        data object StatusSent : Msg
     }
 
     private fun Msg.TextInput.exceedTheLimit(limit: Int): Boolean = limit - text.length < 0
