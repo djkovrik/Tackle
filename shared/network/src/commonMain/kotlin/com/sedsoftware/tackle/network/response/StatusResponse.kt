@@ -57,6 +57,7 @@ internal class ScheduledStatusResponse(
     @SerialName("id") val id: String,
     @SerialName("scheduled_at") val scheduledAt: String,
     @SerialName("params") val params: ScheduledStatusParamsResponse,
+    @SerialName("media_attachments") val mediaAttachments: List<MediaAttachmentResponse> = emptyList(),
 )
 
 @Serializable
@@ -72,5 +73,4 @@ internal class ScheduledStatusParamsResponse(
     @SerialName("application_id") val applicationId: Int,
     @SerialName("idempotency") val idempotency: String = "",
     @SerialName("with_rate_limit") val withRateLimit: Boolean = false,
-    @SerialName("media_attachments") val mediaAttachments: List<MediaAttachmentResponse> = emptyList(),
 )
