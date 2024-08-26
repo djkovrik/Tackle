@@ -279,6 +279,27 @@ internal class EditorTabStoreTest : StoreTest<Intent, State, Label>() {
         assertThat(store.state.scheduledIn24hFormat).isEqualTo(format)
     }
 
+    @Test
+    fun `OnScheduledDateTimeReset should reset scheduled date and time`() = runTest {
+        // given
+        val hour = 16
+        val minute = 54
+        val newDate = 1234567L
+        // when
+        store.init()
+        store.accept(Intent.OnScheduleTime(hour, minute, true))
+        store.accept(Intent.OnScheduleDate(newDate))
+        // then
+        assertThat(store.state.scheduledHour).isEqualTo(hour)
+        assertThat(store.state.scheduledMinute).isEqualTo(minute)
+        assertThat(store.state.scheduledDate).isEqualTo(newDate)
+        // and when
+        store.accept(Intent.OnScheduledDateTimeReset)
+        assertThat(store.state.scheduledHour).isEqualTo(-1)
+        assertThat(store.state.scheduledMinute).isEqualTo(-1)
+        assertThat(store.state.scheduledDate).isEqualTo(-1L)
+    }
+
     override fun createStore(): Store<Intent, State, Label> =
         EditorTabStoreProvider(
             storeFactory = DefaultStoreFactory(),

@@ -194,6 +194,10 @@ class EditorTabComponentDefault(
         store.accept(EditorTabStore.Intent.OnScheduleTime(hour, minute, formatIn24hr))
     }
 
+    override fun resetScheduledDateTime() {
+        store.accept(EditorTabStore.Intent.OnScheduledDateTimeReset)
+    }
+
     override fun onSendButtonClicked() {
         val bundle: NewStatusBundle = NewStatusBundle.Builder().apply {
             applyStatus(this)

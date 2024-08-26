@@ -20,6 +20,7 @@ interface EditorTabStore : Store<Intent, State, Label> {
         data class OnScheduleDate(val millis: Long) : Intent()
         data class OnRequestTimePicker(val show: Boolean) : Intent()
         data class OnScheduleTime(val hour: Int, val minute: Int, val formatIn24hr: Boolean) : Intent()
+        data object OnScheduledDateTimeReset : Intent()
         data class SendStatus(val bundle: NewStatusBundle) : Intent()
     }
 

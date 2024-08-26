@@ -2,6 +2,7 @@ package com.sedsoftware.tackle.editor.integration
 
 import com.sedsoftware.tackle.editor.EditorTabComponent.Model
 import com.sedsoftware.tackle.editor.store.EditorTabStore.State
+import com.sedsoftware.tackle.utils.DateTimeUtils
 
 internal val stateToModel: (State) -> Model = {
     Model(
@@ -15,5 +16,6 @@ internal val stateToModel: (State) -> Model = {
         scheduledHour = it.scheduledHour,
         scheduledMinute = it.scheduledMinute,
         scheduledIn24hrFormat = it.scheduledIn24hFormat,
+        scheduledDateLabel = DateTimeUtils.getDisplayingLabelFromPickers(it.scheduledDate, it.scheduledHour, it.scheduledMinute)
     )
 }

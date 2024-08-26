@@ -245,7 +245,6 @@ class EditorTabComponentTest : ComponentTest<EditorTabComponent>() {
     @Test
     fun `onScheduleTimeSelected should update scheduled date`() = runTest {
         // given
-        // given
         val hour = 16
         val minute = 54
         val format = false
@@ -255,6 +254,28 @@ class EditorTabComponentTest : ComponentTest<EditorTabComponent>() {
         assertThat(editorActiveModel.scheduledHour).isEqualTo(hour)
         assertThat(editorActiveModel.scheduledMinute).isEqualTo(minute)
         assertThat(editorActiveModel.scheduledIn24hrFormat).isEqualTo(format)
+    }
+
+    @Test
+    fun `resetScheduledDateTime should reset scheduled date and time`() = runTest {
+        // given
+        val newDate = 54321L
+        val hour = 16
+        val minute = 54
+        // when
+        // when
+        component.onScheduleDateSelected(newDate)
+        component.onScheduleTimeSelected(hour, minute, true)
+        // then
+        assertThat(editorActiveModel.scheduledHour).isEqualTo(hour)
+        assertThat(editorActiveModel.scheduledMinute).isEqualTo(minute)
+        assertThat(editorActiveModel.scheduledDate).isEqualTo(newDate)
+        // and when
+        component.resetScheduledDateTime()
+        // then
+        assertThat(editorActiveModel.scheduledHour).isEqualTo(-1)
+        assertThat(editorActiveModel.scheduledMinute).isEqualTo(-1)
+        assertThat(editorActiveModel.scheduledDate).isEqualTo(-1L)
     }
 
     override fun createComponent(): EditorTabComponentDefault =

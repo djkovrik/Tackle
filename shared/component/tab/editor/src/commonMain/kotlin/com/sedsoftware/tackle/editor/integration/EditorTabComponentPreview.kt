@@ -53,6 +53,7 @@ class EditorTabComponentPreview(
     statusText: String = "",
     statusCharactersLeft: Int = -1,
     suggestions: List<EditorInputHintItem> = emptyList(),
+    scheduledDateLabel: String = "",
 ) : EditorTabComponent {
 
     override val attachments: EditorAttachmentsComponent =
@@ -115,6 +116,7 @@ class EditorTabComponentPreview(
                 scheduledHour = 0,
                 scheduledMinute = 0,
                 scheduledIn24hrFormat = false,
+                scheduledDateLabel = scheduledDateLabel,
             )
         )
 
@@ -128,5 +130,6 @@ class EditorTabComponentPreview(
     override fun onScheduleDateSelected(millis: Long) = Unit
     override fun onScheduleTimePickerRequested(show: Boolean) = Unit
     override fun onScheduleTimeSelected(hour: Int, minute: Int, formatIn24hr: Boolean) = Unit
+    override fun resetScheduledDateTime() = Unit
     override fun onSendButtonClicked() = Unit
 }

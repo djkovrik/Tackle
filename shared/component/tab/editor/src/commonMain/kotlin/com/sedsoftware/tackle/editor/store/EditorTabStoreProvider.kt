@@ -173,6 +173,8 @@ internal class EditorTabStoreProvider(
 
                 onIntent<Intent.OnScheduleTime> { dispatch(Msg.ScheduleTimeSelected(it.hour, it.minute, it.formatIn24hr)) }
 
+                onIntent<Intent.OnScheduledDateTimeReset> { dispatch(Msg.ScheduledDateTimeReset) }
+
                 onIntent<Intent.SendStatus> {
                     launch {
                         unwrap(
@@ -266,6 +268,12 @@ internal class EditorTabStoreProvider(
                         scheduledIn24hFormat = msg.formatIn24hr,
                     )
 
+                    is Msg.ScheduledDateTimeReset -> copy(
+                        scheduledDate = -1L,
+                        scheduledHour = -1,
+                        scheduledMinute = -1,
+                    )
+
                     is Msg.StatusSent -> copy(
                         statusText = "",
                         statusTextSelection = (0 to 0),
@@ -308,6 +316,7 @@ internal class EditorTabStoreProvider(
         data class ScheduleDateSelected(val millis: Long) : Msg
         data class TimeDialogVisibilityChanged(val visible: Boolean) : Msg
         data class ScheduleTimeSelected(val hour: Int, val minute: Int, val formatIn24hr: Boolean) : Msg
+        data object ScheduledDateTimeReset : Msg
         data object StatusSent : Msg
     }
 

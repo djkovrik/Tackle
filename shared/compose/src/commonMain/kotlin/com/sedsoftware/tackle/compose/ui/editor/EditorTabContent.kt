@@ -31,8 +31,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextRange
@@ -51,6 +49,7 @@ import com.sedsoftware.tackle.compose.ui.editor.content.InputHintEmoji
 import com.sedsoftware.tackle.compose.ui.editor.content.InputHintHashTag
 import com.sedsoftware.tackle.compose.ui.editor.content.ScheduleDatePickerDialog
 import com.sedsoftware.tackle.compose.ui.editor.content.ScheduleTimePickerDialog
+import com.sedsoftware.tackle.compose.ui.editor.content.ScheduledPostDate
 import com.sedsoftware.tackle.compose.ui.editor.content.buildToolbarState
 import com.sedsoftware.tackle.compose.ui.editor.emoji.EditorEmojisContent
 import com.sedsoftware.tackle.compose.ui.editor.header.EditorHeaderContent
@@ -173,6 +172,20 @@ internal fun EditorTabContent(
             verticalArrangement = Arrangement.Top,
             modifier = modifier.weight(weight = 1f, fill = true),
         ) {
+            item {
+                // Scheduled post
+                AnimatedVisibility(visible = editorModel.scheduledDateLabel.isNotEmpty()) {
+                    ScheduledPostDate(
+                        text = editorModel.scheduledDateLabel,
+                        onClose = component::resetScheduledDateTime,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp)
+                            .padding(bottom = 4.dp),
+                    )
+                }
+            }
+
             // Warning
             item {
                 if (warningModel.warningContentVisible) {
@@ -282,6 +295,7 @@ internal fun EditorTabContent(
                 }
             }
         }
+
 
         // Toolbar
         Row(
@@ -513,12 +527,9 @@ private fun EditorTabContentAccountAndHashTagPreview() {
     }
 }
 
-
 @Preview
 @Composable
 private fun EditorTabContentPreviewEverything() {
-    val platformFile = PlatformFileWrapper("", "", "", "", 0L, "123 Mb") { ByteArray(0) }
-
     TackleScreenPreview {
         EditorTabContent(
             component = EditorTabComponentPreview(
@@ -545,12 +556,9 @@ private fun EditorTabContentPreviewEverything() {
                 pollButtonAvailable = true,
                 pollContentVisible = true,
                 warningContentVisible = true,
-                attachmentsContentVisible = true,
+                attachmentsContentVisible = false,
                 attachmentsButtonAvailable = true,
-                attachments = listOf(
-                    AttachedFile("id", platformFile.copy(mimeType = "audio"), AttachedFile.Status.LOADING, 0.25f),
-                    AttachedFile("id", platformFile.copy(mimeType = "video"), AttachedFile.Status.ERROR, 1f),
-                )
+                scheduledDateLabel = "30.08.2024 12:34",
             )
         )
     }

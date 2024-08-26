@@ -36,7 +36,7 @@ internal fun buildToolbarState(
     ),
     EditorToolbarItem(
         type = EditorToolbarItem.Type.SCHEDULE,
-        active = editor.datePickerVisible || editor.timePickerVisible,
+        active = editor.datePickerVisible || editor.timePickerVisible || editor.scheduledDateLabel.isNotEmpty(),
         enabled = true,
     ),
 )
