@@ -32,15 +32,9 @@ class EditorTabComponentApiStub : StubWithException(), EditorTabComponentGateway
         )
     }
 
-    var searchResponse: Search = searchResponseDefault
-
     override suspend fun getServerEmojis(): List<CustomEmoji> = listOf(
         CustomEmoji("kek", "", "", true, "")
     )
-
-    var sendStatusResponse = StatusStub.normal
-
-    var sendStatusScheduledResponse = StatusStub.scheduled
 
     override suspend fun sendFile(
         file: PlatformFileWrapper,
@@ -70,9 +64,9 @@ class EditorTabComponentApiStub : StubWithException(), EditorTabComponentGateway
         maxId: String?,
         limit: Int?,
         offset: Int?,
-    ): Search = asResponse(searchResponse)
+    ): Search = asResponse(searchResponseDefault)
 
-    override suspend fun sendStatus(bundle: NewStatusBundle): Status = asResponse(sendStatusResponse)
+    override suspend fun sendStatus(bundle: NewStatusBundle): Status = asResponse(StatusStub.normal)
 
-    override suspend fun sendStatusScheduled(bundle: NewStatusBundle): ScheduledStatus = asResponse(sendStatusScheduledResponse)
+    override suspend fun sendStatusScheduled(bundle: NewStatusBundle): ScheduledStatus = asResponse(StatusStub.scheduled)
 }

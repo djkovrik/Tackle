@@ -3,7 +3,6 @@ package com.sedsoftware.tackle.domain.model
 import com.sedsoftware.tackle.domain.model.type.StatusVisibility
 
 data class NewStatusBundle(
-    val uuid: String,
     val status: String,
     val language: String,
     val visibility: StatusVisibility,
@@ -20,7 +19,6 @@ data class NewStatusBundle(
     val scheduledAtMinute: Int,
 ) {
     data class Builder(
-        private var uuid: String = "",
         private var status: String = "",
         private var language: String = "",
         private var visibility: StatusVisibility = StatusVisibility.PUBLIC,
@@ -53,7 +51,6 @@ data class NewStatusBundle(
         fun scheduledAtMinute(scheduledAtMinute: Int) = apply { this.scheduledAtMinute = scheduledAtMinute }
 
         fun build(): NewStatusBundle = NewStatusBundle(
-            uuid = uuid,
             status = status,
             language = language,
             visibility = visibility,
