@@ -5,20 +5,36 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
 import assertk.assertions.isNotEmpty
 import assertk.assertions.isTrue
+import com.sedsoftware.tackle.domain.model.NewStatusBundle
+import com.sedsoftware.tackle.domain.model.type.CreatedStatusType
 import com.sedsoftware.tackle.editor.EditorTabComponentGateways
 import com.sedsoftware.tackle.editor.model.EditorInputHintRequest
 import com.sedsoftware.tackle.editor.stubs.EditorTabComponentApiStub
 import com.sedsoftware.tackle.editor.stubs.EditorTabComponentDatabaseStub
 import com.sedsoftware.tackle.editor.stubs.EditorTabComponentToolsStub
 import kotlinx.coroutines.test.runTest
+import kotlinx.datetime.Clock.System
+import kotlinx.datetime.Instant
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toInstant
 import kotlin.test.Test
 
 class EditorTabManagerTest {
 
+    private var nowProviderStub: Instant = System.now()
+
     private val api: EditorTabComponentApiStub = EditorTabComponentApiStub()
     private val database: EditorTabComponentGateways.Database = EditorTabComponentDatabaseStub()
     private val tools: EditorTabComponentGateways.Tools = EditorTabComponentToolsStub()
-    private val manager: EditorTabManager = EditorTabManager(api, database, tools)
+
+    private val manager: EditorTabManager = EditorTabManager(
+        api = api,
+        database = database,
+        tools = tools,
+        nowInstantProvider = { nowProviderStub },
+        timeZoneProvider = { TimeZone.UTC },
+    )
 
     @Test
     fun `getCachedInstanceInfo should return instance info`() = runTest {
@@ -384,5 +400,65 @@ class EditorTabManagerTest {
         assertThat(hashtagAtTheEnd21).isEqualTo(EditorInputHintRequest.HashTags("#abc"))
         assertThat(hashtagAtTheEnd22).isEqualTo(EditorInputHintRequest.HashTags("#abc"))
         assertThat(hashtagAtTheEnd23).isEqualTo(EditorInputHintRequest.HashTags("#abc"))
+    }
+
+    @Test
+    fun `sendStatus should send normal status if date is not scheduled`() = runTest {
+        // given
+        val bundle = NewStatusBundle.Builder()
+            .status("Status text")
+            .build()
+
+        // when
+        val response = manager.sendStatus(bundle)
+        // then
+        assertThat(response.isSuccess).isTrue()
+        assertThat(response.getOrThrow()).isEqualTo(CreatedStatusType.NORMAL)
+    }
+
+    @Test
+    fun `sendStatus should send normal status if date is under 5 minutes`() = runTest {
+        // given
+        val timeZone: TimeZone = TimeZone.UTC
+        val now: LocalDateTime = LocalDateTime.parse("2024-08-12T12:34:56.120")
+        val scheduled: LocalDateTime = LocalDateTime.parse("2024-08-12T12:36:58.120")
+        val scheduledMillis: Long = scheduled.toInstant(timeZone).toEpochMilliseconds()
+        val scheduledHour: Int = 12
+        val scheduledMinute: Int = 36
+        val bundle = NewStatusBundle.Builder()
+            .status("Status text")
+            .scheduledAtDate(scheduledMillis)
+            .scheduledAtHour(scheduledHour)
+            .scheduledAtMinute(scheduledMinute)
+            .build()
+        // when
+        nowProviderStub = now.toInstant(timeZone)
+        val response = manager.sendStatus(bundle)
+        // then
+        assertThat(response.isSuccess).isTrue()
+        assertThat(response.getOrThrow()).isEqualTo(CreatedStatusType.NORMAL)
+    }
+
+    @Test
+    fun `sendStatus should send normal scheduled if date is over 5 minutes`() = runTest {
+        // given
+        val timeZone: TimeZone = TimeZone.UTC
+        val now: LocalDateTime = LocalDateTime.parse("2024-08-12T12:34:56.120")
+        val scheduled: LocalDateTime = LocalDateTime.parse("2024-08-12T12:40:03.120")
+        val scheduledMillis: Long = scheduled.toInstant(timeZone).toEpochMilliseconds()
+        val scheduledHour: Int = 12
+        val scheduledMinute: Int = 40
+        val bundle = NewStatusBundle.Builder()
+            .status("Status text")
+            .scheduledAtDate(scheduledMillis)
+            .scheduledAtHour(scheduledHour)
+            .scheduledAtMinute(scheduledMinute)
+            .build()
+        // when
+        nowProviderStub = now.toInstant(timeZone)
+        val response = manager.sendStatus(bundle)
+        // then
+        assertThat(response.isSuccess).isTrue()
+        assertThat(response.getOrThrow()).isEqualTo(CreatedStatusType.SCHEDULED)
     }
 }

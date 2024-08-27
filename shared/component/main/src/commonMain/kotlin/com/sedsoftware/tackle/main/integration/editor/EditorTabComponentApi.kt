@@ -4,8 +4,11 @@ import com.sedsoftware.tackle.domain.api.AuthorizedApi
 import com.sedsoftware.tackle.domain.api.UnauthorizedApi
 import com.sedsoftware.tackle.domain.model.CustomEmoji
 import com.sedsoftware.tackle.domain.model.MediaAttachment
+import com.sedsoftware.tackle.domain.model.NewStatusBundle
 import com.sedsoftware.tackle.domain.model.PlatformFileWrapper
+import com.sedsoftware.tackle.domain.model.ScheduledStatus
 import com.sedsoftware.tackle.domain.model.Search
+import com.sedsoftware.tackle.domain.model.Status
 import com.sedsoftware.tackle.editor.EditorTabComponentGateways
 
 @Suppress("UnusedPrivateProperty")
@@ -36,4 +39,8 @@ internal class EditorTabComponentApi(
         limit: Int?,
         offset: Int?,
     ): Search = authorizedApi.search(query, type, resolve, following, accountId, excludeUnreviewed, minId, maxId, limit, offset)
+
+    override suspend fun sendStatus(bundle: NewStatusBundle): Status = authorizedApi.sendStatus(bundle)
+
+    override suspend fun sendStatusScheduled(bundle: NewStatusBundle): ScheduledStatus = authorizedApi.sendStatusScheduled(bundle)
 }

@@ -2,8 +2,11 @@ package com.sedsoftware.tackle.domain.api
 
 import com.sedsoftware.tackle.domain.model.Account
 import com.sedsoftware.tackle.domain.model.MediaAttachment
+import com.sedsoftware.tackle.domain.model.NewStatusBundle
 import com.sedsoftware.tackle.domain.model.PlatformFileWrapper
+import com.sedsoftware.tackle.domain.model.ScheduledStatus
 import com.sedsoftware.tackle.domain.model.Search
+import com.sedsoftware.tackle.domain.model.Status
 
 interface AuthorizedApi {
 
@@ -100,4 +103,22 @@ interface AuthorizedApi {
         limit: Int? = null,
         offset: Int? = null,
     ): Search
+
+    /**
+     * Publish a status with the given parameters
+     *
+     * @param bundle Status content bundle
+     *
+     * @see <a href="https://docs.joinmastodon.org/methods/statuses/#create">Post a new status</a>
+     */
+    suspend fun sendStatus(bundle: NewStatusBundle): Status
+
+    /**
+     * Publish a scheduled status with the given parameters
+     *
+     * @param bundle Status content bundle
+     *
+     * @see <a href="https://docs.joinmastodon.org/methods/statuses/#create">Post a new status</a>
+     */
+    suspend fun sendStatusScheduled(bundle: NewStatusBundle): ScheduledStatus
 }

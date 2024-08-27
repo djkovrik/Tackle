@@ -53,11 +53,19 @@ data class ScheduledStatus(
     val id: String,
     val scheduledAt: LocalDateTime,
     val params: ScheduledStatusParams,
+    val mediaAttachments: List<MediaAttachment> = emptyList(),
+)
+
+data class ScheduledStatusPoll(
+    val multiple: Boolean,
+    val hideTotals: Boolean,
+    val expiresIn: Long = 0L,
+    val options: List<String>,
 )
 
 data class ScheduledStatusParams(
     val text: String,
-    val poll: Poll? = null,
+    val poll: ScheduledStatusPoll? = null,
     val mediaIds: List<String> = emptyList(),
     val sensitive: Boolean = false,
     val spoilerText: String = "",
@@ -67,5 +75,4 @@ data class ScheduledStatusParams(
     val applicationId: Int,
     val idempotency: String = "",
     val withRateLimit: Boolean = false,
-    val mediaAttachments: List<MediaAttachment> = emptyList(),
 )

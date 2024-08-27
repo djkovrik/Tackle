@@ -3,6 +3,7 @@ package com.sedsoftware.tackle.editor.store
 import com.arkivanov.mvikotlin.core.store.Store
 import com.sedsoftware.tackle.domain.model.CustomEmoji
 import com.sedsoftware.tackle.domain.model.Instance
+import com.sedsoftware.tackle.domain.model.NewStatusBundle
 import com.sedsoftware.tackle.editor.model.EditorInputHintItem
 import com.sedsoftware.tackle.editor.model.EditorInputHintRequest
 import com.sedsoftware.tackle.editor.store.EditorTabStore.Intent
@@ -19,6 +20,8 @@ interface EditorTabStore : Store<Intent, State, Label> {
         data class OnScheduleDate(val millis: Long) : Intent()
         data class OnRequestTimePicker(val show: Boolean) : Intent()
         data class OnScheduleTime(val hour: Int, val minute: Int, val formatIn24hr: Boolean) : Intent()
+        data object OnScheduledDateTimeReset : Intent()
+        data class SendStatus(val bundle: NewStatusBundle) : Intent()
     }
 
     data class State(
@@ -40,6 +43,9 @@ interface EditorTabStore : Store<Intent, State, Label> {
 
     sealed class Label {
         data class InstanceConfigLoaded(val config: Instance.Config) : Label()
+        data class TextUpdated(val text: String) : Label()
         data class ErrorCaught(val throwable: Throwable) : Label()
+        data object StatusSent : Label()
+        data object ScheduledStatusSent : Label()
     }
 }

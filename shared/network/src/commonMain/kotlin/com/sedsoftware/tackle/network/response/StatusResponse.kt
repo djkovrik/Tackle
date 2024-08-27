@@ -57,12 +57,21 @@ internal class ScheduledStatusResponse(
     @SerialName("id") val id: String,
     @SerialName("scheduled_at") val scheduledAt: String,
     @SerialName("params") val params: ScheduledStatusParamsResponse,
+    @SerialName("media_attachments") val mediaAttachments: List<MediaAttachmentResponse> = emptyList(),
+)
+
+@Serializable
+internal class ScheduledStatusPollResponse(
+    @SerialName("multiple") val multiple: Boolean = false,
+    @SerialName("hide_totals") val hideTotals: Boolean = false,
+    @SerialName("expires_in") val expiresIn: Long = 0L,
+    @SerialName("options") val options: List<String> = emptyList(),
 )
 
 @Serializable
 internal class ScheduledStatusParamsResponse(
     @SerialName("text") val text: String,
-    @SerialName("poll") val poll: PollResponse? = null,
+    @SerialName("poll") val poll: ScheduledStatusPollResponse? = null,
     @SerialName("media_ids") val mediaIds: List<String> = emptyList(),
     @SerialName("sensitive") val sensitive: Boolean = false,
     @SerialName("spoiler_text") val spoilerText: String = "",
@@ -72,5 +81,4 @@ internal class ScheduledStatusParamsResponse(
     @SerialName("application_id") val applicationId: Int,
     @SerialName("idempotency") val idempotency: String = "",
     @SerialName("with_rate_limit") val withRateLimit: Boolean = false,
-    @SerialName("media_attachments") val mediaAttachments: List<MediaAttachmentResponse> = emptyList(),
 )

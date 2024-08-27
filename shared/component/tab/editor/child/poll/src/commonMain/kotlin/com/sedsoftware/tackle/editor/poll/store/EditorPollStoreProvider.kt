@@ -6,8 +6,8 @@ import com.arkivanov.mvikotlin.extensions.coroutines.coroutineExecutorFactory
 import com.sedsoftware.tackle.domain.model.Instance
 import com.sedsoftware.tackle.editor.poll.domain.EditorPollManager
 import com.sedsoftware.tackle.editor.poll.extension.applyInput
-import com.sedsoftware.tackle.editor.poll.model.PollDuration
 import com.sedsoftware.tackle.editor.poll.model.PollChoiceOption
+import com.sedsoftware.tackle.editor.poll.model.PollDuration
 import com.sedsoftware.tackle.editor.poll.store.EditorPollStore.Intent
 import com.sedsoftware.tackle.editor.poll.store.EditorPollStore.State
 import com.sedsoftware.tackle.utils.StoreCreate
@@ -51,6 +51,8 @@ internal class EditorPollStoreProvider(
 
                 onIntent<Intent.OnMultiselectEnabled> { dispatch(Msg.MultiselectEnabled(it.enabled)) }
 
+                onIntent<Intent.OnHideTotalsEnabled> { dispatch(Msg.HideTotalsEnabled(it.enabled)) }
+
                 onIntent<Intent.ChangeComponentAvailability> { dispatch(Msg.ComponentAvailabilityChanged(it.available)) }
 
                 onIntent<Intent.ToggleComponentVisibility> { dispatch(Msg.ComponentVisibilityToggled) }
@@ -60,6 +62,8 @@ internal class EditorPollStoreProvider(
                 onIntent<Intent.OnAddPollOption> { dispatch(Msg.PollOptionAdded) }
 
                 onIntent<Intent.OnDeletePollOption> { dispatch(Msg.PollOptionDeleted(it.id)) }
+
+                onIntent<Intent.ResetState> { dispatch(Msg.StateReset) }
             },
             reducer = { msg ->
                 when (msg) {
@@ -89,6 +93,10 @@ internal class EditorPollStoreProvider(
                         multiselectEnabled = msg.enabled,
                     )
 
+                    is Msg.HideTotalsEnabled -> copy(
+                        hideTotalsEnabled = msg.enabled,
+                    )
+
                     is Msg.ComponentAvailabilityChanged -> copy(
                         pollAvailable = msg.available,
                     )
@@ -112,6 +120,18 @@ internal class EditorPollStoreProvider(
                         deletionAvailable = options.size - 1 > MINIMUM_POLL_OPTIONS,
                         insertionAvailable = true,
                     )
+
+                    is Msg.StateReset -> copy(
+                        options = listOf(emptyPollOption, emptyPollOption),
+                        insertionAvailable = true,
+                        deletionAvailable = false,
+                        pollAvailable = true,
+                        pollVisible = false,
+                        multiselectEnabled = false,
+                        hideTotalsEnabled = false,
+                        durationPickerVisible = false,
+                        duration = availableDurations.first(),
+                    )
                 }
             },
         ) {}
@@ -126,11 +146,13 @@ internal class EditorPollStoreProvider(
         data class DurationDialogVisibilityChanged(val visible: Boolean) : Msg
         data class DurationSelected(val duration: PollDuration) : Msg
         data class MultiselectEnabled(val enabled: Boolean) : Msg
+        data class HideTotalsEnabled(val enabled: Boolean) : Msg
         data class ComponentAvailabilityChanged(val available: Boolean) : Msg
         data object ComponentVisibilityToggled : Msg
         data class TextInput(val id: String, val text: String) : Msg
         data object PollOptionAdded : Msg
         data class PollOptionDeleted(val id: String) : Msg
+        data object StateReset : Msg
     }
 
     private companion object {

@@ -1,10 +1,13 @@
 package com.sedsoftware.tackle.editor.stubs
 
 import com.sedsoftware.tackle.domain.model.CustomEmoji
-import com.sedsoftware.tackle.domain.model.MediaAttachment
-import com.sedsoftware.tackle.domain.model.PlatformFileWrapper
-import com.sedsoftware.tackle.domain.model.Search
 import com.sedsoftware.tackle.domain.model.HashTag
+import com.sedsoftware.tackle.domain.model.MediaAttachment
+import com.sedsoftware.tackle.domain.model.NewStatusBundle
+import com.sedsoftware.tackle.domain.model.PlatformFileWrapper
+import com.sedsoftware.tackle.domain.model.ScheduledStatus
+import com.sedsoftware.tackle.domain.model.Search
+import com.sedsoftware.tackle.domain.model.Status
 import com.sedsoftware.tackle.domain.model.type.MediaAttachmentType
 import com.sedsoftware.tackle.editor.EditorTabComponentGateways
 import com.sedsoftware.tackle.utils.test.StubWithException
@@ -28,8 +31,6 @@ class EditorTabComponentApiStub : StubWithException(), EditorTabComponentGateway
             statuses = emptyList(),
         )
     }
-
-    var searchResponse: Search = searchResponseDefault
 
     override suspend fun getServerEmojis(): List<CustomEmoji> = listOf(
         CustomEmoji("kek", "", "", true, "")
@@ -63,5 +64,9 @@ class EditorTabComponentApiStub : StubWithException(), EditorTabComponentGateway
         maxId: String?,
         limit: Int?,
         offset: Int?,
-    ): Search = asResponse(searchResponse)
+    ): Search = asResponse(searchResponseDefault)
+
+    override suspend fun sendStatus(bundle: NewStatusBundle): Status = asResponse(StatusStub.normal)
+
+    override suspend fun sendStatusScheduled(bundle: NewStatusBundle): ScheduledStatus = asResponse(StatusStub.scheduled)
 }

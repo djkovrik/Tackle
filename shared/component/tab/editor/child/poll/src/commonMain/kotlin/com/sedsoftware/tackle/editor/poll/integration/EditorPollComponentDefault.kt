@@ -45,6 +45,10 @@ class EditorPollComponentDefault(
         store.accept(EditorPollStore.Intent.OnMultiselectEnabled(enabled))
     }
 
+    override fun onHideTotalsEnabled(enabled: Boolean) {
+        store.accept(EditorPollStore.Intent.OnHideTotalsEnabled(enabled))
+    }
+
     override fun onTextInput(id: String, text: String) {
         store.accept(EditorPollStore.Intent.OnTextInput(id, text))
     }
@@ -67,5 +71,9 @@ class EditorPollComponentDefault(
 
     override fun updateInstanceConfig(config: Config) {
         store.accept(EditorPollStore.Intent.UpdateInstanceConfig(config))
+    }
+
+    override fun resetComponentState() {
+        store.accept(EditorPollStore.Intent.ResetState)
     }
 }

@@ -12,16 +12,19 @@ interface EditorPollComponent {
     fun onDurationPickerRequested(show: Boolean)
     fun onDurationSelected(duration: PollDuration)
     fun onMultiselectEnabled(enabled: Boolean)
+    fun onHideTotalsEnabled(enabled: Boolean)
     fun onTextInput(id: String, text: String)
     fun onAddPollOptionClick()
     fun onDeletePollOptionClick(id: String)
     fun changeComponentAvailability(available: Boolean)
     fun toggleComponentVisibility()
     fun updateInstanceConfig(config: Instance.Config)
+    fun resetComponentState()
 
     data class Model(
         val options: List<PollChoiceOption>,
         val multiselectEnabled: Boolean,
+        val hideTotalsEnabled: Boolean,
         val duration: PollDuration,
         val availableDurations: List<PollDuration>,
         val durationPickerVisible: Boolean,

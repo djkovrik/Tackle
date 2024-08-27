@@ -13,12 +13,14 @@ interface EditorPollStore : Store<Intent, State, Nothing> {
         data class OnRequestDurationPicker(val show: Boolean) : Intent()
         data class OnDurationSelected(val duration: PollDuration) : Intent()
         data class OnMultiselectEnabled(val enabled: Boolean) : Intent()
+        data class OnHideTotalsEnabled(val enabled: Boolean) : Intent()
         data class OnTextInput(val id: String, val text: String) : Intent()
         data object OnAddPollOption : Intent()
         data class OnDeletePollOption(val id: String) : Intent()
         data class ChangeComponentAvailability(val available: Boolean) : Intent()
         data object ToggleComponentVisibility : Intent()
         data class UpdateInstanceConfig(val config: Instance.Config) : Intent()
+        data object ResetState : Intent()
     }
 
     data class State(
@@ -28,6 +30,7 @@ interface EditorPollStore : Store<Intent, State, Nothing> {
         val pollAvailable: Boolean = true,
         val pollVisible: Boolean = false,
         val multiselectEnabled: Boolean = false,
+        val hideTotalsEnabled: Boolean = false,
         val duration: PollDuration = PollDuration.NOT_SELECTED,
         val availableDurations: List<PollDuration> = emptyList(),
         val durationPickerVisible: Boolean = false,

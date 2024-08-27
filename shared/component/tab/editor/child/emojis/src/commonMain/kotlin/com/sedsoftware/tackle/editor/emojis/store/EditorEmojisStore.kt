@@ -10,6 +10,7 @@ internal interface EditorEmojisStore : Store<Intent, State, Label> {
 
     sealed class Intent {
         data object ToggleComponentVisibility : Intent()
+        data object ResetState : Intent()
     }
 
     data class State(

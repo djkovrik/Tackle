@@ -75,4 +75,12 @@ class EditorHeaderComponentDefault(
     override fun onStatusVisibilitySelected(visibility: StatusVisibility) {
         store.accept(EditorHeaderStore.Intent.OnVisibilityPickerSelected(visibility))
     }
+
+    override fun changeSendingAvailability(available: Boolean) {
+        store.accept(EditorHeaderStore.Intent.ChangeSendingAvailability(available))
+    }
+
+    override fun resetComponentState() {
+        store.accept(EditorHeaderStore.Intent.ResetState)
+    }
 }

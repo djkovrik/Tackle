@@ -1,0 +1,55 @@
+{
+  "id": "149954",
+  "scheduled_at": "2024-08-28T13:19:00.000Z",
+  "params": {
+    "text": "Poll scheduled",
+    "media_ids": null,
+    "sensitive": false,
+    "spoiler_text": null,
+    "visibility": "public",
+    "language": "en",
+    "scheduled_at": null,
+    "poll": {
+      "multiple": true,
+      "hide_totals": true,
+      "expires_in": 86400,
+      "options": [
+        "aaa",
+        "bbb",
+        "ccc"
+      ]
+    },
+    "allowed_mentions": null,
+    "idempotency": null,
+    "with_rate_limit": false,
+    "in_reply_to_id": null,
+    "application_id": 5910659
+  },
+  "media_attachments": [
+    {
+      "id": "113034063417455318",
+      "type": "image",
+      "url": "https://files.mastodon.social/media_attachments/files/113/034/063/417/455/318/original/dce779d1f38fe9df.jpg",
+      "preview_url": "https://files.mastodon.social/media_attachments/files/113/034/063/417/455/318/small/dce779d1f38fe9df.jpg",
+      "remote_url": null,
+      "preview_remote_url": null,
+      "text_url": null,
+      "meta": {
+        "original": {
+          "width": 1920,
+          "height": 1080,
+          "size": "1920x1080",
+          "aspect": 1.7777777777777777
+        },
+        "small": {
+          "width": 640,
+          "height": 360,
+          "size": "640x360",
+          "aspect": 1.7777777777777777
+        }
+      },
+      "description": null,
+      "blurhash": "UjL3_a%0IVWC.SS#WCX85FoykCWX0$bHn$WX"
+    }
+  ]
+}

@@ -39,4 +39,8 @@ class EditorWarningComponentDefault(
     override fun toggleComponentVisibility() {
         store.accept(EditorWarningStore.Intent.ToggleComponentVisibility)
     }
+
+    override fun resetComponentState() {
+        store.accept(EditorWarningStore.Intent.ResetState)
+    }
 }

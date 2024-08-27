@@ -1,6 +1,12 @@
 package com.sedsoftware.tackle.compose.ui.editor.attachment.content
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -29,13 +35,21 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import com.sedsoftware.tackle.compose.extension.getTypeTitle
 import com.sedsoftware.tackle.compose.extension.hasError
+import com.sedsoftware.tackle.compose.extension.hasProcessingVideo
+import com.sedsoftware.tackle.compose.extension.hasVideoThumbnail
+import com.sedsoftware.tackle.compose.model.AttachedFilePreviewType
 import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
+import com.sedsoftware.tackle.domain.model.MediaAttachment
 import com.sedsoftware.tackle.domain.model.PlatformFileWrapper
+import com.sedsoftware.tackle.domain.model.type.MediaAttachmentType
 import com.sedsoftware.tackle.editor.attachments.model.AttachedFile
 import com.sedsoftware.tackle.utils.extension.isImage
 import org.jetbrains.compose.resources.painterResource
@@ -43,6 +57,7 @@ import org.jetbrains.compose.resources.stringResource
 import tackle.shared.compose.generated.resources.Res
 import tackle.shared.compose.generated.resources.editor_attachment_failed
 import tackle.shared.compose.generated.resources.editor_delete
+import tackle.shared.compose.generated.resources.editor_done
 import tackle.shared.compose.generated.resources.preview_sample
 
 @Composable
@@ -53,13 +68,32 @@ internal fun AttachedFileContent(
     onDelete: () -> Unit = {},
     previewImage: @Composable (() -> Unit)? = null,
 ) {
-    var imageData by remember { mutableStateOf(ByteArray(0)) }
-    var progress by remember { mutableStateOf(0.0f) }
+    var imageData: ByteArray by remember { mutableStateOf(ByteArray(0)) }
+    var progress: Float by remember { mutableStateOf(0.0f) }
+    var showProcessingLabel: Boolean by remember { mutableStateOf(false) }
 
-    val animatedProgress: Float = animateFloatAsState(
+    val animatedProgress: Float by animateFloatAsState(
         targetValue = progress,
         animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec,
-    ).value
+    )
+
+    val animatedProgressAlpha: Float by animateFloatAsState(
+        targetValue = if (attachment.status == AttachedFile.Status.LOADED) 0.5f else 1f,
+        animationSpec = tween(easing = LinearEasing)
+    )
+
+    val animatedProcessingLabelAlpha: Float by animateFloatAsState(
+        targetValue = if (showProcessingLabel) 0.75f else 0f,
+        animationSpec = tween(easing = LinearEasing)
+    )
+
+    val animatedDoneIconState: Float by animateFloatAsState(
+        targetValue = if (attachment.status == AttachedFile.Status.LOADED) 1f else 0f,
+        animationSpec = tween(
+            easing = LinearEasing,
+            durationMillis = DONE_ICON_ANIM_DURATION,
+        )
+    )
 
     progress = attachment.uploadProgress
 
@@ -89,24 +123,39 @@ internal fun AttachedFileContent(
                 .fillMaxWidth()
                 .height(height = 200.dp)
         ) {
-            when {
-                // Preview stub
-                attachment.file.isImage && previewImage != null -> {
-                    previewImage.invoke()
-                }
-                // Preview from local copy
-                attachment.file.isImage && previewImage == null -> {
-                    AttachedFileImageThumbnail(
-                        imageData = imageData,
-                        modifier = Modifier,
-                    )
-                }
-                // Generic stub
-                else -> {
-                    AttachedFileContentGeneric(
-                        attachment = attachment,
-                        modifier = Modifier,
-                    )
+            AnimatedContent(
+                targetState = when {
+                    attachment.file.isImage && previewImage != null -> AttachedFilePreviewType.PREVIEW_STUB
+                    attachment.file.isImage && previewImage == null -> AttachedFilePreviewType.LOCAL_IMAGE
+                    attachment.hasVideoThumbnail -> AttachedFilePreviewType.VIDEO_THUMBNAIL
+                    else -> AttachedFilePreviewType.GENERIC_STUB
+                },
+                transitionSpec = {
+                    fadeIn() togetherWith fadeOut()
+                },
+            ) { state: AttachedFilePreviewType ->
+                when (state) {
+                    AttachedFilePreviewType.PREVIEW_STUB -> {
+                        previewImage?.invoke()
+                    }
+
+                    AttachedFilePreviewType.LOCAL_IMAGE -> {
+                        AttachedFileImageThumbnail(
+                            imageData = imageData,
+                        )
+                    }
+
+                    AttachedFilePreviewType.VIDEO_THUMBNAIL -> {
+                        AttachedFileVideoThumbnail(
+                            url = attachment.serverCopy?.previewUrl.orEmpty(),
+                        )
+                    }
+
+                    AttachedFilePreviewType.GENERIC_STUB -> {
+                        AttachedFileContentGeneric(
+                            attachment = attachment,
+                        )
+                    }
                 }
             }
 
@@ -120,6 +169,16 @@ internal fun AttachedFileContent(
                         .align(alignment = Alignment.TopEnd)
                 )
             }
+
+            // Attachment is being processed
+            AttachedFileProcessing(
+                modifier = Modifier
+                    .padding(all = 16.dp)
+                    .align(alignment = Alignment.BottomEnd)
+                    .alpha(alpha = animatedProcessingLabelAlpha)
+            )
+
+            showProcessingLabel = attachment.hasProcessingVideo
         }
 
         Column(
@@ -141,6 +200,7 @@ internal fun AttachedFileContent(
                 trackColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.25f),
                 modifier = Modifier
                     .fillMaxWidth()
+                    .alpha(alpha = animatedProgressAlpha)
                     .padding(horizontal = 16.dp, vertical = 8.dp),
             )
 
@@ -151,17 +211,30 @@ internal fun AttachedFileContent(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column {
-                    Text(
-                        text = stringResource(resource = attachment.getTypeTitle()),
-                        color = if (attachment.hasError) {
-                            MaterialTheme.colorScheme.error
-                        } else {
-                            MaterialTheme.colorScheme.onPrimaryContainer
-                        },
-                        style = MaterialTheme.typography.bodyMedium,
-                        modifier = Modifier.padding(horizontal = 16.dp),
-                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = stringResource(resource = attachment.getTypeTitle()),
+                            color = if (attachment.hasError) {
+                                MaterialTheme.colorScheme.error
+                            } else {
+                                MaterialTheme.colorScheme.onPrimaryContainer
+                            },
+                            style = MaterialTheme.typography.bodyMedium,
+                            modifier = Modifier.padding(start = 16.dp, end = 8.dp),
+                        )
 
+                        Image(
+                            painter = painterResource(resource = Res.drawable.editor_done),
+                            contentDescription = null,
+                            colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.onPrimaryContainer),
+                            modifier = Modifier
+                                .size(size = 14.dp)
+                                .alpha(alpha = animatedDoneIconState)
+                                .scale(scale = animatedDoneIconState)
+                        )
+                    }
                     Text(
                         text = if (attachment.hasError) {
                             stringResource(resource = Res.string.editor_attachment_failed)
@@ -192,6 +265,8 @@ internal fun AttachedFileContent(
         }
     }
 }
+
+private const val DONE_ICON_ANIM_DURATION = 150
 
 @Composable
 internal fun AttachmentPreviewImageStub() {
@@ -227,13 +302,13 @@ private fun AttachedFileContentPreview() {
             }
             // Error
             Box(modifier = Modifier.width(width = 420.dp).padding(all = 8.dp)) {
-                AttachedFileContent(attachment = image.copy(status = AttachedFile.Status.ERROR)) {
+                AttachedFileContent(attachment = image.copy(status = AttachedFile.Status.ERROR))
+            }
+            // Loaded
+            Box(modifier = Modifier.width(width = 420.dp).padding(all = 8.dp)) {
+                AttachedFileContent(attachment = image.copy(status = AttachedFile.Status.LOADED)) {
                     AttachmentPreviewImageStub()
                 }
-            }
-            // Error
-            Box(modifier = Modifier.width(width = 420.dp).padding(all = 8.dp)) {
-                AttachedFileContent(attachment = image.copy(status = AttachedFile.Status.ERROR))
             }
         }
     }
@@ -269,5 +344,41 @@ private fun AttachedFileContentPlaceholdersPreview() {
                 AttachedFileContent(attachment = image.copy(file = platformFile.copy(mimeType = "abc")))
             }
         }
+    }
+}
+
+@Preview
+@Composable
+private fun AttachedVideoProcessingPreview() {
+    val platformFile = PlatformFileWrapper(
+        name = "test.mp4",
+        extension = "mp4",
+        path = "",
+        mimeType = "video/mpeg",
+        size = 0L,
+        sizeLabel = "123 Mb",
+        readBytes = { ByteArray(0) },
+    )
+
+    val video = AttachedFile(
+        id = "id",
+        file = platformFile,
+        status = AttachedFile.Status.LOADED,
+        uploadProgress = 0.1f,
+        serverCopy = MediaAttachment(
+            id = "id",
+            type = MediaAttachmentType.VIDEO,
+            url = "",
+            previewUrl = "",
+            remoteUrl = "",
+            description = "",
+            blurhash = "",
+            meta = null,
+        )
+    )
+
+
+    TackleScreenPreview {
+        AttachedFileContent(attachment = video)
     }
 }

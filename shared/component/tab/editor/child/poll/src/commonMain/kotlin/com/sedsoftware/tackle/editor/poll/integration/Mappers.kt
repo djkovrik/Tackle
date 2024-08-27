@@ -7,6 +7,7 @@ internal val stateToModel: (State) -> Model = {
     Model(
         options = it.options,
         multiselectEnabled = it.multiselectEnabled,
+        hideTotalsEnabled = it.hideTotalsEnabled,
         duration = it.duration,
         availableDurations = it.availableDurations,
         durationPickerVisible = it.durationPickerVisible,

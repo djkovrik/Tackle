@@ -141,9 +141,7 @@ internal class AuthStoreProvider(
                     }
                 }
 
-                onIntent<Intent.ShowLearnMore> {
-                    dispatch(Msg.LearnMoreVisibilityChanged(visible = it.show))
-                }
+                onIntent<Intent.ShowLearnMore> { dispatch(Msg.LearnMoreVisibilityChanged(visible = it.show)) }
             },
             reducer = { msg ->
                 when (msg) {

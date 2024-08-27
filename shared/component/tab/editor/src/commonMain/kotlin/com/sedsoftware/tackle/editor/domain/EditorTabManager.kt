@@ -2,19 +2,31 @@ package com.sedsoftware.tackle.editor.domain
 
 import com.sedsoftware.tackle.domain.model.CustomEmoji
 import com.sedsoftware.tackle.domain.model.Instance
+import com.sedsoftware.tackle.domain.model.NewStatusBundle
 import com.sedsoftware.tackle.domain.model.Search
+import com.sedsoftware.tackle.domain.model.type.CreatedStatusType
 import com.sedsoftware.tackle.editor.EditorTabComponentGateways
+import com.sedsoftware.tackle.editor.extension.hasScheduledDate
 import com.sedsoftware.tackle.editor.model.EditorInputHintItem
 import com.sedsoftware.tackle.editor.model.EditorInputHintRequest
 import com.sedsoftware.tackle.editor.model.toEditorInputHintAccount
 import com.sedsoftware.tackle.editor.model.toEditorInputHintEmoji
 import com.sedsoftware.tackle.editor.model.toEditorInputHintHashTag
+import com.sedsoftware.tackle.utils.DateTimeUtils
 import kotlinx.coroutines.flow.first
+import kotlinx.datetime.Clock.System
+import kotlinx.datetime.Instant
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toInstant
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.minutes
 
 internal class EditorTabManager(
     private val api: EditorTabComponentGateways.Api,
     private val database: EditorTabComponentGateways.Database,
     private val tools: EditorTabComponentGateways.Tools,
+    private val nowInstantProvider: () -> Instant = { System.now() },
+    private val timeZoneProvider: () -> TimeZone = { TimeZone.currentSystemDefault() },
 ) {
 
     suspend fun getCachedInstanceInfo(): Result<Instance> = runCatching {
@@ -46,6 +58,29 @@ internal class EditorTabManager(
         )
 
         response.hashtags.map { it.toEditorInputHintHashTag() }
+    }
+
+    suspend fun sendStatus(bundle: NewStatusBundle): Result<CreatedStatusType> = runCatching {
+        val timeZone: TimeZone = timeZoneProvider.invoke()
+        val now: Instant = nowInstantProvider.invoke()
+        val scheduled: Instant = if (bundle.hasScheduledDate) {
+            DateTimeUtils
+                .getDateTimeFromPickers(bundle.scheduledAtDate, bundle.scheduledAtHour, bundle.scheduledAtMinute, timeZone)
+                .toInstant(timeZone)
+        } else {
+            now
+        }
+
+        val duration: Duration = scheduled - now
+        val hasValidScheduleDate: Boolean = duration > SCHEDULED_STATUS_MIN_PERIOD.minutes
+
+        if (hasValidScheduleDate) {
+            api.sendStatusScheduled(bundle)
+            CreatedStatusType.SCHEDULED
+        } else {
+            api.sendStatus(bundle)
+            CreatedStatusType.NORMAL
+        }
     }
 
     fun checkForInputHint(inputText: String, inputPosition: Pair<Int, Int>): EditorInputHintRequest {
@@ -113,5 +148,6 @@ internal class EditorTabManager(
         const val EMOJI_MARKER = ':'
         const val HASHTAG_MARKER = '#'
         const val MINIMAL_INPUT_HELP_LENGTH = 3
+        const val SCHEDULED_STATUS_MIN_PERIOD = 5
     }
 }

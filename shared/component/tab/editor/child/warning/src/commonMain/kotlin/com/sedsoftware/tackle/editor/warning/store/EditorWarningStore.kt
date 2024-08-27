@@ -9,6 +9,7 @@ internal interface EditorWarningStore : Store<Intent, State, Nothing> {
     sealed class Intent {
         data class OnTextInput(val text: String) : Intent()
         data object ToggleComponentVisibility : Intent()
+        data object ResetState : Intent()
     }
 
     data class State(

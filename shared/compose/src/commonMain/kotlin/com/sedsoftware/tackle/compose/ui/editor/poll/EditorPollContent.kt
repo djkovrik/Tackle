@@ -36,6 +36,7 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import tackle.shared.compose.generated.resources.Res
 import tackle.shared.compose.generated.resources.editor_close
+import tackle.shared.compose.generated.resources.editor_poll_hide_totals
 import tackle.shared.compose.generated.resources.editor_poll_multiple
 
 @Composable
@@ -45,6 +46,7 @@ internal fun EditorPollContent(
     onAddNewItem: () -> Unit = {},
     onDeleteItem: (String) -> Unit = {},
     onMultiselectEnabled: (Boolean) -> Unit = {},
+    onHideTotalsEnabled: (Boolean) -> Unit = {},
     onDurationSelected: (PollDuration) -> Unit = {},
     onTextInput: (String, String) -> Unit = { _, _ -> },
     onDurationPickerCall: () -> Unit = {},
@@ -55,7 +57,7 @@ internal fun EditorPollContent(
             CustomPollChoice(
                 index = index,
                 option = pollOption,
-                modifier = Modifier.padding(vertical = 4.dp),
+                modifier = Modifier.padding(bottom = 8.dp),
                 deletionAvailable = model.deletionAvailable,
                 onTextInput = onTextInput,
                 onDelete = { onDeleteItem.invoke(pollOption.id) },
@@ -67,7 +69,7 @@ internal fun EditorPollContent(
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
-                    .size(size = 48.dp)
+                    .size(size = 42.dp)
                     .clip(shape = CircleShape)
                     .clickable(onClick = { if (model.insertionAvailable) onAddNewItem.invoke() })
                     .background(color = MaterialTheme.colorScheme.secondaryContainer, shape = CircleShape),
@@ -77,7 +79,7 @@ internal fun EditorPollContent(
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.onSecondaryContainer,
                     modifier = Modifier
-                        .size(size = 20.dp)
+                        .size(size = 16.dp)
                         .rotate(degrees = 45f)
                         .alpha(alpha = if (model.insertionAvailable) 1f else 0.5f)
                 )
@@ -89,7 +91,7 @@ internal fun EditorPollContent(
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
-                    .height(height = 48.dp)
+                    .height(height = 42.dp)
                     .clip(shape = RoundedCornerShape(size = 32.dp))
                     .clickable(onClick = onDurationPickerCall)
                     .background(color = MaterialTheme.colorScheme.secondaryContainer, shape = RoundedCornerShape(size = 32.dp)),
@@ -104,7 +106,9 @@ internal fun EditorPollContent(
         }
 
         // Multi choice option
-        Row {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
             Checkbox(
                 checked = model.multiselectEnabled,
                 onCheckedChange = onMultiselectEnabled,
@@ -118,8 +122,30 @@ internal fun EditorPollContent(
             Text(
                 text = stringResource(resource = Res.string.editor_poll_multiple),
                 color = MaterialTheme.colorScheme.secondary,
-                style = MaterialTheme.typography.titleSmall,
-                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(horizontal = 8.dp),
+            )
+        }
+
+        // Hide totals option
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Checkbox(
+                checked = model.hideTotalsEnabled,
+                onCheckedChange = onHideTotalsEnabled,
+                colors = CheckboxDefaults.colors(
+                    checkedColor = MaterialTheme.colorScheme.secondary,
+                    uncheckedColor = MaterialTheme.colorScheme.secondary,
+                ),
+                modifier = Modifier
+            )
+
+            Text(
+                text = stringResource(resource = Res.string.editor_poll_hide_totals),
+                color = MaterialTheme.colorScheme.secondary,
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(horizontal = 8.dp),
             )
         }
     }
@@ -147,6 +173,7 @@ private fun EditorPollContentPreview() {
                     PollChoiceOption(id = "3", text = ""),
                 ),
                 multiselectEnabled = false,
+                hideTotalsEnabled = false,
                 duration = PollDuration.FIVE_MINUTES,
                 availableDurations = emptyList(),
                 durationPickerVisible = false,

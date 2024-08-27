@@ -15,7 +15,7 @@ import kotlin.test.Test
 class SearchMapperTest {
 
     @Test
-    fun `SearchMapper should map accounts response to entity`() = runTest {
+    fun `SearchMapper should map status response to entity`() = runTest {
         // given
         val response: SearchResponse = responseFromFile("src/commonTest/resources/responses/api_v2_search_accounts.json")
         // when

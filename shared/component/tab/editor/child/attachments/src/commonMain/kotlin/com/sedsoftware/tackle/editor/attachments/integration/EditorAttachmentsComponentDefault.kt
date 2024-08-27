@@ -50,8 +50,12 @@ class EditorAttachmentsComponentDefault(
         scope.launch {
             store.labels.collect { label ->
                 when (label) {
-                    is Label.AttachmentsCountUpdated -> output(ComponentOutput.StatusEditor.AttachmentsCountUpdated(label.count))
-                    is Label.ErrorCaught -> output(ComponentOutput.Common.ErrorCaught(label.throwable))
+                    is Label.PendingAttachmentsCountUpdated ->
+                        output(ComponentOutput.StatusEditor.PendingAttachmentsCountUpdated(label.count))
+                    is Label.LoadedAttachmentsCountUpdated ->
+                        output(ComponentOutput.StatusEditor.LoadedAttachmentsCountUpdated(label.count))
+                    is Label.ErrorCaught ->
+                        output(ComponentOutput.Common.ErrorCaught(label.throwable))
                 }
             }
         }
@@ -86,5 +90,9 @@ class EditorAttachmentsComponentDefault(
 
     override fun updateInstanceConfig(config: Instance.Config) {
         store.accept(EditorAttachmentsStore.Intent.UpdateInstanceConfig(config))
+    }
+
+    override fun resetComponentState() {
+        store.accept(EditorAttachmentsStore.Intent.ResetState)
     }
 }

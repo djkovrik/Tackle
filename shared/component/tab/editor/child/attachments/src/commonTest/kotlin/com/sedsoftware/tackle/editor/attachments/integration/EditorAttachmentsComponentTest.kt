@@ -2,6 +2,7 @@ package com.sedsoftware.tackle.editor.attachments.integration
 
 import assertk.assertThat
 import assertk.assertions.containsNone
+import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
 import assertk.assertions.isTrue
@@ -116,6 +117,32 @@ class EditorAttachmentsComponentTest : ComponentTest<EditorAttachmentsComponent>
         component.changeComponentAvailability(false)
         // then
         assertThat(activeModel.attachmentsButtonAvailable).isFalse()
+    }
+
+    @Test
+    fun `resetComponentState should reset component state`() = runTest {
+        // given
+        val files = listOf(
+            PlatformFileStubs.imageNormal.copy(name = "test1.jpg"),
+            PlatformFileStubs.imageNormal.copy(name = "test2.jpg"),
+            PlatformFileStubs.imageNormal.copy(name = "test3.jpg"),
+            PlatformFileStubs.imageNormal.copy(name = "test4.jpg"),
+        )
+        val config = InstanceConfigStub.config
+        // when
+        component.updateInstanceConfig(config)
+        component.changeComponentAvailability(available = true)
+        component.onFilesSelectedWrapped(files)
+        // then
+        assertThat(activeModel.attachments.size).isEqualTo(files.size)
+        assertThat(activeModel.attachmentsButtonAvailable).isFalse()
+        assertThat(activeModel.attachmentsContentVisible).isTrue()
+        // and when
+        component.resetComponentState()
+        // then
+        assertThat(activeModel.attachments).isEmpty()
+        assertThat(activeModel.attachmentsButtonAvailable).isTrue()
+        assertThat(activeModel.attachmentsContentVisible).isFalse()
     }
 
     override fun createComponent(): EditorAttachmentsComponent =

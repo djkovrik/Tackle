@@ -48,7 +48,7 @@
 
     <!-- Editor component -->
     <string name="editor_input_hint">What's on your mind?</string>
-    <string name="editor_warning_hint">Sensitive content warning</string>
+    <string name="editor_warning_hint">Content warning</string>
     <string name="editor_language_default">Default</string>
     <string name="editor_status_visibility_public">Public</string>
     <string name="editor_status_visibility_public_desc">Visible to everyone, shown in public timelines</string>
@@ -68,6 +68,7 @@
     <!-- Editor poll -->
     <string name="editor_poll_option">Option</string>
     <string name="editor_poll_multiple">Allow multiple choices</string>
+    <string name="editor_poll_hide_totals">Hide results until poll end</string>
     <string name="editor_poll_duration">Duration</string>
     <string name="editor_poll_duration_five_minutes">5 minutes</string>
     <string name="editor_poll_duration_ten_minutes">10 minutes</string>
@@ -89,4 +90,5 @@
     <string name="editor_attachment_video">Video</string>
     <string name="editor_attachment_unknown">File</string>
     <string name="editor_attachment_failed">Upload error</string>
+    <string name="editor_attachment_processing">Processing</string>
 </resources>
