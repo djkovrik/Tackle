@@ -18,6 +18,7 @@ data class NewStatusBundle(
     val scheduledAtHour: Int,
     val scheduledAtMinute: Int,
 ) {
+    @Suppress("TooManyFunctions")
     data class Builder(
         private var status: String = "",
         private var language: String = "",

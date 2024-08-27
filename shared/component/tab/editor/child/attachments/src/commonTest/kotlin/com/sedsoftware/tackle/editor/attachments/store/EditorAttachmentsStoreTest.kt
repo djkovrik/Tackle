@@ -135,7 +135,8 @@ internal class EditorAttachmentsStoreTest : StoreTest<Intent, State, Label>() {
         assertThat(store.state.attachmentsAtLimit).isFalse()
         assertThat(store.state.selectedFiles.hasPending).isFalse()
         assertThat(labels).isNotEmpty()
-        assertThat((labels.find { it is Label.ErrorCaught } as Label.ErrorCaught).throwable).hasClass(TackleException.FileSizeExceeded::class)
+        assertThat((labels.find { it is Label.ErrorCaught } as Label.ErrorCaught).throwable)
+            .hasClass(TackleException.FileSizeExceeded::class)
     }
 
     @Test

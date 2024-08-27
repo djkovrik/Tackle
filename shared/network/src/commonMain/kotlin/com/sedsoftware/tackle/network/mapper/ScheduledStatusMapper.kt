@@ -2,6 +2,7 @@ package com.sedsoftware.tackle.network.mapper
 
 import com.sedsoftware.tackle.domain.model.ScheduledStatus
 import com.sedsoftware.tackle.domain.model.ScheduledStatusParams
+import com.sedsoftware.tackle.domain.model.ScheduledStatusPoll
 import com.sedsoftware.tackle.domain.model.type.StatusVisibility
 import com.sedsoftware.tackle.network.response.ScheduledStatusParamsResponse
 import com.sedsoftware.tackle.network.response.ScheduledStatusResponse
@@ -20,7 +21,7 @@ internal object ScheduledStatusMapper {
     private fun mapParams(from: ScheduledStatusParamsResponse): ScheduledStatusParams =
         ScheduledStatusParams(
             text = from.text,
-            poll = from.poll?.let { PollMapper.map(it) },
+            poll = from.poll?.let { ScheduledStatusPoll(it.multiple, it.hideTotals, it.expiresIn, it.options) },
             mediaIds = from.mediaIds,
             sensitive = from.sensitive,
             spoilerText = from.spoilerText,
