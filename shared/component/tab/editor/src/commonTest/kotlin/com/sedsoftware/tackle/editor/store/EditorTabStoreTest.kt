@@ -11,6 +11,7 @@ import assertk.assertions.isNotEqualTo
 import assertk.assertions.isTrue
 import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
+import com.sedsoftware.tackle.domain.model.NewStatusBundle
 import com.sedsoftware.tackle.editor.EditorTabComponentGateways
 import com.sedsoftware.tackle.editor.domain.EditorTabManager
 import com.sedsoftware.tackle.editor.model.EditorInputHintItem
@@ -26,17 +27,31 @@ import com.sedsoftware.tackle.editor.stubs.InstanceStub
 import com.sedsoftware.tackle.utils.test.StoreTest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.runTest
+import kotlinx.datetime.Clock.System
+import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toInstant
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 
 internal class EditorTabStoreTest : StoreTest<Intent, State, Label>() {
 
+    private var nowProviderStub: Instant = System.now()
+
     private val api: EditorTabComponentApiStub = EditorTabComponentApiStub()
     private val database: EditorTabComponentGateways.Database = EditorTabComponentDatabaseStub()
     private val tools: EditorTabComponentGateways.Tools = EditorTabComponentToolsStub()
-    private val manager: EditorTabManager = EditorTabManager(api, database, tools)
+
+    private val manager: EditorTabManager = EditorTabManager(
+        api = api,
+        database = database,
+        tools = tools,
+        nowInstantProvider = { nowProviderStub },
+        timeZoneProvider = { TimeZone.UTC },
+    )
+
 
     @BeforeTest
     fun before() {
@@ -55,11 +70,12 @@ internal class EditorTabStoreTest : StoreTest<Intent, State, Label>() {
     @Test
     fun `store init should initialize current hour and minute`() = runTest {
         // given
+        val minutesGap = 10
         // when
         store.init()
         // then
         assertThat(store.state.scheduledHour).isEqualTo(12)
-        assertThat(store.state.scheduledMinute).isEqualTo(34)
+        assertThat(store.state.scheduledMinute).isEqualTo(34 + minutesGap)
     }
 
     @Test
@@ -298,6 +314,53 @@ internal class EditorTabStoreTest : StoreTest<Intent, State, Label>() {
         assertThat(store.state.scheduledHour).isEqualTo(-1)
         assertThat(store.state.scheduledMinute).isEqualTo(-1)
         assertThat(store.state.scheduledDate).isEqualTo(-1L)
+    }
+
+    @Test
+    fun `SendStatus should navigate to home screen on success`() = runTest {
+        // given
+        val bundle = NewStatusBundle.Builder().status("Test").build()
+        // when
+        store.init()
+        store.accept(Intent.SendStatus(bundle))
+        // then
+        assertThat(labels.count { it is Label.StatusSent }).isEqualTo(1)
+    }
+
+    @Test
+    fun `SendStatus for scheduled should navigate to scheduled statuses on success`() = runTest {
+        // given
+        val now: LocalDateTime = LocalDateTime.parse("2024-08-12T12:34:56.120")
+        nowProviderStub = now.toInstant(TimeZone.UTC)
+
+        val hour = 16
+        val minute = 54
+        val newDate = 1819497600000L
+        val bundle = NewStatusBundle.Builder()
+            .status("Test")
+            .scheduledAtDate(1819497600000L)
+            .scheduledAtHour(hour)
+            .scheduledAtMinute(minute)
+            .build()
+        // when
+        store.init()
+        store.accept(Intent.OnScheduleTime(hour, minute, true))
+        store.accept(Intent.OnScheduleDate(newDate))
+        store.accept(Intent.SendStatus(bundle))
+        // then
+        assertThat(labels.count { it is Label.ScheduledStatusSent }).isEqualTo(1)
+    }
+
+    @Test
+    fun `SendStatus should throw an error on failure`() = runTest {
+        // given
+        val bundle = NewStatusBundle.Builder().status("Test").build()
+        // when
+        store.init()
+        api.shouldThrowException = true
+        store.accept(Intent.SendStatus(bundle))
+        // then
+        assertThat(labels.count { it is Label.ErrorCaught }).isEqualTo(1)
     }
 
     override fun createStore(): Store<Intent, State, Label> =

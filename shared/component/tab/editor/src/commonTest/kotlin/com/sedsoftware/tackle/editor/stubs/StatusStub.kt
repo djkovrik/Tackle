@@ -56,7 +56,6 @@ internal object StatusStub {
             applicationId = 123,
             idempotency = "kek",
             withRateLimit = false,
-            mediaAttachments = emptyList(),
         )
     )
 }

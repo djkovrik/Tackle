@@ -278,6 +278,70 @@ class EditorTabComponentTest : ComponentTest<EditorTabComponent>() {
         assertThat(editorActiveModel.scheduledDate).isEqualTo(-1L)
     }
 
+    @Test
+    fun `onSendButtonClicked should send new status`() = runTest {
+        // given
+        val text = "Status text"
+        component.onTextInput(text, text.length to text.length)
+        component.warning.onTextInput("Warning")
+        component.warning.toggleComponentVisibility()
+
+        val image = PlatformFileWrapper(
+            name = "normal.jpg",
+            extension = "jpg",
+            path = "",
+            mimeType = "image/jpeg",
+            size = 12345L,
+            sizeLabel = "",
+            readBytes = { ByteArray(0) },
+        )
+
+        val files = listOf(
+            image.copy(name = "test1.jpg"),
+        )
+        component.attachments.updateInstanceConfig(InstanceStub.config)
+        component.poll.updateInstanceConfig(InstanceStub.config)
+        component.attachments.onFilesSelectedWrapped(files)
+        // when
+        component.onSendButtonClicked()
+        // then
+        assertThat(editorActiveModel.statusText).isEmpty()
+        assertThat(attachmentsActiveModel.attachments).isEmpty()
+    }
+
+    @Test
+    fun `onSendButtonClicked should send new scheduled status`() = runTest {
+        // given
+        val text = "Status text"
+        component.onTextInput(text, text.length to text.length)
+        component.warning.onTextInput("Warning")
+        component.warning.toggleComponentVisibility()
+
+        val image = PlatformFileWrapper(
+            name = "normal.jpg",
+            extension = "jpg",
+            path = "",
+            mimeType = "image/jpeg",
+            size = 12345L,
+            sizeLabel = "",
+            readBytes = { ByteArray(0) },
+        )
+
+        val files = listOf(
+            image.copy(name = "test1.jpg"),
+        )
+        component.attachments.updateInstanceConfig(InstanceStub.config)
+        component.poll.updateInstanceConfig(InstanceStub.config)
+        component.attachments.onFilesSelectedWrapped(files)
+        component.onScheduleDateSelected(1231819497600000L)
+        component.onScheduleTimeSelected(12, 12, true)
+        // when
+        component.onSendButtonClicked()
+        // then
+        assertThat(editorActiveModel.statusText).isEmpty()
+        assertThat(attachmentsActiveModel.attachments).isEmpty()
+    }
+
     override fun createComponent(): EditorTabComponentDefault =
         EditorTabComponentDefault(
             componentContext = DefaultComponentContext(lifecycle),
