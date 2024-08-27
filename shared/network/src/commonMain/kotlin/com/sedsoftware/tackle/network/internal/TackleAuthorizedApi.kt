@@ -211,8 +211,8 @@ internal class TackleAuthorizedApi(
             authenticated = true,
             responseMapper = ScheduledStatusMapper::map,
         ) {
-            val scheduledDate = DateTimeUtils.getDateTimeFromPickers(bundle.scheduledAtDate, bundle.scheduledAtHour, bundle.scheduledAtHour)
-            val convertedDate = DateTimeUtils.getAsDateTimeUTC(scheduledDate).format(LocalDateTime.Formats.ISO)
+            val scheduledAt = DateTimeUtils.getDateTimeFromPickers(bundle.scheduledAtDate, bundle.scheduledAtHour, bundle.scheduledAtMinute)
+            val convertedDate = DateTimeUtils.getAsDateTimeUTC(scheduledAt).format(LocalDateTime.Formats.ISO)
 
             headers {
                 append("Idempotency-Key", "${bundle.hashCode()}")

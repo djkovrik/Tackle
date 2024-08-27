@@ -26,8 +26,10 @@ import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock.System
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 import kotlin.coroutines.CoroutineContext
+import kotlin.time.Duration.Companion.minutes
 
 internal class EditorTabStoreProvider(
     private val storeFactory: StoreFactory,
@@ -70,7 +72,9 @@ internal class EditorTabStoreProvider(
                 }
 
                 onAction<Action.InitCurrentTime> {
-                    dispatch(Msg.CurrentTimeLoaded(todayDateTime.hour, todayDateTime.minute))
+                    val timeZone = TimeZone.currentSystemDefault()
+                    val target = todayDateTime.toInstant(timeZone).plus(SCHEDULED_POST_GAP.minutes).toLocalDateTime(timeZone)
+                    dispatch(Msg.CurrentTimeLoaded(target.hour, target.minute))
                 }
 
                 onAction<Action.CheckForInputHelper> {
@@ -277,10 +281,7 @@ internal class EditorTabStoreProvider(
                     is Msg.StatusSent -> copy(
                         statusText = "",
                         statusTextSelection = (0 to 0),
-                        statusCharactersLeft = -1,
-                        statusCharactersLimit = -1,
-                        instanceInfo = Instance.empty(),
-                        instanceInfoLoaded = false,
+                        statusCharactersLeft = statusCharactersLimit,
                         suggestions = emptyList(),
                         currentSuggestionRequest = EditorInputHintRequest.None,
                         datePickerVisible = false,
@@ -322,4 +323,8 @@ internal class EditorTabStoreProvider(
 
     private fun Msg.TextInput.exceedTheLimit(limit: Int): Boolean = limit - text.length < 0
     private fun Msg.TextInput.underTheLimit(limit: Int): Boolean = !exceedTheLimit(limit)
+
+    private companion object {
+        const val SCHEDULED_POST_GAP = 10
+    }
 }

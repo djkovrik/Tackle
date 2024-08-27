@@ -83,6 +83,7 @@ import kotlinx.datetime.toLocalDateTime
 import org.jetbrains.compose.resources.stringResource
 import tackle.shared.compose.generated.resources.Res
 import tackle.shared.compose.generated.resources.editor_input_hint
+import kotlin.time.Duration.Companion.hours
 
 @Composable
 internal fun EditorTabContent(
@@ -93,8 +94,8 @@ internal fun EditorTabContent(
         System.now().toLocalDateTime(timeZone = TimeZone.currentSystemDefault())
     }
 
-    val todayMillis: Long by lazy {
-        System.now().toEpochMilliseconds()
+    val thresholdMillis: Long by lazy {
+        System.now().minus(24.hours).toEpochMilliseconds()
     }
 
     val editorModel: EditorTabComponent.Model by component.model.subscribeAsState()
@@ -121,7 +122,7 @@ internal fun EditorTabContent(
             }
 
             override fun isSelectableDate(utcTimeMillis: Long): Boolean {
-                return utcTimeMillis >= todayMillis
+                return utcTimeMillis >= thresholdMillis
             }
         }
     )

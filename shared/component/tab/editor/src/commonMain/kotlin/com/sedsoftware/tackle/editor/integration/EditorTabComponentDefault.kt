@@ -230,7 +230,10 @@ class EditorTabComponentDefault(
     }
 
     private fun applyMediaIds(builder: NewStatusBundle.Builder): NewStatusBundle.Builder {
-        val uploadedFiles = attachmentsModel.attachments.filter { it.serverCopy != null }.map { it.id }
+        val uploadedFiles = attachmentsModel.attachments
+            .filter { it.serverCopy != null && !it.serverCopy?.id.isNullOrEmpty() }
+            .map { it.serverCopy?.id.orEmpty() }
+
         return if (uploadedFiles.isNotEmpty()) {
             builder.mediaIds(uploadedFiles)
         } else {
