@@ -32,11 +32,11 @@ fun TackleTheme(
             colorScheme = if (isDark) DarkColorScheme else LightColorScheme,
             typography = TackleFonts.Typography(),
             shapes = Shapes(
-                extraSmall = RoundedCornerShape(4.dp),
-                small = RoundedCornerShape(6.dp),
-                medium = RoundedCornerShape(8.dp),
-                large = RoundedCornerShape(10.dp),
-                extraLarge = RoundedCornerShape(12.dp)
+                extraSmall = RoundedCornerShape(size = 6.dp),
+                small = RoundedCornerShape(size = 6.dp),
+                medium = RoundedCornerShape(size = 8.dp),
+                large = RoundedCornerShape(size = 10.dp),
+                extraLarge = RoundedCornerShape(size = 12.dp)
             ),
             content = {
                 Surface(color = MaterialTheme.colorScheme.background) {

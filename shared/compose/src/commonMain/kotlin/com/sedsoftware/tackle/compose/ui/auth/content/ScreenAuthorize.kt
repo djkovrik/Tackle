@@ -37,7 +37,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.sedsoftware.tackle.auth.AuthComponent
-import com.sedsoftware.tackle.compose.custom.CustomOutlinedTextField
+import com.sedsoftware.tackle.compose.widget.TackleTextField
 import com.sedsoftware.tackle.compose.custom.LoadingDotsText
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -98,13 +98,12 @@ internal fun ScreenAuthorize(
                 .weight(weight = 0.5f)
         ) {
             Column(modifier = modifier.width(width = inputAndInfoWidth)) {
-                CustomOutlinedTextField(
+                TackleTextField(
                     value = model.textInput,
                     onValueChange = onTextInput,
                     textStyle = MaterialTheme.typography.bodyLarge.copy(
                         color = MaterialTheme.colorScheme.onBackground,
                     ),
-                    shape = MaterialTheme.shapes.large,
                     maxLines = 1,
                     singleLine = true,
                     isError = model.isServerInfoError,

@@ -21,7 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.sedsoftware.tackle.compose.custom.CustomOutlinedTextField
+import com.sedsoftware.tackle.compose.widget.TackleTextField
 import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
 import com.sedsoftware.tackle.editor.poll.model.PollChoiceOption
 import org.jetbrains.compose.resources.painterResource
@@ -43,7 +43,7 @@ internal fun CustomPollChoice(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier,
     ) {
-        CustomOutlinedTextField(
+        TackleTextField(
             value = option.text,
             onValueChange = { onTextInput.invoke(option.id, it) },
             textStyle = MaterialTheme.typography.bodyMedium,
