@@ -5,6 +5,7 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,6 +27,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.sedsoftware.tackle.compose.extension.alsoIf
 import com.sedsoftware.tackle.compose.extension.clickableOnce
@@ -44,6 +46,7 @@ internal fun TackleIconButton(
     enabled: Boolean = true,
     containerColor: Color = MaterialTheme.colorScheme.secondaryContainer,
     contentColor: Color = MaterialTheme.colorScheme.onSecondaryContainer,
+    borderWidth: Dp = 0.dp,
     onClick: () -> Unit = {},
 ) {
     val animatedAlpha: Float by animateFloatAsState(
@@ -62,6 +65,7 @@ internal fun TackleIconButton(
             enabled = enabled,
             containerColor = containerColor,
             contentColor = contentColor,
+            borderWidth = borderWidth,
             animatedAlpha = animatedAlpha,
             onClick = onClick,
         )
@@ -72,6 +76,7 @@ internal fun TackleIconButton(
             enabled = enabled,
             containerColor = containerColor,
             contentColor = contentColor,
+            borderWidth = borderWidth,
             animatedAlpha = animatedAlpha,
             onClick = onClick,
         )
@@ -85,6 +90,7 @@ private fun IconButton(
     enabled: Boolean = true,
     containerColor: Color = MaterialTheme.colorScheme.primaryContainer,
     contentColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
+    borderWidth: Dp = 0.dp,
     animatedAlpha: Float = 1f,
     onClick: () -> Unit = {},
 ) {
@@ -93,7 +99,15 @@ private fun IconButton(
         modifier = modifier
             .size(size = BUTTON_SIZE.dp)
             .clip(shape = CircleShape)
-            .background(color = containerColor, shape = CircleShape)
+            .background(
+                color = if (borderWidth != 0.dp) Color.Transparent else containerColor,
+                shape = CircleShape
+            )
+            .border(
+                width = borderWidth,
+                color = if (borderWidth != 0.dp) containerColor else Color.Transparent,
+                shape = CircleShape,
+            )
             .alsoIf(
                 enabled,
                 Modifier.clickableOnce(onClick = onClick)
@@ -118,6 +132,7 @@ private fun IconButtonWithText(
     enabled: Boolean = true,
     containerColor: Color = MaterialTheme.colorScheme.primaryContainer,
     contentColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
+    borderWidth: Dp = 0.dp,
     animatedAlpha: Float = 1f,
     onClick: () -> Unit = {},
 ) {
@@ -131,7 +146,15 @@ private fun IconButtonWithText(
                 enabled,
                 Modifier.clickableOnce(onClick = onClick)
             )
-            .background(color = containerColor)
+            .background(
+                color = if (borderWidth != 0.dp) Color.Transparent else containerColor,
+                shape = CircleShape,
+            )
+            .border(
+                width = borderWidth,
+                color = if (borderWidth != 0.dp) containerColor else Color.Transparent,
+                shape = CircleShape,
+            )
             .padding(horizontal = 16.dp)
     ) {
         Icon(
@@ -186,7 +209,18 @@ private fun TackleIconButtonPreviewContent() {
         )
         Spacer(modifier = Modifier.height(height = 8.dp))
         TackleIconButton(
+            iconRes = Res.drawable.editor_send,
+            borderWidth = 1.dp
+        )
+        Spacer(modifier = Modifier.height(height = 8.dp))
+        TackleIconButton(
             iconRes = Res.drawable.editor_language,
+            additionalText = "English"
+        )
+        Spacer(modifier = Modifier.height(height = 8.dp))
+        TackleIconButton(
+            iconRes = Res.drawable.editor_language,
+            borderWidth = 1.dp,
             additionalText = "English"
         )
         Spacer(modifier = Modifier.height(height = 8.dp))
