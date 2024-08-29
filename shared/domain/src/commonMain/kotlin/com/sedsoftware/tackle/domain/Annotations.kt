@@ -1,5 +1,5 @@
 @file:Suppress("MatchingDeclarationName")
 
-package com.sedsoftware.tackle.utils
+package com.sedsoftware.tackle.domain
 
 annotation class StoreCreate

@@ -10,7 +10,7 @@ import com.sedsoftware.tackle.editor.poll.model.PollChoiceOption
 import com.sedsoftware.tackle.editor.poll.model.PollDuration
 import com.sedsoftware.tackle.editor.poll.store.EditorPollStore.Intent
 import com.sedsoftware.tackle.editor.poll.store.EditorPollStore.State
-import com.sedsoftware.tackle.utils.StoreCreate
+import com.sedsoftware.tackle.domain.StoreCreate
 import com.sedsoftware.tackle.utils.generateUUID
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

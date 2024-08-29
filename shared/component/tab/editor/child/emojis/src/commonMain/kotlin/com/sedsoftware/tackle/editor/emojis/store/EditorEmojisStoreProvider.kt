@@ -9,7 +9,7 @@ import com.sedsoftware.tackle.editor.emojis.domain.EditorEmojisManager
 import com.sedsoftware.tackle.editor.emojis.store.EditorEmojisStore.Intent
 import com.sedsoftware.tackle.editor.emojis.store.EditorEmojisStore.Label
 import com.sedsoftware.tackle.editor.emojis.store.EditorEmojisStore.State
-import com.sedsoftware.tackle.utils.StoreCreate
+import com.sedsoftware.tackle.domain.StoreCreate
 import com.sedsoftware.tackle.utils.extension.unwrap
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOn

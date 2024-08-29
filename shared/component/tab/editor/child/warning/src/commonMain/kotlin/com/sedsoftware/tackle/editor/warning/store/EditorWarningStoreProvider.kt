@@ -5,7 +5,7 @@ import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.coroutineExecutorFactory
 import com.sedsoftware.tackle.editor.warning.store.EditorWarningStore.Intent
 import com.sedsoftware.tackle.editor.warning.store.EditorWarningStore.State
-import com.sedsoftware.tackle.utils.StoreCreate
+import com.sedsoftware.tackle.domain.StoreCreate
 import kotlin.coroutines.CoroutineContext
 
 internal class EditorWarningStoreProvider(

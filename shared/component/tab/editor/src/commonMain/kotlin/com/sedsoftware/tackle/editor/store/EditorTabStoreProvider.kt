@@ -17,7 +17,7 @@ import com.sedsoftware.tackle.editor.model.EditorInputHintRequest
 import com.sedsoftware.tackle.editor.store.EditorTabStore.Intent
 import com.sedsoftware.tackle.editor.store.EditorTabStore.Label
 import com.sedsoftware.tackle.editor.store.EditorTabStore.State
-import com.sedsoftware.tackle.utils.StoreCreate
+import com.sedsoftware.tackle.domain.StoreCreate
 import com.sedsoftware.tackle.utils.extension.unwrap
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay

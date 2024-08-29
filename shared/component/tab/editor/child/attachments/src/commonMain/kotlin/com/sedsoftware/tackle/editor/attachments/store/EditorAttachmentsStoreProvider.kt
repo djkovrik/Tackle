@@ -19,7 +19,7 @@ import com.sedsoftware.tackle.editor.attachments.model.UploadProgress
 import com.sedsoftware.tackle.editor.attachments.store.EditorAttachmentsStore.Intent
 import com.sedsoftware.tackle.editor.attachments.store.EditorAttachmentsStore.Label
 import com.sedsoftware.tackle.editor.attachments.store.EditorAttachmentsStore.State
-import com.sedsoftware.tackle.utils.StoreCreate
+import com.sedsoftware.tackle.domain.StoreCreate
 import com.sedsoftware.tackle.utils.extension.unwrap
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.catch

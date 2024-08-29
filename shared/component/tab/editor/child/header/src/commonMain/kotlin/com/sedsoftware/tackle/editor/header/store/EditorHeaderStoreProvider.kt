@@ -11,7 +11,7 @@ import com.sedsoftware.tackle.editor.header.model.EditorProfileData
 import com.sedsoftware.tackle.editor.header.store.EditorHeaderStore.Intent
 import com.sedsoftware.tackle.editor.header.store.EditorHeaderStore.Label
 import com.sedsoftware.tackle.editor.header.store.EditorHeaderStore.State
-import com.sedsoftware.tackle.utils.StoreCreate
+import com.sedsoftware.tackle.domain.StoreCreate
 import com.sedsoftware.tackle.utils.extension.unwrap
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
