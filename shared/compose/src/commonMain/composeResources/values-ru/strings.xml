@@ -39,11 +39,12 @@
     <!-- Main component -->
     <string name="main_tab_home">Главная</string>
     <string name="main_tab_explore">Обзор</string>
-    <string name="main_tab_editor">Новый пост</string>
     <string name="main_tab_publications">Публикации</string>
     <string name="main_tab_notifications">Уведомления</string>
+    <string name="main_tab_profile">Профиль</string>
 
     <!-- Editor component -->
+    <string name="editor_title">Новый пост</string>
     <string name="editor_input_hint">О чем думаете?</string>
     <string name="editor_warning_hint">Предупреждение о контенте</string>
     <string name="editor_language_default">По умолчанию</string>

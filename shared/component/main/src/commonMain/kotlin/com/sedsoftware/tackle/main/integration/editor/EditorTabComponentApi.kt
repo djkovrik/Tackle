@@ -9,13 +9,13 @@ import com.sedsoftware.tackle.domain.model.PlatformFileWrapper
 import com.sedsoftware.tackle.domain.model.ScheduledStatus
 import com.sedsoftware.tackle.domain.model.Search
 import com.sedsoftware.tackle.domain.model.Status
-import com.sedsoftware.tackle.editor.EditorTabComponentGateways
+import com.sedsoftware.tackle.editor.EditorComponentGateways
 
 @Suppress("UnusedPrivateProperty")
 internal class EditorTabComponentApi(
     private val unauthorizedApi: UnauthorizedApi,
     private val authorizedApi: AuthorizedApi,
-) : EditorTabComponentGateways.Api {
+) : EditorComponentGateways.Api {
 
     override suspend fun getServerEmojis(): List<CustomEmoji> = unauthorizedApi.getServerEmojis()
 

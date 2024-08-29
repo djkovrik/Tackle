@@ -1,11 +1,11 @@
 package com.sedsoftware.tackle.main.integration.editor
 
 import com.sedsoftware.tackle.domain.api.TackleSettings
-import com.sedsoftware.tackle.editor.EditorTabComponentGateways
+import com.sedsoftware.tackle.editor.EditorComponentGateways
 
 internal class EditorTabComponentSettings(
     private val settings: TackleSettings,
-) : EditorTabComponentGateways.Settings {
+) : EditorComponentGateways.Settings {
 
 
     override val ownAvatar: String

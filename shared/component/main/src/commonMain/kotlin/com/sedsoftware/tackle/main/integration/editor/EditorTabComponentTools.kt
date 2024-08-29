@@ -2,11 +2,11 @@ package com.sedsoftware.tackle.main.integration.editor
 
 import com.sedsoftware.tackle.domain.api.TacklePlatformTools
 import com.sedsoftware.tackle.domain.model.AppLocale
-import com.sedsoftware.tackle.editor.EditorTabComponentGateways
+import com.sedsoftware.tackle.editor.EditorComponentGateways
 
 internal class EditorTabComponentTools(
     private val platformTools: TacklePlatformTools,
-) : EditorTabComponentGateways.Tools {
+) : EditorComponentGateways.Tools {
 
     override fun getCurrentLocale(): AppLocale =
         platformTools.getCurrentLocale()

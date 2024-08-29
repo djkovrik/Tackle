@@ -19,15 +19,15 @@ import com.sedsoftware.tackle.compose.model.NavigationBarConfig
 import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
 import com.sedsoftware.tackle.main.model.TackleNavigationTab
 import tackle.shared.compose.generated.resources.Res
-import tackle.shared.compose.generated.resources.main_tab_editor
 import tackle.shared.compose.generated.resources.main_tab_explore
 import tackle.shared.compose.generated.resources.main_tab_home
 import tackle.shared.compose.generated.resources.main_tab_notifications
+import tackle.shared.compose.generated.resources.main_tab_profile
 import tackle.shared.compose.generated.resources.main_tab_publications
-import tackle.shared.compose.generated.resources.tab_editor
 import tackle.shared.compose.generated.resources.tab_explore
 import tackle.shared.compose.generated.resources.tab_home
 import tackle.shared.compose.generated.resources.tab_notifications
+import tackle.shared.compose.generated.resources.tab_profile
 import tackle.shared.compose.generated.resources.tab_publications
 
 @Composable
@@ -38,12 +38,8 @@ internal fun BottomNavigationBar(
         containerColor = MaterialTheme.colorScheme.background,
         iconColorNormal = MaterialTheme.colorScheme.secondary,
         iconColorSelected = MaterialTheme.colorScheme.primary,
-        buttonIconColorNormal = MaterialTheme.colorScheme.inverseOnSurface,
-        buttonIconColorSelected = MaterialTheme.colorScheme.inverseOnSurface,
-        buttonBackgroundColorNormal = MaterialTheme.colorScheme.secondary,
-        buttonBackgroundColorSelected = MaterialTheme.colorScheme.primary,
-        iconSizeNormal = 34.dp,
-        iconSizeSelected = 38.dp,
+        iconSizeNormal = 30.dp,
+        iconSizeSelected = 36.dp,
     ),
     itemsCount: Int = TackleNavigationTab.entries.size,
     onTabClick: (TackleNavigationTab) -> Unit = {},
@@ -52,7 +48,7 @@ internal fun BottomNavigationBar(
         val maxWidth: Dp = this.maxWidth
 
         val animatedIndicatorOffset: Dp by animateDpAsState(
-            targetValue = (maxWidth / itemsCount) * activeTab.index + (-3.5 + activeTab.index * 1.5).dp,
+            targetValue = (maxWidth / itemsCount) * activeTab.index,
             animationSpec = spring(
                 dampingRatio = 1f,
                 stiffness = Spring.StiffnessMediumLow,
@@ -89,16 +85,6 @@ internal fun BottomNavigationBar(
                 )
 
                 BottomNavigationBarItem(
-                    baseTab = TackleNavigationTab.EDITOR,
-                    activeTab = activeTab,
-                    config = config,
-                    iconRes = Res.drawable.tab_editor,
-                    contentDescriptionRes = Res.string.main_tab_editor,
-                    showAsButton = true,
-                    onTabClick = onTabClick,
-                )
-
-                BottomNavigationBarItem(
                     baseTab = TackleNavigationTab.PUBLICATIONS,
                     activeTab = activeTab,
                     config = config,
@@ -113,6 +99,15 @@ internal fun BottomNavigationBar(
                     config = config,
                     iconRes = Res.drawable.tab_notifications,
                     contentDescriptionRes = Res.string.main_tab_notifications,
+                    onTabClick = onTabClick,
+                )
+
+                BottomNavigationBarItem(
+                    baseTab = TackleNavigationTab.PROFILE,
+                    activeTab = activeTab,
+                    config = config,
+                    iconRes = Res.drawable.tab_profile,
+                    contentDescriptionRes = Res.string.main_tab_profile,
                     onTabClick = onTabClick,
                 )
             }
@@ -165,22 +160,6 @@ private fun BottomNavigationBarExplorePreviewDark() {
 
 @Composable
 @Preview
-private fun BottomNavigationBarEditorPreviewLight() {
-    TackleScreenPreview {
-        BottomNavigationBar(activeTab = TackleNavigationTab.EDITOR)
-    }
-}
-
-@Composable
-@Preview
-private fun BottomNavigationBarEditorPreviewDark() {
-    TackleScreenPreview(darkTheme = true) {
-        BottomNavigationBar(activeTab = TackleNavigationTab.EDITOR)
-    }
-}
-
-@Composable
-@Preview
 private fun BottomNavigationBarPublicationsPreviewLight() {
     TackleScreenPreview {
         BottomNavigationBar(activeTab = TackleNavigationTab.PUBLICATIONS)
@@ -208,5 +187,21 @@ private fun BottomNavigationBarNotificationsPreviewLight() {
 private fun BottomNavigationBarNotificationsPreviewDark() {
     TackleScreenPreview(darkTheme = true) {
         BottomNavigationBar(activeTab = TackleNavigationTab.NOTIFICATIONS)
+    }
+}
+
+@Composable
+@Preview
+private fun BottomNavigationBarProfilePreviewLight() {
+    TackleScreenPreview {
+        BottomNavigationBar(activeTab = TackleNavigationTab.PROFILE)
+    }
+}
+
+@Composable
+@Preview
+private fun BottomNavigationBarProfilePreviewDark() {
+    TackleScreenPreview(darkTheme = true) {
+        BottomNavigationBar(activeTab = TackleNavigationTab.PROFILE)
     }
 }

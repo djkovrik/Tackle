@@ -37,7 +37,7 @@ import tackle.shared.compose.generated.resources.Res
 import tackle.shared.compose.generated.resources.editor_back
 import tackle.shared.compose.generated.resources.editor_language
 import tackle.shared.compose.generated.resources.editor_send
-import tackle.shared.compose.generated.resources.main_tab_editor
+import tackle.shared.compose.generated.resources.editor_title
 
 @Composable
 internal fun EditorHeaderContent(
@@ -72,7 +72,7 @@ internal fun EditorHeaderContent(
                 }
 
                 Text(
-                    text = stringResource(resource = Res.string.main_tab_editor),
+                    text = stringResource(resource = Res.string.editor_title),
                     color = MaterialTheme.colorScheme.primary,
                     style = MaterialTheme.typography.headlineSmall,
                 )

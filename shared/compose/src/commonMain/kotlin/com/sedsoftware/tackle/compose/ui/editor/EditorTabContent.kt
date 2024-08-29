@@ -60,12 +60,12 @@ import com.sedsoftware.tackle.compose.ui.editor.warning.EditorWarningContent
 import com.sedsoftware.tackle.domain.model.AppLocale
 import com.sedsoftware.tackle.domain.model.PlatformFileWrapper
 import com.sedsoftware.tackle.domain.model.type.StatusVisibility
-import com.sedsoftware.tackle.editor.EditorTabComponent
+import com.sedsoftware.tackle.editor.EditorComponent
 import com.sedsoftware.tackle.editor.attachments.EditorAttachmentsComponent
 import com.sedsoftware.tackle.editor.attachments.model.AttachedFile
 import com.sedsoftware.tackle.editor.emojis.EditorEmojisComponent
 import com.sedsoftware.tackle.editor.header.EditorHeaderComponent
-import com.sedsoftware.tackle.editor.integration.EditorTabComponentPreview
+import com.sedsoftware.tackle.editor.integration.EditorComponentPreview
 import com.sedsoftware.tackle.editor.model.EditorInputHintItem
 import com.sedsoftware.tackle.editor.poll.EditorPollComponent
 import com.sedsoftware.tackle.editor.poll.model.PollChoiceOption
@@ -87,7 +87,7 @@ import kotlin.time.Duration.Companion.hours
 
 @Composable
 internal fun EditorTabContent(
-    component: EditorTabComponent,
+    component: EditorComponent,
     modifier: Modifier = Modifier,
 ) {
     val todayDateTime: LocalDateTime by lazy {
@@ -98,7 +98,7 @@ internal fun EditorTabContent(
         System.now().minus(24.hours).toEpochMilliseconds()
     }
 
-    val editorModel: EditorTabComponent.Model by component.model.subscribeAsState()
+    val editorModel: EditorComponent.Model by component.model.subscribeAsState()
     val attachmentsModel: EditorAttachmentsComponent.Model by component.attachments.model.subscribeAsState()
     val emojisModel: EditorEmojisComponent.Model by component.emojis.model.subscribeAsState()
     val headerModel: EditorHeaderComponent.Model by component.header.model.subscribeAsState()
@@ -412,7 +412,7 @@ internal fun EditorTabContent(
 private fun EditorTabContentPreviewIdle() {
     TackleScreenPreview {
         EditorTabContent(
-            component = EditorTabComponentPreview(
+            component = EditorComponentPreview(
                 attachmentsButtonAvailable = true,
                 emojisButtonAvailable = true,
                 pollButtonAvailable = true,
@@ -433,7 +433,7 @@ private fun EditorTabContentPreviewAttachments() {
 
     TackleScreenPreview {
         EditorTabContent(
-            component = EditorTabComponentPreview(
+            component = EditorComponentPreview(
                 emojisButtonAvailable = true,
                 pollButtonAvailable = true,
                 avatar = "https://mastodon.social/avatars/original/missing.png",
@@ -459,7 +459,7 @@ private fun EditorTabContentPreviewAttachments() {
 private fun EditorTabContentPreviewPoll() {
     TackleScreenPreview {
         EditorTabContent(
-            component = EditorTabComponentPreview(
+            component = EditorComponentPreview(
                 attachmentsButtonAvailable = false,
                 emojisButtonAvailable = true,
                 avatar = "https://mastodon.social/avatars/original/missing.png",
@@ -488,7 +488,7 @@ private fun EditorTabContentPreviewPoll() {
 private fun EditorTabContentPreviewWarning() {
     TackleScreenPreview {
         EditorTabContent(
-            component = EditorTabComponentPreview(
+            component = EditorComponentPreview(
                 attachmentsButtonAvailable = true,
                 emojisButtonAvailable = true,
                 pollButtonAvailable = true,
@@ -508,7 +508,7 @@ private fun EditorTabContentPreviewWarning() {
 private fun EditorTabContentAccountAndHashTagPreview() {
     TackleScreenPreview {
         EditorTabContent(
-            component = EditorTabComponentPreview(
+            component = EditorComponentPreview(
                 attachmentsButtonAvailable = true,
                 emojisButtonAvailable = true,
                 pollButtonAvailable = true,
@@ -533,7 +533,7 @@ private fun EditorTabContentAccountAndHashTagPreview() {
 private fun EditorTabContentPreviewEverything() {
     TackleScreenPreview {
         EditorTabContent(
-            component = EditorTabComponentPreview(
+            component = EditorComponentPreview(
                 emojisButtonAvailable = true,
                 avatar = "https://mastodon.social/avatars/original/missing.png",
                 nickname = "djkovrik",

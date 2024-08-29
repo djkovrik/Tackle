@@ -14,21 +14,17 @@ import com.sedsoftware.tackle.domain.api.TackleDispatchers
 import com.sedsoftware.tackle.domain.api.TacklePlatformTools
 import com.sedsoftware.tackle.domain.api.TackleSettings
 import com.sedsoftware.tackle.domain.api.UnauthorizedApi
-import com.sedsoftware.tackle.editor.EditorTabComponent
-import com.sedsoftware.tackle.editor.integration.EditorTabComponentDefault
 import com.sedsoftware.tackle.explore.ExploreTabComponent
 import com.sedsoftware.tackle.explore.integration.ExploreTabComponentDefault
 import com.sedsoftware.tackle.home.HomeTabComponent
 import com.sedsoftware.tackle.home.integration.HomeTabComponentDefault
 import com.sedsoftware.tackle.main.MainComponent
 import com.sedsoftware.tackle.main.MainComponent.Child
-import com.sedsoftware.tackle.main.integration.editor.EditorTabComponentApi
-import com.sedsoftware.tackle.main.integration.editor.EditorTabComponentDatabase
-import com.sedsoftware.tackle.main.integration.editor.EditorTabComponentSettings
-import com.sedsoftware.tackle.main.integration.editor.EditorTabComponentTools
 import com.sedsoftware.tackle.main.model.TackleNavigationTab
 import com.sedsoftware.tackle.notifications.NotificationsTabComponent
 import com.sedsoftware.tackle.notifications.integration.NotificationsTabComponentDefault
+import com.sedsoftware.tackle.profile.ProfileTabComponent
+import com.sedsoftware.tackle.profile.integration.ProfileTabComponentDefault
 import com.sedsoftware.tackle.publications.PublicationsTabComponent
 import com.sedsoftware.tackle.publications.integration.PublicationsTabComponentDefault
 import kotlinx.serialization.Serializable
@@ -38,9 +34,9 @@ class MainComponentDefault internal constructor(
     private val mainComponentOutput: (ComponentOutput) -> Unit,
     private val homeTabComponent: (ComponentContext, (ComponentOutput) -> Unit) -> HomeTabComponent,
     private val exploreTabComponent: (ComponentContext, (ComponentOutput) -> Unit) -> ExploreTabComponent,
-    private val editorTabComponent: (ComponentContext, (ComponentOutput) -> Unit) -> EditorTabComponent,
     private val publicationsTabComponent: (ComponentContext, (ComponentOutput) -> Unit) -> PublicationsTabComponent,
     private val notificationsTabComponent: (ComponentContext, (ComponentOutput) -> Unit) -> NotificationsTabComponent,
+    private val profileTabComponent: (ComponentContext, (ComponentOutput) -> Unit) -> ProfileTabComponent,
 ) : MainComponent, ComponentContext by componentContext {
 
     constructor(
@@ -70,18 +66,6 @@ class MainComponentDefault internal constructor(
                 output = componentOutput,
             )
         },
-        editorTabComponent = { childContext, componentOutput ->
-            EditorTabComponentDefault(
-                componentContext = childContext,
-                storeFactory = storeFactory,
-                api = EditorTabComponentApi(unauthorizedApi, authorizedApi),
-                database = EditorTabComponentDatabase(database),
-                settings = EditorTabComponentSettings(settings),
-                tools = EditorTabComponentTools(platformTools),
-                dispatchers = dispatchers,
-                editorOutput = componentOutput,
-            )
-        },
         publicationsTabComponent = { childContext, componentOutput ->
             PublicationsTabComponentDefault(
                 componentContext = childContext,
@@ -96,6 +80,13 @@ class MainComponentDefault internal constructor(
                 output = componentOutput,
             )
         },
+        profileTabComponent = { childContext, componentOutput ->
+            ProfileTabComponentDefault(
+                componentContext = childContext,
+                storeFactory = storeFactory,
+                output = componentOutput,
+            )
+        },
     )
 
     private val navigation: StackNavigation<Config> = StackNavigation()
@@ -104,7 +95,7 @@ class MainComponentDefault internal constructor(
         childStack(
             source = navigation,
             serializer = Config.serializer(),
-            initialConfiguration = Config.Editor,
+            initialConfiguration = Config.HomeTab,
             handleBackButton = true,
             childFactory = ::createChild,
         )
@@ -113,27 +104,27 @@ class MainComponentDefault internal constructor(
 
     override fun onTabClicked(tab: TackleNavigationTab) {
         when (tab) {
-            TackleNavigationTab.HOME -> navigation.bringToFront(Config.Home)
-            TackleNavigationTab.EXPLORE -> navigation.bringToFront(Config.Explore)
-            TackleNavigationTab.EDITOR -> navigation.bringToFront(Config.Editor)
-            TackleNavigationTab.PUBLICATIONS -> navigation.bringToFront(Config.Publications)
-            TackleNavigationTab.NOTIFICATIONS -> navigation.bringToFront(Config.Notifications)
+            TackleNavigationTab.HOME -> navigation.bringToFront(Config.HomeTab)
+            TackleNavigationTab.EXPLORE -> navigation.bringToFront(Config.ExploreTab)
+            TackleNavigationTab.PUBLICATIONS -> navigation.bringToFront(Config.PublicationsTab)
+            TackleNavigationTab.NOTIFICATIONS -> navigation.bringToFront(Config.NotificationsTab)
+            TackleNavigationTab.PROFILE -> navigation.bringToFront(Config.ProfileTab)
         }
     }
 
     private fun createChild(config: Config, componentContext: ComponentContext): Child =
         when (config) {
-            is Config.Home -> Child.TabHome(homeTabComponent(componentContext, ::onTabsOutput))
-            is Config.Explore -> Child.TabExplore(exploreTabComponent(componentContext, ::onTabsOutput))
-            is Config.Editor -> Child.TabEditor(editorTabComponent(componentContext, ::onTabsOutput))
-            is Config.Publications -> Child.TabPublications(publicationsTabComponent(componentContext, ::onTabsOutput))
-            is Config.Notifications -> Child.TabNotifications(notificationsTabComponent(componentContext, ::onTabsOutput))
+            is Config.HomeTab -> Child.HomeTab(homeTabComponent(componentContext, ::onTabsOutput))
+            is Config.ExploreTab -> Child.ExploreTab(exploreTabComponent(componentContext, ::onTabsOutput))
+            is Config.PublicationsTab -> Child.PublicationsTab(publicationsTabComponent(componentContext, ::onTabsOutput))
+            is Config.NotificationsTab -> Child.NotificationsTab(notificationsTabComponent(componentContext, ::onTabsOutput))
+            is Config.ProfileTab -> Child.ProfileTab(profileTabComponent(componentContext, ::onTabsOutput))
         }
 
     private fun onTabsOutput(output: ComponentOutput) {
         when (output) {
-            is ComponentOutput.StatusEditor.StatusPublished -> navigation.bringToFront(Config.Home)
-            is ComponentOutput.StatusEditor.ScheduledStatusPublished -> navigation.bringToFront(Config.Home)
+            is ComponentOutput.StatusEditor.StatusPublished -> navigation.bringToFront(Config.HomeTab)
+            is ComponentOutput.StatusEditor.ScheduledStatusPublished -> navigation.bringToFront(Config.HomeTab)
             else -> mainComponentOutput(output)
         }
     }
@@ -142,18 +133,18 @@ class MainComponentDefault internal constructor(
     private sealed interface Config {
 
         @Serializable
-        data object Home : Config
+        data object HomeTab : Config
 
         @Serializable
-        data object Explore : Config
+        data object ExploreTab : Config
 
         @Serializable
-        data object Editor : Config
+        data object PublicationsTab : Config
 
         @Serializable
-        data object Publications : Config
+        data object NotificationsTab : Config
 
         @Serializable
-        data object Notifications : Config
+        data object ProfileTab : Config
     }
 }

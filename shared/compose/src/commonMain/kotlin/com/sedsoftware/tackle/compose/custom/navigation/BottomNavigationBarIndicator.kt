@@ -34,7 +34,7 @@ internal fun BottomNavigationBarIndicator(
         Column(modifier = Modifier.align(alignment = Alignment.BottomCenter)) {
             Indicator(
                 indicatorColor = indicatorColor,
-                modifier = Modifier.size(size = 8.dp),
+                modifier = Modifier.size(size = 4.dp),
             )
         }
     }
