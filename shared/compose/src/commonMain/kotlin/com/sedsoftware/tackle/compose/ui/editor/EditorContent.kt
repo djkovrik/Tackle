@@ -5,11 +5,16 @@ import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -20,6 +25,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SelectableDates
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
@@ -86,7 +92,7 @@ import tackle.shared.compose.generated.resources.editor_input_hint
 import kotlin.time.Duration.Companion.hours
 
 @Composable
-internal fun EditorTabContent(
+internal fun EditorContent(
     component: EditorComponent,
     modifier: Modifier = Modifier,
 ) {
@@ -158,179 +164,185 @@ internal fun EditorTabContent(
         append(editorModel.statusText.substring(lastIndex))
     }
 
-    Column {
-        // Header
-        EditorHeaderContent(
-            model = headerModel,
-            modifier = modifier,
-            onLocalePickerRequest = { component.header.onLocalePickerRequested(true) },
-            onVisibilityPickerRequest = { component.header.onStatusVisibilityPickerRequested(true) },
-            onSendClick = { component.onSendButtonClicked() },
-        )
-
-        // Scrollable part
-        LazyColumn(
-            verticalArrangement = Arrangement.Top,
-            modifier = modifier.weight(weight = 1f, fill = true),
+    Scaffold(
+        modifier = modifier.imePadding(),
+        contentWindowInsets = WindowInsets(0, 0, 0, 0)
+    ) { scaffoldPadding: PaddingValues ->
+        Column(
+            modifier = Modifier
+                .padding(paddingValues = scaffoldPadding)
+                .consumeWindowInsets(paddingValues = scaffoldPadding)
+                .systemBarsPadding(),
         ) {
-            item {
-                // Scheduled post
-                AnimatedVisibility(visible = editorModel.scheduledDateLabel.isNotEmpty()) {
-                    ScheduledPostDate(
-                        text = editorModel.scheduledDateLabel,
-                        onClose = component::resetScheduledDateTime,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp)
-                            .padding(bottom = 4.dp),
-                    )
-                }
-            }
+            // Header
+            EditorHeaderContent(
+                model = headerModel,
+                modifier = modifier,
+                onLocalePickerRequest = { component.header.onLocalePickerRequested(true) },
+                onVisibilityPickerRequest = { component.header.onStatusVisibilityPickerRequested(true) },
+                onSendClick = { component.onSendButtonClicked() },
+                onBackClick = { component.onBackButtonClicked() },
+            )
 
-            // Warning
-            item {
-                if (warningModel.warningContentVisible) {
-                    EditorWarningContent(
-                        text = warningModel.text,
-                        modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
-                        onTextInput = component.warning::onTextInput,
-                        onTextClear = component.warning::onClearTextInput,
-                    )
-                }
-            }
-
-            // Input
-            item {
-                OutlinedTextField(
-                    value = TextFieldValue(
-                        annotatedString = annotatedText,
-                        selection = TextRange(
-                            start = editorModel.statusTextSelection.first,
-                            end = editorModel.statusTextSelection.second
-                        ),
-                    ),
-                    onValueChange = { component.onTextInput(it.text, it.selection.min to it.selection.max) },
-                    maxLines = 6,
-                    textStyle = MaterialTheme.typography.bodyLarge,
-                    placeholder = {
-                        Text(
-                            text = stringResource(resource = Res.string.editor_input_hint),
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurface.copy(
-                                alpha = 0.5f,
-                            ),
+            // Scrollable part
+            LazyColumn(
+                verticalArrangement = Arrangement.Top,
+                modifier = modifier.weight(weight = 1f, fill = true),
+            ) {
+                item {
+                    // Scheduled post
+                    AnimatedVisibility(visible = editorModel.scheduledDateLabel.isNotEmpty()) {
+                        ScheduledPostDate(
+                            text = editorModel.scheduledDateLabel,
+                            onClose = component::resetScheduledDateTime,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(bottom = 4.dp),
                         )
+                    }
+                }
+
+                // Warning
+                item {
+                    if (warningModel.warningContentVisible) {
+                        EditorWarningContent(
+                            text = warningModel.text,
+                            modifier = Modifier,
+                            onTextInput = component.warning::onTextInput,
+                            onTextClear = component.warning::onClearTextInput,
+                        )
+                    }
+                }
+
+                // Input
+                item {
+                    OutlinedTextField(
+                        value = TextFieldValue(
+                            annotatedString = annotatedText,
+                            selection = TextRange(
+                                start = editorModel.statusTextSelection.first,
+                                end = editorModel.statusTextSelection.second
+                            ),
+                        ),
+                        onValueChange = { component.onTextInput(it.text, it.selection.min to it.selection.max) },
+                        maxLines = 6,
+                        textStyle = MaterialTheme.typography.bodyLarge,
+                        placeholder = {
+                            Text(
+                                text = stringResource(resource = Res.string.editor_input_hint),
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = MaterialTheme.colorScheme.onSurface.copy(
+                                    alpha = 0.5f,
+                                ),
+                            )
+                        },
+                        shape = RoundedCornerShape(size = 8.dp),
+                        colors = OutlinedTextFieldDefaults.colors(
+                            unfocusedBorderColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f),
+                            focusedBorderColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.7f),
+                        ),
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+
+                // Attachments
+                item {
+                    AnimatedVisibility(visible = attachmentsModel.attachmentsContentVisible) {
+                        EditorAttachmentsContent(
+                            model = attachmentsModel,
+                            onDelete = component.attachments::onFileDeleted,
+                            onRetry = component.attachments::onFileRetry,
+                            modifier = Modifier,
+                        )
+                    }
+                }
+
+                // Poll
+                item {
+                    AnimatedVisibility(visible = pollModel.pollContentVisible) {
+                        EditorPollContent(
+                            model = pollModel,
+                            modifier = Modifier,
+                            onAddNewItem = component.poll::onAddPollOptionClick,
+                            onDeleteItem = component.poll::onDeletePollOptionClick,
+                            onMultiselectEnabled = component.poll::onMultiselectEnabled,
+                            onHideTotalsEnabled = component.poll::onHideTotalsEnabled,
+                            onDurationSelected = component.poll::onDurationSelected,
+                            onTextInput = component.poll::onTextInput,
+                            onDurationPickerCall = { component.poll.onDurationPickerRequested(true) },
+                            onDurationPickerClose = { component.poll.onDurationPickerRequested(false) },
+                        )
+                    }
+                }
+            }
+
+            // Hints
+            AnimatedVisibility(visible = editorModel.suggestions.isNotEmpty()) {
+                LazyRow(
+                    modifier = modifier.fillMaxWidth()
+                ) {
+                    items(
+                        items = editorModel.suggestions,
+                        key = { it.hashCode() },
+                    ) { item: EditorInputHintItem ->
+                        when (item) {
+                            is EditorInputHintItem.Account ->
+                                InputHintAccount(
+                                    hint = item,
+                                    onClick = { component.onInputHintSelected(item) },
+                                )
+
+                            is EditorInputHintItem.Emoji ->
+                                InputHintEmoji(
+                                    hint = item,
+                                    onClick = { component.onInputHintSelected(item) },
+                                )
+
+                            is EditorInputHintItem.HashTag ->
+                                InputHintHashTag(
+                                    hint = item,
+                                    onClick = { component.onInputHintSelected(item) },
+                                )
+                        }
+                    }
+                }
+            }
+
+
+            // Toolbar
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .background(color = MaterialTheme.colorScheme.surface),
+            ) {
+                // Toolbar
+                EditorToolbar(
+                    items = buildToolbarState(editorModel, attachmentsModel, emojisModel, pollModel, warningModel),
+                    onClick = { type: EditorToolbarItem.Type ->
+                        when (type) {
+                            EditorToolbarItem.Type.ATTACH -> launcher.launch()
+                            EditorToolbarItem.Type.EMOJIS -> component.onEmojisButtonClicked()
+                            EditorToolbarItem.Type.POLL -> component.onPollButtonClicked()
+                            EditorToolbarItem.Type.WARNING -> component.onWarningButtonClicked()
+                            EditorToolbarItem.Type.SCHEDULE -> component.onScheduleDatePickerRequested(true)
+                        }
                     },
-                    shape = RoundedCornerShape(size = 8.dp),
-                    colors = OutlinedTextFieldDefaults.colors(
-                        unfocusedBorderColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f),
-                        focusedBorderColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.7f),
-                    ),
-                    modifier = Modifier
-                        .padding(start = 16.dp, end = 16.dp, bottom = 8.dp)
-                        .fillMaxWidth()
+                    modifier = Modifier,
+                )
+
+                Spacer(modifier = Modifier.weight(1f, true))
+
+                // Counter
+                Text(
+                    text = "${editorModel.statusCharactersLeft}",
+                    style = MaterialTheme.typography.titleSmall,
+                    color = MaterialTheme.colorScheme.secondary,
+                    modifier = Modifier,
                 )
             }
-
-            // Attachments
-            item {
-                AnimatedVisibility(visible = attachmentsModel.attachmentsContentVisible) {
-                    EditorAttachmentsContent(
-                        model = attachmentsModel,
-                        onDelete = component.attachments::onFileDeleted,
-                        onRetry = component.attachments::onFileRetry,
-                        modifier = Modifier,
-                    )
-                }
-            }
-
-            // Poll
-            item {
-                AnimatedVisibility(visible = pollModel.pollContentVisible) {
-                    EditorPollContent(
-                        model = pollModel,
-                        modifier = Modifier.padding(start = 16.dp, top = 8.dp, end = 8.dp, bottom = 8.dp),
-                        onAddNewItem = component.poll::onAddPollOptionClick,
-                        onDeleteItem = component.poll::onDeletePollOptionClick,
-                        onMultiselectEnabled = component.poll::onMultiselectEnabled,
-                        onHideTotalsEnabled = component.poll::onHideTotalsEnabled,
-                        onDurationSelected = component.poll::onDurationSelected,
-                        onTextInput = component.poll::onTextInput,
-                        onDurationPickerCall = { component.poll.onDurationPickerRequested(true) },
-                        onDurationPickerClose = { component.poll.onDurationPickerRequested(false) },
-                    )
-                }
-            }
-        }
-
-        // Hints
-        AnimatedVisibility(visible = editorModel.suggestions.isNotEmpty()) {
-            LazyRow(
-                modifier = modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 8.dp)
-            ) {
-                items(
-                    items = editorModel.suggestions,
-                    key = { it.hashCode() },
-                ) { item: EditorInputHintItem ->
-                    when (item) {
-                        is EditorInputHintItem.Account ->
-                            InputHintAccount(
-                                hint = item,
-                                onClick = { component.onInputHintSelected(item) },
-                            )
-
-                        is EditorInputHintItem.Emoji ->
-                            InputHintEmoji(
-                                hint = item,
-                                onClick = { component.onInputHintSelected(item) },
-                            )
-
-                        is EditorInputHintItem.HashTag ->
-                            InputHintHashTag(
-                                hint = item,
-                                onClick = { component.onInputHintSelected(item) },
-                            )
-                    }
-                }
-            }
-        }
-
-
-        // Toolbar
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .background(color = MaterialTheme.colorScheme.surface)
-                .padding(start = 8.dp, end = 16.dp, top = 4.dp, bottom = 4.dp),
-        ) {
-            // Toolbar
-            EditorToolbar(
-                items = buildToolbarState(editorModel, attachmentsModel, emojisModel, pollModel, warningModel),
-                onClick = { type: EditorToolbarItem.Type ->
-                    when (type) {
-                        EditorToolbarItem.Type.ATTACH -> launcher.launch()
-                        EditorToolbarItem.Type.EMOJIS -> component.onEmojisButtonClicked()
-                        EditorToolbarItem.Type.POLL -> component.onPollButtonClicked()
-                        EditorToolbarItem.Type.WARNING -> component.onWarningButtonClicked()
-                        EditorToolbarItem.Type.SCHEDULE -> component.onScheduleDatePickerRequested(true)
-                    }
-                },
-                modifier = Modifier,
-            )
-
-            Spacer(modifier = Modifier.weight(1f, true))
-
-            // Counter
-            Text(
-                text = "${editorModel.statusCharactersLeft}",
-                style = MaterialTheme.typography.titleSmall,
-                color = MaterialTheme.colorScheme.secondary,
-                modifier = Modifier,
-            )
         }
     }
+
     // Locale dialog
     if (headerModel.localePickerDisplayed) {
         LanguageSelectorDialog(
@@ -411,7 +423,7 @@ internal fun EditorTabContent(
 @Composable
 private fun EditorTabContentPreviewIdle() {
     TackleScreenPreview {
-        EditorTabContent(
+        EditorContent(
             component = EditorComponentPreview(
                 attachmentsButtonAvailable = true,
                 emojisButtonAvailable = true,
@@ -432,7 +444,7 @@ private fun EditorTabContentPreviewAttachments() {
     val platformFile = PlatformFileWrapper("", "", "", "", 0L, "123 Mb") { ByteArray(0) }
 
     TackleScreenPreview {
-        EditorTabContent(
+        EditorContent(
             component = EditorComponentPreview(
                 emojisButtonAvailable = true,
                 pollButtonAvailable = true,
@@ -458,7 +470,7 @@ private fun EditorTabContentPreviewAttachments() {
 @Composable
 private fun EditorTabContentPreviewPoll() {
     TackleScreenPreview {
-        EditorTabContent(
+        EditorContent(
             component = EditorComponentPreview(
                 attachmentsButtonAvailable = false,
                 emojisButtonAvailable = true,
@@ -487,7 +499,7 @@ private fun EditorTabContentPreviewPoll() {
 @Composable
 private fun EditorTabContentPreviewWarning() {
     TackleScreenPreview {
-        EditorTabContent(
+        EditorContent(
             component = EditorComponentPreview(
                 attachmentsButtonAvailable = true,
                 emojisButtonAvailable = true,
@@ -507,7 +519,7 @@ private fun EditorTabContentPreviewWarning() {
 @Composable
 private fun EditorTabContentAccountAndHashTagPreview() {
     TackleScreenPreview {
-        EditorTabContent(
+        EditorContent(
             component = EditorComponentPreview(
                 attachmentsButtonAvailable = true,
                 emojisButtonAvailable = true,
@@ -532,7 +544,7 @@ private fun EditorTabContentAccountAndHashTagPreview() {
 @Composable
 private fun EditorTabContentPreviewEverything() {
     TackleScreenPreview {
-        EditorTabContent(
+        EditorContent(
             component = EditorComponentPreview(
                 emojisButtonAvailable = true,
                 avatar = "https://mastodon.social/avatars/original/missing.png",

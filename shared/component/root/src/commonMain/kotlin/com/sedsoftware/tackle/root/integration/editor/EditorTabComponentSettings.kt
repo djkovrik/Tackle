@@ -1,4 +1,4 @@
-package com.sedsoftware.tackle.main.integration.editor
+package com.sedsoftware.tackle.root.integration.editor
 
 import com.sedsoftware.tackle.domain.api.TackleSettings
 import com.sedsoftware.tackle.editor.EditorComponentGateways

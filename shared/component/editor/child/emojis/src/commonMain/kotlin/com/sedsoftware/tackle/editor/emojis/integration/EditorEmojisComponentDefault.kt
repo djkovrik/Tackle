@@ -67,8 +67,4 @@ class EditorEmojisComponentDefault(
     override fun toggleComponentVisibility() {
         store.accept(EditorEmojisStore.Intent.ToggleComponentVisibility)
     }
-
-    override fun resetComponentState() {
-        store.accept(EditorEmojisStore.Intent.ResetState)
-    }
 }

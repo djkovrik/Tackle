@@ -221,31 +221,6 @@ internal class EditorPollStoreTest : StoreTest<EditorPollStore.Intent, EditorPol
         assertThat(store.state.deletionAvailable).isFalse()
     }
 
-    @Test
-    fun `ResetState should reset store state`() = runTest {
-        // given
-        val config = InstanceConfigStub.config
-        // when
-        store.init()
-        store.accept(EditorPollStore.Intent.UpdateInstanceConfig(config))
-        store.accept(EditorPollStore.Intent.OnAddPollOption)
-        store.accept(EditorPollStore.Intent.OnHideTotalsEnabled(true))
-        store.accept(EditorPollStore.Intent.OnMultiselectEnabled(true))
-        store.accept(EditorPollStore.Intent.OnDurationSelected(PollDuration.THIRTY_DAYS))
-        store.accept(EditorPollStore.Intent.OnRequestDurationPicker(true))
-        store.accept(EditorPollStore.Intent.ResetState)
-        // then
-        assertThat(store.state.options.size).isEqualTo(2)
-        assertThat(store.state.insertionAvailable).isTrue()
-        assertThat(store.state.deletionAvailable).isFalse()
-        assertThat(store.state.pollAvailable).isTrue()
-        assertThat(store.state.pollVisible).isFalse()
-        assertThat(store.state.multiselectEnabled).isFalse()
-        assertThat(store.state.hideTotalsEnabled).isFalse()
-        assertThat(store.state.durationPickerVisible).isFalse()
-        assertThat(store.state.duration).isNotEqualTo(PollDuration.THIRTY_DAYS)
-    }
-
     override fun createStore(): Store<EditorPollStore.Intent, EditorPollStore.State, Nothing> =
         EditorPollStoreProvider(
             storeFactory = DefaultStoreFactory(),

@@ -99,8 +99,6 @@ internal class EditorHeaderStoreProvider(
                 onIntent<Intent.OnVisibilityPickerSelected> { dispatch(Msg.VisibilitySelected(it.visibility)) }
 
                 onIntent<Intent.ChangeSendingAvailability> { dispatch(Msg.SendingAvailabilityChanged(it.available)) }
-
-                onIntent<Intent.ResetState> { dispatch(Msg.StateReset) }
             },
             reducer = { msg ->
                 when (msg) {
@@ -139,13 +137,6 @@ internal class EditorHeaderStoreProvider(
                     is Msg.SendingAvailabilityChanged -> copy(
                         sendingAvailable = msg.available,
                     )
-
-                    is Msg.StateReset -> copy(
-                        localePickerDisplayed = false,
-                        statusVisibility = StatusVisibility.PUBLIC,
-                        statusVisibilityPickerDisplayed = false,
-                        sendingAvailable = false,
-                    )
                 }
             },
         ) {}
@@ -165,6 +156,5 @@ internal class EditorHeaderStoreProvider(
         data class StatusDialogVisibilityChanged(val visible: Boolean) : Msg
         data class VisibilitySelected(val visibility: StatusVisibility) : Msg
         data class SendingAvailabilityChanged(val available: Boolean) : Msg
-        data object StateReset : Msg
     }
 }

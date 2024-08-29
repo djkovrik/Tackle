@@ -21,5 +21,4 @@ class EditorWarningComponentPreview(
     override fun onTextInput(text: String) = Unit
     override fun onClearTextInput() = Unit
     override fun toggleComponentVisibility() = Unit
-    override fun resetComponentState() = Unit
 }

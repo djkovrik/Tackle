@@ -16,7 +16,6 @@ interface EditorAttachmentsComponent {
     fun onFileRetry(id: String)
     fun changeComponentAvailability(available: Boolean)
     fun updateInstanceConfig(config: Instance.Config)
-    fun resetComponentState()
 
     data class Model(
         val attachments: List<AttachedFile>,

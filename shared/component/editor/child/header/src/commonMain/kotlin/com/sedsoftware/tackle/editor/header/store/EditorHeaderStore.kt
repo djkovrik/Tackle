@@ -15,7 +15,6 @@ internal interface EditorHeaderStore : Store<Intent, State, Label> {
         data class OnRequestVisibilityPicker(val show: Boolean) : Intent()
         data class OnVisibilityPickerSelected(val visibility: StatusVisibility) : Intent()
         data class ChangeSendingAvailability(val available: Boolean) : Intent()
-        data object ResetState : Intent()
     }
 
     data class State(

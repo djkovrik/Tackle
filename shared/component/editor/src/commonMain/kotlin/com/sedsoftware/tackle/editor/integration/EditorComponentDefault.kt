@@ -129,12 +129,10 @@ class EditorComponentDefault(
                     }
 
                     is Label.StatusSent -> {
-                        resetComponents()
                         editorOutput(ComponentOutput.StatusEditor.StatusPublished)
                     }
 
                     is Label.ScheduledStatusSent -> {
-                        resetComponents()
                         editorOutput(ComponentOutput.StatusEditor.ScheduledStatusPublished)
                     }
 
@@ -211,6 +209,10 @@ class EditorComponentDefault(
             .build()
 
         store.accept(EditorStore.Intent.SendStatus(bundle))
+    }
+
+    override fun onBackButtonClicked() {
+        editorOutput(ComponentOutput.StatusEditor.BackButtonClicked)
     }
 
     private fun applyStatus(builder: NewStatusBundle.Builder): NewStatusBundle.Builder {
@@ -292,13 +294,5 @@ class EditorComponentDefault(
                 editorOutput(output)
             }
         }
-    }
-
-    private fun resetComponents() {
-        attachments.resetComponentState()
-        emojis.resetComponentState()
-        header.resetComponentState()
-        poll.resetComponentState()
-        warning.resetComponentState()
     }
 }

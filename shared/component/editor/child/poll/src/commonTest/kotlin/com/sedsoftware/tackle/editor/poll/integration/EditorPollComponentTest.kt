@@ -133,31 +133,6 @@ class EditorPollComponentTest : ComponentTest<EditorPollComponent>() {
         assertThat(activeModel.options.size).isEqualTo(2)
     }
 
-    @Test
-    fun `resetComponentState should reset component state`() = runTest {
-        // given
-        component.updateInstanceConfig(InstanceConfigStub.config)
-        // when
-        component.onDurationPickerRequested(true)
-        component.onAddPollOptionClick()
-        component.onAddPollOptionClick()
-        component.changeComponentAvailability(false)
-        component.onMultiselectEnabled(true)
-        component.onHideTotalsEnabled(true)
-        component.onDurationSelected(PollDuration.THIRTY_DAYS)
-        component.resetComponentState()
-        // then
-        assertThat(activeModel.options.size).isEqualTo(2)
-        assertThat(activeModel.insertionAvailable).isTrue()
-        assertThat(activeModel.deletionAvailable).isFalse()
-        assertThat(activeModel.pollButtonAvailable).isTrue()
-        assertThat(activeModel.pollContentVisible).isFalse()
-        assertThat(activeModel.multiselectEnabled).isFalse()
-        assertThat(activeModel.hideTotalsEnabled).isFalse()
-        assertThat(activeModel.durationPickerVisible).isFalse()
-        assertThat(activeModel.duration).isNotEqualTo(PollDuration.THIRTY_DAYS)
-    }
-
     override fun createComponent(): EditorPollComponent =
         EditorPollComponentDefault(
             componentContext = DefaultComponentContext(lifecycle),

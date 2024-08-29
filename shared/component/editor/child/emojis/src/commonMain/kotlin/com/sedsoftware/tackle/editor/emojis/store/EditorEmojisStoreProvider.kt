@@ -4,12 +4,12 @@ import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.coroutineBootstrapper
 import com.arkivanov.mvikotlin.extensions.coroutines.coroutineExecutorFactory
+import com.sedsoftware.tackle.domain.StoreCreate
 import com.sedsoftware.tackle.domain.model.CustomEmoji
 import com.sedsoftware.tackle.editor.emojis.domain.EditorEmojisManager
 import com.sedsoftware.tackle.editor.emojis.store.EditorEmojisStore.Intent
 import com.sedsoftware.tackle.editor.emojis.store.EditorEmojisStore.Label
 import com.sedsoftware.tackle.editor.emojis.store.EditorEmojisStore.State
-import com.sedsoftware.tackle.domain.StoreCreate
 import com.sedsoftware.tackle.utils.extension.unwrap
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOn
@@ -57,8 +57,6 @@ internal class EditorEmojisStoreProvider(
                 }
 
                 onIntent<Intent.ToggleComponentVisibility> { dispatch(Msg.ComponentVisibilityToggled) }
-
-                onIntent<Intent.ResetState> { dispatch(Msg.StateReset) }
             },
             reducer = { msg ->
                 when (msg) {
@@ -69,10 +67,6 @@ internal class EditorEmojisStoreProvider(
 
                     is Msg.ComponentVisibilityToggled -> copy(
                         emojisVisible = !emojisVisible,
-                    )
-
-                    is Msg.StateReset -> copy(
-                        emojisVisible = false,
                     )
                 }
             }
@@ -86,6 +80,5 @@ internal class EditorEmojisStoreProvider(
     private sealed interface Msg {
         data class EmojisListUpdated(val emojis: Map<String, List<CustomEmoji>>) : Msg
         data object ComponentVisibilityToggled : Msg
-        data object StateReset : Msg
     }
 }

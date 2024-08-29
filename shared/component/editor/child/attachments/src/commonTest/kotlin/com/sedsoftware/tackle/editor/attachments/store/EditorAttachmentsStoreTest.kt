@@ -4,7 +4,6 @@ import assertk.assertThat
 import assertk.assertions.contains
 import assertk.assertions.containsNone
 import assertk.assertions.hasClass
-import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
 import assertk.assertions.isNotEmpty
@@ -67,34 +66,6 @@ internal class EditorAttachmentsStoreTest : StoreTest<Intent, State, Label>() {
         store.accept(UpdateInstanceConfig(config))
         // then
         assertThat(store.state.config).isEqualTo(config)
-    }
-
-    @Test
-    fun `ResetState should reset store state`() = runTest {
-        // given
-        val files = listOf(
-            PlatformFileStubs.imageNormal.copy(name = "test1.jpg"),
-            PlatformFileStubs.imageNormal.copy(name = "test2.jpg"),
-            PlatformFileStubs.imageNormal.copy(name = "test3.jpg"),
-            PlatformFileStubs.imageNormal.copy(name = "test4.jpg"),
-        )
-        // when
-        store.init()
-        store.accept(UpdateInstanceConfig(InstanceConfigStub.config))
-        store.accept(Intent.OnFilesSelected(files))
-        // then
-        assertThat(store.state.selectedFiles.size).isEqualTo(files.size)
-        assertThat(store.state.attachmentsAtLimit).isTrue()
-        assertThat(store.state.selectedFiles.hasPending).isFalse()
-        assertThat(labels).contains(Label.PendingAttachmentsCountUpdated(files.size))
-        // and when
-        store.accept(Intent.ResetState)
-        // then
-        assertThat(store.state.selectedFiles).isEmpty()
-        assertThat(store.state.attachmentsAtLimit).isFalse()
-        assertThat(store.state.attachmentsAvailable).isTrue()
-        assertThat(store.state.attachmentsVisible).isFalse()
-        assertThat(store.state.hasUploadInProgress).isFalse()
     }
 
     @Test

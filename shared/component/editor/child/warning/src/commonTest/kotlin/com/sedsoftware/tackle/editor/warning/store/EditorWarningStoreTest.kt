@@ -50,19 +50,6 @@ internal class EditorWarningStoreTest : StoreTest<EditorWarningStore.Intent, Edi
         assertThat(store.state.warningVisible).isFalse()
     }
 
-    @Test
-    fun `ResetState should reset store state`() = runTest {
-        // given
-        store.init()
-        // when
-        store.accept(EditorWarningStore.Intent.ToggleComponentVisibility)
-        store.accept(EditorWarningStore.Intent.OnTextInput("TEST"))
-        store.accept(EditorWarningStore.Intent.ResetState)
-        // then
-        assertThat(store.state.text).isEqualTo("")
-        assertThat(store.state.warningVisible).isFalse()
-    }
-
     override fun createStore(): Store<EditorWarningStore.Intent, EditorWarningStore.State, Nothing> =
         EditorWarningStoreProvider(
             storeFactory = DefaultStoreFactory(),

@@ -4,6 +4,7 @@ import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.coroutineBootstrapper
 import com.arkivanov.mvikotlin.extensions.coroutines.coroutineExecutorFactory
+import com.sedsoftware.tackle.domain.StoreCreate
 import com.sedsoftware.tackle.domain.TackleException
 import com.sedsoftware.tackle.domain.model.Instance
 import com.sedsoftware.tackle.domain.model.MediaAttachment
@@ -19,7 +20,6 @@ import com.sedsoftware.tackle.editor.attachments.model.UploadProgress
 import com.sedsoftware.tackle.editor.attachments.store.EditorAttachmentsStore.Intent
 import com.sedsoftware.tackle.editor.attachments.store.EditorAttachmentsStore.Label
 import com.sedsoftware.tackle.editor.attachments.store.EditorAttachmentsStore.State
-import com.sedsoftware.tackle.domain.StoreCreate
 import com.sedsoftware.tackle.utils.extension.unwrap
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.catch
@@ -143,8 +143,6 @@ internal class EditorAttachmentsStoreProvider(
                 onIntent<Intent.ChangeComponentAvailability> { dispatch(Msg.ComponentAvailabilityChanged(it.available)) }
 
                 onIntent<Intent.UpdateInstanceConfig> { dispatch(Msg.InstanceConfigAvailable(it.config)) }
-
-                onIntent<Intent.ResetState> { dispatch(Msg.StateReset) }
             },
             reducer = { msg ->
                 when (msg) {
@@ -178,14 +176,6 @@ internal class EditorAttachmentsStoreProvider(
                     is Msg.AttachmentLoaded -> copy(
                         selectedFiles = selectedFiles.updateServerCopy(msg.id, msg.serverAttachment)
                     )
-
-                    is Msg.StateReset -> copy(
-                        selectedFiles = emptyList(),
-                        attachmentsAtLimit = false,
-                        attachmentsAvailable = true,
-                        attachmentsVisible = false,
-                        hasUploadInProgress = false,
-                    )
                 }
             }
         ) {}
@@ -204,6 +194,5 @@ internal class EditorAttachmentsStoreProvider(
         data class FileDeleted(val id: String) : Msg
         data class AttachmentStatusChanged(val id: String, val status: AttachedFile.Status) : Msg
         data class AttachmentLoaded(val id: String, val serverAttachment: MediaAttachment) : Msg
-        data object StateReset : Msg
     }
 }

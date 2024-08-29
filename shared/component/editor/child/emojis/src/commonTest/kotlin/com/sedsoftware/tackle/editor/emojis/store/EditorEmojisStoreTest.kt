@@ -73,20 +73,6 @@ internal class EditorEmojisStoreTest : StoreTest<EditorEmojisStore.Intent, Edito
         assertThat(store.state.emojisVisible).isFalse()
     }
 
-    @Test
-    fun `ResetState should reset store state`() = runTest {
-        // given
-        // when
-        store.init()
-        store.accept(EditorEmojisStore.Intent.ToggleComponentVisibility)
-        // then
-        assertThat(store.state.emojisVisible).isTrue()
-        // when
-        store.accept(EditorEmojisStore.Intent.ResetState)
-        // then
-        assertThat(store.state.emojisVisible).isFalse()
-    }
-
     override fun createStore(): Store<EditorEmojisStore.Intent, EditorEmojisStore.State, EditorEmojisStore.Label> =
         EditorEmojisStoreProvider(
             storeFactory = DefaultStoreFactory(),

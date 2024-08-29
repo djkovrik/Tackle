@@ -62,8 +62,6 @@ internal class EditorPollStoreProvider(
                 onIntent<Intent.OnAddPollOption> { dispatch(Msg.PollOptionAdded) }
 
                 onIntent<Intent.OnDeletePollOption> { dispatch(Msg.PollOptionDeleted(it.id)) }
-
-                onIntent<Intent.ResetState> { dispatch(Msg.StateReset) }
             },
             reducer = { msg ->
                 when (msg) {
@@ -120,18 +118,6 @@ internal class EditorPollStoreProvider(
                         deletionAvailable = options.size - 1 > MINIMUM_POLL_OPTIONS,
                         insertionAvailable = true,
                     )
-
-                    is Msg.StateReset -> copy(
-                        options = listOf(emptyPollOption, emptyPollOption),
-                        insertionAvailable = true,
-                        deletionAvailable = false,
-                        pollAvailable = true,
-                        pollVisible = false,
-                        multiselectEnabled = false,
-                        hideTotalsEnabled = false,
-                        durationPickerVisible = false,
-                        duration = availableDurations.first(),
-                    )
                 }
             },
         ) {}
@@ -152,7 +138,6 @@ internal class EditorPollStoreProvider(
         data class TextInput(val id: String, val text: String) : Msg
         data object PollOptionAdded : Msg
         data class PollOptionDeleted(val id: String) : Msg
-        data object StateReset : Msg
     }
 
     private companion object {

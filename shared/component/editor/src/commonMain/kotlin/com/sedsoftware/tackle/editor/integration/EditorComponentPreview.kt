@@ -132,4 +132,5 @@ class EditorComponentPreview(
     override fun onScheduleTimeSelected(hour: Int, minute: Int, formatIn24hr: Boolean) = Unit
     override fun resetScheduledDateTime() = Unit
     override fun onSendButtonClicked() = Unit
+    override fun onBackButtonClicked() = Unit
 }

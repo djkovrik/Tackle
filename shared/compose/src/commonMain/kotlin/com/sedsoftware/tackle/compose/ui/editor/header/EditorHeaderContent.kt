@@ -43,7 +43,6 @@ import tackle.shared.compose.generated.resources.editor_title
 internal fun EditorHeaderContent(
     model: EditorHeaderComponent.Model,
     modifier: Modifier = Modifier,
-    backIconVisible: Boolean = false,
     onLocalePickerRequest: () -> Unit = {},
     onVisibilityPickerRequest: () -> Unit = {},
     onSendClick: () -> Unit = {},
@@ -53,23 +52,20 @@ internal fun EditorHeaderContent(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
             .fillMaxWidth()
-            .height(height = 176.dp)
+            .height(height = 148.dp)
             .background(color = MaterialTheme.colorScheme.background)
-            .padding(horizontal = 16.dp)
             .statusBarsPadding()
     ) {
         Column {
             Row {
-                if (backIconVisible) {
-                    ActionBarIcon(
-                        iconRes = Res.drawable.editor_back,
-                        onClick = onBackClick,
-                        backgroundColor = MaterialTheme.colorScheme.background,
-                        contentColor = MaterialTheme.colorScheme.primary,
-                    )
+                ActionBarIcon(
+                    iconRes = Res.drawable.editor_back,
+                    onClick = onBackClick,
+                    backgroundColor = MaterialTheme.colorScheme.background,
+                    contentColor = MaterialTheme.colorScheme.primary,
+                )
 
-                    Spacer(modifier = Modifier.width(width = 16.dp))
-                }
+                Spacer(modifier = Modifier.width(width = 16.dp))
 
                 Text(
                     text = stringResource(resource = Res.string.editor_title),
@@ -164,29 +160,6 @@ private fun EditorHeaderContentPreview() {
                 statusVisibilityPickerDisplayed = false,
                 sendButtonAvailable = false,
             ),
-        )
-    }
-}
-
-@Preview
-@Composable
-private fun EditorHeaderContentPreviewWithBack() {
-    TackleScreenPreview {
-        EditorHeaderContent(
-            model = EditorHeaderComponent.Model(
-                avatar = "https://mastodon.social/avatars/original/missing.png",
-                nickname = "djkovrik",
-                domain = "mastodon.social",
-                recommendedLocale = AppLocale("English", "en"),
-                selectedLocale = AppLocale("English", "en"),
-                availableLocales = emptyList(),
-                localePickerAvailable = true,
-                localePickerDisplayed = false,
-                statusVisibility = StatusVisibility.PUBLIC,
-                statusVisibilityPickerDisplayed = false,
-                sendButtonAvailable = true,
-            ),
-            backIconVisible = true
         )
     }
 }

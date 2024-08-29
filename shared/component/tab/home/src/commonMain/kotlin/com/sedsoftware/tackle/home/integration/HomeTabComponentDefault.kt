@@ -15,6 +15,10 @@ class HomeTabComponentDefault(
     private val output: (ComponentOutput) -> Unit,
 ) : HomeTabComponent, ComponentContext by componentContext {
 
+    override fun onNewPostClick() {
+        output(ComponentOutput.HomeTab.EditorRequested)
+    }
+
     override val model: Value<Model> = MutableValue(
         Model(text = "Home tab component")
     )

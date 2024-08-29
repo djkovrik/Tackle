@@ -17,7 +17,6 @@ import com.arkivanov.decompose.extensions.compose.stack.animation.fade
 import com.arkivanov.decompose.extensions.compose.stack.animation.stackAnimation
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.sedsoftware.tackle.compose.custom.navigation.BottomNavigationBar
-import com.sedsoftware.tackle.compose.ui.editor.EditorTabContent
 import com.sedsoftware.tackle.compose.ui.explore.ExploreTabContent
 import com.sedsoftware.tackle.compose.ui.home.HomeTabContent
 import com.sedsoftware.tackle.compose.ui.notifications.NotificationsTabContent

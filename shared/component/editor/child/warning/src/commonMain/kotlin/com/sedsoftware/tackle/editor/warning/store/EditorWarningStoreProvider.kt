@@ -23,8 +23,6 @@ internal class EditorWarningStoreProvider(
                 onIntent<Intent.OnTextInput> { dispatch(Msg.TextInput(it.text)) }
 
                 onIntent<Intent.ToggleComponentVisibility> { dispatch(Msg.ComponentVisibilityToggled) }
-
-                onIntent<Intent.ResetState> { dispatch(Msg.StateReset) }
             },
             reducer = { msg ->
                 when (msg) {
@@ -35,11 +33,6 @@ internal class EditorWarningStoreProvider(
                     is Msg.ComponentVisibilityToggled -> copy(
                         warningVisible = !warningVisible,
                     )
-
-                    is Msg.StateReset -> copy(
-                        text = "",
-                        warningVisible = false,
-                    )
                 }
             }
         ) {}
@@ -47,6 +40,5 @@ internal class EditorWarningStoreProvider(
     private sealed interface Msg {
         data class TextInput(val text: String) : Msg
         data object ComponentVisibilityToggled : Msg
-        data object StateReset : Msg
     }
 }

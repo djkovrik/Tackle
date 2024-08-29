@@ -42,5 +42,4 @@ class EditorHeaderComponentPreview(
     override fun onStatusVisibilityPickerRequested(show: Boolean) = Unit
     override fun onStatusVisibilitySelected(visibility: StatusVisibility) = Unit
     override fun changeSendingAvailability(available: Boolean) = Unit
-    override fun resetComponentState() = Unit
 }

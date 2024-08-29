@@ -90,22 +90,6 @@ class EditorHeaderComponentTest : ComponentTest<EditorHeaderComponent>() {
         assertThat(activeModel.sendButtonAvailable).isFalse()
     }
 
-    @Test
-    fun `resetComponentState should reset component state`() = runTest {
-        // given
-        // when
-        component.onLocalePickerRequested(true)
-        component.changeSendingAvailability(true)
-        component.onStatusVisibilityPickerRequested(true)
-        component.onStatusVisibilitySelected(StatusVisibility.PRIVATE)
-        component.resetComponentState()
-        // then
-        assertThat(activeModel.localePickerDisplayed).isFalse()
-        assertThat(activeModel.statusVisibilityPickerDisplayed).isFalse()
-        assertThat(activeModel.sendButtonAvailable).isFalse()
-        assertThat(activeModel.statusVisibility).isEqualTo(StatusVisibility.PUBLIC)
-    }
-
     override fun createComponent(): EditorHeaderComponent =
         EditorHeaderComponentDefault(
             componentContext = DefaultComponentContext(lifecycle),

@@ -20,7 +20,6 @@ interface EditorPollStore : Store<Intent, State, Nothing> {
         data class ChangeComponentAvailability(val available: Boolean) : Intent()
         data object ToggleComponentVisibility : Intent()
         data class UpdateInstanceConfig(val config: Instance.Config) : Intent()
-        data object ResetState : Intent()
     }
 
     data class State(

@@ -63,18 +63,6 @@ class EditorWarningComponentTest : ComponentTest<EditorWarningComponent>() {
         assertThat(activeModel.warningContentVisible).isFalse()
     }
 
-    @Test
-    fun `resetComponentState should reset component state`() = runTest {
-        // given
-        // when
-        component.toggleComponentVisibility()
-        component.onTextInput("TEST")
-        component.resetComponentState()
-        // then
-        assertThat(activeModel.text).isEqualTo("")
-        assertThat(activeModel.warningContentVisible).isFalse()
-    }
-
     override fun createComponent(): EditorWarningComponent =
         EditorWarningComponentDefault(
             componentContext = DefaultComponentContext(lifecycle),

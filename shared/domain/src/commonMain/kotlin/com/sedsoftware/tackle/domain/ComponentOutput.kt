@@ -5,7 +5,11 @@ import com.sedsoftware.tackle.domain.model.CustomEmoji
 sealed class ComponentOutput {
 
     sealed class Auth : ComponentOutput() {
-        data object NavigateToMainScreen : Auth()
+        data object AuthFlowCompleted : Auth()
+    }
+
+    sealed class HomeTab : ComponentOutput() {
+        data object EditorRequested : HomeTab()
     }
 
     sealed class StatusEditor : ComponentOutput() {
@@ -14,6 +18,7 @@ sealed class ComponentOutput {
         data class LoadedAttachmentsCountUpdated(val count: Int) : StatusEditor()
         data object StatusPublished : StatusEditor()
         data object ScheduledStatusPublished : StatusEditor()
+        data object BackButtonClicked : StatusEditor()
     }
 
     sealed class Common : ComponentOutput() {

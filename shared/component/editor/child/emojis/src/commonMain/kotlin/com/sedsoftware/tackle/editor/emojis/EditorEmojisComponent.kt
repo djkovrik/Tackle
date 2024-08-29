@@ -9,7 +9,6 @@ interface EditorEmojisComponent {
 
     fun onEmojiClicked(emoji: CustomEmoji)
     fun toggleComponentVisibility()
-    fun resetComponentState()
 
     data class Model(
         val emojis: Map<String, List<CustomEmoji>>,

@@ -133,23 +133,6 @@ internal class EditorHeaderStoreTest : StoreTest<EditorHeaderStore.Intent, Edito
         assertThat(store.state.sendingAvailable).isFalse()
     }
 
-    @Test
-    fun `ResetState should reset store state`() = runTest {
-        // given
-        // when
-        store.init()
-        store.accept(EditorHeaderStore.Intent.OnVisibilityPickerSelected(StatusVisibility.PRIVATE))
-        store.accept(EditorHeaderStore.Intent.OnRequestVisibilityPicker(true))
-        store.accept(EditorHeaderStore.Intent.ChangeSendingAvailability(true))
-        store.accept(EditorHeaderStore.Intent.OnRequestLocalePicker(true))
-        store.accept(EditorHeaderStore.Intent.ResetState)
-        // then
-        assertThat(store.state.localePickerDisplayed).isFalse()
-        assertThat(store.state.statusVisibilityPickerDisplayed).isFalse()
-        assertThat(store.state.sendingAvailable).isFalse()
-        assertThat(store.state.statusVisibility).isEqualTo(StatusVisibility.PUBLIC)
-    }
-
     override fun createStore(): Store<EditorHeaderStore.Intent, EditorHeaderStore.State, EditorHeaderStore.Label> =
         EditorHeaderStoreProvider(
             storeFactory = DefaultStoreFactory(),

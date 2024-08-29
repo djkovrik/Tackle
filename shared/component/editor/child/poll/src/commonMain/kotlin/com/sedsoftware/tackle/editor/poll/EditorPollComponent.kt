@@ -19,7 +19,6 @@ interface EditorPollComponent {
     fun changeComponentAvailability(available: Boolean)
     fun toggleComponentVisibility()
     fun updateInstanceConfig(config: Instance.Config)
-    fun resetComponentState()
 
     data class Model(
         val options: List<PollChoiceOption>,

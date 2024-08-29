@@ -46,5 +46,4 @@ class EditorPollComponentPreview(
     override fun changeComponentAvailability(available: Boolean) = Unit
     override fun toggleComponentVisibility() = Unit
     override fun updateInstanceConfig(config: Config) = Unit
-    override fun resetComponentState() = Unit
 }

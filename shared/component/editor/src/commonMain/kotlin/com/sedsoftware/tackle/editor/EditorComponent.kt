@@ -30,6 +30,7 @@ interface EditorComponent {
     fun onScheduleTimeSelected(hour: Int, minute: Int, formatIn24hr: Boolean)
     fun resetScheduledDateTime()
     fun onSendButtonClicked()
+    fun onBackButtonClicked()
 
     data class Model(
         val statusText: String,
