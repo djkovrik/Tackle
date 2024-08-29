@@ -39,8 +39,8 @@ internal fun TackleTextField(
     minLines: Int = 1,
     shape: Shape = OutlinedTextFieldDefaults.shape,
     colors: TextFieldColors = OutlinedTextFieldDefaults.colors(
-        unfocusedBorderColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.25f),
-        focusedBorderColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f),
+        unfocusedBorderColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.2f),
+        focusedBorderColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.4f),
     ),
     textStyle: TextStyle = MaterialTheme.typography.bodyLarge.copy(
         color = MaterialTheme.colorScheme.onBackground,
@@ -83,7 +83,9 @@ internal fun TackleTextField(
                         isError = isError,
                         interactionSource = interactionSource,
                         colors = colors,
-                        shape = shape
+                        shape = shape,
+                        focusedBorderThickness = 1.dp,
+                        unfocusedBorderThickness = 1.dp,
                     )
                 }
             )
@@ -107,8 +109,8 @@ internal fun TackleTextField(
     minLines: Int = 1,
     shape: Shape = OutlinedTextFieldDefaults.shape,
     colors: TextFieldColors = OutlinedTextFieldDefaults.colors(
-        unfocusedBorderColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.25f),
-        focusedBorderColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f),
+        unfocusedBorderColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.2f),
+        focusedBorderColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.4f),
     ),
     textStyle: TextStyle = MaterialTheme.typography.bodyLarge.copy(
         color = MaterialTheme.colorScheme.onBackground,
@@ -151,7 +153,9 @@ internal fun TackleTextField(
                         isError = isError,
                         interactionSource = interactionSource,
                         colors = colors,
-                        shape = shape
+                        shape = shape,
+                        focusedBorderThickness = 1.dp,
+                        unfocusedBorderThickness = 1.dp,
                     )
                 }
             )
