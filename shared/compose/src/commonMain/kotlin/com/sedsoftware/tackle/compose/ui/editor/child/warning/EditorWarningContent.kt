@@ -1,4 +1,4 @@
-package com.sedsoftware.tackle.compose.ui.editor.warning
+package com.sedsoftware.tackle.compose.ui.editor.child.warning
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
@@ -25,7 +25,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
-import com.sedsoftware.tackle.compose.ui.editor.warning.content.createStripedBrush
+import com.sedsoftware.tackle.compose.ui.editor.child.warning.content.createStripedBrush
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import tackle.shared.compose.generated.resources.Res

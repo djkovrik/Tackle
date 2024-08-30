@@ -1,14 +1,7 @@
 package com.sedsoftware.tackle.compose.ui.main
 
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.consumeWindowInsets
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBarsPadding
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -40,24 +33,16 @@ internal fun MainContent(
         is MainComponent.Child.ProfileTab -> TackleNavigationTab.PROFILE
     }
 
-    Scaffold(
-        modifier = modifier.imePadding(),
-        bottomBar = {
-            BottomNavigationBar(
-                activeTab = activeTab,
-                modifier = Modifier.fillMaxWidth(),
-                onTabClick = component::onTabClicked,
-            )
-        },
-        contentWindowInsets = WindowInsets(0, 0, 0, 0)
-    ) { scaffoldPadding: PaddingValues ->
+    Column(modifier = modifier) {
         ChildrenContent(
             component = component,
-            modifier = modifier
-                .fillMaxSize()
-                .padding(paddingValues = scaffoldPadding)
-                .consumeWindowInsets(paddingValues = scaffoldPadding)
-                .systemBarsPadding(),
+            modifier = Modifier.weight(weight = 1f)
+        )
+
+        BottomNavigationBar(
+            activeTab = activeTab,
+            modifier = Modifier.fillMaxWidth(),
+            onTabClick = component::onTabClicked,
         )
     }
 }

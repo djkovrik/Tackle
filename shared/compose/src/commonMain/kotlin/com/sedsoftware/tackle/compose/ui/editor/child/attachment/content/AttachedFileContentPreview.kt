@@ -1,4 +1,4 @@
-package com.sedsoftware.tackle.compose.ui.editor.attachment.content
+package com.sedsoftware.tackle.compose.ui.editor.child.attachment.content
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.Image
@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
 import com.sedsoftware.tackle.domain.model.PlatformFileWrapper
 import com.sedsoftware.tackle.editor.attachments.model.AttachedFile
+import com.sedsoftware.tackle.editor.attachments.model.AttachedFile.Status.PENDING
 import com.sedsoftware.tackle.utils.extension.isAudio
 import com.sedsoftware.tackle.utils.extension.isImage
 import com.sedsoftware.tackle.utils.extension.isVideo
@@ -28,6 +29,7 @@ import com.seiko.imageloader.rememberImagePainter
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 import tackle.shared.compose.generated.resources.Res
+import tackle.shared.compose.generated.resources.Res.drawable
 import tackle.shared.compose.generated.resources.editor_file_audio
 import tackle.shared.compose.generated.resources.editor_file_image
 import tackle.shared.compose.generated.resources.editor_file_unknown
@@ -47,7 +49,7 @@ internal fun AttachedFileImageThumbnail(
         )
     } else {
         AttachedFilePlaceholder(
-            resource = Res.drawable.editor_file_image,
+            resource = drawable.editor_file_image,
             modifier = modifier,
         )
     }
@@ -75,10 +77,10 @@ internal fun AttachedFileContentGeneric(
 ) {
     AttachedFilePlaceholder(
         resource = when {
-            attachment.file.isAudio -> Res.drawable.editor_file_audio
-            attachment.file.isImage -> Res.drawable.editor_file_image
-            attachment.file.isVideo -> Res.drawable.editor_file_video
-            else -> Res.drawable.editor_file_unknown
+            attachment.file.isAudio -> drawable.editor_file_audio
+            attachment.file.isImage -> drawable.editor_file_image
+            attachment.file.isVideo -> drawable.editor_file_video
+            else -> drawable.editor_file_unknown
         },
         modifier = modifier,
     )
@@ -126,25 +128,25 @@ private fun AttachedFileContentPreview() {
         Column {
             Box(modifier = Modifier.height(height = previewHeight).padding(all = 8.dp)) {
                 AttachedFileContentGeneric(
-                    attachment = AttachedFile("id", platformFile.copy(mimeType = "audio"), AttachedFile.Status.PENDING)
+                    attachment = AttachedFile("id", platformFile.copy(mimeType = "audio"), PENDING)
                 )
             }
 
             Box(modifier = Modifier.height(height = previewHeight).padding(all = 8.dp)) {
                 AttachedFileContentGeneric(
-                    attachment = AttachedFile("id", platformFile.copy(mimeType = "image"), AttachedFile.Status.PENDING)
+                    attachment = AttachedFile("id", platformFile.copy(mimeType = "image"), PENDING)
                 )
             }
 
             Box(modifier = Modifier.height(height = previewHeight).padding(all = 8.dp)) {
                 AttachedFileContentGeneric(
-                    attachment = AttachedFile("id", platformFile.copy(mimeType = "video"), AttachedFile.Status.PENDING)
+                    attachment = AttachedFile("id", platformFile.copy(mimeType = "video"), PENDING)
                 )
             }
 
             Box(modifier = Modifier.height(height = previewHeight).padding(all = 8.dp)) {
                 AttachedFileContentGeneric(
-                    attachment = AttachedFile("id", platformFile, AttachedFile.Status.PENDING)
+                    attachment = AttachedFile("id", platformFile, PENDING)
                 )
             }
         }

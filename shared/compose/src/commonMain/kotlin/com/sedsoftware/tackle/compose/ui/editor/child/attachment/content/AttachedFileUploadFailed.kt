@@ -1,4 +1,4 @@
-package com.sedsoftware.tackle.compose.ui.editor.attachment.content
+package com.sedsoftware.tackle.compose.ui.editor.child.attachment.content
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.background
@@ -38,7 +38,9 @@ internal fun AttachedFileUploadFailed(
         Icon(
             painter = painterResource(resource = Res.drawable.editor_retry),
             contentDescription = null,
-            tint = MaterialTheme.colorScheme.onPrimaryContainer,
+            tint = MaterialTheme.colorScheme.onPrimaryContainer.copy(
+                alpha = 0.75f
+            ),
             modifier = Modifier.padding(all = 10.dp),
         )
     }

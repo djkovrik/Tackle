@@ -4,7 +4,6 @@ import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.desktop.ui.tooling.preview.Preview
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -38,7 +37,7 @@ internal fun BottomNavigationBar(
         containerColor = MaterialTheme.colorScheme.background,
         iconColorNormal = MaterialTheme.colorScheme.secondary,
         iconColorSelected = MaterialTheme.colorScheme.primary,
-        iconSizeNormal = 30.dp,
+        iconSizeNormal = 32.dp,
         iconSizeSelected = 36.dp,
     ),
     itemsCount: Int = TackleNavigationTab.entries.size,
@@ -55,11 +54,7 @@ internal fun BottomNavigationBar(
             ),
         )
 
-        Column(
-            modifier = modifier
-                .background(color = config.containerColor)
-                .navigationBarsPadding()
-        ) {
+        Column(modifier = modifier.navigationBarsPadding()) {
             NavigationBar(
                 containerColor = config.containerColor,
                 contentColor = config.containerColor,

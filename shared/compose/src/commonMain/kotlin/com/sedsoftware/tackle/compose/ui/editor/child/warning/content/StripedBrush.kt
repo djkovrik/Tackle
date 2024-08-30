@@ -1,4 +1,4 @@
-package com.sedsoftware.tackle.compose.ui.editor.warning.content
+package com.sedsoftware.tackle.compose.ui.editor.child.warning.content
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush

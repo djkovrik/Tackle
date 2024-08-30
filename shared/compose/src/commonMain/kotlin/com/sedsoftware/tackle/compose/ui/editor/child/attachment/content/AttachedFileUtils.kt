@@ -1,4 +1,4 @@
-package com.sedsoftware.tackle.compose.ui.editor.attachment.content
+package com.sedsoftware.tackle.compose.ui.editor.child.attachment.content
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.ui.unit.dp

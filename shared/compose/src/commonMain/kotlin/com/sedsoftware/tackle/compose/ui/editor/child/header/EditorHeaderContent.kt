@@ -1,18 +1,13 @@
-package com.sedsoftware.tackle.compose.ui.editor.header
+package com.sedsoftware.tackle.compose.ui.editor.child.header
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
@@ -26,12 +21,13 @@ import androidx.compose.ui.unit.dp
 import com.sedsoftware.tackle.compose.extension.getIcon
 import com.sedsoftware.tackle.compose.extension.getTitle
 import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
-import com.sedsoftware.tackle.compose.ui.editor.header.content.ActionBarIcon
-import com.sedsoftware.tackle.compose.ui.editor.header.content.ActionBarIconWithText
+import com.sedsoftware.tackle.compose.widget.TackleIconButton
+import com.sedsoftware.tackle.compose.widget.TackleImage
 import com.sedsoftware.tackle.domain.model.AppLocale
 import com.sedsoftware.tackle.domain.model.type.StatusVisibility
+import com.sedsoftware.tackle.domain.model.type.StatusVisibility.PUBLIC
 import com.sedsoftware.tackle.editor.header.EditorHeaderComponent
-import com.seiko.imageloader.rememberImagePainter
+import com.sedsoftware.tackle.editor.header.EditorHeaderComponent.Model
 import org.jetbrains.compose.resources.stringResource
 import tackle.shared.compose.generated.resources.Res
 import tackle.shared.compose.generated.resources.editor_back
@@ -52,43 +48,44 @@ internal fun EditorHeaderContent(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
             .fillMaxWidth()
-            .height(height = 148.dp)
-            .background(color = MaterialTheme.colorScheme.background)
-            .statusBarsPadding()
+            .height(height = 136.dp)
     ) {
         Column {
-            Row {
-                ActionBarIcon(
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                TackleIconButton(
                     iconRes = Res.drawable.editor_back,
+                    containerColor = MaterialTheme.colorScheme.background,
+                    contentColor = MaterialTheme.colorScheme.onBackground,
                     onClick = onBackClick,
-                    backgroundColor = MaterialTheme.colorScheme.background,
-                    contentColor = MaterialTheme.colorScheme.primary,
                 )
 
                 Spacer(modifier = Modifier.width(width = 16.dp))
 
                 Text(
                     text = stringResource(resource = Res.string.editor_title),
-                    color = MaterialTheme.colorScheme.primary,
-                    style = MaterialTheme.typography.headlineSmall,
+                    color = MaterialTheme.colorScheme.onBackground,
+                    style = MaterialTheme.typography.titleMedium,
                 )
 
                 Spacer(modifier = Modifier.weight(weight = 1f, fill = true))
 
-                ActionBarIconWithText(
-                    text = model.selectedLocale.languageCode,
+                TackleIconButton(
                     iconRes = Res.drawable.editor_language,
-                    backgroundColor = MaterialTheme.colorScheme.primaryContainer,
+                    additionalText = model.selectedLocale.languageCode,
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
                     contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                    borderWidth = 1.dp,
                     onClick = onLocalePickerRequest,
                 )
 
                 Spacer(modifier = Modifier.width(width = 16.dp))
 
-                ActionBarIcon(
+                TackleIconButton(
                     iconRes = Res.drawable.editor_send,
                     enabled = model.sendButtonAvailable,
-                    backgroundColor = MaterialTheme.colorScheme.primaryContainer,
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
                     contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
                     onClick = onSendClick,
                 )
@@ -98,21 +95,14 @@ internal fun EditorHeaderContent(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.padding(top = 16.dp)
             ) {
-                Box(
+                TackleImage(
+                    data = model.avatar,
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .size(size = 48.dp)
                         .clip(shape = CircleShape)
-                        .background(color = MaterialTheme.colorScheme.primary)
-                ) {
-                    Image(
-                        painter = rememberImagePainter(url = model.avatar),
-                        contentDescription = null,
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .clip(shape = CircleShape)
-                    )
-                }
+                )
 
                 Column(modifier = Modifier.padding(horizontal = 16.dp)) {
                     Text(
@@ -130,11 +120,12 @@ internal fun EditorHeaderContent(
 
                 Spacer(modifier = Modifier.weight(weight = 1f, fill = true))
 
-                ActionBarIconWithText(
-                    text = stringResource(resource = model.statusVisibility.getTitle()),
+                TackleIconButton(
                     iconRes = model.statusVisibility.getIcon(),
-                    backgroundColor = MaterialTheme.colorScheme.primaryContainer,
+                    additionalText = stringResource(resource = model.statusVisibility.getTitle()),
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
                     contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                    borderWidth = 1.dp,
                     onClick = onVisibilityPickerRequest,
                 )
             }
@@ -144,10 +135,10 @@ internal fun EditorHeaderContent(
 
 @Preview
 @Composable
-private fun EditorHeaderContentPreview() {
+private fun EditorHeaderContentPreviewLight() {
     TackleScreenPreview {
         EditorHeaderContent(
-            model = EditorHeaderComponent.Model(
+            model = Model(
                 avatar = "https://mastodon.social/avatars/original/missing.png",
                 nickname = "djkovrik",
                 domain = "mastodon.social",
@@ -156,9 +147,31 @@ private fun EditorHeaderContentPreview() {
                 availableLocales = emptyList(),
                 localePickerAvailable = true,
                 localePickerDisplayed = false,
-                statusVisibility = StatusVisibility.PUBLIC,
+                statusVisibility = PUBLIC,
                 statusVisibilityPickerDisplayed = false,
-                sendButtonAvailable = false,
+                sendButtonAvailable = true,
+            ),
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun EditorHeaderContentPreviewDark() {
+    TackleScreenPreview(darkTheme = true) {
+        EditorHeaderContent(
+            model = Model(
+                avatar = "https://mastodon.social/avatars/original/missing.png",
+                nickname = "djkovrik",
+                domain = "mastodon.social",
+                recommendedLocale = AppLocale("English", "en"),
+                selectedLocale = AppLocale("English", "en"),
+                availableLocales = emptyList(),
+                localePickerAvailable = true,
+                localePickerDisplayed = false,
+                statusVisibility = PUBLIC,
+                statusVisibilityPickerDisplayed = false,
+                sendButtonAvailable = true,
             ),
         )
     }

@@ -6,6 +6,7 @@ import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.push
+import com.arkivanov.decompose.router.stack.pushNew
 import com.arkivanov.decompose.router.stack.replaceCurrent
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.lifecycle.doOnDestroy
@@ -140,7 +141,7 @@ class RootComponentDefault internal constructor(
     private fun onComponentOutput(output: ComponentOutput) {
         when (output) {
             is ComponentOutput.Auth.AuthFlowCompleted -> navigation.replaceCurrent(Config.Main)
-            is ComponentOutput.HomeTab.EditorRequested -> navigation.push(Config.Editor)
+            is ComponentOutput.HomeTab.EditorRequested -> navigation.pushNew(Config.Editor)
             is ComponentOutput.StatusEditor.BackButtonClicked -> navigation.pop()
             is ComponentOutput.StatusEditor.StatusPublished -> navigation.pop()
             is ComponentOutput.StatusEditor.ScheduledStatusPublished -> navigation.pop()

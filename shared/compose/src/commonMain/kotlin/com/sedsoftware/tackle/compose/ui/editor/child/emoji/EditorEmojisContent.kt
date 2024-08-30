@@ -1,4 +1,4 @@
-package com.sedsoftware.tackle.compose.ui.editor.emoji
+package com.sedsoftware.tackle.compose.ui.editor.child.emoji
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -19,7 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
 import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
-import com.sedsoftware.tackle.compose.ui.editor.emoji.content.EditorEmoji
+import com.sedsoftware.tackle.compose.ui.editor.child.emoji.content.EditorEmoji
 import com.sedsoftware.tackle.domain.model.CustomEmoji
 import com.seiko.imageloader.rememberImagePainter
 import org.jetbrains.compose.resources.painterResource

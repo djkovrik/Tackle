@@ -1,4 +1,4 @@
-package com.sedsoftware.tackle.compose.ui.editor.attachment.content
+package com.sedsoftware.tackle.compose.ui.editor.child.attachment.content
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.LinearEasing
@@ -51,6 +51,8 @@ import com.sedsoftware.tackle.domain.model.MediaAttachment
 import com.sedsoftware.tackle.domain.model.PlatformFileWrapper
 import com.sedsoftware.tackle.domain.model.type.MediaAttachmentType
 import com.sedsoftware.tackle.editor.attachments.model.AttachedFile
+import com.sedsoftware.tackle.editor.attachments.model.AttachedFile.Status.ERROR
+import com.sedsoftware.tackle.editor.attachments.model.AttachedFile.Status.LOADED
 import com.sedsoftware.tackle.utils.extension.isImage
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -302,11 +304,11 @@ private fun AttachedFileContentPreview() {
             }
             // Error
             Box(modifier = Modifier.width(width = 420.dp).padding(all = 8.dp)) {
-                AttachedFileContent(attachment = image.copy(status = AttachedFile.Status.ERROR))
+                AttachedFileContent(attachment = image.copy(status = ERROR))
             }
             // Loaded
             Box(modifier = Modifier.width(width = 420.dp).padding(all = 8.dp)) {
-                AttachedFileContent(attachment = image.copy(status = AttachedFile.Status.LOADED)) {
+                AttachedFileContent(attachment = image.copy(status = LOADED)) {
                     AttachmentPreviewImageStub()
                 }
             }

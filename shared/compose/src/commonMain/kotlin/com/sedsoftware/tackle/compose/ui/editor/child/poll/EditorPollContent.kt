@@ -1,4 +1,4 @@
-package com.sedsoftware.tackle.compose.ui.editor.poll
+package com.sedsoftware.tackle.compose.ui.editor.child.poll
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.background
@@ -27,11 +27,13 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.unit.dp
 import com.sedsoftware.tackle.compose.extension.getTitle
 import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
-import com.sedsoftware.tackle.compose.ui.editor.poll.content.CustomPollChoice
-import com.sedsoftware.tackle.compose.ui.editor.poll.content.CustomPollDurationDialog
+import com.sedsoftware.tackle.compose.ui.editor.child.poll.content.CustomPollChoice
+import com.sedsoftware.tackle.compose.ui.editor.child.poll.content.CustomPollDurationDialog
 import com.sedsoftware.tackle.editor.poll.EditorPollComponent
+import com.sedsoftware.tackle.editor.poll.EditorPollComponent.Model
 import com.sedsoftware.tackle.editor.poll.model.PollChoiceOption
 import com.sedsoftware.tackle.editor.poll.model.PollDuration
+import com.sedsoftware.tackle.editor.poll.model.PollDuration.FIVE_MINUTES
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import tackle.shared.compose.generated.resources.Res
@@ -166,7 +168,7 @@ internal fun EditorPollContent(
 private fun EditorPollContentPreview() {
     TackleScreenPreview {
         EditorPollContent(
-            model = EditorPollComponent.Model(
+            model = Model(
                 options = listOf(
                     PollChoiceOption(id = "1", text = "Some text here"),
                     PollChoiceOption(id = "2", text = "Another text here"),
@@ -174,7 +176,7 @@ private fun EditorPollContentPreview() {
                 ),
                 multiselectEnabled = false,
                 hideTotalsEnabled = false,
-                duration = PollDuration.FIVE_MINUTES,
+                duration = FIVE_MINUTES,
                 availableDurations = emptyList(),
                 durationPickerVisible = false,
                 insertionAvailable = true,

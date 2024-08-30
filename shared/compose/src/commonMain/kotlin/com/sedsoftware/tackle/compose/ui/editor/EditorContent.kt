@@ -48,7 +48,7 @@ import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.sedsoftware.tackle.compose.model.EditorToolbarItem
 import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
-import com.sedsoftware.tackle.compose.ui.editor.attachment.EditorAttachmentsContent
+import com.sedsoftware.tackle.compose.ui.editor.child.attachment.EditorAttachmentsContent
 import com.sedsoftware.tackle.compose.ui.editor.content.EditorToolbar
 import com.sedsoftware.tackle.compose.ui.editor.content.InputHintAccount
 import com.sedsoftware.tackle.compose.ui.editor.content.InputHintEmoji
@@ -57,12 +57,12 @@ import com.sedsoftware.tackle.compose.ui.editor.content.ScheduleDatePickerDialog
 import com.sedsoftware.tackle.compose.ui.editor.content.ScheduleTimePickerDialog
 import com.sedsoftware.tackle.compose.ui.editor.content.ScheduledPostDate
 import com.sedsoftware.tackle.compose.ui.editor.content.buildToolbarState
-import com.sedsoftware.tackle.compose.ui.editor.emoji.EditorEmojisContent
-import com.sedsoftware.tackle.compose.ui.editor.header.EditorHeaderContent
-import com.sedsoftware.tackle.compose.ui.editor.header.content.LanguageSelectorDialog
-import com.sedsoftware.tackle.compose.ui.editor.header.content.VisibilitySelectorDialog
-import com.sedsoftware.tackle.compose.ui.editor.poll.EditorPollContent
-import com.sedsoftware.tackle.compose.ui.editor.warning.EditorWarningContent
+import com.sedsoftware.tackle.compose.ui.editor.child.emoji.EditorEmojisContent
+import com.sedsoftware.tackle.compose.ui.editor.child.header.EditorHeaderContent
+import com.sedsoftware.tackle.compose.ui.editor.child.header.content.LanguageSelectorDialog
+import com.sedsoftware.tackle.compose.ui.editor.child.header.content.VisibilitySelectorDialog
+import com.sedsoftware.tackle.compose.ui.editor.child.poll.EditorPollContent
+import com.sedsoftware.tackle.compose.ui.editor.child.warning.EditorWarningContent
 import com.sedsoftware.tackle.domain.model.AppLocale
 import com.sedsoftware.tackle.domain.model.PlatformFileWrapper
 import com.sedsoftware.tackle.domain.model.type.StatusVisibility

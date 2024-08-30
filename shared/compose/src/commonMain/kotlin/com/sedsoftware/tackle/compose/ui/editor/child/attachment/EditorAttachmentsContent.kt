@@ -1,4 +1,4 @@
-package com.sedsoftware.tackle.compose.ui.editor.attachment
+package com.sedsoftware.tackle.compose.ui.editor.child.attachment
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -8,12 +8,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
-import com.sedsoftware.tackle.compose.ui.editor.attachment.content.AttachedFileContent
-import com.sedsoftware.tackle.compose.ui.editor.attachment.content.AttachmentPreviewImageStub
-import com.sedsoftware.tackle.compose.ui.editor.attachment.content.getFraction
-import com.sedsoftware.tackle.compose.ui.editor.attachment.content.getPadding
+import com.sedsoftware.tackle.compose.ui.editor.child.attachment.content.AttachedFileContent
+import com.sedsoftware.tackle.compose.ui.editor.child.attachment.content.AttachmentPreviewImageStub
+import com.sedsoftware.tackle.compose.ui.editor.child.attachment.content.getFraction
+import com.sedsoftware.tackle.compose.ui.editor.child.attachment.content.getPadding
 import com.sedsoftware.tackle.domain.model.PlatformFileWrapper
 import com.sedsoftware.tackle.editor.attachments.EditorAttachmentsComponent
+import com.sedsoftware.tackle.editor.attachments.EditorAttachmentsComponent.Model
 import com.sedsoftware.tackle.editor.attachments.model.AttachedFile
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -53,7 +54,7 @@ private fun EditorAttachmentsContentOneFilePreview() {
 
     TackleScreenPreview {
         EditorAttachmentsContent(
-            model = EditorAttachmentsComponent.Model(
+            model = Model(
                 attachments = attachments,
                 attachmentsButtonAvailable = true,
                 attachmentsContentVisible = true,
@@ -75,7 +76,7 @@ private fun EditorAttachmentsContentTwoFilesPreview() {
 
     TackleScreenPreview {
         EditorAttachmentsContent(
-            model = EditorAttachmentsComponent.Model(
+            model = Model(
                 attachments = attachments,
                 attachmentsButtonAvailable = true,
                 attachmentsContentVisible = true,
@@ -98,7 +99,7 @@ private fun EditorAttachmentsContentThreeFilesPreview() {
 
     TackleScreenPreview {
         EditorAttachmentsContent(
-            model = EditorAttachmentsComponent.Model(
+            model = Model(
                 attachments = attachments,
                 attachmentsButtonAvailable = true,
                 attachmentsContentVisible = true,
@@ -120,7 +121,7 @@ private fun EditorAttachmentsContentFourFilesPreview() {
 
     TackleScreenPreview {
         EditorAttachmentsContent(
-            model = EditorAttachmentsComponent.Model(
+            model = Model(
                 attachments = attachments,
                 attachmentsButtonAvailable = true,
                 attachmentsContentVisible = true,

@@ -1,4 +1,4 @@
-package com.sedsoftware.tackle.compose.ui.editor.poll.content
+package com.sedsoftware.tackle.compose.ui.editor.child.poll.content
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.clickable

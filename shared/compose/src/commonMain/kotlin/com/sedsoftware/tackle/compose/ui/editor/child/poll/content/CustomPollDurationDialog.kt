@@ -1,4 +1,4 @@
-package com.sedsoftware.tackle.compose.ui.editor.poll.content
+package com.sedsoftware.tackle.compose.ui.editor.child.poll.content
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.layout.Column
@@ -19,6 +19,8 @@ import com.sedsoftware.tackle.compose.extension.getTitle
 import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
 import com.sedsoftware.tackle.editor.poll.EditorPollComponent
 import com.sedsoftware.tackle.editor.poll.model.PollDuration
+import com.sedsoftware.tackle.editor.poll.model.PollDuration.NOT_SELECTED
+import com.sedsoftware.tackle.editor.poll.model.PollDuration.THREE_DAYS
 import org.jetbrains.compose.resources.stringResource
 import tackle.shared.compose.generated.resources.Res
 import tackle.shared.compose.generated.resources.editor_poll_duration
@@ -89,8 +91,8 @@ private fun CustomPollDurationDialogContent(
 private fun CustomPollDurationDialogContentPreview() {
     TackleScreenPreview {
         CustomPollDurationDialogContent(
-            availableDurations = PollDuration.entries.filter { it != PollDuration.NOT_SELECTED },
-            selectedDuration = PollDuration.THREE_DAYS,
+            availableDurations = PollDuration.entries.filter { it != NOT_SELECTED },
+            selectedDuration = THREE_DAYS,
         )
     }
 }
