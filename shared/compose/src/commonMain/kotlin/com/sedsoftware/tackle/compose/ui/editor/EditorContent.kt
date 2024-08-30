@@ -2,7 +2,6 @@ package com.sedsoftware.tackle.compose.ui.editor
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.desktop.ui.tooling.preview.Preview
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -18,13 +17,10 @@ import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.DatePickerState
 import androidx.compose.material3.DisplayMode
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SelectableDates
 import androidx.compose.material3.SheetState
@@ -49,6 +45,12 @@ import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.sedsoftware.tackle.compose.model.EditorToolbarItem
 import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
 import com.sedsoftware.tackle.compose.ui.editor.child.attachment.EditorAttachmentsContent
+import com.sedsoftware.tackle.compose.ui.editor.child.emoji.EditorEmojisContent
+import com.sedsoftware.tackle.compose.ui.editor.child.header.EditorHeaderContent
+import com.sedsoftware.tackle.compose.ui.editor.child.header.content.LanguageSelectorDialog
+import com.sedsoftware.tackle.compose.ui.editor.child.header.content.VisibilitySelectorDialog
+import com.sedsoftware.tackle.compose.ui.editor.child.poll.EditorPollContent
+import com.sedsoftware.tackle.compose.ui.editor.child.warning.EditorWarningContent
 import com.sedsoftware.tackle.compose.ui.editor.content.EditorToolbar
 import com.sedsoftware.tackle.compose.ui.editor.content.InputHintAccount
 import com.sedsoftware.tackle.compose.ui.editor.content.InputHintEmoji
@@ -57,12 +59,7 @@ import com.sedsoftware.tackle.compose.ui.editor.content.ScheduleDatePickerDialog
 import com.sedsoftware.tackle.compose.ui.editor.content.ScheduleTimePickerDialog
 import com.sedsoftware.tackle.compose.ui.editor.content.ScheduledPostDate
 import com.sedsoftware.tackle.compose.ui.editor.content.buildToolbarState
-import com.sedsoftware.tackle.compose.ui.editor.child.emoji.EditorEmojisContent
-import com.sedsoftware.tackle.compose.ui.editor.child.header.EditorHeaderContent
-import com.sedsoftware.tackle.compose.ui.editor.child.header.content.LanguageSelectorDialog
-import com.sedsoftware.tackle.compose.ui.editor.child.header.content.VisibilitySelectorDialog
-import com.sedsoftware.tackle.compose.ui.editor.child.poll.EditorPollContent
-import com.sedsoftware.tackle.compose.ui.editor.child.warning.EditorWarningContent
+import com.sedsoftware.tackle.compose.widget.TackleTextField
 import com.sedsoftware.tackle.domain.model.AppLocale
 import com.sedsoftware.tackle.domain.model.PlatformFileWrapper
 import com.sedsoftware.tackle.domain.model.type.StatusVisibility
@@ -177,7 +174,9 @@ internal fun EditorContent(
             // Header
             EditorHeaderContent(
                 model = headerModel,
-                modifier = modifier,
+                modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
+                containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
                 onLocalePickerRequest = { component.header.onLocalePickerRequested(true) },
                 onVisibilityPickerRequest = { component.header.onStatusVisibilityPickerRequested(true) },
                 onSendClick = { component.onSendButtonClicked() },
@@ -189,34 +188,36 @@ internal fun EditorContent(
                 verticalArrangement = Arrangement.Top,
                 modifier = modifier.weight(weight = 1f, fill = true),
             ) {
-                item {
-                    // Scheduled post
-                    AnimatedVisibility(visible = editorModel.scheduledDateLabel.isNotEmpty()) {
-                        ScheduledPostDate(
-                            text = editorModel.scheduledDateLabel,
-                            onClose = component::resetScheduledDateTime,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(bottom = 4.dp),
-                        )
-                    }
-                }
-
                 // Warning
                 item {
                     if (warningModel.warningContentVisible) {
                         EditorWarningContent(
                             text = warningModel.text,
-                            modifier = Modifier,
+                            modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
                             onTextInput = component.warning::onTextInput,
                             onTextClear = component.warning::onClearTextInput,
                         )
                     }
                 }
 
+                item {
+                    // Scheduled post
+                    AnimatedVisibility(visible = editorModel.scheduledDateLabel.isNotEmpty()) {
+                        ScheduledPostDate(
+                            text = editorModel.scheduledDateLabel,
+                            onClose = component::resetScheduledDateTime,
+                            containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                            contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
+                        )
+                    }
+                }
+
                 // Input
                 item {
-                    OutlinedTextField(
+                    TackleTextField(
                         value = TextFieldValue(
                             annotatedString = annotatedText,
                             selection = TextRange(
@@ -236,12 +237,9 @@ internal fun EditorContent(
                                 ),
                             )
                         },
-                        shape = RoundedCornerShape(size = 8.dp),
-                        colors = OutlinedTextFieldDefaults.colors(
-                            unfocusedBorderColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f),
-                            focusedBorderColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.7f),
-                        ),
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier
+                            .padding(start = 16.dp, end = 16.dp, bottom = 8.dp)
+                            .fillMaxWidth()
                     )
                 }
 
@@ -252,7 +250,9 @@ internal fun EditorContent(
                             model = attachmentsModel,
                             onDelete = component.attachments::onFileDeleted,
                             onRetry = component.attachments::onFileRetry,
-                            modifier = Modifier,
+                            modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
+                            containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                            contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
                         )
                     }
                 }
@@ -262,7 +262,10 @@ internal fun EditorContent(
                     AnimatedVisibility(visible = pollModel.pollContentVisible) {
                         EditorPollContent(
                             model = pollModel,
-                            modifier = Modifier,
+                            modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
+                            containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                            contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                            checkboxColor = MaterialTheme.colorScheme.secondary,
                             onAddNewItem = component.poll::onAddPollOptionClick,
                             onDeleteItem = component.poll::onDeletePollOptionClick,
                             onMultiselectEnabled = component.poll::onMultiselectEnabled,
@@ -279,7 +282,9 @@ internal fun EditorContent(
             // Hints
             AnimatedVisibility(visible = editorModel.suggestions.isNotEmpty()) {
                 LazyRow(
-                    modifier = modifier.fillMaxWidth()
+                    modifier = modifier
+                        .padding(horizontal = 16.dp)
+                        .fillMaxWidth()
                 ) {
                     items(
                         items = editorModel.suggestions,
@@ -289,18 +294,24 @@ internal fun EditorContent(
                             is EditorInputHintItem.Account ->
                                 InputHintAccount(
                                     hint = item,
+                                    containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                                    contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
                                     onClick = { component.onInputHintSelected(item) },
                                 )
 
                             is EditorInputHintItem.Emoji ->
                                 InputHintEmoji(
                                     hint = item,
+                                    containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                                    contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
                                     onClick = { component.onInputHintSelected(item) },
                                 )
 
                             is EditorInputHintItem.HashTag ->
                                 InputHintHashTag(
                                     hint = item,
+                                    containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                                    contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
                                     onClick = { component.onInputHintSelected(item) },
                                 )
                         }
@@ -312,8 +323,7 @@ internal fun EditorContent(
             // Toolbar
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .background(color = MaterialTheme.colorScheme.surface),
+                modifier = Modifier,
             ) {
                 // Toolbar
                 EditorToolbar(
@@ -327,7 +337,7 @@ internal fun EditorContent(
                             EditorToolbarItem.Type.SCHEDULE -> component.onScheduleDatePickerRequested(true)
                         }
                     },
-                    modifier = Modifier,
+                    modifier = Modifier.padding(start = 4.dp),
                 )
 
                 Spacer(modifier = Modifier.weight(1f, true))
@@ -337,7 +347,7 @@ internal fun EditorContent(
                     text = "${editorModel.statusCharactersLeft}",
                     style = MaterialTheme.typography.titleSmall,
                     color = MaterialTheme.colorScheme.secondary,
-                    modifier = Modifier,
+                    modifier = Modifier.padding(end = 16.dp),
                 )
             }
         }
@@ -440,6 +450,26 @@ private fun EditorTabContentPreviewIdle() {
 
 @Preview
 @Composable
+private fun EditorTabContentPreviewWarning() {
+    TackleScreenPreview {
+        EditorContent(
+            component = EditorComponentPreview(
+                attachmentsButtonAvailable = true,
+                emojisButtonAvailable = true,
+                pollButtonAvailable = true,
+                avatar = "https://mastodon.social/avatars/original/missing.png",
+                nickname = "djkovrik",
+                domain = "mastodon.social",
+                selectedLocale = AppLocale("English", "en"),
+                statusCharactersLeft = 123,
+                warningContentVisible = true,
+            )
+        )
+    }
+}
+
+@Preview
+@Composable
 private fun EditorTabContentPreviewAttachments() {
     val platformFile = PlatformFileWrapper("", "", "", "", 0L, "123 Mb") { ByteArray(0) }
 
@@ -497,26 +527,6 @@ private fun EditorTabContentPreviewPoll() {
 
 @Preview
 @Composable
-private fun EditorTabContentPreviewWarning() {
-    TackleScreenPreview {
-        EditorContent(
-            component = EditorComponentPreview(
-                attachmentsButtonAvailable = true,
-                emojisButtonAvailable = true,
-                pollButtonAvailable = true,
-                avatar = "https://mastodon.social/avatars/original/missing.png",
-                nickname = "djkovrik",
-                domain = "mastodon.social",
-                selectedLocale = AppLocale("English", "en"),
-                statusCharactersLeft = 123,
-                warningContentVisible = true,
-            )
-        )
-    }
-}
-
-@Preview
-@Composable
 private fun EditorTabContentAccountAndHashTagPreview() {
     TackleScreenPreview {
         EditorContent(
@@ -531,9 +541,9 @@ private fun EditorTabContentAccountAndHashTagPreview() {
                 statusCharactersLeft = 123,
                 statusText = "This is @mention and #hashTag here.",
                 suggestions = listOf(
-                    EditorInputHintItem.HashTag("abc"),
-                    EditorInputHintItem.HashTag("defghij"),
-                    EditorInputHintItem.HashTag("kl"),
+                    EditorInputHintItem.HashTag("Test"),
+                    EditorInputHintItem.HashTag("Tag"),
+                    EditorInputHintItem.HashTag("Stop"),
                 )
             )
         )
@@ -543,6 +553,8 @@ private fun EditorTabContentAccountAndHashTagPreview() {
 @Preview
 @Composable
 private fun EditorTabContentPreviewEverything() {
+    val platformFile = PlatformFileWrapper("", "", "", "", 0L, "123 Mb") { ByteArray(0) }
+
     TackleScreenPreview {
         EditorContent(
             component = EditorComponentPreview(
@@ -553,9 +565,9 @@ private fun EditorTabContentPreviewEverything() {
                 selectedLocale = AppLocale("English", "en"),
                 statusCharactersLeft = 123,
                 suggestions = listOf(
-                    EditorInputHintItem.HashTag("abc"),
-                    EditorInputHintItem.HashTag("defghij"),
-                    EditorInputHintItem.HashTag("kl"),
+                    EditorInputHintItem.HashTag("Test"),
+                    EditorInputHintItem.HashTag("Tag"),
+                    EditorInputHintItem.HashTag("Stop"),
                 ),
                 pollOptions = listOf(
                     PollChoiceOption(id = "1", text = "Some text here"),
@@ -569,8 +581,11 @@ private fun EditorTabContentPreviewEverything() {
                 pollButtonAvailable = true,
                 pollContentVisible = true,
                 warningContentVisible = true,
-                attachmentsContentVisible = false,
+                attachmentsContentVisible = true,
                 attachmentsButtonAvailable = true,
+                attachments = listOf(
+                    AttachedFile("id", platformFile.copy(mimeType = "audio"), AttachedFile.Status.LOADING, 0.25f),
+                ),
                 scheduledDateLabel = "30.08.2024 12:34",
             )
         )

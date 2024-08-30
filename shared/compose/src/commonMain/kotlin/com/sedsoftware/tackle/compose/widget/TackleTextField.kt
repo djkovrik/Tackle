@@ -47,6 +47,7 @@ internal fun TackleTextField(
     ),
     label: @Composable (() -> Unit)? = null,
     placeholder: @Composable (() -> Unit)? = null,
+    trailingIcon: @Composable (() -> Unit)? = null,
 ) {
     val interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
 
@@ -76,7 +77,8 @@ internal fun TackleTextField(
                 colors = colors,
                 label = label,
                 placeholder = placeholder,
-                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+                trailingIcon = trailingIcon,
+                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 12.dp),
                 container = {
                     OutlinedTextFieldDefaults.ContainerBox(
                         enabled = enabled,
@@ -146,7 +148,7 @@ internal fun TackleTextField(
                 colors = colors,
                 label = label,
                 placeholder = placeholder,
-                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 12.dp),
                 container = {
                     OutlinedTextFieldDefaults.ContainerBox(
                         enabled = enabled,

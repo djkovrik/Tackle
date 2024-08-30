@@ -1,11 +1,8 @@
 package com.sedsoftware.tackle.compose.ui.editor.content
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -18,47 +15,42 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
+import com.sedsoftware.tackle.compose.widget.TackleImage
 import com.sedsoftware.tackle.editor.model.EditorInputHintItem
-import com.seiko.imageloader.rememberImagePainter
 
 @Composable
 internal fun InputHintAccount(
     hint: EditorInputHintItem.Account,
     modifier: Modifier = Modifier,
-    painter: @Composable (String) -> Painter = { rememberImagePainter(it) },
+    containerColor: Color = MaterialTheme.colorScheme.primaryContainer,
+    contentColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
     onClick: () -> Unit = {},
 ) {
     InputHintContainer(
         onClick = onClick,
         modifier = modifier,
+        containerColor = containerColor,
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = modifier,
         ) {
-            Box(
+            TackleImage(
+                data = hint.avatar,
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .size(size = 24.dp)
                     .clip(shape = CircleShape)
-                    .background(color = MaterialTheme.colorScheme.surface)
-            ) {
-                Image(
-                    painter = painter.invoke(hint.avatar),
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .clip(shape = CircleShape)
-                )
-            }
+            )
 
             Text(
                 text = hint.username,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = contentColor,
                 style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier.padding(horizontal = 8.dp),
             )
@@ -69,37 +61,32 @@ internal fun InputHintAccount(
 @Composable
 internal fun InputHintEmoji(
     hint: EditorInputHintItem.Emoji,
-    painter: @Composable (String) -> Painter = { rememberImagePainter(it) },
     modifier: Modifier = Modifier,
+    containerColor: Color = MaterialTheme.colorScheme.primaryContainer,
+    contentColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
     onClick: () -> Unit = {},
 ) {
     InputHintContainer(
         onClick = onClick,
         modifier = modifier,
+        containerColor = containerColor,
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = modifier
         ) {
-            Box(
+            TackleImage(
+                data = hint.url,
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .size(size = 24.dp)
                     .clip(shape = CircleShape)
-                    .background(color = MaterialTheme.colorScheme.surface)
-            ) {
-                Image(
-                    painter = painter.invoke(hint.url),
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .clip(shape = CircleShape)
-                )
-            }
+            )
 
             Text(
                 text = hint.shortcode,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = contentColor,
                 style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier.padding(horizontal = 8.dp),
             )
@@ -111,15 +98,18 @@ internal fun InputHintEmoji(
 internal fun InputHintHashTag(
     hint: EditorInputHintItem.HashTag,
     modifier: Modifier = Modifier,
+    containerColor: Color = MaterialTheme.colorScheme.primaryContainer,
+    contentColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
     onClick: () -> Unit = {},
 ) {
     InputHintContainer(
         onClick = onClick,
         modifier = modifier,
+        containerColor = containerColor,
     ) {
         Text(
             text = "#${hint.text}",
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = contentColor,
             style = MaterialTheme.typography.bodySmall,
             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
         )
@@ -129,6 +119,7 @@ internal fun InputHintHashTag(
 @Composable
 private fun InputHintContainer(
     modifier: Modifier = Modifier,
+    containerColor: Color = MaterialTheme.colorScheme.primaryContainer,
     onClick: () -> Unit = {},
     content: @Composable () -> Unit = {},
 ) {
@@ -136,13 +127,13 @@ private fun InputHintContainer(
         onClick = onClick,
         modifier = modifier.padding(all = 4.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant,
+            containerColor = containerColor,
         ),
         shape = RoundedCornerShape(size = 32.dp),
     ) {
         Box(
             contentAlignment = Alignment.Center,
-            modifier = Modifier.padding(all = 8.dp)
+            modifier = Modifier.padding(all = 4.dp)
         ) {
             content()
         }

@@ -9,32 +9,27 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.sedsoftware.tackle.compose.extension.getTitle
 import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
 import com.sedsoftware.tackle.compose.ui.editor.child.poll.content.CustomPollChoice
 import com.sedsoftware.tackle.compose.ui.editor.child.poll.content.CustomPollDurationDialog
+import com.sedsoftware.tackle.compose.widget.TackleIconButton
 import com.sedsoftware.tackle.editor.poll.EditorPollComponent
-import com.sedsoftware.tackle.editor.poll.EditorPollComponent.Model
 import com.sedsoftware.tackle.editor.poll.model.PollChoiceOption
 import com.sedsoftware.tackle.editor.poll.model.PollDuration
-import com.sedsoftware.tackle.editor.poll.model.PollDuration.FIVE_MINUTES
-import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import tackle.shared.compose.generated.resources.Res
 import tackle.shared.compose.generated.resources.editor_close
@@ -45,6 +40,9 @@ import tackle.shared.compose.generated.resources.editor_poll_multiple
 internal fun EditorPollContent(
     model: EditorPollComponent.Model,
     modifier: Modifier = Modifier,
+    containerColor: Color = MaterialTheme.colorScheme.primaryContainer,
+    contentColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
+    checkboxColor: Color = MaterialTheme.colorScheme.primary,
     onAddNewItem: () -> Unit = {},
     onDeleteItem: (String) -> Unit = {},
     onMultiselectEnabled: (Boolean) -> Unit = {},
@@ -59,7 +57,7 @@ internal fun EditorPollContent(
             CustomPollChoice(
                 index = index,
                 option = pollOption,
-                modifier = Modifier.padding(bottom = 8.dp),
+                modifier = Modifier,
                 deletionAvailable = model.deletionAvailable,
                 onTextInput = onTextInput,
                 onDelete = { onDeleteItem.invoke(pollOption.id) },
@@ -68,24 +66,15 @@ internal fun EditorPollContent(
 
         Row(modifier = Modifier.padding(vertical = 8.dp)) {
             // Add icon
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier
-                    .size(size = 42.dp)
-                    .clip(shape = CircleShape)
-                    .clickable(onClick = { if (model.insertionAvailable) onAddNewItem.invoke() })
-                    .background(color = MaterialTheme.colorScheme.secondaryContainer, shape = CircleShape),
-            ) {
-                Icon(
-                    painter = painterResource(resource = Res.drawable.editor_close),
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onSecondaryContainer,
-                    modifier = Modifier
-                        .size(size = 16.dp)
-                        .rotate(degrees = 45f)
-                        .alpha(alpha = if (model.insertionAvailable) 1f else 0.5f)
-                )
-            }
+            TackleIconButton(
+                iconRes = Res.drawable.editor_close,
+                enabled = model.insertionAvailable,
+                containerColor = containerColor,
+                contentColor = contentColor,
+                borderWidth = 1.dp,
+                modifier = Modifier.rotate(degrees = 45f),
+                onClick = { if (model.insertionAvailable) onAddNewItem.invoke() },
+            )
 
             Spacer(modifier = Modifier.width(width = 16.dp))
 
@@ -96,7 +85,7 @@ internal fun EditorPollContent(
                     .height(height = 42.dp)
                     .clip(shape = RoundedCornerShape(size = 32.dp))
                     .clickable(onClick = onDurationPickerCall)
-                    .background(color = MaterialTheme.colorScheme.secondaryContainer, shape = RoundedCornerShape(size = 32.dp)),
+                    .background(color = containerColor, shape = RoundedCornerShape(size = 32.dp)),
             ) {
                 Text(
                     text = stringResource(resource = model.duration.getTitle()),
@@ -115,15 +104,15 @@ internal fun EditorPollContent(
                 checked = model.multiselectEnabled,
                 onCheckedChange = onMultiselectEnabled,
                 colors = CheckboxDefaults.colors(
-                    checkedColor = MaterialTheme.colorScheme.secondary,
-                    uncheckedColor = MaterialTheme.colorScheme.secondary,
+                    checkedColor = checkboxColor,
+                    uncheckedColor = checkboxColor,
                 ),
                 modifier = Modifier
             )
 
             Text(
                 text = stringResource(resource = Res.string.editor_poll_multiple),
-                color = MaterialTheme.colorScheme.secondary,
+                color = checkboxColor,
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.padding(horizontal = 8.dp),
             )
@@ -137,15 +126,15 @@ internal fun EditorPollContent(
                 checked = model.hideTotalsEnabled,
                 onCheckedChange = onHideTotalsEnabled,
                 colors = CheckboxDefaults.colors(
-                    checkedColor = MaterialTheme.colorScheme.secondary,
-                    uncheckedColor = MaterialTheme.colorScheme.secondary,
+                    checkedColor = checkboxColor,
+                    uncheckedColor = checkboxColor,
                 ),
                 modifier = Modifier
             )
 
             Text(
                 text = stringResource(resource = Res.string.editor_poll_hide_totals),
-                color = MaterialTheme.colorScheme.secondary,
+                color = checkboxColor,
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.padding(horizontal = 8.dp),
             )
@@ -156,9 +145,9 @@ internal fun EditorPollContent(
     if (model.durationPickerVisible) {
         CustomPollDurationDialog(
             model = model,
+            modifier = Modifier,
             onDismiss = onDurationPickerClose,
             onConfirmation = onDurationSelected,
-            modifier = Modifier,
         )
     }
 }
@@ -168,7 +157,7 @@ internal fun EditorPollContent(
 private fun EditorPollContentPreview() {
     TackleScreenPreview {
         EditorPollContent(
-            model = Model(
+            model = EditorPollComponent.Model(
                 options = listOf(
                     PollChoiceOption(id = "1", text = "Some text here"),
                     PollChoiceOption(id = "2", text = "Another text here"),
@@ -176,7 +165,7 @@ private fun EditorPollContentPreview() {
                 ),
                 multiselectEnabled = false,
                 hideTotalsEnabled = false,
-                duration = FIVE_MINUTES,
+                duration = PollDuration.FIVE_MINUTES,
                 availableDurations = emptyList(),
                 durationPickerVisible = false,
                 insertionAvailable = true,

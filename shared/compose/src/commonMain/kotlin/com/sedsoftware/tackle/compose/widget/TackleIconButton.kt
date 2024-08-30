@@ -183,7 +183,7 @@ private const val ALPHA_ENABLED = 1f
 private const val ALPHA_DISABLED = 0.5f
 private const val ALPHA_ANIM_DURATION = 150
 private const val BUTTON_SIZE = 44
-private const val ICON_SIZE = 22
+private const val ICON_SIZE = 20
 
 @Preview
 @Composable

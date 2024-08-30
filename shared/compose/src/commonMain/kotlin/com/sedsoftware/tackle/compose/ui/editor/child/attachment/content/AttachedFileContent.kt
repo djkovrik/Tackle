@@ -38,8 +38,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.sedsoftware.tackle.compose.extension.getTypeTitle
 import com.sedsoftware.tackle.compose.extension.hasError
@@ -51,8 +53,6 @@ import com.sedsoftware.tackle.domain.model.MediaAttachment
 import com.sedsoftware.tackle.domain.model.PlatformFileWrapper
 import com.sedsoftware.tackle.domain.model.type.MediaAttachmentType
 import com.sedsoftware.tackle.editor.attachments.model.AttachedFile
-import com.sedsoftware.tackle.editor.attachments.model.AttachedFile.Status.ERROR
-import com.sedsoftware.tackle.editor.attachments.model.AttachedFile.Status.LOADED
 import com.sedsoftware.tackle.utils.extension.isImage
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -66,6 +66,8 @@ import tackle.shared.compose.generated.resources.preview_sample
 internal fun AttachedFileContent(
     attachment: AttachedFile,
     modifier: Modifier = Modifier,
+    containerColor: Color = MaterialTheme.colorScheme.primaryContainer,
+    contentColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
     onRetry: () -> Unit = {},
     onDelete: () -> Unit = {},
     previewImage: @Composable (() -> Unit)? = null,
@@ -189,7 +191,7 @@ internal fun AttachedFileContent(
                     color = if (attachment.hasError) {
                         MaterialTheme.colorScheme.errorContainer
                     } else {
-                        MaterialTheme.colorScheme.primaryContainer
+                        containerColor
                     }
                 )
                 .fillMaxWidth()
@@ -221,8 +223,10 @@ internal fun AttachedFileContent(
                             color = if (attachment.hasError) {
                                 MaterialTheme.colorScheme.error
                             } else {
-                                MaterialTheme.colorScheme.onPrimaryContainer
+                                contentColor
                             },
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
                             style = MaterialTheme.typography.bodyMedium,
                             modifier = Modifier.padding(start = 16.dp, end = 8.dp),
                         )
@@ -230,7 +234,7 @@ internal fun AttachedFileContent(
                         Image(
                             painter = painterResource(resource = Res.drawable.editor_done),
                             contentDescription = null,
-                            colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.onPrimaryContainer),
+                            colorFilter = ColorFilter.tint(color = contentColor),
                             modifier = Modifier
                                 .size(size = 14.dp)
                                 .alpha(alpha = animatedDoneIconState)
@@ -246,7 +250,7 @@ internal fun AttachedFileContent(
                         color = if (attachment.hasError) {
                             MaterialTheme.colorScheme.error
                         } else {
-                            MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.75f)
+                            contentColor.copy(alpha = 0.75f)
                         },
                         style = MaterialTheme.typography.bodySmall,
                         modifier = Modifier.padding(horizontal = 16.dp),
@@ -259,7 +263,9 @@ internal fun AttachedFileContent(
                     Icon(
                         painterResource(resource = Res.drawable.editor_delete),
                         contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                        tint = contentColor.copy(
+                            alpha = 0.75f
+                        ),
                         modifier = Modifier.size(size = 24.dp),
                     )
                 }
@@ -304,11 +310,11 @@ private fun AttachedFileContentPreview() {
             }
             // Error
             Box(modifier = Modifier.width(width = 420.dp).padding(all = 8.dp)) {
-                AttachedFileContent(attachment = image.copy(status = ERROR))
+                AttachedFileContent(attachment = image.copy(status = AttachedFile.Status.ERROR))
             }
             // Loaded
             Box(modifier = Modifier.width(width = 420.dp).padding(all = 8.dp)) {
-                AttachedFileContent(attachment = image.copy(status = LOADED)) {
+                AttachedFileContent(attachment = image.copy(status = AttachedFile.Status.LOADED)) {
                     AttachmentPreviewImageStub()
                 }
             }

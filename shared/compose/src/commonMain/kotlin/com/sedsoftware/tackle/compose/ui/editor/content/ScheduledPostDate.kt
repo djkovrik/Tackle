@@ -13,6 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
 import org.jetbrains.compose.resources.painterResource
@@ -22,6 +23,8 @@ import tackle.shared.compose.generated.resources.editor_close
 @Composable
 internal fun ScheduledPostDate(
     text: String,
+    containerColor: Color = MaterialTheme.colorScheme.primaryContainer,
+    contentColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
     modifier: Modifier = Modifier,
     onClose: () -> Unit = {},
 ) {
@@ -29,13 +32,13 @@ internal fun ScheduledPostDate(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
             .background(
-                color = MaterialTheme.colorScheme.primaryContainer,
+                color = containerColor,
                 shape = MaterialTheme.shapes.small,
             )
     ) {
         Text(
             text = text,
-            color = MaterialTheme.colorScheme.onPrimaryContainer,
+            color = contentColor,
             style = MaterialTheme.typography.bodyMedium,
             maxLines = 1,
             modifier = Modifier.padding(horizontal = 8.dp)

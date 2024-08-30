@@ -8,14 +8,16 @@ import androidx.compose.animation.scaleOut
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -26,6 +28,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
 import com.sedsoftware.tackle.compose.ui.editor.child.warning.content.createStripedBrush
+import com.sedsoftware.tackle.compose.widget.TackleTextField
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import tackle.shared.compose.generated.resources.Res
@@ -73,11 +76,11 @@ internal fun EditorWarningContent(
                 )
             }
     ) {
-        TextField(
+        TackleTextField(
             value = text,
             onValueChange = onTextInput,
+            singleLine = false,
             maxLines = 3,
-            textStyle = MaterialTheme.typography.bodyLarge,
             trailingIcon = {
                 AnimatedVisibility(
                     visible = text.isNotBlank(),
@@ -113,22 +116,40 @@ internal fun EditorWarningContent(
 
 @Preview
 @Composable
-private fun EditorWarningComponentEmptyPreview() {
+private fun EditorWarningContentPreviewLight() {
     TackleScreenPreview {
-        EditorWarningContent(
-            text = "",
-            modifier = Modifier.padding(all = 2.dp)
-        )
+        EditorWarningContentPreviewContent()
     }
 }
 
 
 @Preview
 @Composable
-private fun EditorWarningComponentSingleLinePreview() {
-    TackleScreenPreview {
+private fun EditorWarningContentPreviewDark() {
+    TackleScreenPreview(darkTheme = true) {
+        EditorWarningContentPreviewContent()
+    }
+}
+
+@Composable
+private fun EditorWarningContentPreviewContent() {
+    Column(modifier = Modifier.padding(all = 16.dp)) {
         EditorWarningContent(
-            text = "abcdef",
+            text = "",
+            modifier = Modifier.padding(all = 2.dp)
+        )
+
+        Spacer(modifier = Modifier.height(height = 16.dp))
+
+        EditorWarningContent(
+            text = "Warning text",
+            modifier = Modifier.padding(all = 2.dp)
+        )
+
+        Spacer(modifier = Modifier.height(height = 16.dp))
+
+        EditorWarningContent(
+            text = "Warning text and more text\nSecond line\nThird line",
             modifier = Modifier.padding(all = 2.dp)
         )
     }

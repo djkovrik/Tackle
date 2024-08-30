@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import com.sedsoftware.tackle.compose.extension.getIcon
@@ -25,9 +26,7 @@ import com.sedsoftware.tackle.compose.widget.TackleIconButton
 import com.sedsoftware.tackle.compose.widget.TackleImage
 import com.sedsoftware.tackle.domain.model.AppLocale
 import com.sedsoftware.tackle.domain.model.type.StatusVisibility
-import com.sedsoftware.tackle.domain.model.type.StatusVisibility.PUBLIC
 import com.sedsoftware.tackle.editor.header.EditorHeaderComponent
-import com.sedsoftware.tackle.editor.header.EditorHeaderComponent.Model
 import org.jetbrains.compose.resources.stringResource
 import tackle.shared.compose.generated.resources.Res
 import tackle.shared.compose.generated.resources.editor_back
@@ -39,6 +38,8 @@ import tackle.shared.compose.generated.resources.editor_title
 internal fun EditorHeaderContent(
     model: EditorHeaderComponent.Model,
     modifier: Modifier = Modifier,
+    containerColor: Color = MaterialTheme.colorScheme.primaryContainer,
+    contentColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
     onLocalePickerRequest: () -> Unit = {},
     onVisibilityPickerRequest: () -> Unit = {},
     onSendClick: () -> Unit = {},
@@ -48,7 +49,7 @@ internal fun EditorHeaderContent(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
             .fillMaxWidth()
-            .height(height = 136.dp)
+            .height(height = 128.dp)
     ) {
         Column {
             Row(
@@ -66,7 +67,7 @@ internal fun EditorHeaderContent(
                 Text(
                     text = stringResource(resource = Res.string.editor_title),
                     color = MaterialTheme.colorScheme.onBackground,
-                    style = MaterialTheme.typography.titleMedium,
+                    style = MaterialTheme.typography.titleSmall,
                 )
 
                 Spacer(modifier = Modifier.weight(weight = 1f, fill = true))
@@ -74,8 +75,8 @@ internal fun EditorHeaderContent(
                 TackleIconButton(
                     iconRes = Res.drawable.editor_language,
                     additionalText = model.selectedLocale.languageCode,
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                    containerColor = containerColor,
+                    contentColor = contentColor,
                     borderWidth = 1.dp,
                     onClick = onLocalePickerRequest,
                 )
@@ -100,7 +101,7 @@ internal fun EditorHeaderContent(
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
-                        .size(size = 48.dp)
+                        .size(size = 54.dp)
                         .clip(shape = CircleShape)
                 )
 
@@ -123,8 +124,8 @@ internal fun EditorHeaderContent(
                 TackleIconButton(
                     iconRes = model.statusVisibility.getIcon(),
                     additionalText = stringResource(resource = model.statusVisibility.getTitle()),
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                    containerColor = containerColor,
+                    contentColor = contentColor,
                     borderWidth = 1.dp,
                     onClick = onVisibilityPickerRequest,
                 )
@@ -138,7 +139,7 @@ internal fun EditorHeaderContent(
 private fun EditorHeaderContentPreviewLight() {
     TackleScreenPreview {
         EditorHeaderContent(
-            model = Model(
+            model = EditorHeaderComponent.Model(
                 avatar = "https://mastodon.social/avatars/original/missing.png",
                 nickname = "djkovrik",
                 domain = "mastodon.social",
@@ -147,7 +148,7 @@ private fun EditorHeaderContentPreviewLight() {
                 availableLocales = emptyList(),
                 localePickerAvailable = true,
                 localePickerDisplayed = false,
-                statusVisibility = PUBLIC,
+                statusVisibility = StatusVisibility.PUBLIC,
                 statusVisibilityPickerDisplayed = false,
                 sendButtonAvailable = true,
             ),
@@ -160,7 +161,7 @@ private fun EditorHeaderContentPreviewLight() {
 private fun EditorHeaderContentPreviewDark() {
     TackleScreenPreview(darkTheme = true) {
         EditorHeaderContent(
-            model = Model(
+            model = EditorHeaderComponent.Model(
                 avatar = "https://mastodon.social/avatars/original/missing.png",
                 nickname = "djkovrik",
                 domain = "mastodon.social",
@@ -169,7 +170,7 @@ private fun EditorHeaderContentPreviewDark() {
                 availableLocales = emptyList(),
                 localePickerAvailable = true,
                 localePickerDisplayed = false,
-                statusVisibility = PUBLIC,
+                statusVisibility = StatusVisibility.PUBLIC,
                 statusVisibilityPickerDisplayed = false,
                 sendButtonAvailable = true,
             ),

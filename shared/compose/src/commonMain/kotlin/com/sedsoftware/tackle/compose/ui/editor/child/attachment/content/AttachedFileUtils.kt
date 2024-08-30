@@ -13,36 +13,35 @@ internal fun getFraction(index: Int, totalCount: Int): Float = when (index) {
 
 @Suppress("MagicNumber")
 internal fun getPadding(index: Int, totalCount: Int): PaddingValues {
-    val fullPadding = 16.dp
-    val halfPadding = fullPadding / 2
+    val padding = 8.dp
 
     return when (index) {
         0 -> PaddingValues(
-            start = fullPadding,
-            top = fullPadding,
-            end = if (totalCount > 1) halfPadding else fullPadding,
-            bottom = if (totalCount > 2) halfPadding else fullPadding,
+            start = 0.dp,
+            top = 0.dp,
+            end = if (totalCount > 1) padding else 0.dp,
+            bottom = if (totalCount > 2) padding else 0.dp,
         )
 
         1 -> PaddingValues(
-            start = halfPadding,
-            top = fullPadding,
-            end = fullPadding,
-            bottom = if (totalCount > 2) halfPadding else fullPadding,
+            start = padding,
+            top = 0.dp,
+            end = 0.dp,
+            bottom = if (totalCount > 2) padding else 0.dp,
         )
 
         2 -> PaddingValues(
-            start = fullPadding,
-            top = halfPadding,
-            end = if (totalCount > 3) halfPadding else fullPadding,
-            bottom = fullPadding,
+            start = 0.dp,
+            top = padding,
+            end = if (totalCount > 3) padding else 0.dp,
+            bottom = 0.dp,
         )
 
         else -> PaddingValues(
-            start = halfPadding,
-            top = halfPadding,
-            end = fullPadding,
-            bottom = fullPadding,
+            start = padding,
+            top = padding,
+            end = 0.dp,
+            bottom = 0.dp,
         )
     }
 }

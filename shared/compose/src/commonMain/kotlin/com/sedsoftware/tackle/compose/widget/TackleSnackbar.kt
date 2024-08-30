@@ -1,7 +1,6 @@
 package com.sedsoftware.tackle.compose.widget
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -64,7 +63,7 @@ private fun TackleSnackbarPreviewDark() {
 
 @Composable
 private fun TackleSnackbarPreviewContent() {
-    Box(modifier = Modifier.background(color = MaterialTheme.colorScheme.surface)) {
+    Box {
         TackleSnackbar(
             message = "No internet connection",
             modifier = Modifier.padding(all = 16.dp)

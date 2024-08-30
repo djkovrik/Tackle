@@ -2,7 +2,6 @@ package com.sedsoftware.tackle.compose.ui.editor.child.emoji
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
@@ -52,16 +51,15 @@ internal fun EditorEmojisContent(
                             stringResource(resource = Res.string.editor_no_category)
                         },
                         color = MaterialTheme.colorScheme.onSecondaryContainer,
-                        style = MaterialTheme.typography.bodyMedium,
+                        style = MaterialTheme.typography.bodyLarge,
                         modifier = Modifier.fillMaxSize()
-                            .background(color = MaterialTheme.colorScheme.surfaceVariant)
                             .fillMaxWidth()
                             .padding(all = 8.dp)
                     )
                 }
 
                 item {
-                    Column {
+                    Column(modifier = Modifier.padding(bottom = 8.dp)) {
                         emojis.chunked(columns).forEach { chunk: List<CustomEmoji> ->
                             Row(
                                 horizontalArrangement = Arrangement.Start,

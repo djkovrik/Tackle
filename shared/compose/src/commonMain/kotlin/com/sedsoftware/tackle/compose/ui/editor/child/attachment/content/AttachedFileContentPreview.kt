@@ -18,17 +18,15 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
+import com.sedsoftware.tackle.compose.widget.TackleImage
 import com.sedsoftware.tackle.domain.model.PlatformFileWrapper
 import com.sedsoftware.tackle.editor.attachments.model.AttachedFile
 import com.sedsoftware.tackle.editor.attachments.model.AttachedFile.Status.PENDING
 import com.sedsoftware.tackle.utils.extension.isAudio
 import com.sedsoftware.tackle.utils.extension.isImage
 import com.sedsoftware.tackle.utils.extension.isVideo
-import com.seiko.imageloader.model.ImageRequest
-import com.seiko.imageloader.rememberImagePainter
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
-import tackle.shared.compose.generated.resources.Res
 import tackle.shared.compose.generated.resources.Res.drawable
 import tackle.shared.compose.generated.resources.editor_file_audio
 import tackle.shared.compose.generated.resources.editor_file_image
@@ -41,8 +39,8 @@ internal fun AttachedFileImageThumbnail(
     modifier: Modifier = Modifier,
 ) {
     if (imageData.isNotEmpty()) {
-        Image(
-            painter = rememberImagePainter(request = ImageRequest(data = imageData)),
+        TackleImage(
+            data = imageData,
             contentScale = ContentScale.Crop,
             contentDescription = null,
             modifier = modifier,
@@ -61,8 +59,8 @@ internal fun AttachedFileVideoThumbnail(
     modifier: Modifier = Modifier,
 ) {
     if (url.isNotEmpty()) {
-        Image(
-            painter = rememberImagePainter(url = url),
+        TackleImage(
+            data = url,
             contentDescription = null,
             contentScale = ContentScale.Crop,
             modifier = modifier.fillMaxSize(),

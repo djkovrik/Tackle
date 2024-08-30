@@ -1,10 +1,10 @@
-package com.sedsoftware.tackle.compose.ui.editor.content
+package com.sedsoftware.tackle.compose.widget
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -14,17 +14,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import com.sedsoftware.tackle.compose.model.EditorToolbarItem
 import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
+import com.sedsoftware.tackle.compose.ui.editor.content.EditorToolbar
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
-import tackle.shared.compose.generated.resources.Res
-import tackle.shared.compose.generated.resources.editor_attachment
-import tackle.shared.compose.generated.resources.editor_content_description_attach
 
 @Composable
-internal fun EditorToolbarButton(
+internal fun TackleToolbarButton(
     iconResource: DrawableResource,
     contentDescriptionResource: StringResource,
     modifier: Modifier = Modifier,
@@ -54,42 +53,34 @@ internal fun EditorToolbarButton(
     }
 }
 
+
 @Preview
 @Composable
-private fun EditorToolbarButtonPreviewNormal() {
+private fun TackleToolbarButtonPreviewLight() {
     TackleScreenPreview {
-        EditorToolbarButton(
-            iconResource = Res.drawable.editor_attachment,
-            contentDescriptionResource = Res.string.editor_content_description_attach,
-            isActive = false,
-            modifier = Modifier.size(size = 48.dp),
-        )
+        TackleToolbarButtonPreviewContent()
     }
 }
 
 @Preview
 @Composable
-private fun EditorToolbarButtonPreviewDisabled() {
+private fun TackleToolbarButtonPreviewDark() {
     TackleScreenPreview {
-        EditorToolbarButton(
-            iconResource = Res.drawable.editor_attachment,
-            contentDescriptionResource = Res.string.editor_content_description_attach,
-            isActive = false,
-            isEnabled = false,
-            modifier = Modifier.size(size = 48.dp),
-        )
+        TackleToolbarButtonPreviewContent()
     }
 }
 
-@Preview
 @Composable
-private fun EditorToolbarButtonPreviewActive() {
-    TackleScreenPreview {
-        EditorToolbarButton(
-            iconResource = Res.drawable.editor_attachment,
-            contentDescriptionResource = Res.string.editor_content_description_attach,
-            isActive = true,
-            modifier = Modifier.size(size = 48.dp),
+private fun TackleToolbarButtonPreviewContent() {
+    Column {
+        EditorToolbar(
+            items = listOf(
+                EditorToolbarItem(type = EditorToolbarItem.Type.ATTACH, active = false, enabled = true),
+                EditorToolbarItem(type = EditorToolbarItem.Type.POLL, active = false, enabled = false),
+                EditorToolbarItem(type = EditorToolbarItem.Type.EMOJIS, active = false, enabled = true),
+                EditorToolbarItem(type = EditorToolbarItem.Type.WARNING, active = false, enabled = true),
+                EditorToolbarItem(type = EditorToolbarItem.Type.SCHEDULE, active = true, enabled = true),
+            )
         )
     }
 }
