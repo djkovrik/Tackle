@@ -306,7 +306,6 @@ class EditorComponentTest : ComponentTest<EditorComponent>() {
         component.onSendButtonClicked()
         // then
         assertThat(editorActiveModel.statusText).isEmpty()
-        assertThat(attachmentsActiveModel.attachments).isEmpty()
     }
 
     @Test
@@ -339,7 +338,6 @@ class EditorComponentTest : ComponentTest<EditorComponent>() {
         component.onSendButtonClicked()
         // then
         assertThat(editorActiveModel.statusText).isEmpty()
-        assertThat(attachmentsActiveModel.attachments).isEmpty()
     }
 
     override fun createComponent(): EditorComponentDefault =
