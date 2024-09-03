@@ -323,7 +323,7 @@ internal fun EditorContent(
             // Toolbar
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier,
+                modifier = Modifier.padding(bottom = 4.dp),
             ) {
                 // Toolbar
                 EditorToolbar(

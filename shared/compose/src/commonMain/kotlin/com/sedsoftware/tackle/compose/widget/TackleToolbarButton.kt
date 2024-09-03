@@ -76,7 +76,7 @@ private fun TackleToolbarButtonPreviewContent() {
         EditorToolbar(
             items = listOf(
                 EditorToolbarItem(type = EditorToolbarItem.Type.ATTACH, active = false, enabled = true),
-                EditorToolbarItem(type = EditorToolbarItem.Type.POLL, active = false, enabled = false),
+                EditorToolbarItem(type = EditorToolbarItem.Type.POLL, active = false, enabled = true),
                 EditorToolbarItem(type = EditorToolbarItem.Type.EMOJIS, active = false, enabled = true),
                 EditorToolbarItem(type = EditorToolbarItem.Type.WARNING, active = false, enabled = true),
                 EditorToolbarItem(type = EditorToolbarItem.Type.SCHEDULE, active = true, enabled = true),

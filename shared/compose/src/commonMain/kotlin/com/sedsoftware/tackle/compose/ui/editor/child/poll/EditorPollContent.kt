@@ -19,7 +19,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.sedsoftware.tackle.compose.extension.getTitle
@@ -32,7 +31,7 @@ import com.sedsoftware.tackle.editor.poll.model.PollChoiceOption
 import com.sedsoftware.tackle.editor.poll.model.PollDuration
 import org.jetbrains.compose.resources.stringResource
 import tackle.shared.compose.generated.resources.Res
-import tackle.shared.compose.generated.resources.editor_close
+import tackle.shared.compose.generated.resources.editor_add
 import tackle.shared.compose.generated.resources.editor_poll_hide_totals
 import tackle.shared.compose.generated.resources.editor_poll_multiple
 
@@ -67,12 +66,12 @@ internal fun EditorPollContent(
         Row(modifier = Modifier.padding(vertical = 8.dp)) {
             // Add icon
             TackleIconButton(
-                iconRes = Res.drawable.editor_close,
+                iconRes = Res.drawable.editor_add,
                 enabled = model.insertionAvailable,
                 containerColor = containerColor,
                 contentColor = contentColor,
                 borderWidth = 1.dp,
-                modifier = Modifier.rotate(degrees = 45f),
+                modifier = Modifier,
                 onClick = { if (model.insertionAvailable) onAddNewItem.invoke() },
             )
 
@@ -154,7 +153,31 @@ internal fun EditorPollContent(
 
 @Preview
 @Composable
-private fun EditorPollContentPreview() {
+private fun EditorPollContentPreviewTwoOptions() {
+    TackleScreenPreview {
+        EditorPollContent(
+            model = EditorPollComponent.Model(
+                options = listOf(
+                    PollChoiceOption(id = "1", text = "Some text here"),
+                    PollChoiceOption(id = "2", text = "Another text here"),
+                ),
+                multiselectEnabled = false,
+                hideTotalsEnabled = false,
+                duration = PollDuration.FIVE_MINUTES,
+                availableDurations = emptyList(),
+                durationPickerVisible = false,
+                insertionAvailable = true,
+                deletionAvailable = false,
+                pollButtonAvailable = false,
+                pollContentVisible = false,
+            )
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun EditorPollContentPreviewThreeOptions() {
     TackleScreenPreview {
         EditorPollContent(
             model = EditorPollComponent.Model(

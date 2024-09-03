@@ -27,7 +27,7 @@ import com.sedsoftware.tackle.utils.extension.isImage
 import com.sedsoftware.tackle.utils.extension.isVideo
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
-import tackle.shared.compose.generated.resources.Res.drawable
+import tackle.shared.compose.generated.resources.Res
 import tackle.shared.compose.generated.resources.editor_file_audio
 import tackle.shared.compose.generated.resources.editor_file_image
 import tackle.shared.compose.generated.resources.editor_file_unknown
@@ -47,7 +47,7 @@ internal fun AttachedFileImageThumbnail(
         )
     } else {
         AttachedFilePlaceholder(
-            resource = drawable.editor_file_image,
+            resource = Res.drawable.editor_file_image,
             modifier = modifier,
         )
     }
@@ -75,10 +75,10 @@ internal fun AttachedFileContentGeneric(
 ) {
     AttachedFilePlaceholder(
         resource = when {
-            attachment.file.isAudio -> drawable.editor_file_audio
-            attachment.file.isImage -> drawable.editor_file_image
-            attachment.file.isVideo -> drawable.editor_file_video
-            else -> drawable.editor_file_unknown
+            attachment.file.isAudio -> Res.drawable.editor_file_audio
+            attachment.file.isImage -> Res.drawable.editor_file_image
+            attachment.file.isVideo -> Res.drawable.editor_file_video
+            else -> Res.drawable.editor_file_unknown
         },
         modifier = modifier,
     )

@@ -16,7 +16,6 @@ import androidx.compose.ui.unit.dp
 import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
 import org.jetbrains.compose.resources.painterResource
 import tackle.shared.compose.generated.resources.Res
-import tackle.shared.compose.generated.resources.Res.drawable
 import tackle.shared.compose.generated.resources.emoji_sample
 import tackle.shared.compose.generated.resources.emoji_sample2
 
@@ -45,11 +44,11 @@ private fun EditorEmojiPreview() {
     TackleScreenPreview {
         Row {
             EditorEmoji(
-                painter = painterResource(resource = drawable.emoji_sample),
+                painter = painterResource(resource = Res.drawable.emoji_sample),
                 modifier = Modifier.size(size = 64.dp),
             )
             EditorEmoji(
-                painter = painterResource(resource = drawable.emoji_sample2),
+                painter = painterResource(resource = Res.drawable.emoji_sample2),
                 modifier = Modifier.size(size = 64.dp),
             )
         }

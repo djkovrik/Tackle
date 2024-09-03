@@ -39,9 +39,9 @@ internal fun AttachedFileUploadFailed(
             painter = painterResource(resource = Res.drawable.editor_retry),
             contentDescription = null,
             tint = MaterialTheme.colorScheme.onPrimaryContainer.copy(
-                alpha = 0.75f
+                alpha = 0.6f
             ),
-            modifier = Modifier.padding(all = 10.dp),
+            modifier = Modifier.padding(all = 12.dp),
         )
     }
 }

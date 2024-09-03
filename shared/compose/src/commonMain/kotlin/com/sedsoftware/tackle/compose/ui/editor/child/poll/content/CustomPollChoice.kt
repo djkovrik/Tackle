@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -40,7 +41,7 @@ internal fun CustomPollChoice(
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier,
+        modifier = modifier.padding(bottom = 4.dp),
     ) {
         TackleTextField(
             value = option.text,
@@ -71,12 +72,16 @@ internal fun CustomPollChoice(
             enter = scaleIn() + fadeIn(),
             exit = scaleOut() + fadeOut(),
         ) {
-            IconButton(onClick = onDelete) {
+            IconButton(
+                onClick = onDelete,
+                modifier = Modifier
+                    .size(size = 32.dp)
+            ) {
                 Icon(
                     painterResource(resource = Res.drawable.editor_close),
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.secondary,
-                    modifier = Modifier.size(size = 24.dp),
+                    modifier = Modifier.size(size = 16.dp),
                 )
             }
         }
@@ -89,21 +94,16 @@ private fun CustomPollChoicePreview() {
     TackleScreenPreview {
         Column {
             Spacer(modifier = Modifier.height(height = 8.dp))
+            CustomPollChoice(
+                index = 1,
+                option = PollChoiceOption(id = "1", text = ""),
+            )
 
             CustomPollChoice(
                 index = 2,
                 option = PollChoiceOption(id = "2", text = "Some text here"),
                 deletionAvailable = true,
             )
-
-            Spacer(modifier = Modifier.height(height = 8.dp))
-
-            CustomPollChoice(
-                index = 1,
-                option = PollChoiceOption(id = "1", text = ""),
-            )
-
-            Spacer(modifier = Modifier.height(height = 8.dp))
         }
     }
 }

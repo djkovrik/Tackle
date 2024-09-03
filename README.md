@@ -21,4 +21,5 @@ Work In Progress
 
 ### Used resources
 
-* [Icons from Grand Iconic](https://www.flaticon.com/authors/grand-iconic/black-outline?author_id=5014&type=standard)
+* [Icons by Grand Iconic](https://www.flaticon.com/authors/grand-iconic/black-outline?author_id=5014&type=standard)
+* [Icons by Freepik](https://www.flaticon.com/authors/super-basic-rounded/lineal?author_id=1&type=standard)
