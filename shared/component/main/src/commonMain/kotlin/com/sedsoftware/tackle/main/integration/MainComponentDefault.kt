@@ -39,6 +39,7 @@ class MainComponentDefault internal constructor(
     private val profileTabComponent: (ComponentContext, (ComponentOutput) -> Unit) -> ProfileTabComponent,
 ) : MainComponent, ComponentContext by componentContext {
 
+    @Suppress("UnusedPrivateProperty")
     constructor(
         componentContext: ComponentContext,
         storeFactory: StoreFactory,
