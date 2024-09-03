@@ -42,11 +42,12 @@
     <!-- Main component -->
     <string name="main_tab_home">Home</string>
     <string name="main_tab_explore">Explore</string>
-    <string name="main_tab_editor">New post</string>
     <string name="main_tab_publications">Publications</string>
     <string name="main_tab_notifications">Notifications</string>
+    <string name="main_tab_profile">Profile</string>
 
     <!-- Editor component -->
+    <string name="editor_title">New post</string>
     <string name="editor_input_hint">What's on your mind?</string>
     <string name="editor_warning_hint">Content warning</string>
     <string name="editor_language_default">Default</string>

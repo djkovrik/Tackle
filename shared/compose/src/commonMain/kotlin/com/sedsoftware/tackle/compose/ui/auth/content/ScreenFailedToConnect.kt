@@ -5,6 +5,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,7 +13,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,6 +22,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.sedsoftware.tackle.compose.custom.LoadingDotsText
+import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
+import com.sedsoftware.tackle.compose.widget.TackleButton
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import tackle.shared.compose.generated.resources.Res
@@ -85,20 +87,31 @@ internal fun ScreenFailedToConnect(
                     )
                 }
 
-                Button(
+                TackleButton(
+                    text = stringResource(resource = Res.string.common_retry),
                     enabled = !isRetrying,
-                    shape = MaterialTheme.shapes.large,
                     onClick = onRetryClick,
                     modifier = modifier
                         .padding(all = 16.dp)
                         .navigationBarsPadding(),
-                ) {
-                    Text(
-                        text = stringResource(resource = Res.string.common_retry),
-                        modifier = modifier,
-                    )
-                }
+                )
             }
         }
+    }
+}
+
+@Preview
+@Composable
+private fun ScreenFailedToConnectPreviewLight() {
+    TackleScreenPreview {
+        ScreenFailedToConnect(isRetrying = false)
+    }
+}
+
+@Preview
+@Composable
+private fun ScreenFailedToConnectPreviewDark() {
+    TackleScreenPreview(darkTheme = true) {
+        ScreenFailedToConnect(isRetrying = false)
     }
 }

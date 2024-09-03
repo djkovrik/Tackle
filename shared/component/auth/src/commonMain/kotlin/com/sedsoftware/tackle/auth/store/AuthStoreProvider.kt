@@ -15,7 +15,7 @@ import com.sedsoftware.tackle.auth.store.AuthStore.Label
 import com.sedsoftware.tackle.auth.store.AuthStore.State
 import com.sedsoftware.tackle.domain.TackleException.MissedRegistrationData
 import com.sedsoftware.tackle.domain.model.Instance
-import com.sedsoftware.tackle.utils.StoreCreate
+import com.sedsoftware.tackle.domain.StoreCreate
 import com.sedsoftware.tackle.utils.extension.isUnauthorized
 import com.sedsoftware.tackle.utils.extension.trimUrl
 import com.sedsoftware.tackle.utils.extension.unwrap

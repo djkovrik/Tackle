@@ -18,7 +18,7 @@ class TackleExceptionHandler(private val logoutAction: () -> Unit = {}) {
     )
 
     fun consume(throwable: Throwable, scope: CoroutineScope) {
-        val target = throwable.wrap()
+        val target: TackleException = throwable.wrap()
         scope.launch { exceptionActions[target.action]?.invoke(target) }
     }
 

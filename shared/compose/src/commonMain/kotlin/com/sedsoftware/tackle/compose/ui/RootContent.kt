@@ -21,8 +21,9 @@ import com.arkivanov.decompose.extensions.compose.stack.animation.scale
 import com.arkivanov.decompose.extensions.compose.stack.animation.stackAnimation
 import com.sedsoftware.tackle.compose.core.exceptionToString
 import com.sedsoftware.tackle.compose.ui.auth.AuthContent
+import com.sedsoftware.tackle.compose.ui.editor.EditorContent
 import com.sedsoftware.tackle.compose.ui.main.MainContent
-import com.sedsoftware.tackle.compose.custom.CustomSnackBar
+import com.sedsoftware.tackle.compose.widget.TackleSnackbar
 import com.sedsoftware.tackle.root.RootComponent
 import com.sedsoftware.tackle.root.RootComponent.Child
 
@@ -52,6 +53,7 @@ fun RootContent(
                 when (val child = it.instance) {
                     is Child.Auth -> AuthContent(component = child.component)
                     is Child.Main -> MainContent(component = child.component)
+                    is Child.Editor -> EditorContent(component = child.component)
                 }
             }
 
@@ -62,7 +64,7 @@ fun RootContent(
                     .padding(paddingValues = paddingValues)
                     .padding(all = 16.dp),
             ) { snackbarData: SnackbarData ->
-                CustomSnackBar(
+                TackleSnackbar(
                     message = snackbarData.visuals.message,
                     modifier = modifier,
                 )

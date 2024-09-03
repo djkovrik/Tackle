@@ -15,9 +15,9 @@ kotlin {
 
                 implementation(project(":shared:component:tab:home"))
                 implementation(project(":shared:component:tab:explore"))
-                implementation(project(":shared:component:tab:editor"))
                 implementation(project(":shared:component:tab:publications"))
                 implementation(project(":shared:component:tab:notifications"))
+                implementation(project(":shared:component:tab:profile"))
 
                 implementation(libs.ark.decompose.core)
                 implementation(libs.ark.decompose.extensions)

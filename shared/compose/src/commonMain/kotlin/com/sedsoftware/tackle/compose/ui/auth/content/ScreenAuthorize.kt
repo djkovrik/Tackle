@@ -21,7 +21,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -37,8 +36,9 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.sedsoftware.tackle.auth.AuthComponent
-import com.sedsoftware.tackle.compose.custom.CustomOutlinedTextField
 import com.sedsoftware.tackle.compose.custom.LoadingDotsText
+import com.sedsoftware.tackle.compose.widget.TackleButton
+import com.sedsoftware.tackle.compose.widget.TackleTextField
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import tackle.shared.compose.generated.resources.Res
@@ -98,14 +98,9 @@ internal fun ScreenAuthorize(
                 .weight(weight = 0.5f)
         ) {
             Column(modifier = modifier.width(width = inputAndInfoWidth)) {
-                CustomOutlinedTextField(
+                TackleTextField(
                     value = model.textInput,
                     onValueChange = onTextInput,
-                    textStyle = MaterialTheme.typography.bodyLarge.copy(
-                        color = MaterialTheme.colorScheme.onBackground,
-                    ),
-                    shape = MaterialTheme.shapes.large,
-                    maxLines = 1,
                     singleLine = true,
                     isError = model.isServerInfoError,
                     label = {
@@ -175,8 +170,10 @@ internal fun ScreenAuthorize(
             }
 
             AnimatedVisibility(visible = model.isServerInfoLoaded) {
-                hideKeyboard.invoke()
-                clearFocus.invoke()
+                if (model.isServerInfoLoaded) {
+                    hideKeyboard.invoke()
+                    clearFocus.invoke()
+                }
 
                 ServerInfo(
                     name = model.serverName,
@@ -201,19 +198,14 @@ internal fun ScreenAuthorize(
                 )
             }
 
-            Button(
+            TackleButton(
+                text = stringResource(resource = Res.string.common_continue),
                 enabled = model.isServerInfoLoaded && !model.isOauthFlowActive,
-                shape = MaterialTheme.shapes.large,
                 onClick = onAuthenticateClick,
                 modifier = modifier
                     .padding(all = 16.dp)
                     .navigationBarsPadding(),
-            ) {
-                Text(
-                    text = stringResource(resource = Res.string.common_continue),
-                    modifier = modifier,
-                )
-            }
+            )
         }
     }
 }

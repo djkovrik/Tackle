@@ -7,8 +7,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.sedsoftware.tackle.compose.extension.getContentDescription
-import com.sedsoftware.tackle.compose.model.EditorToolbarItem
 import com.sedsoftware.tackle.compose.extension.getIcon
+import com.sedsoftware.tackle.compose.model.EditorToolbarItem
+import com.sedsoftware.tackle.compose.widget.TackleToolbarButton
 
 @Composable
 internal fun EditorToolbar(
@@ -19,7 +20,7 @@ internal fun EditorToolbar(
     Row(modifier = modifier) {
         items.forEach { item ->
             Box(modifier = Modifier.padding(end = 4.dp)) {
-                EditorToolbarButton(
+                TackleToolbarButton(
                     iconResource = item.type.getIcon(),
                     contentDescriptionResource = item.type.getContentDescription(),
                     isActive = item.active,

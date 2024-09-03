@@ -20,14 +20,14 @@ internal fun ServerInfo(
 ) {
     Card(
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer,
+            containerColor = MaterialTheme.colorScheme.secondaryContainer,
         ),
         modifier = modifier
     ) {
 
         Text(
             text = name,
-            color = MaterialTheme.colorScheme.onPrimaryContainer,
+            color = MaterialTheme.colorScheme.onSecondaryContainer,
             style = MaterialTheme.typography.labelLarge,
             maxLines = 1,
             modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp),
@@ -35,7 +35,7 @@ internal fun ServerInfo(
 
         Text(
             text = description,
-            color = MaterialTheme.colorScheme.onPrimaryContainer,
+            color = MaterialTheme.colorScheme.onSecondaryContainer,
             style = MaterialTheme.typography.bodyMedium,
             overflow = TextOverflow.Ellipsis,
             maxLines = 3,
