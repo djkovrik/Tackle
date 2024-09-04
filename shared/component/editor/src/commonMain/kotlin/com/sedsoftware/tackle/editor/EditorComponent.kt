@@ -44,5 +44,6 @@ interface EditorComponent {
         val scheduledMinute: Int,
         val scheduledIn24hrFormat: Boolean,
         val scheduledDateLabel: String,
+        val sending: Boolean,
     )
 }

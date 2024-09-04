@@ -16,6 +16,7 @@ internal val stateToModel: (State) -> Model = {
         scheduledHour = it.scheduledHour,
         scheduledMinute = it.scheduledMinute,
         scheduledIn24hrFormat = it.scheduledIn24hFormat,
-        scheduledDateLabel = DateTimeUtils.getDisplayingLabelFromPickers(it.scheduledDate, it.scheduledHour, it.scheduledMinute)
+        scheduledDateLabel = DateTimeUtils.getDisplayingLabelFromPickers(it.scheduledDate, it.scheduledHour, it.scheduledMinute),
+        sending = it.sendingActive,
     )
 }

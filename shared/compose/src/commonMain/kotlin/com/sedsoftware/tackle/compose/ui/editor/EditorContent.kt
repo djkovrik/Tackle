@@ -19,6 +19,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.DatePickerState
 import androidx.compose.material3.DisplayMode
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
@@ -182,6 +183,16 @@ internal fun EditorContent(
                 onSendClick = { component.onSendButtonClicked() },
                 onBackClick = { component.onBackButtonClicked() },
             )
+
+            AnimatedVisibility(visible = editorModel.sending) {
+                LinearProgressIndicator(
+                    color = MaterialTheme.colorScheme.primary,
+                    trackColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.25f),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
+                )
+            }
 
             // Scrollable part
             LazyColumn(
@@ -587,6 +598,7 @@ private fun EditorTabContentPreviewEverything() {
                     AttachedFile("id", platformFile.copy(mimeType = "audio"), AttachedFile.Status.LOADING, 0.25f),
                 ),
                 scheduledDateLabel = "30.08.2024 12:34",
+                sendingActive = true,
             )
         )
     }

@@ -54,6 +54,7 @@ class EditorComponentPreview(
     statusCharactersLeft: Int = -1,
     suggestions: List<EditorInputHintItem> = emptyList(),
     scheduledDateLabel: String = "",
+    sendingActive: Boolean = false,
 ) : EditorComponent {
 
     override val attachments: EditorAttachmentsComponent =
@@ -117,6 +118,7 @@ class EditorComponentPreview(
                 scheduledMinute = 0,
                 scheduledIn24hrFormat = false,
                 scheduledDateLabel = scheduledDateLabel,
+                sending = sendingActive,
             )
         )
 

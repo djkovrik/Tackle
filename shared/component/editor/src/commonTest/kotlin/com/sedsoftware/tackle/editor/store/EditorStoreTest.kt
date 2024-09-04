@@ -325,6 +325,7 @@ internal class EditorStoreTest : StoreTest<Intent, State, Label>() {
         store.accept(Intent.SendStatus(bundle))
         // then
         assertThat(labels.count { it is Label.StatusSent }).isEqualTo(1)
+        assertThat(store.state.sendingActive).isTrue()
     }
 
     @Test
@@ -349,6 +350,7 @@ internal class EditorStoreTest : StoreTest<Intent, State, Label>() {
         store.accept(Intent.SendStatus(bundle))
         // then
         assertThat(labels.count { it is Label.ScheduledStatusSent }).isEqualTo(1)
+        assertThat(store.state.sendingActive).isTrue()
     }
 
     @Test
@@ -361,6 +363,7 @@ internal class EditorStoreTest : StoreTest<Intent, State, Label>() {
         store.accept(Intent.SendStatus(bundle))
         // then
         assertThat(labels.count { it is Label.ErrorCaught }).isEqualTo(1)
+        assertThat(store.state.sendingActive).isFalse()
     }
 
     override fun createStore(): Store<Intent, State, Label> =
