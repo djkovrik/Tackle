@@ -2,6 +2,11 @@ package com.sedsoftware.tackle.editor.integration
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.childContext
+import com.arkivanov.decompose.router.slot.ChildSlot
+import com.arkivanov.decompose.router.slot.SlotNavigation
+import com.arkivanov.decompose.router.slot.activate
+import com.arkivanov.decompose.router.slot.childSlot
+import com.arkivanov.decompose.router.slot.dismiss
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.decompose.value.operator.map
 import com.arkivanov.essenty.lifecycle.doOnDestroy
@@ -11,17 +16,21 @@ import com.arkivanov.mvikotlin.extensions.coroutines.labels
 import com.sedsoftware.tackle.domain.ComponentOutput
 import com.sedsoftware.tackle.domain.api.TackleDispatchers
 import com.sedsoftware.tackle.domain.model.CustomEmoji
+import com.sedsoftware.tackle.domain.model.MediaAttachment
 import com.sedsoftware.tackle.domain.model.NewStatusBundle
 import com.sedsoftware.tackle.editor.EditorComponent
 import com.sedsoftware.tackle.editor.EditorComponent.Model
 import com.sedsoftware.tackle.editor.EditorComponentGateways
 import com.sedsoftware.tackle.editor.attachments.EditorAttachmentsComponent
 import com.sedsoftware.tackle.editor.attachments.integration.EditorAttachmentsComponentDefault
+import com.sedsoftware.tackle.editor.details.EditorAttachmentDetailsComponent
+import com.sedsoftware.tackle.editor.details.integration.EditorAttachmentDetailsComponentDefault
 import com.sedsoftware.tackle.editor.domain.EditorManager
 import com.sedsoftware.tackle.editor.emojis.EditorEmojisComponent
 import com.sedsoftware.tackle.editor.emojis.integration.EditorEmojisComponentDefault
 import com.sedsoftware.tackle.editor.header.EditorHeaderComponent
 import com.sedsoftware.tackle.editor.header.integration.EditorHeaderComponentDefault
+import com.sedsoftware.tackle.editor.integration.attachments.EditorAttachmentDetailsComponentApi
 import com.sedsoftware.tackle.editor.integration.attachments.EditorAttachmentsComponentApi
 import com.sedsoftware.tackle.editor.integration.emojis.EditorEmojisComponentApi
 import com.sedsoftware.tackle.editor.integration.emojis.EditorEmojisComponentDatabase
@@ -40,6 +49,7 @@ import com.sedsoftware.tackle.utils.extension.asValue
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import kotlinx.serialization.Serializable
 
 class EditorComponentDefault(
     private val componentContext: ComponentContext,
@@ -149,6 +159,18 @@ class EditorComponentDefault(
     }
 
     override val model: Value<Model> = store.asValue().map(stateToModel)
+
+    private val attachmentDetailsNavigation: SlotNavigation<AttachmentDetailsConfig> = SlotNavigation()
+
+    private val _attachmentDetailsSlot: Value<ChildSlot<AttachmentDetailsConfig, EditorAttachmentDetailsComponent>> =
+        childSlot(
+            source = attachmentDetailsNavigation,
+            serializer = null,
+            handleBackButton = true,
+            childFactory = ::attachmentDetailsFactory,
+        )
+
+    override val attachmentDetailsDialog: Value<ChildSlot<*, EditorAttachmentDetailsComponent>> = _attachmentDetailsSlot
 
     override fun onTextInput(text: String, selection: Pair<Int, Int>) {
         store.accept(EditorStore.Intent.OnTextInput(text, selection))
@@ -276,6 +298,18 @@ class EditorComponentDefault(
         }
     }
 
+    private fun onAttachmentDetailsRequested(attachment: MediaAttachment) {
+        val description: String = attachment.description
+        val focus: Pair<Float, Float> = attachment.meta?.focus?.let { it.x to it.y } ?: (0f to 0f)
+        attachmentDetailsNavigation.activate(
+            AttachmentDetailsConfig(
+                attachmentId = attachment.id,
+                description = description,
+                focus = focus,
+            )
+        )
+    }
+
     private fun onChildOutput(output: ComponentOutput) {
         when (output) {
             is ComponentOutput.StatusEditor.PendingAttachmentsCountUpdated -> {
@@ -290,9 +324,40 @@ class EditorComponentDefault(
                 onEmojiSelected(output.emoji)
             }
 
+            is ComponentOutput.StatusEditor.AttachmentDetailsRequested -> {
+                onAttachmentDetailsRequested(output.attachment)
+            }
+
+            is ComponentOutput.StatusEditor.AttachmentDataUpdated -> {
+                attachmentDetailsNavigation.dismiss()
+            }
+
             else -> {
                 editorOutput(output)
             }
         }
     }
+
+    private fun attachmentDetailsFactory(
+        config: AttachmentDetailsConfig,
+        componentContext: ComponentContext,
+    ): EditorAttachmentDetailsComponent =
+        EditorAttachmentDetailsComponentDefault(
+            attachmentId = config.attachmentId,
+            initialDescription = config.description,
+            initialFocus = config.focus,
+            componentContext = componentContext,
+            storeFactory = storeFactory,
+            api = EditorAttachmentDetailsComponentApi(api),
+            dispatchers = dispatchers,
+            output = ::onChildOutput,
+            onDismiss = attachmentDetailsNavigation::dismiss,
+        )
+
+    @Serializable
+    private data class AttachmentDetailsConfig(
+        val attachmentId: String,
+        val description: String,
+        val focus: Pair<Float, Float>,
+    )
 }

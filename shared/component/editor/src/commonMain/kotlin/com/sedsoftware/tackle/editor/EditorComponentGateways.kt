@@ -39,6 +39,8 @@ interface EditorComponentGateways {
         suspend fun sendStatus(bundle: NewStatusBundle): Status
 
         suspend fun sendStatusScheduled(bundle: NewStatusBundle): ScheduledStatus
+
+        suspend fun updateFile(id: String, description: String?, focus: String?): MediaAttachment
     }
 
     interface Database {

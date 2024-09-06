@@ -1,8 +1,10 @@
 package com.sedsoftware.tackle.editor
 
+import com.arkivanov.decompose.router.slot.ChildSlot
 import com.arkivanov.decompose.value.Value
 import com.sedsoftware.tackle.domain.model.CustomEmoji
 import com.sedsoftware.tackle.editor.attachments.EditorAttachmentsComponent
+import com.sedsoftware.tackle.editor.details.EditorAttachmentDetailsComponent
 import com.sedsoftware.tackle.editor.emojis.EditorEmojisComponent
 import com.sedsoftware.tackle.editor.header.EditorHeaderComponent
 import com.sedsoftware.tackle.editor.model.EditorInputHintItem
@@ -17,6 +19,8 @@ interface EditorComponent {
     val warning: EditorWarningComponent
 
     val model: Value<Model>
+
+    val attachmentDetailsDialog: Value<ChildSlot<*, EditorAttachmentDetailsComponent>>
 
     fun onTextInput(text: String, selection: Pair<Int, Int>)
     fun onEmojiSelected(emoji: CustomEmoji)

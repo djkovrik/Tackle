@@ -43,4 +43,7 @@ internal class EditorTabComponentApi(
     override suspend fun sendStatus(bundle: NewStatusBundle): Status = authorizedApi.sendStatus(bundle)
 
     override suspend fun sendStatusScheduled(bundle: NewStatusBundle): ScheduledStatus = authorizedApi.sendStatusScheduled(bundle)
+
+    override suspend fun updateFile(id: String, description: String?, focus: String?): MediaAttachment =
+        authorizedApi.updateFile(id, null, description, focus)
 }

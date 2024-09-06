@@ -3,6 +3,8 @@ package com.sedsoftware.tackle.editor.stubs
 import com.sedsoftware.tackle.domain.model.CustomEmoji
 import com.sedsoftware.tackle.domain.model.HashTag
 import com.sedsoftware.tackle.domain.model.MediaAttachment
+import com.sedsoftware.tackle.domain.model.MediaAttachmentFocus
+import com.sedsoftware.tackle.domain.model.MediaAttachmentMeta
 import com.sedsoftware.tackle.domain.model.NewStatusBundle
 import com.sedsoftware.tackle.domain.model.PlatformFileWrapper
 import com.sedsoftware.tackle.domain.model.ScheduledStatus
@@ -69,4 +71,35 @@ class EditorComponentApiStub : StubWithException(), EditorComponentGateways.Api 
     override suspend fun sendStatus(bundle: NewStatusBundle): Status = asResponse(StatusStub.normal)
 
     override suspend fun sendStatusScheduled(bundle: NewStatusBundle): ScheduledStatus = asResponse(StatusStub.scheduled)
+
+    override suspend fun updateFile(id: String, description: String?, focus: String?): MediaAttachment = asResponse(
+        MediaAttachment(
+            id = "id",
+            type = MediaAttachmentType.IMAGE,
+            url = "url",
+            remoteUrl = "remoteUrl",
+            previewUrl = "previewUrl",
+            description = description.orEmpty(),
+            blurhash = "blur",
+            meta = MediaAttachmentMeta(
+                length = "",
+                duration = 0f,
+                fps = 0,
+                size = "",
+                width = 0,
+                height = 0,
+                aspect = 0f,
+                audioEncode = "",
+                audioBitrate = "",
+                audioChannels = "",
+                original = null,
+                small = null,
+                focus = focus?.let {
+                    val x = focus.substringBefore(",").toFloat()
+                    val y = focus.substringAfter(",").toFloat()
+                    MediaAttachmentFocus(x, y)
+                }
+            ),
+        )
+    )
 }

@@ -1,5 +1,6 @@
 package com.sedsoftware.tackle.editor.integration
 
+import com.arkivanov.decompose.router.slot.ChildSlot
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
 import com.sedsoftware.tackle.domain.model.AppLocale
@@ -10,6 +11,7 @@ import com.sedsoftware.tackle.editor.EditorComponent.Model
 import com.sedsoftware.tackle.editor.attachments.EditorAttachmentsComponent
 import com.sedsoftware.tackle.editor.attachments.integration.EditorAttachmentsComponentPreview
 import com.sedsoftware.tackle.editor.attachments.model.AttachedFile
+import com.sedsoftware.tackle.editor.details.EditorAttachmentDetailsComponent
 import com.sedsoftware.tackle.editor.emojis.EditorEmojisComponent
 import com.sedsoftware.tackle.editor.emojis.integration.EditorEmojisComponentPreview
 import com.sedsoftware.tackle.editor.header.EditorHeaderComponent
@@ -121,6 +123,9 @@ class EditorComponentPreview(
                 sending = sendingActive,
             )
         )
+
+    override val attachmentDetailsDialog: Value<ChildSlot<Unit, EditorAttachmentDetailsComponent>> =
+        MutableValue(ChildSlot())
 
     override fun onTextInput(text: String, selection: Pair<Int, Int>) = Unit
     override fun onEmojiSelected(emoji: CustomEmoji) = Unit

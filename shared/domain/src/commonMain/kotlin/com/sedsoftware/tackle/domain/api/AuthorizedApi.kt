@@ -66,12 +66,7 @@ interface AuthorizedApi {
      *
      * @see <a href="https://docs.joinmastodon.org/methods/media/#update">Update media attachment</a>
      */
-    suspend fun updateFile(
-        id: String,
-        thumbnail: PlatformFileWrapper? = null,
-        description: String? = null,
-        focus: String? = null,
-    ): MediaAttachment
+    suspend fun updateFile(id: String, thumbnail: PlatformFileWrapper?, description: String?, focus: String?): MediaAttachment
 
     /**
      * Search for content in accounts, statuses and hashtags.
