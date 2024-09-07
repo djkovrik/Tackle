@@ -85,7 +85,7 @@ class EditorAttachmentsComponentDefault(
         store.accept(EditorAttachmentsStore.Intent.OnFileRetry(id))
     }
 
-    override fun onAttachmentDetailsClick(attachment: MediaAttachment) {
+    override fun onFileEdit(attachment: MediaAttachment) {
         output(ComponentOutput.StatusEditor.AttachmentDetailsRequested(attachment))
     }
 

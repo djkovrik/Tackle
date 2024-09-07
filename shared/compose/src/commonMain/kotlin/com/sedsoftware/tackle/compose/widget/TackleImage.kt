@@ -57,7 +57,7 @@ internal fun TackleImage(
     params: TackleImageParams? = null,
     onLoading: (@Composable BoxScope.() -> Unit)? = {
         Box(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxSize()
                 .background(brush = ShimmerEffectBrush())
                 .alsoIf(

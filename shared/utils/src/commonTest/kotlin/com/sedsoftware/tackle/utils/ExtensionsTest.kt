@@ -108,12 +108,16 @@ class ExtensionsTest {
         val x2: Long? = null
         val x3: Int? = 123
         val x4: Int? = null
+        val x5: Float? = 123.4f
+        val x6: Float? = null
         // when
         // then
         assertThat(x1.orZero()).isEqualTo(123L)
         assertThat(x2.orZero()).isEqualTo(0L)
         assertThat(x3.orZero()).isEqualTo(123)
         assertThat(x4.orZero()).isEqualTo(0)
+        assertThat(x5.orZero()).isEqualTo(123.4f)
+        assertThat(x6.orZero()).isEqualTo(0f)
     }
 
     @Test

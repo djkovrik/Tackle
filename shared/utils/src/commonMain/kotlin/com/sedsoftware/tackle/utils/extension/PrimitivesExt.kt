@@ -33,6 +33,8 @@ fun Long?.orZero(): Long = this ?: 0L
 
 fun Int?.orZero(): Int = this ?: 0
 
+fun Float?.orZero(): Float = this ?: 0f
+
 fun Boolean?.orFalse(): Boolean = this ?: false
 
 fun Long?.toHumanReadableSize(useBinary: Boolean = false): String {

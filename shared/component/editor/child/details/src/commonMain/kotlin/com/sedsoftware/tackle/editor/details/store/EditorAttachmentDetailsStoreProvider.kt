@@ -5,7 +5,9 @@ import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.coroutineExecutorFactory
 import com.sedsoftware.tackle.domain.StoreCreate
 import com.sedsoftware.tackle.domain.model.MediaAttachment
+import com.sedsoftware.tackle.domain.model.type.MediaAttachmentType
 import com.sedsoftware.tackle.editor.details.domain.EditorAttachmentDetailsManager
+import com.sedsoftware.tackle.editor.details.model.AttachmentImageParams
 import com.sedsoftware.tackle.editor.details.store.EditorAttachmentDetailsStore.Intent
 import com.sedsoftware.tackle.editor.details.store.EditorAttachmentDetailsStore.Label
 import com.sedsoftware.tackle.editor.details.store.EditorAttachmentDetailsStore.State
@@ -22,7 +24,10 @@ internal class EditorAttachmentDetailsStoreProvider(
 ) {
     @StoreCreate
     fun create(
+        attachmentType: MediaAttachmentType,
+        attachmentUrl: String,
         attachmentId: String,
+        attachmentImageParams: AttachmentImageParams,
         initialDescription: String,
         initialFocus: Pair<Float, Float>,
         autoInit: Boolean = true,
@@ -30,7 +35,10 @@ internal class EditorAttachmentDetailsStoreProvider(
         object : EditorAttachmentDetailsStore, Store<Intent, State, Label> by storeFactory.create<Intent, Nothing, Msg, State, Label>(
             name = "EditorAttachmentDetailsStore",
             initialState = State(
-                attachmentId = attachmentId,
+                type = attachmentType,
+                url = attachmentUrl,
+                id = attachmentId,
+                imageParams = attachmentImageParams,
                 initialDescription = initialDescription,
                 description = initialDescription,
                 initialFocus = initialFocus,
@@ -48,7 +56,7 @@ internal class EditorAttachmentDetailsStoreProvider(
                         dispatch(Msg.UpdatingActive(true))
 
                         unwrap(
-                            result = withContext(ioContext) { manager.updateFile(state.attachmentId, state.description, state.focus) },
+                            result = withContext(ioContext) { manager.updateFile(state.id, state.description, state.focus) },
                             onSuccess = { _: MediaAttachment ->
                                 dispatch(Msg.UpdatingActive(false))
                                 publish(Label.AttachmentDataUpdated)

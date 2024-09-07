@@ -4,7 +4,6 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Shapes
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
@@ -38,11 +37,7 @@ fun TackleTheme(
                 large = RoundedCornerShape(size = 10.dp),
                 extraLarge = RoundedCornerShape(size = 12.dp)
             ),
-            content = {
-                Surface(color = MaterialTheme.colorScheme.background) {
-                    content()
-                }
-            }
+            content = content,
         )
     }
 }

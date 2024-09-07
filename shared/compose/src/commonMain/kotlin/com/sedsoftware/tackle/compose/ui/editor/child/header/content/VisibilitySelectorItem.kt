@@ -20,9 +20,18 @@ import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import tackle.shared.compose.generated.resources.Res
+import tackle.shared.compose.generated.resources.editor_status_visibility_direct
+import tackle.shared.compose.generated.resources.editor_status_visibility_direct_desc
+import tackle.shared.compose.generated.resources.editor_status_visibility_private
+import tackle.shared.compose.generated.resources.editor_status_visibility_private_desc
 import tackle.shared.compose.generated.resources.editor_status_visibility_public
 import tackle.shared.compose.generated.resources.editor_status_visibility_public_desc
+import tackle.shared.compose.generated.resources.editor_status_visibility_unlisted
+import tackle.shared.compose.generated.resources.editor_status_visibility_unlisted_desc
+import tackle.shared.compose.generated.resources.visibility_direct
+import tackle.shared.compose.generated.resources.visibility_private
 import tackle.shared.compose.generated.resources.visibility_public
+import tackle.shared.compose.generated.resources.visibility_unlisted
 
 @Composable
 internal fun VisibilitySelectorItem(
@@ -70,11 +79,7 @@ internal fun VisibilitySelectorItem(
 @Composable
 private fun VisibilitySelectorItemPreviewLight() {
     TackleScreenPreview {
-        VisibilitySelectorItem(
-            iconRes = Res.drawable.visibility_public,
-            textRes = Res.string.editor_status_visibility_public,
-            descriptionRes = Res.string.editor_status_visibility_public_desc,
-        )
+        VisibilitySelectorItemPreviewContent()
     }
 }
 
@@ -82,10 +87,39 @@ private fun VisibilitySelectorItemPreviewLight() {
 @Composable
 private fun VisibilitySelectorItemPreviewDark() {
     TackleScreenPreview(darkTheme = true) {
+        VisibilitySelectorItemPreviewContent()
+    }
+}
+
+@Composable
+private fun VisibilitySelectorItemPreviewContent() {
+    Column {
         VisibilitySelectorItem(
             iconRes = Res.drawable.visibility_public,
             textRes = Res.string.editor_status_visibility_public,
             descriptionRes = Res.string.editor_status_visibility_public_desc,
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+        )
+
+        VisibilitySelectorItem(
+            iconRes = Res.drawable.visibility_direct,
+            textRes = Res.string.editor_status_visibility_direct,
+            descriptionRes = Res.string.editor_status_visibility_direct_desc,
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+        )
+
+        VisibilitySelectorItem(
+            iconRes = Res.drawable.visibility_unlisted,
+            textRes = Res.string.editor_status_visibility_unlisted,
+            descriptionRes = Res.string.editor_status_visibility_unlisted_desc,
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+        )
+
+        VisibilitySelectorItem(
+            iconRes = Res.drawable.visibility_private,
+            textRes = Res.string.editor_status_visibility_private,
+            descriptionRes = Res.string.editor_status_visibility_private_desc,
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
         )
     }
 }

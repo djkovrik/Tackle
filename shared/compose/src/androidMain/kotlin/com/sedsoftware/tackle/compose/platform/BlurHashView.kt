@@ -2,6 +2,7 @@ package com.sedsoftware.tackle.compose.platform
 
 import android.graphics.Bitmap
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -34,7 +35,7 @@ actual fun BlurHashView(blurhash: String, width: Int, height: Int, modifier: Mod
             bitmap = it,
             contentDescription = null,
             contentScale = ContentScale.Fit,
-            modifier = modifier,
+            modifier = modifier.fillMaxSize(),
         )
     }
 }

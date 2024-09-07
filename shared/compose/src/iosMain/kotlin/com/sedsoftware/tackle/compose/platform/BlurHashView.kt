@@ -1,5 +1,6 @@
 package com.sedsoftware.tackle.compose.platform
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -10,11 +11,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.interop.UIKitViewController
 import com.sedsoftware.tackle.compose.ComposeGlobals
 import com.vanniktech.blurhash.BlurHash
-import kotlinx.cinterop.ExperimentalForeignApi
 import platform.UIKit.UIImage
 
 @Composable
-@OptIn(ExperimentalForeignApi::class)
 actual fun BlurHashView(blurhash: String, width: Int, height: Int, modifier: Modifier) {
 
     var uiImage: UIImage? by remember { mutableStateOf(null) }
@@ -23,8 +22,8 @@ actual fun BlurHashView(blurhash: String, width: Int, height: Int, modifier: Mod
 
         val decoded: UIImage? = BlurHash.decode(
             blurHash = blurhash,
-            width = width.toDouble(),
-            height = height.toDouble(),
+            width = (width / IMAGE_SIDE_DIVIDER).toDouble(),
+            height = (height / IMAGE_SIDE_DIVIDER).toDouble(),
             punch = 1.0f,
             useCache = true,
         )
@@ -35,7 +34,9 @@ actual fun BlurHashView(blurhash: String, width: Int, height: Int, modifier: Mod
     uiImage?.let {
         UIKitViewController(
             factory = { ComposeGlobals.controllerFactory!!(it) },
-            modifier = modifier,
+            modifier = modifier.fillMaxSize(),
         )
     }
 }
+
+private const val IMAGE_SIDE_DIVIDER = 4

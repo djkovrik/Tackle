@@ -5,7 +5,10 @@ import com.sedsoftware.tackle.editor.details.store.EditorAttachmentDetailsStore.
 
 internal val stateToModel: (State) -> Model = {
     Model(
+        type = it.type,
+        url = it.url,
         description = it.description,
+        imageParams = it.imageParams,
         focus = it.focus,
         updatingAvailable = it.updatingAvailable,
         sending = it.sending,

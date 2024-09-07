@@ -1,6 +1,12 @@
 package com.sedsoftware.tackle.compose.ui.editor
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -43,9 +49,11 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
+import com.arkivanov.decompose.router.slot.ChildSlot
 import com.sedsoftware.tackle.compose.model.EditorToolbarItem
 import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
 import com.sedsoftware.tackle.compose.ui.editor.child.attachment.EditorAttachmentsContent
+import com.sedsoftware.tackle.compose.ui.editor.child.details.EditorAttachmentDetailsContent
 import com.sedsoftware.tackle.compose.ui.editor.child.emoji.EditorEmojisContent
 import com.sedsoftware.tackle.compose.ui.editor.child.header.EditorHeaderContent
 import com.sedsoftware.tackle.compose.ui.editor.child.header.content.LanguageSelectorDialog
@@ -67,6 +75,7 @@ import com.sedsoftware.tackle.domain.model.type.StatusVisibility
 import com.sedsoftware.tackle.editor.EditorComponent
 import com.sedsoftware.tackle.editor.attachments.EditorAttachmentsComponent
 import com.sedsoftware.tackle.editor.attachments.model.AttachedFile
+import com.sedsoftware.tackle.editor.details.EditorAttachmentDetailsComponent
 import com.sedsoftware.tackle.editor.emojis.EditorEmojisComponent
 import com.sedsoftware.tackle.editor.header.EditorHeaderComponent
 import com.sedsoftware.tackle.editor.integration.EditorComponentPreview
@@ -108,6 +117,8 @@ internal fun EditorContent(
     val headerModel: EditorHeaderComponent.Model by component.header.model.subscribeAsState()
     val pollModel: EditorPollComponent.Model by component.poll.model.subscribeAsState()
     val warningModel: EditorWarningComponent.Model by component.warning.model.subscribeAsState()
+
+    val attachmentDetailsSlot: ChildSlot<*, EditorAttachmentDetailsComponent> by component.attachmentDetailsDialog.subscribeAsState()
 
     val launcher: PickerResultLauncher = rememberFilePickerLauncher(mode = PickerMode.Multiple()) { files: List<PlatformFile>? ->
         files?.let { component.attachments.onFilesSelected(it) }
@@ -261,6 +272,7 @@ internal fun EditorContent(
                             model = attachmentsModel,
                             onDelete = component.attachments::onFileDeleted,
                             onRetry = component.attachments::onFileRetry,
+                            onEdit = component.attachments::onFileEdit,
                             modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
                             containerColor = MaterialTheme.colorScheme.secondaryContainer,
                             contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
@@ -438,6 +450,15 @@ internal fun EditorContent(
         }
     }
 
+    attachmentDetailsSlot.child?.instance.also { details ->
+        AnimatedVisibility(
+            visible = details != null,
+            enter = fadeIn() + slideInHorizontally { it },
+            exit = fadeOut() + slideOutHorizontally { it },
+        ) {
+            details?.let { EditorAttachmentDetailsContent(component = it) }
+        }
+    }
 }
 
 @Preview

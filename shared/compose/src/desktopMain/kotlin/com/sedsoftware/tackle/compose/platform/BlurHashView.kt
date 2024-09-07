@@ -1,6 +1,7 @@
 package com.sedsoftware.tackle.compose.platform
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -25,8 +26,8 @@ actual fun BlurHashView(blurhash: String, width: Int, height: Int, modifier: Mod
     LaunchedEffect(blurhash) {
         val decoded: BufferedImage? = BlurHash.decode(
             blurHash = blurhash,
-            width = width,
-            height = height,
+            width = width / IMAGE_SIDE_DIVIDER,
+            height = height / IMAGE_SIDE_DIVIDER,
         )
 
         val stream = ByteArrayOutputStream()
@@ -41,7 +42,9 @@ actual fun BlurHashView(blurhash: String, width: Int, height: Int, modifier: Mod
             bitmap = it,
             contentDescription = null,
             contentScale = ContentScale.Fit,
-            modifier = modifier,
+            modifier = modifier.fillMaxSize(),
         )
     }
 }
+
+private const val IMAGE_SIDE_DIVIDER = 4

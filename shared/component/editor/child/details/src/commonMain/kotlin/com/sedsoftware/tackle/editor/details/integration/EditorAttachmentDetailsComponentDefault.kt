@@ -9,10 +9,12 @@ import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.labels
 import com.sedsoftware.tackle.domain.ComponentOutput
 import com.sedsoftware.tackle.domain.api.TackleDispatchers
+import com.sedsoftware.tackle.domain.model.type.MediaAttachmentType
 import com.sedsoftware.tackle.editor.details.EditorAttachmentDetailsComponent
 import com.sedsoftware.tackle.editor.details.EditorAttachmentDetailsComponent.Model
 import com.sedsoftware.tackle.editor.details.EditorAttachmentDetailsGateways
 import com.sedsoftware.tackle.editor.details.domain.EditorAttachmentDetailsManager
+import com.sedsoftware.tackle.editor.details.model.AttachmentImageParams
 import com.sedsoftware.tackle.editor.details.store.EditorAttachmentDetailsStore
 import com.sedsoftware.tackle.editor.details.store.EditorAttachmentDetailsStore.Label
 import com.sedsoftware.tackle.editor.details.store.EditorAttachmentDetailsStoreProvider
@@ -22,7 +24,10 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
 class EditorAttachmentDetailsComponentDefault(
+    attachmentType: MediaAttachmentType,
+    attachmentUrl: String,
     attachmentId: String,
+    attachmentImageParams: AttachmentImageParams,
     initialDescription: String,
     initialFocus: Pair<Float, Float>,
     private val componentContext: ComponentContext,
@@ -40,7 +45,7 @@ class EditorAttachmentDetailsComponentDefault(
                 manager = EditorAttachmentDetailsManager(api),
                 mainContext = dispatchers.main,
                 ioContext = dispatchers.io,
-            ).create(attachmentId, initialDescription, initialFocus)
+            ).create(attachmentType, attachmentUrl, attachmentId, attachmentImageParams, initialDescription, initialFocus)
         }
 
     init {
