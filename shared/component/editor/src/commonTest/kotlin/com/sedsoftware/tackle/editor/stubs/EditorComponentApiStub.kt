@@ -9,6 +9,7 @@ import com.sedsoftware.tackle.domain.model.NewStatusBundle
 import com.sedsoftware.tackle.domain.model.PlatformFileWrapper
 import com.sedsoftware.tackle.domain.model.ScheduledStatus
 import com.sedsoftware.tackle.domain.model.Search
+import com.sedsoftware.tackle.domain.model.SearchRequestBundle
 import com.sedsoftware.tackle.domain.model.Status
 import com.sedsoftware.tackle.domain.model.type.MediaAttachmentType
 import com.sedsoftware.tackle.editor.EditorComponentGateways
@@ -55,18 +56,7 @@ class EditorComponentApiStub : StubWithException(), EditorComponentGateways.Api 
         meta = null,
     )
 
-    override suspend fun search(
-        query: String,
-        type: String,
-        resolve: Boolean?,
-        following: Boolean?,
-        accountId: String?,
-        excludeUnreviewed: Boolean?,
-        minId: String?,
-        maxId: String?,
-        limit: Int?,
-        offset: Int?,
-    ): Search = asResponse(searchResponseDefault)
+    override suspend fun search(bundle: SearchRequestBundle): Search = asResponse(searchResponseDefault)
 
     override suspend fun sendStatus(bundle: NewStatusBundle): Status = asResponse(StatusStub.normal)
 

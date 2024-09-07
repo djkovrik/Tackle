@@ -8,6 +8,7 @@ import com.sedsoftware.tackle.domain.model.NewStatusBundle
 import com.sedsoftware.tackle.domain.model.PlatformFileWrapper
 import com.sedsoftware.tackle.domain.model.ScheduledStatus
 import com.sedsoftware.tackle.domain.model.Search
+import com.sedsoftware.tackle.domain.model.SearchRequestBundle
 import com.sedsoftware.tackle.domain.model.Status
 import kotlinx.coroutines.flow.Flow
 
@@ -23,18 +24,7 @@ interface EditorComponentGateways {
             focus: String? = null,
         ): MediaAttachment
 
-        suspend fun search(
-            query: String,
-            type: String,
-            resolve: Boolean? = null,
-            following: Boolean? = null,
-            accountId: String? = null,
-            excludeUnreviewed: Boolean? = null,
-            minId: String? = null,
-            maxId: String? = null,
-            limit: Int? = null,
-            offset: Int? = null,
-        ): Search
+        suspend fun search(bundle: SearchRequestBundle): Search
 
         suspend fun sendStatus(bundle: NewStatusBundle): Status
 
