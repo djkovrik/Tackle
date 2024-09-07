@@ -26,7 +26,7 @@ import com.sedsoftware.tackle.editor.attachments.EditorAttachmentsComponent
 import com.sedsoftware.tackle.editor.attachments.integration.EditorAttachmentsComponentDefault
 import com.sedsoftware.tackle.editor.details.EditorAttachmentDetailsComponent
 import com.sedsoftware.tackle.editor.details.integration.EditorAttachmentDetailsComponentDefault
-import com.sedsoftware.tackle.editor.details.model.AttachmentImageParams
+import com.sedsoftware.tackle.editor.details.model.AttachmentParams
 import com.sedsoftware.tackle.editor.domain.EditorManager
 import com.sedsoftware.tackle.editor.emojis.EditorEmojisComponent
 import com.sedsoftware.tackle.editor.emojis.integration.EditorEmojisComponentDefault
@@ -301,22 +301,18 @@ class EditorComponentDefault(
     }
 
     private fun onAttachmentDetailsRequested(attachment: MediaAttachment) {
-        val description: String = attachment.description
-        val focus: Pair<Float, Float> = attachment.meta?.focus?.let { it.x to it.y } ?: (0f to 0f)
         val config = AttachmentDetailsConfig(
             attachmentType = attachment.type,
             attachmentUrl = attachment.previewUrl,
             attachmentId = attachment.id,
             attachmentImageParams = attachment.meta?.small?.let {
-                AttachmentImageParams(
+                AttachmentParams(
                     width = it.width,
                     height = it.height,
                     ratio = it.aspect,
                     blurhash = attachment.blurhash
                 )
-            } ?: AttachmentImageParams.empty(),
-            currentDescription = description,
-            currentFocus = focus,
+            } ?: AttachmentParams.empty(),
         )
 
         attachmentDetailsNavigation.activate(config)
@@ -359,8 +355,6 @@ class EditorComponentDefault(
             attachmentUrl = config.attachmentUrl,
             attachmentId = config.attachmentId,
             attachmentImageParams = config.attachmentImageParams,
-            initialDescription = config.currentDescription,
-            initialFocus = config.currentFocus,
             componentContext = componentContext,
             storeFactory = storeFactory,
             api = EditorAttachmentDetailsComponentApi(api),
@@ -374,8 +368,6 @@ class EditorComponentDefault(
         val attachmentType: MediaAttachmentType,
         val attachmentUrl: String,
         val attachmentId: String,
-        val attachmentImageParams: AttachmentImageParams,
-        val currentDescription: String,
-        val currentFocus: Pair<Float, Float>,
+        val attachmentImageParams: AttachmentParams,
     )
 }

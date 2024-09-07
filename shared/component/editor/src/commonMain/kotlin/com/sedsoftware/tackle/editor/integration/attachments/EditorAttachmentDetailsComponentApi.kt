@@ -10,4 +10,6 @@ class EditorAttachmentDetailsComponentApi(
 
     override suspend fun updateFile(id: String, description: String?, focus: String?): MediaAttachment =
         api.updateFile(id, description, focus)
+
+    override suspend fun getFile(id: String): MediaAttachment = api.getFile(id)
 }

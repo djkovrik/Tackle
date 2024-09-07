@@ -14,7 +14,7 @@ import com.sedsoftware.tackle.editor.details.EditorAttachmentDetailsComponent
 import com.sedsoftware.tackle.editor.details.EditorAttachmentDetailsComponent.Model
 import com.sedsoftware.tackle.editor.details.EditorAttachmentDetailsGateways
 import com.sedsoftware.tackle.editor.details.domain.EditorAttachmentDetailsManager
-import com.sedsoftware.tackle.editor.details.model.AttachmentImageParams
+import com.sedsoftware.tackle.editor.details.model.AttachmentParams
 import com.sedsoftware.tackle.editor.details.store.EditorAttachmentDetailsStore
 import com.sedsoftware.tackle.editor.details.store.EditorAttachmentDetailsStore.Label
 import com.sedsoftware.tackle.editor.details.store.EditorAttachmentDetailsStoreProvider
@@ -27,9 +27,7 @@ class EditorAttachmentDetailsComponentDefault(
     attachmentType: MediaAttachmentType,
     attachmentUrl: String,
     attachmentId: String,
-    attachmentImageParams: AttachmentImageParams,
-    initialDescription: String,
-    initialFocus: Pair<Float, Float>,
+    attachmentImageParams: AttachmentParams,
     private val componentContext: ComponentContext,
     private val storeFactory: StoreFactory,
     private val api: EditorAttachmentDetailsGateways.Api,
@@ -45,7 +43,7 @@ class EditorAttachmentDetailsComponentDefault(
                 manager = EditorAttachmentDetailsManager(api),
                 mainContext = dispatchers.main,
                 ioContext = dispatchers.io,
-            ).create(attachmentType, attachmentUrl, attachmentId, attachmentImageParams, initialDescription, initialFocus)
+            ).create(attachmentType, attachmentUrl, attachmentId, attachmentImageParams)
         }
 
     init {

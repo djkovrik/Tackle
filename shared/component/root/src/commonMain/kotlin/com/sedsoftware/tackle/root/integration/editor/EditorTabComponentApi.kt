@@ -36,4 +36,6 @@ internal class EditorTabComponentApi(
 
     override suspend fun updateFile(id: String, description: String?, focus: String?): MediaAttachment =
         authorizedApi.updateFile(id, null, description, focus)
+
+    override suspend fun getFile(id: String): MediaAttachment = authorizedApi.getFile(id)
 }

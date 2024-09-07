@@ -5,7 +5,7 @@ import com.arkivanov.decompose.value.Value
 import com.sedsoftware.tackle.domain.model.type.MediaAttachmentType
 import com.sedsoftware.tackle.editor.details.EditorAttachmentDetailsComponent
 import com.sedsoftware.tackle.editor.details.EditorAttachmentDetailsComponent.Model
-import com.sedsoftware.tackle.editor.details.model.AttachmentImageParams
+import com.sedsoftware.tackle.editor.details.model.AttachmentParams
 
 class EditorAttachmentDetailsComponentPreview(
     description: String = "",
@@ -20,15 +20,15 @@ class EditorAttachmentDetailsComponentPreview(
                 type = MediaAttachmentType.IMAGE,
                 url = "",
                 description = description,
-                imageParams = AttachmentImageParams(
+                params = AttachmentParams(
                     blurhash = "UJOoqX\$P*|oz}@%gELX9+sIW9vrr?GZhxYVs",
                     width = 588,
                     height = 392,
                     ratio = 588f / 392f,
                 ),
                 focus = focus,
-                updatingAvailable = updatingAvailable,
-                sending = sending,
+                dataChanged = updatingAvailable,
+                loading = sending,
             )
         )
 

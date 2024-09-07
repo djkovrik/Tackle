@@ -19,4 +19,8 @@ class EditorAttachmentDetailsManager(
             focus = focusStr.takeIf { focus != 0f to 0f },
         )
     }
+
+    suspend fun getFile(id: String): Result<MediaAttachment> = runCatching {
+        api.getFile(id)
+    }
 }

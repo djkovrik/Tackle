@@ -7,7 +7,6 @@ import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -41,7 +40,6 @@ import tackle.shared.compose.generated.resources.editor_attachment_alternate_tex
 import tackle.shared.compose.generated.resources.editor_attachment_focus
 import tackle.shared.compose.generated.resources.editor_back
 import tackle.shared.compose.generated.resources.editor_done
-import tackle.shared.compose.generated.resources.editor_title
 
 @Composable
 internal fun EditorAttachmentDetailsContent(
@@ -60,7 +58,7 @@ internal fun EditorAttachmentDetailsContent(
         ),
         actions = {
             AnimatedVisibility(
-                visible = model.sending,
+                visible = model.loading,
                 enter = scaleIn() + fadeIn(),
                 exit = scaleOut() + fadeOut(),
             ) {
@@ -73,7 +71,7 @@ internal fun EditorAttachmentDetailsContent(
 
             IconButton(
                 onClick = component::onUpdateButtonClicked,
-                enabled = model.updatingAvailable,
+                enabled = model.dataChanged,
             ) {
                 Icon(
                     painter = painterResource(resource = Res.drawable.editor_done),
@@ -129,7 +127,7 @@ internal fun EditorAttachmentDetailsContent(
                         AttachedImageFocusSelector(
                             url = model.url,
                             focus = model.focus,
-                            imageParams = model.imageParams,
+                            imageParams = model.params,
                             onFocusChange = component::onAttachmentFocusInput,
                             modifier = Modifier.padding(all = 16.dp)
                         )

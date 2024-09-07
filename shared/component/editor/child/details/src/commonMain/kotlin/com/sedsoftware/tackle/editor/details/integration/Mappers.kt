@@ -8,9 +8,9 @@ internal val stateToModel: (State) -> Model = {
         type = it.type,
         url = it.url,
         description = it.description,
-        imageParams = it.imageParams,
+        params = it.params,
         focus = it.focus,
-        updatingAvailable = it.updatingAvailable,
-        sending = it.sending,
+        dataChanged = it.dataChanged,
+        loading = it.loading,
     )
 }

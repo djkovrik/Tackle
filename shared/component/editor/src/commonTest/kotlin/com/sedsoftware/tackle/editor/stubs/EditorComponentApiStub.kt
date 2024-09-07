@@ -45,16 +45,7 @@ class EditorComponentApiStub : StubWithException(), EditorComponentGateways.Api 
         thumbnail: PlatformFileWrapper?,
         description: String?,
         focus: String?,
-    ): MediaAttachment = MediaAttachment(
-        id = "id",
-        type = MediaAttachmentType.IMAGE,
-        url = "url",
-        remoteUrl = "remoteUrl",
-        previewUrl = "previewUrl",
-        description = "description",
-        blurhash = "blur",
-        meta = null,
-    )
+    ): MediaAttachment = asResponse(buildAttachmentResponse(null, null))
 
     override suspend fun search(bundle: SearchRequestBundle): Search = asResponse(searchResponseDefault)
 
@@ -62,7 +53,12 @@ class EditorComponentApiStub : StubWithException(), EditorComponentGateways.Api 
 
     override suspend fun sendStatusScheduled(bundle: NewStatusBundle): ScheduledStatus = asResponse(StatusStub.scheduled)
 
-    override suspend fun updateFile(id: String, description: String?, focus: String?): MediaAttachment = asResponse(
+    override suspend fun updateFile(id: String, description: String?, focus: String?): MediaAttachment =
+        asResponse(buildAttachmentResponse(description, focus))
+
+    override suspend fun getFile(id: String): MediaAttachment = asResponse(buildAttachmentResponse(null, null))
+
+    private fun buildAttachmentResponse(description: String?, focus: String?): MediaAttachment =
         MediaAttachment(
             id = "id",
             type = MediaAttachmentType.IMAGE,
@@ -91,5 +87,4 @@ class EditorComponentApiStub : StubWithException(), EditorComponentGateways.Api 
                 }
             ),
         )
-    )
 }

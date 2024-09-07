@@ -13,13 +13,13 @@ import androidx.compose.ui.unit.dp
 import com.sedsoftware.tackle.compose.model.TackleImageParams
 import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
 import com.sedsoftware.tackle.compose.widget.TackleImage
-import com.sedsoftware.tackle.editor.details.model.AttachmentImageParams
+import com.sedsoftware.tackle.editor.details.model.AttachmentParams
 
 @Composable
 internal fun AttachedImageFocusSelector(
     url: String,
     focus: Pair<Float, Float>,
-    imageParams: AttachmentImageParams,
+    imageParams: AttachmentParams,
     modifier: Modifier = Modifier,
     onFocusChange: (Float, Float) -> Unit = { _, _ -> },
 ) {
@@ -50,7 +50,7 @@ private fun AttachedImageFocusSelectorPreview() {
         AttachedImageFocusSelector(
             url = "",
             focus = 0f to 0f,
-            imageParams = AttachmentImageParams(
+            imageParams = AttachmentParams(
                 blurhash = "UJOoqX\$P*|oz}@%gELX9+sIW9vrr?GZhxYVs",
                 width = 588,
                 height = 392,
