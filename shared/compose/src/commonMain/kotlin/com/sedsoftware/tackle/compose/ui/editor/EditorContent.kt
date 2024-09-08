@@ -38,6 +38,7 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.AnnotatedString
@@ -212,7 +213,7 @@ internal fun EditorContent(
             ) {
                 // Warning
                 item {
-                    if (warningModel.warningContentVisible) {
+                    AnimatedVisibility(visible = warningModel.warningContentVisible) {
                         EditorWarningContent(
                             text = warningModel.text,
                             modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
@@ -450,14 +451,13 @@ internal fun EditorContent(
         }
     }
 
-    attachmentDetailsSlot.child?.instance.also { details ->
-        AnimatedVisibility(
-            visible = details != null,
-            enter = fadeIn() + slideInHorizontally { it },
-            exit = fadeOut() + slideOutHorizontally { it },
-        ) {
-            details?.let { EditorAttachmentDetailsContent(component = it) }
-        }
+    AnimatedVisibility(
+        visible = attachmentDetailsSlot.child?.instance != null,
+        enter = slideInHorizontally { it },
+        exit = slideOutHorizontally { it },
+    ) {
+        val rememberedComponent = remember(this) { attachmentDetailsSlot.child?.instance!! }
+        EditorAttachmentDetailsContent(component = rememberedComponent)
     }
 }
 
