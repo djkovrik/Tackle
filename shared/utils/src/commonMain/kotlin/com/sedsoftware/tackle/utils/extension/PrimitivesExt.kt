@@ -59,3 +59,15 @@ fun Float.roundToDecimals(decimals: Int): Float {
     val roundedValue = (this * dotAt).roundToInt()
     return (roundedValue / dotAt) + (roundedValue % dotAt).toFloat() / dotAt
 }
+
+fun Pair<Float, Float>.focusToOffset(width: Int, height: Int, middleX: Float, middleY: Float): Pair<Float, Float> {
+    val offsetX: Float = this.first * middleX
+    val offsetY: Float = this.second * middleY * -1f
+    return offsetX to offsetY
+}
+
+fun Pair<Float, Float>.offsetToFocus(width: Int, height: Int, middleX: Float, middleY: Float): Pair<Float, Float> {
+    val offsetX: Float = this.first / middleX
+    val offsetY: Float = this.second / middleY * -1f
+    return offsetX to offsetY
+}
