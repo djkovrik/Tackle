@@ -1,6 +1,7 @@
 package com.sedsoftware.tackle.editor.emojis.store
 
 import assertk.assertThat
+import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
 import assertk.assertions.isNotEmpty
 import assertk.assertions.isTrue
@@ -8,14 +9,13 @@ import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import com.sedsoftware.tackle.editor.emojis.domain.EditorEmojisManager
 import com.sedsoftware.tackle.editor.emojis.stubs.EditorEmojisApiStub
+import com.sedsoftware.tackle.editor.emojis.stubs.EditorEmojisApiStubResponses
 import com.sedsoftware.tackle.editor.emojis.stubs.EditorEmojisDatabaseStub
 import com.sedsoftware.tackle.editor.emojis.stubs.EditorEmojisSettingsStub
 import com.sedsoftware.tackle.utils.test.StoreTest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.LocalDate
-import kotlin.test.AfterTest
-import kotlin.test.BeforeTest
 import kotlin.test.Test
 
 internal class EditorEmojisStoreTest : StoreTest<EditorEmojisStore.Intent, EditorEmojisStore.State, EditorEmojisStore.Label>() {
@@ -36,27 +36,27 @@ internal class EditorEmojisStoreTest : StoreTest<EditorEmojisStore.Intent, Edito
         today = today,
     )
 
-    @BeforeTest
-    fun before() {
-        beforeTest()
-    }
-
-    @AfterTest
-    fun after() {
-        afterTest()
-    }
-
     @Test
     fun `store creation should observe emojis`() = runTest {
         // given
         settings.lastCachedTimestamp = ""
-        api.getServerEmojisResponse = EditorEmojisApiStub.correctResponse
+        api.getServerEmojisResponse = EditorEmojisApiStubResponses.correctResponse
         _today = LocalDate.parse("2024-01-01")
         // when
         store.init()
         // then
         assertThat(store.state.emojisAvailable).isTrue()
         assertThat(store.state.emojis).isNotEmpty()
+    }
+
+    @Test
+    fun `fetching emojis error should throw error message`() = runTest {
+        // given
+        api.responseWithException = true
+        // when
+        store.init()
+        // then
+        assertThat(labels.count { it is EditorEmojisStore.Label.ErrorCaught }).isEqualTo(1)
     }
 
     @Test

@@ -5,11 +5,11 @@ import assertk.assertions.isNotEmpty
 import assertk.assertions.isNotNull
 import com.sedsoftware.tackle.domain.model.MediaAttachment
 import com.sedsoftware.tackle.network.response.MediaAttachmentResponse
-import com.sedsoftware.tackle.network.responseFromFile
+import com.sedsoftware.tackle.utils.test.JsonBasedTest
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 
-class MediaAttachmentMapperTest {
+class MediaAttachmentMapperTest : JsonBasedTest() {
 
     @Test
     fun `MediaAttachmentMapper should map response to audio entity`() = runTest {

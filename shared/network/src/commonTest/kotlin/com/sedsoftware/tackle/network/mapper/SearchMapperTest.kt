@@ -8,11 +8,11 @@ import com.sedsoftware.tackle.domain.model.HashTag
 import com.sedsoftware.tackle.domain.model.Search
 import com.sedsoftware.tackle.domain.model.Status
 import com.sedsoftware.tackle.network.response.SearchResponse
-import com.sedsoftware.tackle.network.responseFromFile
+import com.sedsoftware.tackle.utils.test.JsonBasedTest
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 
-class SearchMapperTest {
+class SearchMapperTest : JsonBasedTest() {
 
     @Test
     fun `SearchMapper should map status response to entity`() = runTest {

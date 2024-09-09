@@ -9,16 +9,14 @@ import com.sedsoftware.tackle.auth.domain.AuthFlowManager
 import com.sedsoftware.tackle.auth.model.CredentialsState
 import com.sedsoftware.tackle.auth.model.InstanceInfoState
 import com.sedsoftware.tackle.auth.stubs.AuthComponentApiStub
+import com.sedsoftware.tackle.auth.stubs.AuthComponentApiStubResponses
 import com.sedsoftware.tackle.auth.stubs.AuthComponentDatabaseStub
 import com.sedsoftware.tackle.auth.stubs.AuthComponentSettingsStub
 import com.sedsoftware.tackle.auth.stubs.AuthComponentToolsStub
-import com.sedsoftware.tackle.auth.stubs.StubConstants
 import com.sedsoftware.tackle.domain.TackleException
 import com.sedsoftware.tackle.utils.test.StoreTest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.runTest
-import kotlin.test.AfterTest
-import kotlin.test.BeforeTest
 import kotlin.test.Test
 
 internal class AuthStoreTest : StoreTest<AuthStore.Intent, AuthStore.State, AuthStore.Label>() {
@@ -26,21 +24,11 @@ internal class AuthStoreTest : StoreTest<AuthStore.Intent, AuthStore.State, Auth
     private val api: AuthComponentApiStub = AuthComponentApiStub()
     private val settings: AuthComponentSettingsStub = AuthComponentSettingsStub()
 
-    @BeforeTest
-    fun before() {
-        beforeTest()
-    }
-
-    @AfterTest
-    fun after() {
-        afterTest()
-    }
-
     @Test
     fun `store creation should switch state to AUTHORIZED with navigation call if token is available`() = runTest {
         // given
         asAuthorized()
-        api.shouldThrowException = false
+        api.responseWithException = false
         // when
         store.init()
         // then
@@ -52,8 +40,8 @@ internal class AuthStoreTest : StoreTest<AuthStore.Intent, AuthStore.State, Auth
     fun `store creation should switch state to UNAUTHORIZED with navigation call if token expired`() = runTest {
         // given
         asAuthorized()
-        api.verifyCredentialsResponse = AuthComponentApiStub.invalidAccountDetails
-        api.shouldThrowException = false
+        api.verifyCredentialsResponse = AuthComponentApiStubResponses.invalidAccountDetails
+        api.responseWithException = false
         // when
         store.init()
         // then
@@ -64,7 +52,7 @@ internal class AuthStoreTest : StoreTest<AuthStore.Intent, AuthStore.State, Auth
     fun `store creation should switch state to UNAUTHORIZED if token is not available`() = runTest {
         // given
         asUnauthorized()
-        api.shouldThrowException = false
+        api.responseWithException = false
         // when
         store.init()
         // then
@@ -77,7 +65,7 @@ internal class AuthStoreTest : StoreTest<AuthStore.Intent, AuthStore.State, Auth
         // given
         val text = "abcde"
         asUnauthorized()
-        api.shouldThrowException = false
+        api.responseWithException = false
         // when
         store.init()
         store.accept(AuthStore.Intent.OnTextInput(text))
@@ -90,7 +78,7 @@ internal class AuthStoreTest : StoreTest<AuthStore.Intent, AuthStore.State, Auth
         // given
         val text = "mastodon.social"
         asUnauthorized()
-        api.shouldThrowException = false
+        api.responseWithException = false
         // when
         store.init()
         store.accept(AuthStore.Intent.OnTextInput(text))
@@ -106,8 +94,8 @@ internal class AuthStoreTest : StoreTest<AuthStore.Intent, AuthStore.State, Auth
         // given
         val text = "mastodon.social"
         asUnauthorized()
-        api.getServerInfoResponse = AuthComponentApiStub.invalidInstanceDetails
-        api.shouldThrowException = false
+        api.getServerInfoResponse = AuthComponentApiStubResponses.invalidInstanceDetails
+        api.responseWithException = false
         // when
         store.init()
         store.accept(AuthStore.Intent.OnTextInput(text))
@@ -120,8 +108,8 @@ internal class AuthStoreTest : StoreTest<AuthStore.Intent, AuthStore.State, Auth
         // given
         val text = "mastodon.social"
         asUnauthorized()
-        api.getServerInfoResponse = AuthComponentApiStub.invalidInstanceDetails
-        api.shouldThrowException = true
+        api.getServerInfoResponse = AuthComponentApiStubResponses.invalidInstanceDetails
+        api.responseWithException = true
         // when
         store.init()
         store.accept(AuthStore.Intent.OnTextInput(text))
@@ -133,7 +121,7 @@ internal class AuthStoreTest : StoreTest<AuthStore.Intent, AuthStore.State, Auth
     fun `OnRetryButtonClick should update state with retrying`() {
         // given
         asUnauthorized()
-        api.shouldThrowException = false
+        api.responseWithException = false
         // when
         store.init()
         // then
@@ -150,7 +138,7 @@ internal class AuthStoreTest : StoreTest<AuthStore.Intent, AuthStore.State, Auth
     fun `OnAuthenticateButtonClick should run auth flow`() {
         // given
         asUnauthorized()
-        api.shouldThrowException = false
+        api.responseWithException = false
         // when
         store.init()
         // then
@@ -167,7 +155,7 @@ internal class AuthStoreTest : StoreTest<AuthStore.Intent, AuthStore.State, Auth
     fun `OnAuthenticateButtonClick should show an error if api throws an exception`() {
         // given
         asUnauthorized()
-        api.shouldThrowException = true
+        api.responseWithException = true
         // when
         store.init()
         // then
@@ -184,7 +172,7 @@ internal class AuthStoreTest : StoreTest<AuthStore.Intent, AuthStore.State, Auth
     fun `ShowLearnMore should update bottom sheet visibility`() {
         // given
         asUnauthorized()
-        api.shouldThrowException = false
+        api.responseWithException = false
         // when
         store.init()
         store.accept(AuthStore.Intent.ShowLearnMore(true))
@@ -211,12 +199,12 @@ internal class AuthStoreTest : StoreTest<AuthStore.Intent, AuthStore.State, Auth
     }
 
     private fun asAuthorized() {
-        settings.domainNormalized = StubConstants.DOMAIN
-        settings.token = StubConstants.TOKEN
+        settings.domainNormalized = AuthComponentApiStubResponses.Constants.DOMAIN
+        settings.token = AuthComponentApiStubResponses.Constants.TOKEN
     }
 
     private fun asUnauthorized() {
-        settings.domainNormalized = StubConstants.DOMAIN
+        settings.domainNormalized = AuthComponentApiStubResponses.Constants.DOMAIN
         settings.token = ""
     }
 }

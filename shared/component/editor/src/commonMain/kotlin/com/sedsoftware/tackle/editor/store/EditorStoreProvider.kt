@@ -221,7 +221,7 @@ internal class EditorStoreProvider(
                     is Msg.TextInput -> copy(
                         statusText = msg.text.take(statusCharactersLimit),
                         statusTextSelection = if (msg.exceedTheLimit(statusCharactersLimit)) {
-                            msg.selection.first to statusCharactersLimit
+                            statusCharactersLimit to statusCharactersLimit
                         } else {
                             msg.selection
                         },

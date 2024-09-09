@@ -9,6 +9,7 @@ import com.sedsoftware.tackle.domain.TackleException
 import com.sedsoftware.tackle.domain.model.PlatformFileWrapper
 import com.sedsoftware.tackle.editor.attachments.model.AttachedFile
 import com.sedsoftware.tackle.editor.attachments.stubs.EditorAttachmentsApiStub
+import com.sedsoftware.tackle.editor.attachments.stubs.EditorAttachmentsApiStubResponses
 import com.sedsoftware.tackle.editor.attachments.stubs.InstanceConfigStub
 import com.sedsoftware.tackle.editor.attachments.stubs.PlatformFileStubs
 import kotlinx.coroutines.test.runTest
@@ -27,8 +28,8 @@ class EditorAttachmentsManagerTest {
             file = PlatformFileStubs.imageNormal,
             status = AttachedFile.Status.PENDING,
         )
-        api.shouldThrowException = false
-        api.sendFileResponse = EditorAttachmentsApiStub.sendFileCorrectResponse
+        api.responseWithException = false
+        api.sendFileResponse = EditorAttachmentsApiStubResponses.sendFileCorrectResponse
         // when
         val result = manager.upload(attachment)
         // then
@@ -53,8 +54,8 @@ class EditorAttachmentsManagerTest {
             ),
             status = AttachedFile.Status.PENDING,
         )
-        api.shouldThrowException = true
-        api.sendFileResponse = EditorAttachmentsApiStub.sendFileCorrectResponse
+        api.responseWithException = true
+        api.sendFileResponse = EditorAttachmentsApiStubResponses.sendFileCorrectResponse
         // when
         val result = manager.upload(attachment)
         // then

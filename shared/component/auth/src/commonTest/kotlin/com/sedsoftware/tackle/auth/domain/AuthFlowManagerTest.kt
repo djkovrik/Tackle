@@ -6,10 +6,11 @@ import assertk.assertions.isNotEmpty
 import assertk.assertions.isSameInstanceAs
 import com.sedsoftware.tackle.auth.model.ObtainedCredentials
 import com.sedsoftware.tackle.auth.stubs.AuthComponentApiStub
+import com.sedsoftware.tackle.auth.stubs.AuthComponentApiStubResponses
+import com.sedsoftware.tackle.auth.stubs.AuthComponentApiStubResponses.Constants
 import com.sedsoftware.tackle.auth.stubs.AuthComponentDatabaseStub
 import com.sedsoftware.tackle.auth.stubs.AuthComponentSettingsStub
 import com.sedsoftware.tackle.auth.stubs.AuthComponentToolsStub
-import com.sedsoftware.tackle.auth.stubs.StubConstants
 import com.sedsoftware.tackle.domain.TackleException
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
@@ -24,8 +25,10 @@ class AuthFlowManagerTest {
 
     @Test
     fun `getInstanceInfo should load instance info`() = runTest {
+        // given
+        val domain = Constants.DOMAIN
         // when
-        val result = manager.getInstanceInfo(StubConstants.DOMAIN)
+        val result = manager.getInstanceInfo(domain)
         // then
         assertThat(result.isSuccess, "Instance info")
     }
@@ -33,8 +36,8 @@ class AuthFlowManagerTest {
     @Test
     fun `verifyCredentials should return true for valid settings`() = runTest {
         // given
-        settings.domainNormalized = StubConstants.DOMAIN
-        settings.token = StubConstants.TOKEN
+        settings.domainNormalized = Constants.DOMAIN
+        settings.token = Constants.TOKEN
         // when
         val result = manager.verifyCredentials()
         // then
@@ -46,7 +49,7 @@ class AuthFlowManagerTest {
     fun `verifyCredentials should throw an exception if domain is invalid`() = runTest {
         // given
         settings.domainNormalized = ""
-        settings.token = StubConstants.TOKEN
+        settings.token = Constants.TOKEN
         // when
         val result = manager.verifyCredentials()
         // then
@@ -56,7 +59,7 @@ class AuthFlowManagerTest {
     @Test
     fun `verifyCredentials should throw an exception if token is empty`() = runTest {
         // given
-        settings.domainNormalized = StubConstants.DOMAIN
+        settings.domainNormalized = Constants.DOMAIN
         settings.token = ""
         // when
         val result = manager.verifyCredentials()
@@ -70,12 +73,12 @@ class AuthFlowManagerTest {
         settings.domainNormalized = ""
         settings.clientId = ""
         settings.clientSecret = ""
-        api.createAppResponse = AuthComponentApiStub.validApplicationDetails
+        api.createAppResponse = AuthComponentApiStubResponses.validApplicationDetails
         // when
-        val result = manager.createApp(StubConstants.DOMAIN)
+        val result = manager.createApp(Constants.DOMAIN)
         // then
         assertThat(result.isSuccess, "Successful credentials request")
-        assertThat(settings.domainNormalized, "domain").isEqualTo(StubConstants.DOMAIN)
+        assertThat(settings.domainNormalized, "domain").isEqualTo(Constants.DOMAIN)
         assertThat(settings.clientId, "client_id").isNotEmpty()
         assertThat(settings.clientSecret, "client_secret").isNotEmpty()
     }
@@ -84,8 +87,8 @@ class AuthFlowManagerTest {
     fun `startAuthFlow should return true on valid response`() = runTest {
         // given
         val credentials = ObtainedCredentials(
-            clientId = StubConstants.CLIENT_ID,
-            clientSecret = StubConstants.CLIENT_SECRET,
+            clientId = Constants.CLIENT_ID,
+            clientSecret = Constants.CLIENT_SECRET,
         )
         // when
         val result = manager.startAuthFlow(credentials)
@@ -98,8 +101,8 @@ class AuthFlowManagerTest {
     fun `startAuthFlow should return false on invalid response`() = runTest {
         // given
         val credentials = ObtainedCredentials(
-            clientId = StubConstants.CLIENT_ID,
-            clientSecret = StubConstants.CLIENT_SECRET,
+            clientId = Constants.CLIENT_ID,
+            clientSecret = Constants.CLIENT_SECRET,
         )
         api.startAuthFlowResponse = ""
         // when
@@ -113,8 +116,8 @@ class AuthFlowManagerTest {
     fun `startAuthFlow should update token setting on valid response`() = runTest {
         // given
         val credentials = ObtainedCredentials(
-            clientId = StubConstants.CLIENT_ID,
-            clientSecret = StubConstants.CLIENT_SECRET,
+            clientId = Constants.CLIENT_ID,
+            clientSecret = Constants.CLIENT_SECRET,
         )
         // when
         manager.startAuthFlow(credentials)

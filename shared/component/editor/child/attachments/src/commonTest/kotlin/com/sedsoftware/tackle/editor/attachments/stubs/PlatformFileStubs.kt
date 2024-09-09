@@ -4,7 +4,7 @@ import com.sedsoftware.tackle.domain.model.PlatformFileWrapper
 
 internal object PlatformFileStubs {
 
-    val imageNormal = PlatformFileWrapper(
+    val imageNormal: PlatformFileWrapper = PlatformFileWrapper(
         name = "normal.jpg",
         extension = "jpg",
         path = "",
@@ -14,7 +14,7 @@ internal object PlatformFileStubs {
         readBytes = { ByteArray(0) },
     )
 
-    val imageBig = PlatformFileWrapper(
+    val imageBig: PlatformFileWrapper = PlatformFileWrapper(
         name = "big.jpg",
         extension = "jpg",
         path = "",
@@ -24,7 +24,7 @@ internal object PlatformFileStubs {
         readBytes = { ByteArray(0) },
     )
 
-    val imageEmpty = PlatformFileWrapper(
+    val imageEmpty: PlatformFileWrapper = PlatformFileWrapper(
         name = "empty.jpg",
         extension = "jpg",
         path = "",
@@ -34,7 +34,7 @@ internal object PlatformFileStubs {
         readBytes = { ByteArray(0) },
     )
 
-    val videoNormal = PlatformFileWrapper(
+    val videoNormal: PlatformFileWrapper = PlatformFileWrapper(
         name = "normal.mp4",
         extension = "mp4",
         path = "",
@@ -44,7 +44,7 @@ internal object PlatformFileStubs {
         readBytes = { ByteArray(0) },
     )
 
-    val videoBig = PlatformFileWrapper(
+    val videoBig: PlatformFileWrapper = PlatformFileWrapper(
         name = "normal.mp4",
         extension = "mp4",
         path = "",
@@ -54,7 +54,7 @@ internal object PlatformFileStubs {
         readBytes = { ByteArray(0) },
     )
 
-    val fileUnsupported = PlatformFileWrapper(
+    val fileUnsupported: PlatformFileWrapper = PlatformFileWrapper(
         name = "test.psd",
         extension = "psd",
         path = "",

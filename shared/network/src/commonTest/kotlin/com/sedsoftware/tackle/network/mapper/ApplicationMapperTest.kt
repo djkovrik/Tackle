@@ -4,11 +4,11 @@ import assertk.assertThat
 import assertk.assertions.isNotEmpty
 import com.sedsoftware.tackle.domain.model.Application
 import com.sedsoftware.tackle.network.response.ApplicationResponse
-import com.sedsoftware.tackle.network.responseFromFile
+import com.sedsoftware.tackle.utils.test.JsonBasedTest
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 
-class ApplicationMapperTest {
+class ApplicationMapperTest : JsonBasedTest() {
 
     @Test
     fun `ApplicationMapper should map response to entity`() = runTest {

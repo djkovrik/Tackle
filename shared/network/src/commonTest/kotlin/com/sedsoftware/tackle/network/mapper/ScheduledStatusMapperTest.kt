@@ -9,11 +9,11 @@ import assertk.assertions.isTrue
 import com.sedsoftware.tackle.domain.model.ScheduledStatus
 import com.sedsoftware.tackle.domain.model.type.StatusVisibility
 import com.sedsoftware.tackle.network.response.ScheduledStatusResponse
-import com.sedsoftware.tackle.network.responseFromFile
+import com.sedsoftware.tackle.utils.test.JsonBasedTest
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 
-class ScheduledStatusMapperTest {
+class ScheduledStatusMapperTest : JsonBasedTest() {
 
     @Test
     fun `ScheduledStatusMapper should map scheduled status response to entity`() = runTest {

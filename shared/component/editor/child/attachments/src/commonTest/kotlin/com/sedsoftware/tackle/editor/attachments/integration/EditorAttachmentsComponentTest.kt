@@ -14,8 +14,6 @@ import com.sedsoftware.tackle.editor.attachments.stubs.InstanceConfigStub
 import com.sedsoftware.tackle.editor.attachments.stubs.PlatformFileStubs
 import com.sedsoftware.tackle.utils.test.ComponentTest
 import kotlinx.coroutines.test.runTest
-import kotlin.test.AfterTest
-import kotlin.test.BeforeTest
 import kotlin.test.Test
 
 class EditorAttachmentsComponentTest : ComponentTest<EditorAttachmentsComponent>() {
@@ -24,16 +22,6 @@ class EditorAttachmentsComponentTest : ComponentTest<EditorAttachmentsComponent>
 
     private val activeModel: EditorAttachmentsComponent.Model
         get() = component.model.value
-
-    @BeforeTest
-    fun before() {
-        beforeTest()
-    }
-
-    @AfterTest
-    fun after() {
-        afterTest()
-    }
 
     @Test
     fun `onFileSelectedWrapped should update component model`() = runTest {
@@ -93,16 +81,16 @@ class EditorAttachmentsComponentTest : ComponentTest<EditorAttachmentsComponent>
 
         // when
         val config = InstanceConfigStub.config
-        api.shouldThrowException = false
+        api.responseWithException = false
         component.updateInstanceConfig(config)
         component.changeComponentAvailability(available = true)
         component.onFilesSelectedWrapped(files1)
-        api.shouldThrowException = true
+        api.responseWithException = true
         component.onFilesSelectedWrapped(files2)
         // then
         assertThat(activeModel.attachments.count { it.status == AttachedFile.Status.ERROR }).isEqualTo(files2.size)
         // and when
-        api.shouldThrowException = false
+        api.responseWithException = false
         val target = activeModel.attachments.first { it.status == AttachedFile.Status.ERROR }
         component.onFileRetry(target.id)
         // then

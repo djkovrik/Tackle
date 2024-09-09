@@ -14,8 +14,6 @@ import com.sedsoftware.tackle.main.MainComponent
 import com.sedsoftware.tackle.main.model.TackleNavigationTab
 import com.sedsoftware.tackle.utils.test.ComponentTest
 import dev.mokkery.mock
-import kotlin.test.AfterTest
-import kotlin.test.BeforeTest
 import kotlin.test.Test
 
 class MainComponentTest : ComponentTest<MainComponent>() {
@@ -25,16 +23,6 @@ class MainComponentTest : ComponentTest<MainComponent>() {
     private val database: TackleDatabase = mock<TackleDatabase>()
     private val settings: TackleSettings = mock<TackleSettings>()
     private val platformTools: TacklePlatformTools = mock<TacklePlatformTools>()
-
-    @BeforeTest
-    fun before() {
-        beforeTest()
-    }
-
-    @AfterTest
-    fun after() {
-        afterTest()
-    }
 
     @Test
     fun `component creation should initialize stack with TabEditor`() {

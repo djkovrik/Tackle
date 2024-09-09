@@ -1,6 +1,7 @@
 package com.sedsoftware.tackle.editor.emojis.integration
 
 import assertk.assertThat
+import assertk.assertions.contains
 import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
 import assertk.assertions.isTrue
@@ -14,26 +15,12 @@ import com.sedsoftware.tackle.editor.emojis.stubs.EditorEmojisDatabaseStub
 import com.sedsoftware.tackle.editor.emojis.stubs.EditorEmojisSettingsStub
 import com.sedsoftware.tackle.utils.test.ComponentTest
 import kotlinx.coroutines.test.runTest
-import kotlin.test.AfterTest
-import kotlin.test.BeforeTest
 import kotlin.test.Test
 
 class EditorEmojisComponentTest : ComponentTest<EditorEmojisComponent>() {
 
-    private var componentOutput: ComponentOutput? = null
-
     private val activeModel: EditorEmojisComponent.Model
         get() = component.model.value
-
-    @BeforeTest
-    fun before() {
-        beforeTest()
-    }
-
-    @AfterTest
-    fun after() {
-        afterTest()
-    }
 
     @Test
     fun `onEmojiClicked should use output`() = runTest {
@@ -42,7 +29,7 @@ class EditorEmojisComponentTest : ComponentTest<EditorEmojisComponent>() {
         // when
         component.onEmojiClicked(emoji)
         // then
-        assertThat(componentOutput).isEqualTo(ComponentOutput.StatusEditor.EmojiSelected(emoji))
+        assertThat(componentOutput).contains(ComponentOutput.StatusEditor.EmojiSelected(emoji))
     }
 
     @Test
@@ -66,6 +53,6 @@ class EditorEmojisComponentTest : ComponentTest<EditorEmojisComponent>() {
             database = EditorEmojisDatabaseStub(),
             settings = EditorEmojisSettingsStub(),
             dispatchers = testDispatchers,
-            output = { componentOutput = it },
+            output = { componentOutput.add(it) },
         )
 }

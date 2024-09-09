@@ -6,11 +6,11 @@ import assertk.assertions.isNotZero
 import assertk.assertions.isTrue
 import com.sedsoftware.tackle.domain.model.Instance
 import com.sedsoftware.tackle.network.response.InstanceResponse
-import com.sedsoftware.tackle.network.responseFromFile
+import com.sedsoftware.tackle.utils.test.JsonBasedTest
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 
-class InstanceMapperTest {
+class InstanceMapperTest : JsonBasedTest() {
 
     @Test
     fun `InstanceMapper should map response to entity`() = runTest {
