@@ -3,9 +3,9 @@ package com.sedsoftware.tackle.editor.stubs
 import com.sedsoftware.tackle.editor.EditorComponentGateways
 
 class EditorComponentSettingsStub : EditorComponentGateways.Settings {
-    var lastCachedTimestampStub: String = "2024-07-17"
-    var lastSelectedLanguageNameStub: String = "English"
-    var lastSelectedLanguageCodeStub: String = "en"
+    private var lastCachedTimestampStub: String = "2024-07-17"
+    private var lastSelectedLanguageNameStub: String = "English"
+    private var lastSelectedLanguageCodeStub: String = "en"
 
     override val ownAvatar: String = "avatar"
     override val ownNickname: String = "nickname"

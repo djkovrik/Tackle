@@ -14,45 +14,30 @@ import com.sedsoftware.tackle.domain.TackleException
 import com.sedsoftware.tackle.editor.attachments.domain.EditorAttachmentsManager
 import com.sedsoftware.tackle.editor.attachments.extension.hasPending
 import com.sedsoftware.tackle.editor.attachments.model.AttachedFile
-import com.sedsoftware.tackle.editor.attachments.store.EditorAttachmentsStore.Intent
-import com.sedsoftware.tackle.editor.attachments.store.EditorAttachmentsStore.Intent.UpdateInstanceConfig
-import com.sedsoftware.tackle.editor.attachments.store.EditorAttachmentsStore.Label
-import com.sedsoftware.tackle.editor.attachments.store.EditorAttachmentsStore.State
 import com.sedsoftware.tackle.editor.attachments.stubs.EditorAttachmentsApiStub
 import com.sedsoftware.tackle.editor.attachments.stubs.InstanceConfigStub
 import com.sedsoftware.tackle.editor.attachments.stubs.PlatformFileStubs
 import com.sedsoftware.tackle.utils.test.StoreTest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.runTest
-import kotlin.test.AfterTest
-import kotlin.test.BeforeTest
 import kotlin.test.Test
 
-internal class EditorAttachmentsStoreTest : StoreTest<Intent, State, Label>() {
+internal class EditorAttachmentsStoreTest :
+    StoreTest<EditorAttachmentsStore.Intent, EditorAttachmentsStore.State, EditorAttachmentsStore.Label>() {
 
     private val api: EditorAttachmentsApiStub = EditorAttachmentsApiStub()
     private val manager: EditorAttachmentsManager = EditorAttachmentsManager(api)
-
-    @BeforeTest
-    fun before() {
-        beforeTest()
-    }
-
-    @AfterTest
-    fun after() {
-        afterTest()
-    }
 
     @Test
     fun `ChangeFeatureAvailability should change feature availability`() = runTest {
         // given
         // when
         store.init()
-        store.accept(Intent.ChangeComponentAvailability(true))
+        store.accept(EditorAttachmentsStore.Intent.ChangeComponentAvailability(true))
         // then
         assertThat(store.state.attachmentsAvailable).isTrue()
         // and when
-        store.accept(Intent.ChangeComponentAvailability(false))
+        store.accept(EditorAttachmentsStore.Intent.ChangeComponentAvailability(false))
         // then
         assertThat(store.state.attachmentsAvailable).isFalse()
     }
@@ -63,7 +48,7 @@ internal class EditorAttachmentsStoreTest : StoreTest<Intent, State, Label>() {
         val config = InstanceConfigStub.config
         // when
         store.init()
-        store.accept(UpdateInstanceConfig(config))
+        store.accept(EditorAttachmentsStore.Intent.UpdateInstanceConfig(config))
         // then
         assertThat(store.state.config).isEqualTo(config)
     }
@@ -79,13 +64,13 @@ internal class EditorAttachmentsStoreTest : StoreTest<Intent, State, Label>() {
         )
         // when
         store.init()
-        store.accept(UpdateInstanceConfig(InstanceConfigStub.config))
-        store.accept(Intent.OnFilesSelected(files))
+        store.accept(EditorAttachmentsStore.Intent.UpdateInstanceConfig(InstanceConfigStub.config))
+        store.accept(EditorAttachmentsStore.Intent.OnFilesSelected(files))
         // then
         assertThat(store.state.selectedFiles.size).isEqualTo(files.size)
         assertThat(store.state.attachmentsAtLimit).isTrue()
         assertThat(store.state.selectedFiles.hasPending).isFalse()
-        assertThat(labels).contains(Label.PendingAttachmentsCountUpdated(files.size))
+        assertThat(labels).contains(EditorAttachmentsStore.Label.PendingAttachmentsCountUpdated(files.size))
     }
 
     @Test
@@ -99,14 +84,14 @@ internal class EditorAttachmentsStoreTest : StoreTest<Intent, State, Label>() {
         )
         // when
         store.init()
-        store.accept(UpdateInstanceConfig(InstanceConfigStub.config))
-        store.accept(Intent.OnFilesSelected(files))
+        store.accept(EditorAttachmentsStore.Intent.UpdateInstanceConfig(InstanceConfigStub.config))
+        store.accept(EditorAttachmentsStore.Intent.OnFilesSelected(files))
         // then
         assertThat(store.state.selectedFiles.size).isEqualTo(files.size - 1)
         assertThat(store.state.attachmentsAtLimit).isFalse()
         assertThat(store.state.selectedFiles.hasPending).isFalse()
         assertThat(labels).isNotEmpty()
-        assertThat((labels.find { it is Label.ErrorCaught } as Label.ErrorCaught).throwable)
+        assertThat((labels.find { it is EditorAttachmentsStore.Label.ErrorCaught } as EditorAttachmentsStore.Label.ErrorCaught).throwable)
             .hasClass(TackleException.FileSizeExceeded::class)
     }
 
@@ -123,14 +108,14 @@ internal class EditorAttachmentsStoreTest : StoreTest<Intent, State, Label>() {
         )
         // when
         store.init()
-        store.accept(UpdateInstanceConfig(InstanceConfigStub.config))
-        store.accept(Intent.OnFilesSelected(files))
+        store.accept(EditorAttachmentsStore.Intent.UpdateInstanceConfig(InstanceConfigStub.config))
+        store.accept(EditorAttachmentsStore.Intent.OnFilesSelected(files))
         // then
         assertThat(store.state.selectedFiles.size).isEqualTo(store.state.config.statuses.maxMediaAttachments)
         assertThat(store.state.attachmentsAtLimit).isTrue()
         assertThat(store.state.selectedFiles.hasPending).isFalse()
         assertThat(labels).isNotEmpty()
-        val label = labels.first() as Label.ErrorCaught
+        val label = labels.first() as EditorAttachmentsStore.Label.ErrorCaught
         assertThat(label.throwable).hasClass(TackleException.AttachmentsLimitExceeded::class)
     }
 
@@ -145,8 +130,8 @@ internal class EditorAttachmentsStoreTest : StoreTest<Intent, State, Label>() {
         )
         // when
         store.init()
-        store.accept(UpdateInstanceConfig(InstanceConfigStub.config))
-        store.accept(Intent.OnFilesSelected(files))
+        store.accept(EditorAttachmentsStore.Intent.UpdateInstanceConfig(InstanceConfigStub.config))
+        store.accept(EditorAttachmentsStore.Intent.OnFilesSelected(files))
         // then
         assertThat(store.state.selectedFiles.size).isEqualTo(0)
         assertThat(store.state.attachmentsAtLimit).isFalse()
@@ -163,11 +148,11 @@ internal class EditorAttachmentsStoreTest : StoreTest<Intent, State, Label>() {
             PlatformFileStubs.imageNormal.copy(name = "test3.jpg"),
             PlatformFileStubs.imageNormal.copy(name = "test4.jpg"),
         )
-        api.shouldThrowException = true
+        api.responseWithException = true
         // when
         store.init()
-        store.accept(UpdateInstanceConfig(InstanceConfigStub.config))
-        store.accept(Intent.OnFilesSelected(files))
+        store.accept(EditorAttachmentsStore.Intent.UpdateInstanceConfig(InstanceConfigStub.config))
+        store.accept(EditorAttachmentsStore.Intent.OnFilesSelected(files))
         // then
         assertThat(store.state.selectedFiles.count { it.status == AttachedFile.Status.ERROR }).isEqualTo(files.size)
     }
@@ -183,15 +168,15 @@ internal class EditorAttachmentsStoreTest : StoreTest<Intent, State, Label>() {
         )
         // when
         store.init()
-        store.accept(UpdateInstanceConfig(InstanceConfigStub.config))
-        store.accept(Intent.OnFilesSelected(files))
+        store.accept(EditorAttachmentsStore.Intent.UpdateInstanceConfig(InstanceConfigStub.config))
+        store.accept(EditorAttachmentsStore.Intent.OnFilesSelected(files))
         // given
         val fileToDelete = store.state.selectedFiles[1]
         // when
-        store.accept(Intent.OnFileDeleted(fileToDelete.id))
+        store.accept(EditorAttachmentsStore.Intent.OnFileDeleted(fileToDelete.id))
         // then
         assertThat(store.state.selectedFiles).containsNone(fileToDelete)
-        assertThat(labels).contains(Label.PendingAttachmentsCountUpdated(files.size - 1))
+        assertThat(labels).contains(EditorAttachmentsStore.Label.PendingAttachmentsCountUpdated(files.size - 1))
     }
 
     @Test
@@ -209,21 +194,50 @@ internal class EditorAttachmentsStoreTest : StoreTest<Intent, State, Label>() {
 
         // when
         store.init()
-        store.accept(UpdateInstanceConfig(InstanceConfigStub.config))
-        store.accept(Intent.OnFilesSelected(files1))
-        api.shouldThrowException = true
-        store.accept(Intent.OnFilesSelected(files2))
+        store.accept(EditorAttachmentsStore.Intent.UpdateInstanceConfig(InstanceConfigStub.config))
+        store.accept(EditorAttachmentsStore.Intent.OnFilesSelected(files1))
+        api.responseWithException = true
+        store.accept(EditorAttachmentsStore.Intent.OnFilesSelected(files2))
         // then
         assertThat(store.state.selectedFiles.count { it.status == AttachedFile.Status.ERROR }).isEqualTo(files2.size)
         // and when
-        api.shouldThrowException = false
+        api.responseWithException = false
         val target = store.state.selectedFiles.first { it.status == AttachedFile.Status.ERROR }
-        store.accept(Intent.OnFileRetry(target.id))
+        store.accept(EditorAttachmentsStore.Intent.OnFileRetry(target.id))
         // then
         assertThat(store.state.selectedFiles.count { it.status == AttachedFile.Status.ERROR }).isEqualTo(0)
     }
 
-    override fun createStore(): Store<Intent, State, Label> =
+    @Test
+    fun `retry error should show error message`() = runTest {
+        // given
+        val files1 = listOf(
+            PlatformFileStubs.imageNormal.copy(name = "test1.jpg"),
+            PlatformFileStubs.imageNormal.copy(name = "test2.jpg"),
+            PlatformFileStubs.imageNormal.copy(name = "test3.jpg"),
+        )
+
+        val files2 = listOf(
+            PlatformFileStubs.imageNormal.copy(name = "test4.jpg"),
+        )
+
+        // when
+        store.init()
+        store.accept(EditorAttachmentsStore.Intent.UpdateInstanceConfig(InstanceConfigStub.config))
+        store.accept(EditorAttachmentsStore.Intent.OnFilesSelected(files1))
+        api.responseWithException = true
+        store.accept(EditorAttachmentsStore.Intent.OnFilesSelected(files2))
+        // then
+        assertThat(store.state.selectedFiles.count { it.status == AttachedFile.Status.ERROR }).isEqualTo(files2.size)
+        // and when
+        api.responseWithException = true
+        val target = store.state.selectedFiles.first { it.status == AttachedFile.Status.ERROR }
+        store.accept(EditorAttachmentsStore.Intent.OnFileRetry(target.id))
+        // then
+        assertThat(labels.count { it is EditorAttachmentsStore.Label.ErrorCaught }).isEqualTo(2)
+    }
+
+    override fun createStore(): Store<EditorAttachmentsStore.Intent, EditorAttachmentsStore.State, EditorAttachmentsStore.Label> =
         EditorAttachmentsStoreProvider(
             storeFactory = DefaultStoreFactory(),
             manager = manager,

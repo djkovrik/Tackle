@@ -133,8 +133,8 @@ complexity:
     ignoreAnnotated: ['Composable','StoreCreate']
   LongParameterList:
     active: true
-    functionThreshold: 10
-    constructorThreshold: 10
+    functionThreshold: 12
+    constructorThreshold: 12
     ignoreDefaultParameters: true
     ignoreDataClasses: true
     ignoreAnnotatedParameter: ['SerialName']

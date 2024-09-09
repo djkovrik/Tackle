@@ -3,11 +3,11 @@ package com.sedsoftware.tackle.editor.stubs
 import com.sedsoftware.tackle.domain.model.CustomEmoji
 import com.sedsoftware.tackle.domain.model.Instance
 import com.sedsoftware.tackle.editor.EditorComponentGateways
-import com.sedsoftware.tackle.utils.test.StubWithException
+import com.sedsoftware.tackle.utils.test.BaseStub
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
-class EditorComponentDatabaseStub : StubWithException(), EditorComponentGateways.Database {
+class EditorComponentDatabaseStub : BaseStub(), EditorComponentGateways.Database {
 
     companion object {
         val customEmojiList = listOf(
@@ -18,15 +18,19 @@ class EditorComponentDatabaseStub : StubWithException(), EditorComponentGateways
         )
     }
 
-    var emojisCache: List<CustomEmoji> = customEmojiList
+    private var emojisCache: List<CustomEmoji> = customEmojiList
 
-    override suspend fun observeCachedEmojis(): Flow<Map<String, List<CustomEmoji>>> = flowOf(emojisCache.groupBy { it.category })
+    override suspend fun observeCachedEmojis(): Flow<Map<String, List<CustomEmoji>>> =
+        asResponse(flowOf(emojisCache.groupBy { it.category }))
 
-    override suspend fun getCachedInstanceInfo(): Flow<Instance> = flowOf(InstanceStub.instance)
+    override suspend fun getCachedInstanceInfo(): Flow<Instance> =
+        asResponse(flowOf(InstanceStub.instance))
 
-    override suspend fun findEmojis(query: String): Flow<List<CustomEmoji>> = flowOf(emojisCache)
+    override suspend fun findEmojis(query: String): Flow<List<CustomEmoji>> =
+        asResponse(flowOf(emojisCache))
 
     override suspend fun cacheServerEmojis(list: List<CustomEmoji>) {
         emojisCache = list
+        asResponse(Unit)
     }
 }

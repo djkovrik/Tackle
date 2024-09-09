@@ -26,6 +26,7 @@ kotlin {
 
             implementation(project(":shared:component:editor"))
             implementation(project(":shared:component:editor:child:attachments"))
+            implementation(project(":shared:component:editor:child:details"))
             implementation(project(":shared:component:editor:child:emojis"))
             implementation(project(":shared:component:editor:child:header"))
             implementation(project(":shared:component:editor:child:poll"))

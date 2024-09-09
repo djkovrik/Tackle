@@ -4,6 +4,7 @@ import com.sedsoftware.tackle.domain.model.CustomEmoji
 import com.sedsoftware.tackle.domain.model.Instance
 import com.sedsoftware.tackle.domain.model.NewStatusBundle
 import com.sedsoftware.tackle.domain.model.Search
+import com.sedsoftware.tackle.domain.model.SearchRequestBundle
 import com.sedsoftware.tackle.domain.model.type.CreatedStatusType
 import com.sedsoftware.tackle.editor.EditorComponentGateways
 import com.sedsoftware.tackle.editor.extension.hasScheduledDate
@@ -35,10 +36,12 @@ internal class EditorManager(
 
     suspend fun searchForAccounts(query: String): Result<List<EditorInputHintItem>> = runCatching {
         val response: Search = api.search(
-            query = query,
-            type = SEARCH_TYPE_ACCOUNT,
-            resolve = false,
-            limit = SEARCH_LIMIT,
+            SearchRequestBundle(
+                query = query,
+                type = SEARCH_TYPE_ACCOUNT,
+                resolve = false,
+                limit = SEARCH_LIMIT,
+            )
         )
 
         response.accounts.map { it.toEditorInputHintAccount() }
@@ -51,10 +54,12 @@ internal class EditorManager(
 
     suspend fun searchForHashTags(query: String): Result<List<EditorInputHintItem>> = runCatching {
         val response: Search = api.search(
-            query = query,
-            type = SEARCH_TYPE_HASHTAG,
-            excludeUnreviewed = true,
-            limit = SEARCH_LIMIT,
+            SearchRequestBundle(
+                query = query,
+                type = SEARCH_TYPE_HASHTAG,
+                excludeUnreviewed = true,
+                limit = SEARCH_LIMIT,
+            )
         )
 
         response.hashtags.map { it.toEditorInputHintHashTag() }

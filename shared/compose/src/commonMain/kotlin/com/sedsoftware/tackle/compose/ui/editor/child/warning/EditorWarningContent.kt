@@ -92,7 +92,7 @@ internal fun EditorWarningContent(
                         contentDescription = null,
                         tint = MaterialTheme.colorScheme.secondary,
                         modifier = Modifier
-                            .size(size = 24.dp)
+                            .size(size = 18.dp)
                             .clickable(onClick = onTextClear),
                     )
                 }

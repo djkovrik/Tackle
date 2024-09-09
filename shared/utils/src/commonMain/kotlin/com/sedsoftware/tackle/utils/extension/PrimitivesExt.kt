@@ -33,6 +33,8 @@ fun Long?.orZero(): Long = this ?: 0L
 
 fun Int?.orZero(): Int = this ?: 0
 
+fun Float?.orZero(): Float = this ?: 0f
+
 fun Boolean?.orFalse(): Boolean = this ?: false
 
 fun Long?.toHumanReadableSize(useBinary: Boolean = false): String {
@@ -56,4 +58,16 @@ fun Float.roundToDecimals(decimals: Int): Float {
     repeat(decimals) { dotAt *= multiplier }
     val roundedValue = (this * dotAt).roundToInt()
     return (roundedValue / dotAt) + (roundedValue % dotAt).toFloat() / dotAt
+}
+
+fun Pair<Float, Float>.focusToOffset(middleX: Float, middleY: Float): Pair<Float, Float> {
+    val offsetX: Float = this.first * middleX
+    val offsetY: Float = this.second * middleY * -1f
+    return offsetX to offsetY
+}
+
+fun Pair<Float, Float>.offsetToFocus(middleX: Float, middleY: Float): Pair<Float, Float> {
+    val offsetX: Float = this.first / middleX
+    val offsetY: Float = this.second / middleY * -1f
+    return offsetX to offsetY
 }

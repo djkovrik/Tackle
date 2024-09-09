@@ -89,4 +89,7 @@
     <string name="editor_attachment_unknown">Файл</string>
     <string name="editor_attachment_failed">Ошибка отправки</string>
     <string name="editor_attachment_processing">Обработка</string>
+    <string name="editor_attachment_alternate_text">Альтернативный текст</string>
+    <string name="editor_attachment_alternate_text_description">Опишите содержимое файла для дополнительного контекста и улучшения доступности для людей с ограниченными возможностями:</string>
+    <string name="editor_attachment_focus">Выберите основную точку фокуса на изображении, чтобы убедиться что выбранная область обязательно будет видна на превью:</string>
 </resources>

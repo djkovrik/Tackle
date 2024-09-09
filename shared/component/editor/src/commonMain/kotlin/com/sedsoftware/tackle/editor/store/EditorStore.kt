@@ -39,6 +39,7 @@ interface EditorStore : Store<Intent, State, Label> {
         val scheduledHour: Int = -1,
         val scheduledMinute: Int = -1,
         val scheduledIn24hFormat: Boolean = true,
+        val sendingActive: Boolean = false,
     )
 
     sealed class Label {

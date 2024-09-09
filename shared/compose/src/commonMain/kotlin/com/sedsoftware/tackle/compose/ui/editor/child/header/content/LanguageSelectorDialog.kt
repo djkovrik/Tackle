@@ -61,7 +61,7 @@ private fun LanguageSelectorDialogContent(
             .wrapContentWidth()
             .height(height = 440.dp)
             .padding(all = 16.dp),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(size = 16.dp),
     ) {
         Column(
             horizontalAlignment = Alignment.End,

@@ -10,6 +10,7 @@ import com.arkivanov.mvikotlin.extensions.coroutines.labels
 import com.sedsoftware.tackle.domain.ComponentOutput
 import com.sedsoftware.tackle.domain.api.TackleDispatchers
 import com.sedsoftware.tackle.domain.model.Instance
+import com.sedsoftware.tackle.domain.model.MediaAttachment
 import com.sedsoftware.tackle.domain.model.PlatformFileWrapper
 import com.sedsoftware.tackle.editor.attachments.EditorAttachmentsComponent
 import com.sedsoftware.tackle.editor.attachments.EditorAttachmentsComponent.Model
@@ -82,6 +83,10 @@ class EditorAttachmentsComponentDefault(
 
     override fun onFileRetry(id: String) {
         store.accept(EditorAttachmentsStore.Intent.OnFileRetry(id))
+    }
+
+    override fun onFileEdit(attachment: MediaAttachment) {
+        output(ComponentOutput.StatusEditor.AttachmentDetailsRequested(attachment))
     }
 
     override fun changeComponentAvailability(available: Boolean) {

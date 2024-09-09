@@ -27,6 +27,7 @@ include(
     ":shared:component:main",
     ":shared:component:editor",
     ":shared:component:editor:child:attachments",
+    ":shared:component:editor:child:details",
     ":shared:component:editor:child:emojis",
     ":shared:component:editor:child:header",
     ":shared:component:editor:child:poll",

@@ -8,6 +8,7 @@ import com.sedsoftware.tackle.domain.model.NewStatusBundle
 import com.sedsoftware.tackle.domain.model.PlatformFileWrapper
 import com.sedsoftware.tackle.domain.model.ScheduledStatus
 import com.sedsoftware.tackle.domain.model.Search
+import com.sedsoftware.tackle.domain.model.SearchRequestBundle
 import com.sedsoftware.tackle.domain.model.Status
 import com.sedsoftware.tackle.editor.EditorComponentGateways
 
@@ -27,20 +28,14 @@ internal class EditorTabComponentApi(
         focus: String?,
     ): MediaAttachment = authorizedApi.sendFile(file, onUpload, thumbnail, description)
 
-    override suspend fun search(
-        query: String,
-        type: String,
-        resolve: Boolean?,
-        following: Boolean?,
-        accountId: String?,
-        excludeUnreviewed: Boolean?,
-        minId: String?,
-        maxId: String?,
-        limit: Int?,
-        offset: Int?,
-    ): Search = authorizedApi.search(query, type, resolve, following, accountId, excludeUnreviewed, minId, maxId, limit, offset)
+    override suspend fun search(bundle: SearchRequestBundle): Search = authorizedApi.search(bundle)
 
     override suspend fun sendStatus(bundle: NewStatusBundle): Status = authorizedApi.sendStatus(bundle)
 
     override suspend fun sendStatusScheduled(bundle: NewStatusBundle): ScheduledStatus = authorizedApi.sendStatusScheduled(bundle)
+
+    override suspend fun updateFile(id: String, description: String?, focus: String?): MediaAttachment =
+        authorizedApi.updateFile(id, null, description, focus)
+
+    override suspend fun getFile(id: String): MediaAttachment = authorizedApi.getFile(id)
 }

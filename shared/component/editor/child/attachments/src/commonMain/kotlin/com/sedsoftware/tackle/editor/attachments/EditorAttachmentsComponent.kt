@@ -2,6 +2,7 @@ package com.sedsoftware.tackle.editor.attachments
 
 import com.arkivanov.decompose.value.Value
 import com.sedsoftware.tackle.domain.model.Instance
+import com.sedsoftware.tackle.domain.model.MediaAttachment
 import com.sedsoftware.tackle.domain.model.PlatformFileWrapper
 import com.sedsoftware.tackle.editor.attachments.model.AttachedFile
 import io.github.vinceglb.filekit.core.PlatformFile
@@ -14,6 +15,7 @@ interface EditorAttachmentsComponent {
     fun onFilesSelectedWrapped(files: List<PlatformFileWrapper>)
     fun onFileDeleted(id: String)
     fun onFileRetry(id: String)
+    fun onFileEdit(attachment: MediaAttachment)
     fun changeComponentAvailability(available: Boolean)
     fun updateInstanceConfig(config: Instance.Config)
 

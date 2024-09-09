@@ -92,4 +92,7 @@
     <string name="editor_attachment_unknown">File</string>
     <string name="editor_attachment_failed">Upload error</string>
     <string name="editor_attachment_processing">Processing</string>
+    <string name="editor_attachment_alternate_text">Alternate text</string>
+    <string name="editor_attachment_alternate_text_description">Describe the file content for additional context and accessibility purposes:</string>
+    <string name="editor_attachment_focus">Select the main focus point of the image to ensure that this image part will be always visible on preview:</string>
 </resources>

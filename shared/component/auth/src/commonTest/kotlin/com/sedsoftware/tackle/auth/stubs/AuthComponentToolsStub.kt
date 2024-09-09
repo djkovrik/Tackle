@@ -7,10 +7,10 @@ class AuthComponentToolsStub : AuthComponentGateways.Tools {
 
     override fun getClientData(): AppClientData =
         AppClientData(
-            name = StubConstants.NAME,
-            uri = StubConstants.URI,
-            scopes = StubConstants.SCOPES,
-            website = StubConstants.WEBSITE
+            name = AuthComponentApiStubResponses.Constants.NAME,
+            uri = AuthComponentApiStubResponses.Constants.URI,
+            scopes = AuthComponentApiStubResponses.Constants.SCOPES,
+            website = AuthComponentApiStubResponses.Constants.WEBSITE
         )
 
     override fun openUrl(url: String?) {

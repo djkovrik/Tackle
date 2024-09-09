@@ -46,7 +46,7 @@ private fun ScheduleTimePickerDialogContent(
 ) {
     Card(
         modifier = Modifier.padding(all = 16.dp),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(size = 16.dp),
     ) {
         Column(
             horizontalAlignment = Alignment.End,

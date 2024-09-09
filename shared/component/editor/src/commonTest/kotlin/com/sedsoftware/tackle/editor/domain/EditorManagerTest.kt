@@ -61,7 +61,7 @@ class EditorManagerTest {
     fun `searchForAccounts should return failure on api error`() = runTest {
         // given
         val query = "query"
-        api.shouldThrowException = true
+        api.responseWithException = true
         // when
         val result = manager.searchForAccounts(query)
         // then
@@ -95,7 +95,7 @@ class EditorManagerTest {
     fun `searchForHashTags should return failure on api error`() = runTest {
         // given
         val query = "query"
-        api.shouldThrowException = true
+        api.responseWithException = true
         // when
         val result = manager.searchForHashTags(query)
         // then

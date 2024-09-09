@@ -10,11 +10,11 @@ import assertk.assertions.isTrue
 import com.sedsoftware.tackle.domain.model.Status
 import com.sedsoftware.tackle.domain.model.type.StatusVisibility
 import com.sedsoftware.tackle.network.response.StatusResponse
-import com.sedsoftware.tackle.network.responseFromFile
+import com.sedsoftware.tackle.utils.test.JsonBasedTest
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 
-class StatusMapperTest {
+class StatusMapperTest : JsonBasedTest() {
 
     @Test
     fun `StatusMapper should map status response to entity`() = runTest {

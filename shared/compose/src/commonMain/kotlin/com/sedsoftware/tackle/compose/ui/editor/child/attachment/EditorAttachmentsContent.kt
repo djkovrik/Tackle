@@ -11,6 +11,7 @@ import androidx.compose.ui.graphics.Color
 import com.sedsoftware.tackle.compose.ui.editor.child.attachment.content.AttachedFileContent
 import com.sedsoftware.tackle.compose.ui.editor.child.attachment.content.getFraction
 import com.sedsoftware.tackle.compose.ui.editor.child.attachment.content.getPadding
+import com.sedsoftware.tackle.domain.model.MediaAttachment
 import com.sedsoftware.tackle.editor.attachments.EditorAttachmentsComponent
 import com.sedsoftware.tackle.editor.attachments.model.AttachedFile
 
@@ -23,6 +24,7 @@ internal fun EditorAttachmentsContent(
     contentColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
     onDelete: (String) -> Unit = {},
     onRetry: (String) -> Unit = {},
+    onEdit: (MediaAttachment) -> Unit = {},
     previewImage: @Composable (() -> Unit)? = null,
 ) {
     FlowRow(
@@ -34,6 +36,7 @@ internal fun EditorAttachmentsContent(
                 attachment = attachment,
                 onDelete = { onDelete.invoke(attachment.id) },
                 onRetry = { onRetry.invoke(attachment.id) },
+                onEdit = { attachment.serverCopy?.let { onEdit.invoke(it) } },
                 containerColor = containerColor,
                 contentColor = contentColor,
                 previewImage = previewImage,

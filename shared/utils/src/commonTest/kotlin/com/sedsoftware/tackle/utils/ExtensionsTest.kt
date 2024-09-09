@@ -6,10 +6,12 @@ import assertk.assertions.isFalse
 import assertk.assertions.isTrue
 import com.sedsoftware.tackle.domain.TackleException
 import com.sedsoftware.tackle.domain.model.PlatformFileWrapper
+import com.sedsoftware.tackle.utils.extension.focusToOffset
 import com.sedsoftware.tackle.utils.extension.isAudio
 import com.sedsoftware.tackle.utils.extension.isImage
 import com.sedsoftware.tackle.utils.extension.isUnauthorized
 import com.sedsoftware.tackle.utils.extension.isVideo
+import com.sedsoftware.tackle.utils.extension.offsetToFocus
 import com.sedsoftware.tackle.utils.extension.orFalse
 import com.sedsoftware.tackle.utils.extension.orZero
 import com.sedsoftware.tackle.utils.extension.toHumanReadableSize
@@ -108,12 +110,16 @@ class ExtensionsTest {
         val x2: Long? = null
         val x3: Int? = 123
         val x4: Int? = null
+        val x5: Float? = 123.4f
+        val x6: Float? = null
         // when
         // then
         assertThat(x1.orZero()).isEqualTo(123L)
         assertThat(x2.orZero()).isEqualTo(0L)
         assertThat(x3.orZero()).isEqualTo(123)
         assertThat(x4.orZero()).isEqualTo(0)
+        assertThat(x5.orZero()).isEqualTo(123.4f)
+        assertThat(x6.orZero()).isEqualTo(0f)
     }
 
     @Test
@@ -201,5 +207,55 @@ class ExtensionsTest {
         assertThat(bytesFormatted).isEqualTo("123.0 b")
         assertThat(kilobytesFormatted).isEqualTo("12.1 Kb")
         assertThat(megabytesFormatted).isEqualTo("43.6 Mb")
+    }
+
+    @Test
+    fun `focusToOffset should calculate correct offset`() = runTest {
+        // given
+        val middlePointX = 540f
+        val middlePointY = 360f
+        val focusTopLeft = -1f to 1f
+        val focusTopRight = 1f to 1f
+        val focusBottomLeft = -1f to -1f
+        val focusBottomRight = 1f to -1f
+        val expectedTopLeft = -middlePointX to -middlePointY
+        val expectedTopRight = middlePointX to -middlePointY
+        val expectedBottomLeft = -middlePointX to middlePointY
+        val expectedBottomRight = middlePointX to middlePointY
+        // when
+        val resultTopLeft = focusTopLeft.focusToOffset(middlePointX, middlePointY)
+        val resultTopRight = focusTopRight.focusToOffset(middlePointX, middlePointY)
+        val resultBottomLeft = focusBottomLeft.focusToOffset(middlePointX, middlePointY)
+        val resultBottomRight = focusBottomRight.focusToOffset(middlePointX, middlePointY)
+        // then
+        assertThat(resultTopLeft).isEqualTo(expectedTopLeft)
+        assertThat(resultTopRight).isEqualTo(expectedTopRight)
+        assertThat(expectedBottomLeft).isEqualTo(resultBottomLeft)
+        assertThat(expectedBottomRight).isEqualTo(resultBottomRight)
+    }
+
+    @Test
+    fun `offsetToFocus should calculate focus`() = runTest {
+        // given
+        val middlePointX = 540f
+        val middlePointY = 360f
+        val offsetTopLeft = -middlePointX to -middlePointY
+        val offsetTopRight = middlePointX to -middlePointY
+        val offsetBottomLeft = -middlePointX to middlePointY
+        val offsetBottomRight = middlePointX to middlePointY
+        val expectedFocusTopLeft = -1f to 1f
+        val expectedFocusTopRight = 1f to 1f
+        val expectedFocusBottomLeft = -1f to -1f
+        val expectedFocusBottomRight = 1f to -1f
+        // when
+        val resultTopLeft = offsetTopLeft.offsetToFocus(middlePointX, middlePointY)
+        val resultTopRight = offsetTopRight.offsetToFocus(middlePointX, middlePointY)
+        val resultBottomLeft = offsetBottomLeft.offsetToFocus(middlePointX, middlePointY)
+        val resultBottomRight = offsetBottomRight.offsetToFocus(middlePointX, middlePointY)
+        // then
+        assertThat(resultTopLeft).isEqualTo(expectedFocusTopLeft)
+        assertThat(resultTopRight).isEqualTo(expectedFocusTopRight)
+        assertThat(resultBottomLeft).isEqualTo(expectedFocusBottomLeft)
+        assertThat(resultBottomRight).isEqualTo(expectedFocusBottomRight)
     }
 }

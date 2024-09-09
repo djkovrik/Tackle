@@ -181,6 +181,8 @@ internal class EditorStoreProvider(
 
                 onIntent<Intent.SendStatus> {
                     launch {
+                        dispatch(Msg.TryToSendStatus)
+
                         unwrap(
                             result = withContext(ioContext) { manager.sendStatus(it.bundle) },
                             onSuccess = { statusType: CreatedStatusType ->
@@ -191,6 +193,7 @@ internal class EditorStoreProvider(
                                 }
                             },
                             onError = { throwable: Throwable ->
+                                dispatch(Msg.StatusSendFailed)
                                 publish(Label.ErrorCaught(throwable))
                             }
                         )
@@ -218,7 +221,7 @@ internal class EditorStoreProvider(
                     is Msg.TextInput -> copy(
                         statusText = msg.text.take(statusCharactersLimit),
                         statusTextSelection = if (msg.exceedTheLimit(statusCharactersLimit)) {
-                            msg.selection.first to statusCharactersLimit
+                            statusCharactersLimit to statusCharactersLimit
                         } else {
                             msg.selection
                         },
@@ -278,6 +281,10 @@ internal class EditorStoreProvider(
                         scheduledMinute = -1,
                     )
 
+                    is Msg.TryToSendStatus -> copy(
+                        sendingActive = true,
+                    )
+
                     is Msg.StatusSent -> copy(
                         statusText = "",
                         statusTextSelection = (0 to 0),
@@ -290,6 +297,10 @@ internal class EditorStoreProvider(
                         scheduledHour = -1,
                         scheduledMinute = -1,
                         scheduledIn24hFormat = true,
+                    )
+
+                    is Msg.StatusSendFailed -> copy(
+                        sendingActive = false,
                     )
                 }
             }
@@ -318,7 +329,9 @@ internal class EditorStoreProvider(
         data class TimeDialogVisibilityChanged(val visible: Boolean) : Msg
         data class ScheduleTimeSelected(val hour: Int, val minute: Int, val formatIn24hr: Boolean) : Msg
         data object ScheduledDateTimeReset : Msg
+        data object TryToSendStatus : Msg
         data object StatusSent : Msg
+        data object StatusSendFailed : Msg
     }
 
     private fun Msg.TextInput.exceedTheLimit(limit: Int): Boolean = limit - text.length < 0

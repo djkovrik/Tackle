@@ -3,6 +3,7 @@ package com.sedsoftware.tackle.editor.header.store
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
+import assertk.assertions.isGreaterThan
 import assertk.assertions.isNotEmpty
 import assertk.assertions.isTrue
 import com.arkivanov.mvikotlin.core.store.Store
@@ -15,8 +16,6 @@ import com.sedsoftware.tackle.editor.header.stubs.EditorHeaderToolsStub
 import com.sedsoftware.tackle.utils.test.StoreTest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.runTest
-import kotlin.test.AfterTest
-import kotlin.test.BeforeTest
 import kotlin.test.Test
 
 internal class EditorHeaderStoreTest : StoreTest<EditorHeaderStore.Intent, EditorHeaderStore.State, EditorHeaderStore.Label>() {
@@ -24,16 +23,6 @@ internal class EditorHeaderStoreTest : StoreTest<EditorHeaderStore.Intent, Edito
     private val settings: EditorHeaderSettingsStub = EditorHeaderSettingsStub()
     private val tools: EditorHeaderToolsStub = EditorHeaderToolsStub()
     private val manager: EditorHeaderManager = EditorHeaderManager(settings, tools)
-
-    @BeforeTest
-    fun before() {
-        beforeTest()
-    }
-
-    @AfterTest
-    fun after() {
-        afterTest()
-    }
 
     @Test
     fun `store creation should fetch all required data`() = runTest {
@@ -59,6 +48,23 @@ internal class EditorHeaderStoreTest : StoreTest<EditorHeaderStore.Intent, Edito
     }
 
     @Test
+    fun `store creation error on fetch should show error message`() = runTest {
+        // given
+        val avatar = "avatar"
+        val domain = "domain"
+        val nickname = "nickname"
+        settings.avatar = avatar
+        settings.domain = domain
+        settings.nickname = nickname
+        // when
+        settings.responseWithException = true
+        tools.responseWithException = true
+        store.init()
+        // then
+        assertThat(labels.count { it is EditorHeaderStore.Label.ErrorCaught }).isGreaterThan(0)
+    }
+
+    @Test
     fun `OnShowLocalePicker should change locale picker visibility`() = runTest {
         // given
         // when
@@ -81,6 +87,18 @@ internal class EditorHeaderStoreTest : StoreTest<EditorHeaderStore.Intent, Edito
         store.accept(EditorHeaderStore.Intent.OnLocaleSelected(targetLocale))
         // then
         assertThat(store.state.selectedLocale).isEqualTo(targetLocale)
+    }
+
+    @Test
+    fun `OnLocaleSelected error should show error message`() = runTest {
+        // given
+        val targetLocale = AppLocale("Russian", "ru")
+        // when
+        settings.responseWithException = true
+        store.init()
+        store.accept(EditorHeaderStore.Intent.OnLocaleSelected(targetLocale))
+        // then
+        assertThat(labels.count { it is EditorHeaderStore.Label.ErrorCaught }).isGreaterThan(0)
     }
 
     @Test

@@ -1,39 +1,31 @@
 package com.sedsoftware.tackle.auth.integration
 
 import assertk.assertThat
+import assertk.assertions.contains
 import assertk.assertions.isEqualTo
+import assertk.assertions.isGreaterThan
 import assertk.assertions.isNotEmpty
 import com.arkivanov.decompose.DefaultComponentContext
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import com.sedsoftware.tackle.auth.AuthComponent
 import com.sedsoftware.tackle.auth.model.CredentialsState
 import com.sedsoftware.tackle.auth.stubs.AuthComponentApiStub
+import com.sedsoftware.tackle.auth.stubs.AuthComponentApiStubResponses
 import com.sedsoftware.tackle.auth.stubs.AuthComponentDatabaseStub
 import com.sedsoftware.tackle.auth.stubs.AuthComponentSettingsStub
 import com.sedsoftware.tackle.auth.stubs.AuthComponentToolsStub
-import com.sedsoftware.tackle.auth.stubs.StubConstants
+import com.sedsoftware.tackle.domain.ComponentOutput
 import com.sedsoftware.tackle.utils.test.ComponentTest
 import kotlinx.coroutines.test.runTest
-import kotlin.test.AfterTest
-import kotlin.test.BeforeTest
 import kotlin.test.Test
 
 class AuthComponentTest : ComponentTest<AuthComponent>() {
 
+    private val api: AuthComponentApiStub = AuthComponentApiStub()
     private val settings: AuthComponentSettingsStub = AuthComponentSettingsStub()
 
     private val activeModel: AuthComponent.Model
         get() = component.model.value
-
-    @BeforeTest
-    fun before() {
-        beforeTest()
-    }
-
-    @AfterTest
-    fun after() {
-        afterTest()
-    }
 
     @Test
     fun `component creation should switch state to UNAUTHORIZED if token is not available`() = runTest {
@@ -120,27 +112,42 @@ class AuthComponentTest : ComponentTest<AuthComponent>() {
         // then
         assertThat(activeModel.credentialsState).isEqualTo(CredentialsState.AUTHORIZED)
         assertThat(settings.token).isNotEmpty()
+        assertThat(componentOutput).contains(ComponentOutput.Auth.AuthFlowCompleted)
+    }
+
+    @Test
+    fun `api exceptions should call related output`() = runTest {
+        // given
+        val url = "mastodon.social"
+        api.responseWithException = true
+        asUnauthorized()
+        // when
+        component.onTextInput(url)
+        component.onAuthenticateClick()
+        // then
+        assertThat(componentOutput).isNotEmpty()
+        assertThat(componentOutput.count { it is ComponentOutput.Common.ErrorCaught }).isGreaterThan(0)
     }
 
     override fun createComponent(): AuthComponent =
         AuthComponentDefault(
             componentContext = DefaultComponentContext(lifecycle),
             storeFactory = DefaultStoreFactory(),
-            api = AuthComponentApiStub(),
+            api = api,
             database = AuthComponentDatabaseStub(),
             settings = settings,
             tools = AuthComponentToolsStub(),
             dispatchers = testDispatchers,
-            output = {}
+            output = { componentOutput.add(it) }
         )
 
     private fun asAuthorized() {
-        settings.domainNormalized = StubConstants.DOMAIN
-        settings.token = StubConstants.TOKEN
+        settings.domainNormalized = AuthComponentApiStubResponses.Constants.DOMAIN
+        settings.token = AuthComponentApiStubResponses.Constants.TOKEN
     }
 
     private fun asUnauthorized() {
-        settings.domainNormalized = StubConstants.DOMAIN
+        settings.domainNormalized = AuthComponentApiStubResponses.Constants.DOMAIN
         settings.token = ""
     }
 }

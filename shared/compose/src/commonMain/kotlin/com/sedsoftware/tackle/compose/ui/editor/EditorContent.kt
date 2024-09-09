@@ -1,6 +1,8 @@
 package com.sedsoftware.tackle.compose.ui.editor
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -19,6 +21,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.DatePickerState
 import androidx.compose.material3.DisplayMode
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
@@ -31,6 +34,7 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.AnnotatedString
@@ -42,9 +46,11 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
+import com.arkivanov.decompose.router.slot.ChildSlot
 import com.sedsoftware.tackle.compose.model.EditorToolbarItem
 import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
 import com.sedsoftware.tackle.compose.ui.editor.child.attachment.EditorAttachmentsContent
+import com.sedsoftware.tackle.compose.ui.editor.child.details.EditorAttachmentDetailsContent
 import com.sedsoftware.tackle.compose.ui.editor.child.emoji.EditorEmojisContent
 import com.sedsoftware.tackle.compose.ui.editor.child.header.EditorHeaderContent
 import com.sedsoftware.tackle.compose.ui.editor.child.header.content.LanguageSelectorDialog
@@ -66,6 +72,7 @@ import com.sedsoftware.tackle.domain.model.type.StatusVisibility
 import com.sedsoftware.tackle.editor.EditorComponent
 import com.sedsoftware.tackle.editor.attachments.EditorAttachmentsComponent
 import com.sedsoftware.tackle.editor.attachments.model.AttachedFile
+import com.sedsoftware.tackle.editor.details.EditorAttachmentDetailsComponent
 import com.sedsoftware.tackle.editor.emojis.EditorEmojisComponent
 import com.sedsoftware.tackle.editor.header.EditorHeaderComponent
 import com.sedsoftware.tackle.editor.integration.EditorComponentPreview
@@ -107,6 +114,8 @@ internal fun EditorContent(
     val headerModel: EditorHeaderComponent.Model by component.header.model.subscribeAsState()
     val pollModel: EditorPollComponent.Model by component.poll.model.subscribeAsState()
     val warningModel: EditorWarningComponent.Model by component.warning.model.subscribeAsState()
+
+    val attachmentDetailsSlot: ChildSlot<*, EditorAttachmentDetailsComponent> by component.attachmentDetailsDialog.subscribeAsState()
 
     val launcher: PickerResultLauncher = rememberFilePickerLauncher(mode = PickerMode.Multiple()) { files: List<PlatformFile>? ->
         files?.let { component.attachments.onFilesSelected(it) }
@@ -183,6 +192,16 @@ internal fun EditorContent(
                 onBackClick = { component.onBackButtonClicked() },
             )
 
+            AnimatedVisibility(visible = editorModel.sending) {
+                LinearProgressIndicator(
+                    color = MaterialTheme.colorScheme.primary,
+                    trackColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.25f),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
+                )
+            }
+
             // Scrollable part
             LazyColumn(
                 verticalArrangement = Arrangement.Top,
@@ -190,7 +209,7 @@ internal fun EditorContent(
             ) {
                 // Warning
                 item {
-                    if (warningModel.warningContentVisible) {
+                    AnimatedVisibility(visible = warningModel.warningContentVisible) {
                         EditorWarningContent(
                             text = warningModel.text,
                             modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
@@ -250,6 +269,7 @@ internal fun EditorContent(
                             model = attachmentsModel,
                             onDelete = component.attachments::onFileDeleted,
                             onRetry = component.attachments::onFileRetry,
+                            onEdit = component.attachments::onFileEdit,
                             modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
                             containerColor = MaterialTheme.colorScheme.secondaryContainer,
                             contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
@@ -427,6 +447,14 @@ internal fun EditorContent(
         }
     }
 
+    AnimatedVisibility(
+        visible = attachmentDetailsSlot.child?.instance != null,
+        enter = slideInHorizontally { it },
+        exit = slideOutHorizontally { it },
+    ) {
+        val rememberedComponent = remember(this) { attachmentDetailsSlot.child?.instance!! }
+        EditorAttachmentDetailsContent(component = rememberedComponent)
+    }
 }
 
 @Preview
@@ -587,6 +615,7 @@ private fun EditorTabContentPreviewEverything() {
                     AttachedFile("id", platformFile.copy(mimeType = "audio"), AttachedFile.Status.LOADING, 0.25f),
                 ),
                 scheduledDateLabel = "30.08.2024 12:34",
+                sendingActive = true,
             )
         )
     }

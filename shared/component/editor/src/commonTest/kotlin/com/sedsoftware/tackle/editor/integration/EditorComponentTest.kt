@@ -9,6 +9,7 @@ import assertk.assertions.isNotEmpty
 import assertk.assertions.isTrue
 import com.arkivanov.decompose.DefaultComponentContext
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
+import com.sedsoftware.tackle.domain.ComponentOutput
 import com.sedsoftware.tackle.domain.model.CustomEmoji
 import com.sedsoftware.tackle.domain.model.PlatformFileWrapper
 import com.sedsoftware.tackle.editor.EditorComponent
@@ -25,8 +26,6 @@ import com.sedsoftware.tackle.editor.stubs.InstanceStub
 import com.sedsoftware.tackle.editor.warning.EditorWarningComponent
 import com.sedsoftware.tackle.utils.test.ComponentTest
 import kotlinx.coroutines.test.runTest
-import kotlin.test.AfterTest
-import kotlin.test.BeforeTest
 import kotlin.test.Test
 
 class EditorComponentTest : ComponentTest<EditorComponent>() {
@@ -48,16 +47,6 @@ class EditorComponentTest : ComponentTest<EditorComponent>() {
 
     private val warningActiveModel: EditorWarningComponent.Model
         get() = component.warning.model.value
-
-    @BeforeTest
-    fun before() {
-        beforeTest()
-    }
-
-    @AfterTest
-    fun after() {
-        afterTest()
-    }
 
     @Test
     fun `component creation should initialize all available children`() = runTest {
@@ -339,6 +328,15 @@ class EditorComponentTest : ComponentTest<EditorComponent>() {
         // then
         assertThat(editorActiveModel.statusText).isEmpty()
     }
+    
+    @Test
+    fun `onBackButtonClicked should call back button output`() = runTest {
+        // given
+        // when
+        component.onBackButtonClicked()
+        // then
+        assertThat(componentOutput).contains(ComponentOutput.StatusEditor.BackButtonClicked)
+    }
 
     override fun createComponent(): EditorComponentDefault =
         EditorComponentDefault(
@@ -349,6 +347,6 @@ class EditorComponentTest : ComponentTest<EditorComponent>() {
             settings = EditorComponentSettingsStub(),
             tools = EditorComponentToolsStub(),
             dispatchers = testDispatchers,
-            editorOutput = {},
+            editorOutput = { componentOutput.add(it) },
         )
 }

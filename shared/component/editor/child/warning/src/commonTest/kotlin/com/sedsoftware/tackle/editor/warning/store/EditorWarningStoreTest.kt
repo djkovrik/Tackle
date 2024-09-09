@@ -9,21 +9,9 @@ import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import com.sedsoftware.tackle.utils.test.StoreTest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.runTest
-import kotlin.test.AfterTest
-import kotlin.test.BeforeTest
 import kotlin.test.Test
 
 internal class EditorWarningStoreTest : StoreTest<EditorWarningStore.Intent, EditorWarningStore.State, Nothing>() {
-
-    @BeforeTest
-    fun before() {
-        beforeTest()
-    }
-
-    @AfterTest
-    fun after() {
-        afterTest()
-    }
 
     @Test
     fun `OnTextInput should update state`() = runTest {

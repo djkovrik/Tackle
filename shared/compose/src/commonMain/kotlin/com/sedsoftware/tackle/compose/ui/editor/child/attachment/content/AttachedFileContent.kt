@@ -60,6 +60,7 @@ import tackle.shared.compose.generated.resources.Res
 import tackle.shared.compose.generated.resources.editor_attachment_failed
 import tackle.shared.compose.generated.resources.editor_delete
 import tackle.shared.compose.generated.resources.editor_done
+import tackle.shared.compose.generated.resources.editor_edit
 import tackle.shared.compose.generated.resources.preview_sample
 
 @Composable
@@ -70,6 +71,7 @@ internal fun AttachedFileContent(
     contentColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
     onRetry: () -> Unit = {},
     onDelete: () -> Unit = {},
+    onEdit: () -> Unit = {},
     previewImage: @Composable (() -> Unit)? = null,
 ) {
     var imageData: ByteArray by remember { mutableStateOf(ByteArray(0)) }
@@ -95,7 +97,15 @@ internal fun AttachedFileContent(
         targetValue = if (attachment.status == AttachedFile.Status.LOADED) 1f else 0f,
         animationSpec = tween(
             easing = LinearEasing,
-            durationMillis = DONE_ICON_ANIM_DURATION,
+            durationMillis = LOADED_ICON_ANIM_DURATION,
+        )
+    )
+
+    val animatedEditIconState: Float by animateFloatAsState(
+        targetValue = if (attachment.status == AttachedFile.Status.LOADED) 1f else 0f,
+        animationSpec = tween(
+            easing = LinearEasing,
+            durationMillis = LOADED_ICON_ANIM_DURATION,
         )
     )
 
@@ -259,6 +269,20 @@ internal fun AttachedFileContent(
 
                 Spacer(modifier = Modifier.weight(weight = 1f, fill = true))
 
+                IconButton(onClick = onEdit) {
+                    Icon(
+                        painterResource(resource = Res.drawable.editor_edit),
+                        contentDescription = null,
+                        tint = contentColor.copy(
+                            alpha = 0.75f
+                        ),
+                        modifier = Modifier
+                            .alpha(alpha = animatedEditIconState)
+                            .scale(scale = animatedEditIconState)
+                            .size(size = 24.dp),
+                    )
+                }
+
                 IconButton(onClick = onDelete) {
                     Icon(
                         painterResource(resource = Res.drawable.editor_delete),
@@ -266,7 +290,8 @@ internal fun AttachedFileContent(
                         tint = contentColor.copy(
                             alpha = 0.75f
                         ),
-                        modifier = Modifier.size(size = 24.dp),
+                        modifier = Modifier
+                            .size(size = 24.dp),
                     )
                 }
             }
@@ -274,7 +299,7 @@ internal fun AttachedFileContent(
     }
 }
 
-private const val DONE_ICON_ANIM_DURATION = 150
+private const val LOADED_ICON_ANIM_DURATION = 150
 
 @Composable
 internal fun AttachmentPreviewImageStub() {

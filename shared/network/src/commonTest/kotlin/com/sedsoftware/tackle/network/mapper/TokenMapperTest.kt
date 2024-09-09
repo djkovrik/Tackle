@@ -5,11 +5,11 @@ import assertk.assertions.isNotEmpty
 import assertk.assertions.isNotZero
 import com.sedsoftware.tackle.domain.model.Token
 import com.sedsoftware.tackle.network.response.TokenResponse
-import com.sedsoftware.tackle.network.responseFromFile
+import com.sedsoftware.tackle.utils.test.JsonBasedTest
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 
-class TokenMapperTest {
+class TokenMapperTest : JsonBasedTest() {
 
     @Test
     fun `TokenMapper should map response to entity`() = runTest {

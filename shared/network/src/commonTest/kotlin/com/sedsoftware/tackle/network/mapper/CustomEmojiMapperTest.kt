@@ -5,11 +5,11 @@ import assertk.assertions.isNotEmpty
 import assertk.assertions.isNotNull
 import com.sedsoftware.tackle.domain.model.CustomEmoji
 import com.sedsoftware.tackle.network.response.CustomEmojiResponse
-import com.sedsoftware.tackle.network.responseFromFile
+import com.sedsoftware.tackle.utils.test.JsonBasedTest
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 
-class CustomEmojiMapperTest {
+class CustomEmojiMapperTest : JsonBasedTest() {
 
     @Test
     fun `CustomEmojiMapper should map response to entities`() = runTest {

@@ -7,6 +7,7 @@ import com.sedsoftware.tackle.domain.model.NewStatusBundle
 import com.sedsoftware.tackle.domain.model.PlatformFileWrapper
 import com.sedsoftware.tackle.domain.model.ScheduledStatus
 import com.sedsoftware.tackle.domain.model.Search
+import com.sedsoftware.tackle.domain.model.SearchRequestBundle
 import com.sedsoftware.tackle.domain.model.Status
 import com.sedsoftware.tackle.network.mapper.AccountMapper
 import com.sedsoftware.tackle.network.mapper.MediaAttachmentMapper
@@ -132,18 +133,7 @@ internal class TackleAuthorizedApi(
             )
         }
 
-    override suspend fun search(
-        query: String,
-        type: String,
-        resolve: Boolean?,
-        following: Boolean?,
-        accountId: String?,
-        excludeUnreviewed: Boolean?,
-        minId: String?,
-        maxId: String?,
-        limit: Int?,
-        offset: Int?,
-    ): Search =
+    override suspend fun search(bundle: SearchRequestBundle): Search =
         doRequest<SearchResponse, Search>(
             requestUrl = "$instanceUrl/api/v2/search",
             requestMethod = HttpMethod.Get,
@@ -152,17 +142,17 @@ internal class TackleAuthorizedApi(
         ) {
             url {
                 with(parameters) {
-                    append("q", query)
-                    append("type", type)
+                    append("q", bundle.query)
+                    append("type", bundle.type)
 
-                    resolve?.let { append("resolve", "$it") }
-                    following?.let { append("following", "$it") }
-                    accountId?.let { append("account_id", it) }
-                    excludeUnreviewed?.let { append("exclude_unreviewed", "$it") }
-                    minId?.let { append("minId", it) }
-                    maxId?.let { append("maxId", it) }
-                    limit?.let { append("limit", "$it") }
-                    offset?.let { append("offset", "$it") }
+                    bundle.resolve?.let { append("resolve", "$it") }
+                    bundle.following?.let { append("following", "$it") }
+                    bundle.accountId?.let { append("account_id", it) }
+                    bundle.excludeUnreviewed?.let { append("exclude_unreviewed", "$it") }
+                    bundle.minId?.let { append("minId", it) }
+                    bundle.maxId?.let { append("maxId", it) }
+                    bundle.limit?.let { append("limit", "$it") }
+                    bundle.offset?.let { append("offset", "$it") }
                 }
             }
         }
