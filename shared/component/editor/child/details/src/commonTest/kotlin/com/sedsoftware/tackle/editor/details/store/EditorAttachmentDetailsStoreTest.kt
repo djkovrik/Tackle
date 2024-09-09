@@ -17,7 +17,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 
-internal class EditorAttachmentDetailsStoreTest : StoreTest<EditorAttachmentDetailsStore.Intent, EditorAttachmentDetailsStore.State, EditorAttachmentDetailsStore.Label>() {
+internal class EditorAttachmentDetailsStoreTest :
+    StoreTest<EditorAttachmentDetailsStore.Intent, EditorAttachmentDetailsStore.State, EditorAttachmentDetailsStore.Label>() {
 
     private val attachmentType: MediaAttachmentType = MediaAttachmentType.IMAGE
     private val attachmentUrl: String = "url"
@@ -112,7 +113,8 @@ internal class EditorAttachmentDetailsStoreTest : StoreTest<EditorAttachmentDeta
         assertThat(labels.count { it is EditorAttachmentDetailsStore.Label.ErrorCaught }).isEqualTo(1)
     }
 
-    override fun createStore(): Store<EditorAttachmentDetailsStore.Intent, EditorAttachmentDetailsStore.State, EditorAttachmentDetailsStore.Label> =
+    override fun createStore():
+        Store<EditorAttachmentDetailsStore.Intent, EditorAttachmentDetailsStore.State, EditorAttachmentDetailsStore.Label> =
         EditorAttachmentDetailsStoreProvider(
             storeFactory = DefaultStoreFactory(),
             manager = manager,

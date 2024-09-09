@@ -100,7 +100,7 @@ internal class EditorStoreTest : StoreTest<EditorStore.Intent, EditorStore.State
         // given
         val sb = StringBuilder()
         val limit = InstanceStub.config.statuses.maxCharacters
-        for (index in 0..limit + 10) sb.append("X")
+        repeat(limit + 10) { sb.append("X") }
         val text = sb.toString()
         val selection = text.length to text.length
         // when

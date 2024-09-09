@@ -22,7 +22,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 
-internal class EditorAttachmentsStoreTest : StoreTest<EditorAttachmentsStore.Intent, EditorAttachmentsStore.State, EditorAttachmentsStore.Label>() {
+internal class EditorAttachmentsStoreTest :
+    StoreTest<EditorAttachmentsStore.Intent, EditorAttachmentsStore.State, EditorAttachmentsStore.Label>() {
 
     private val api: EditorAttachmentsApiStub = EditorAttachmentsApiStub()
     private val manager: EditorAttachmentsManager = EditorAttachmentsManager(api)

@@ -67,7 +67,7 @@ internal fun AttachedImageFocusSelector(
         var offsetX: Float by remember { mutableStateOf(0f) }
         var offsetY: Float by remember { mutableStateOf(0f) }
 
-        val initialOffset = focus.focusToOffset(parentWidth, parentHeight, middlePointX, middlePointY)
+        val initialOffset = focus.focusToOffset(middlePointX, middlePointY)
         offsetX = initialOffset.first
         offsetY = initialOffset.second
 
@@ -103,7 +103,7 @@ internal fun AttachedImageFocusSelector(
                             maximumValue = middlePointY - indicatorWidthPx,
                         )
 
-                        val newFocus = (offsetX to offsetY).offsetToFocus(parentWidth, parentHeight, middlePointX, middlePointY)
+                        val newFocus = (offsetX to offsetY).offsetToFocus(middlePointX, middlePointY)
                         onFocusChange.invoke(newFocus.first, newFocus.second)
                     }
                 }

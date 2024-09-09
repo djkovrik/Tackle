@@ -212,8 +212,6 @@ class ExtensionsTest {
     @Test
     fun `focusToOffset should calculate correct offset`() = runTest {
         // given
-        val parentWidth = 1080
-        val parentHeight = 720
         val middlePointX = 540f
         val middlePointY = 360f
         val focusTopLeft = -1f to 1f
@@ -223,12 +221,12 @@ class ExtensionsTest {
         val expectedTopLeft = -middlePointX to -middlePointY
         val expectedTopRight = middlePointX to -middlePointY
         val expectedBottomLeft = -middlePointX to middlePointY
-        val expectedBottomRight =  middlePointX to middlePointY
+        val expectedBottomRight = middlePointX to middlePointY
         // when
-        val resultTopLeft = focusTopLeft.focusToOffset(parentWidth, parentHeight, middlePointX, middlePointY)
-        val resultTopRight = focusTopRight.focusToOffset(parentWidth, parentHeight, middlePointX, middlePointY)
-        val resultBottomLeft = focusBottomLeft.focusToOffset(parentWidth, parentHeight, middlePointX, middlePointY)
-        val resultBottomRight = focusBottomRight.focusToOffset(parentWidth, parentHeight, middlePointX, middlePointY)
+        val resultTopLeft = focusTopLeft.focusToOffset(middlePointX, middlePointY)
+        val resultTopRight = focusTopRight.focusToOffset(middlePointX, middlePointY)
+        val resultBottomLeft = focusBottomLeft.focusToOffset(middlePointX, middlePointY)
+        val resultBottomRight = focusBottomRight.focusToOffset(middlePointX, middlePointY)
         // then
         assertThat(resultTopLeft).isEqualTo(expectedTopLeft)
         assertThat(resultTopRight).isEqualTo(expectedTopRight)
@@ -239,23 +237,21 @@ class ExtensionsTest {
     @Test
     fun `offsetToFocus should calculate focus`() = runTest {
         // given
-        val parentWidth = 1080
-        val parentHeight = 720
         val middlePointX = 540f
         val middlePointY = 360f
         val offsetTopLeft = -middlePointX to -middlePointY
         val offsetTopRight = middlePointX to -middlePointY
         val offsetBottomLeft = -middlePointX to middlePointY
-        val offsetBottomRight =  middlePointX to middlePointY
+        val offsetBottomRight = middlePointX to middlePointY
         val expectedFocusTopLeft = -1f to 1f
         val expectedFocusTopRight = 1f to 1f
         val expectedFocusBottomLeft = -1f to -1f
         val expectedFocusBottomRight = 1f to -1f
         // when
-        val resultTopLeft = offsetTopLeft.offsetToFocus(parentWidth, parentHeight, middlePointX, middlePointY)
-        val resultTopRight = offsetTopRight.offsetToFocus(parentWidth, parentHeight, middlePointX, middlePointY)
-        val resultBottomLeft = offsetBottomLeft.offsetToFocus(parentWidth, parentHeight, middlePointX, middlePointY)
-        val resultBottomRight = offsetBottomRight.offsetToFocus(parentWidth, parentHeight, middlePointX, middlePointY)
+        val resultTopLeft = offsetTopLeft.offsetToFocus(middlePointX, middlePointY)
+        val resultTopRight = offsetTopRight.offsetToFocus(middlePointX, middlePointY)
+        val resultBottomLeft = offsetBottomLeft.offsetToFocus(middlePointX, middlePointY)
+        val resultBottomRight = offsetBottomRight.offsetToFocus(middlePointX, middlePointY)
         // then
         assertThat(resultTopLeft).isEqualTo(expectedFocusTopLeft)
         assertThat(resultTopRight).isEqualTo(expectedFocusTopRight)
