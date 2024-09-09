@@ -1,7 +1,7 @@
 package com.sedsoftware.tackle.editor.emojis.integration
 
 import assertk.assertThat
-import assertk.assertions.isEqualTo
+import assertk.assertions.contains
 import assertk.assertions.isFalse
 import assertk.assertions.isTrue
 import com.arkivanov.decompose.DefaultComponentContext
@@ -28,7 +28,7 @@ class EditorEmojisComponentTest : ComponentTest<EditorEmojisComponent>() {
         // when
         component.onEmojiClicked(emoji)
         // then
-        assertThat(componentOutput).isEqualTo(ComponentOutput.StatusEditor.EmojiSelected(emoji))
+        assertThat(componentOutput).contains(ComponentOutput.StatusEditor.EmojiSelected(emoji))
     }
 
     @Test
