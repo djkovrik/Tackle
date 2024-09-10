@@ -22,6 +22,7 @@
     <string name="common_error_file_type_unknown">Данный тип файлов не поддерживается</string>
     <string name="common_error_file_not_available">Файл недоступен</string>
     <string name="common_error_attachments_limit">Достигнуто максимальное количество вложений</string>
+    <string name="common_error_schedule_date">Дата должна быть хотя бы на 10 минут впереди</string>
     <string name="common_error_unknown">Что-то пошло не так</string>
 
     <!-- Auth component -->

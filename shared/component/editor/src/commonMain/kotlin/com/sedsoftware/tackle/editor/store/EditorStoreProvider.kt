@@ -338,6 +338,6 @@ internal class EditorStoreProvider(
     private fun Msg.TextInput.underTheLimit(limit: Int): Boolean = !exceedTheLimit(limit)
 
     private companion object {
-        const val SCHEDULED_POST_GAP = 10
+        const val SCHEDULED_POST_GAP = 15
     }
 }

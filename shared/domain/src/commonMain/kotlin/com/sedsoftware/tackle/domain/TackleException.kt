@@ -43,6 +43,8 @@ sealed class TackleException(
 
     class AttachmentsLimitExceeded(val limit: Int) : TackleException(action = Action.SHOW_MESSAGE)
 
+    data object ScheduleDateTooShort : TackleException(action = Action.SHOW_MESSAGE)
+
     class Unknown(
         cause: Throwable,
     ) : TackleException(

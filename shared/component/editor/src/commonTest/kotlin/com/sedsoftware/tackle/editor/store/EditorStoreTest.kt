@@ -73,7 +73,7 @@ internal class EditorStoreTest : StoreTest<EditorStore.Intent, EditorStore.State
     @Test
     fun `store init should initialize current hour and minute`() = runTest {
         // given
-        val minutesGap = 10
+        val minutesGap = 15
         // when
         store.init()
         // then
