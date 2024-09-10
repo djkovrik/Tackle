@@ -45,6 +45,7 @@ internal fun TackleScreenTemplate(
     onNavigationClick: () -> Unit = {},
     colors: TackleScreenColors = TackleScreenDefaults.colors(),
     actions: @Composable RowScope.() -> Unit = {},
+    floatingActionButton: @Composable () -> Unit = {},
     content: @Composable () -> Unit = {},
 ) {
     val hasColoredHeader: Boolean = remember { colors.headerContainerColor != colors.bodyContainerColor }
@@ -81,6 +82,7 @@ internal fun TackleScreenTemplate(
                 modifier = modifier.padding(horizontal = 16.dp),
             )
         },
+        floatingActionButton = floatingActionButton,
         containerColor = if (hasColoredHeader) colors.headerContainerColor else colors.bodyContainerColor,
         contentColor = colors.bodyContentColor,
         modifier = modifier,
@@ -88,7 +90,7 @@ internal fun TackleScreenTemplate(
         Surface(
             shape = if (hasColoredHeader) RoundedCornerShape(topStart = cornerRadius, topEnd = cornerRadius) else RectangleShape,
             color = colors.bodyContainerColor,
-            modifier = modifier.padding(paddingValues)
+            modifier = modifier.padding(paddingValues = paddingValues)
         ) {
             content()
         }

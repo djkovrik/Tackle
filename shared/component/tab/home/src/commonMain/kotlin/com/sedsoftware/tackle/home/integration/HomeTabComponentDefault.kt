@@ -19,6 +19,10 @@ class HomeTabComponentDefault(
         output(ComponentOutput.HomeTab.EditorRequested)
     }
 
+    override fun onScheduledPostsClick() {
+        TODO("Not yet implemented")
+    }
+
     override val model: Value<Model> = MutableValue(
         Model(text = "Home tab component")
     )

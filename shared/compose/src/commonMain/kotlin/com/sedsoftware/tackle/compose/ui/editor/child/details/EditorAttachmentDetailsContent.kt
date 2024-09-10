@@ -15,8 +15,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,17 +26,18 @@ import com.sedsoftware.tackle.compose.TackleScreenDefaults
 import com.sedsoftware.tackle.compose.TackleScreenTemplate
 import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
 import com.sedsoftware.tackle.compose.ui.editor.child.details.content.AttachedImageFocusSelector
+import com.sedsoftware.tackle.compose.widget.TackleAppBarButton
 import com.sedsoftware.tackle.compose.widget.TackleTextField
 import com.sedsoftware.tackle.domain.model.type.MediaAttachmentType
 import com.sedsoftware.tackle.editor.details.EditorAttachmentDetailsComponent
 import com.sedsoftware.tackle.editor.details.integration.EditorAttachmentDetailsComponentPreview
-import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import tackle.shared.compose.generated.resources.Res
 import tackle.shared.compose.generated.resources.editor_attachment_alternate_text
 import tackle.shared.compose.generated.resources.editor_attachment_alternate_text_description
 import tackle.shared.compose.generated.resources.editor_attachment_focus
 import tackle.shared.compose.generated.resources.editor_back
+import tackle.shared.compose.generated.resources.editor_content_description_send
 import tackle.shared.compose.generated.resources.editor_done
 
 @Composable
@@ -69,16 +68,12 @@ internal fun EditorAttachmentDetailsContent(
 
             Spacer(modifier = Modifier.width(width = 8.dp))
 
-            IconButton(
+            TackleAppBarButton(
+                iconRes = Res.drawable.editor_done,
+                contentDescriptionRes = Res.string.editor_content_description_send,
                 onClick = component::onUpdateButtonClicked,
                 enabled = model.dataChanged,
-            ) {
-                Icon(
-                    painter = painterResource(resource = Res.drawable.editor_done),
-                    contentDescription = null,
-                    modifier = Modifier.size(size = 24.dp)
-                )
-            }
+            )
         },
     ) {
         LazyColumn(modifier = modifier.fillMaxSize()) {

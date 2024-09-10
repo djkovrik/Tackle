@@ -6,6 +6,7 @@ interface HomeTabComponent {
     val model: Value<Model>
 
     fun onNewPostClick()
+    fun onScheduledPostsClick()
 
     data class Model(
         val text: String,
