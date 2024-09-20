@@ -98,4 +98,8 @@
     <!-- Home component -->
     <string name="home_scheduled_posts">Запланированные посты</string>
     <string name="home_new_post">Новый пост</string>
+
+    <!-- Status -->
+    <string name="status_warning_image">Автор пометил данное изображение как деликатный контент</string>
+    <string name="status_sensitive_image_content_description">Переключить видимость деликатного контента</string>
 </resources>

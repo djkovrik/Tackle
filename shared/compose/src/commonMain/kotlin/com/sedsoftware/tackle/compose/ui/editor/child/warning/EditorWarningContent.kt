@@ -7,7 +7,6 @@ import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,14 +20,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
-import com.sedsoftware.tackle.compose.ui.editor.child.warning.content.createStripedBrush
 import com.sedsoftware.tackle.compose.widget.TackleTextField
+import com.sedsoftware.tackle.compose.widget.TackleWarningContainer
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import tackle.shared.compose.generated.resources.Res
@@ -42,40 +38,9 @@ internal fun EditorWarningContent(
     onTextInput: (String) -> Unit = {},
     onTextClear: () -> Unit = {},
 ) {
-    val indicatorColor: Color = MaterialTheme.colorScheme.error
-    val indicatorWidth: Dp = 8.dp
     val cornerRadius: Dp = 6.dp
 
-    Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .drawBehind {
-                val width: Float = indicatorWidth.value * density
-
-                // left
-                drawLine(
-                    brush = createStripedBrush(
-                        stripeColor = indicatorColor,
-                        stripeWidth = 4.dp,
-                        stripeToGapRatio = 1f,
-                    ),
-                    start = Offset(0f, 0f),
-                    end = Offset(0f, size.height),
-                    strokeWidth = width,
-                )
-                // right
-                drawLine(
-                    brush = createStripedBrush(
-                        stripeColor = indicatorColor,
-                        stripeWidth = 4.dp,
-                        stripeToGapRatio = 1f,
-                    ),
-                    start = Offset(size.width, 0f),
-                    end = Offset(size.width, size.height),
-                    strokeWidth = width,
-                )
-            }
-    ) {
+    TackleWarningContainer(modifier = modifier,) {
         TackleTextField(
             value = text,
             onValueChange = onTextInput,

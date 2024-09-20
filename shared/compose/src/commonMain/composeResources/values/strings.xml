@@ -101,4 +101,8 @@
     <!-- Home component -->
     <string name="home_scheduled_posts">Scheduled posts</string>
     <string name="home_new_post">New post</string>
+
+    <!-- Status -->
+    <string name="status_warning_image">Author flagged this image as sensitive content</string>
+    <string name="status_sensitive_image_content_description">Toggle sensitive image visibility</string>
 </resources>
