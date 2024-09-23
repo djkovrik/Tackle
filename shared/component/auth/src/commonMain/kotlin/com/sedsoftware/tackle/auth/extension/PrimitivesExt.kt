@@ -2,7 +2,15 @@ package com.sedsoftware.tackle.auth.extension
 
 import com.sedsoftware.tackle.utils.extension.trimUrl
 
-internal fun String.normalizeUrl(): String = "https://${this.trimUrl()}"
+internal object Constants {
+    val urlRegex = "((http|ftp|https):/{2})?[\\w\\-_]+(\\.[\\w\\-_]+)+([\\w\\-.,@?^=%&amp;:/~+#]*[\\w\\-@?^=%&amp;/~+#])?".toRegex()
+}
 
-// TODO Needs some better check?
-internal fun String.isValidUrl(): Boolean = contains('.')
+internal fun String.normalizeUrl(): String {
+    val trimmed: String = this.trimUrl()
+    return "https://$trimmed"
+}
+
+internal fun String.isValidUrl(): Boolean {
+    return Constants.urlRegex.containsMatchIn(this)
+}
