@@ -18,12 +18,7 @@ import com.arkivanov.decompose.value.Value
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import com.sedsoftware.tackle.domain.ComponentOutput
 import com.sedsoftware.tackle.domain.model.CustomEmoji
-import com.sedsoftware.tackle.domain.model.MediaAttachment
-import com.sedsoftware.tackle.domain.model.MediaAttachmentFocus
-import com.sedsoftware.tackle.domain.model.MediaAttachmentInfo
-import com.sedsoftware.tackle.domain.model.MediaAttachmentMeta
 import com.sedsoftware.tackle.domain.model.PlatformFileWrapper
-import com.sedsoftware.tackle.domain.model.type.MediaAttachmentType
 import com.sedsoftware.tackle.editor.EditorComponent
 import com.sedsoftware.tackle.editor.Instances
 import com.sedsoftware.tackle.editor.attachments.EditorAttachmentsComponent

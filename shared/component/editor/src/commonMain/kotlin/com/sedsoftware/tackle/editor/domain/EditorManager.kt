@@ -15,7 +15,6 @@ import com.sedsoftware.tackle.editor.model.toEditorInputHintAccount
 import com.sedsoftware.tackle.editor.model.toEditorInputHintEmoji
 import com.sedsoftware.tackle.editor.model.toEditorInputHintHashTag
 import com.sedsoftware.tackle.utils.DateTimeUtils
-import io.github.aakira.napier.Napier
 import kotlinx.coroutines.flow.first
 import kotlinx.datetime.Clock.System
 import kotlinx.datetime.Instant
