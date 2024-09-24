@@ -11,12 +11,11 @@ import assertk.assertions.isTrue
 import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import com.sedsoftware.tackle.domain.TackleException
+import com.sedsoftware.tackle.editor.attachments.Instances
 import com.sedsoftware.tackle.editor.attachments.domain.EditorAttachmentsManager
 import com.sedsoftware.tackle.editor.attachments.extension.hasPending
 import com.sedsoftware.tackle.editor.attachments.model.AttachedFile
 import com.sedsoftware.tackle.editor.attachments.stubs.EditorAttachmentsApiStub
-import com.sedsoftware.tackle.editor.attachments.stubs.InstanceConfigStub
-import com.sedsoftware.tackle.editor.attachments.stubs.PlatformFileStubs
 import com.sedsoftware.tackle.utils.test.StoreTest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.runTest
@@ -45,7 +44,7 @@ internal class EditorAttachmentsStoreTest :
     @Test
     fun `UpdateInstanceConfig should update state`() = runTest {
         // given
-        val config = InstanceConfigStub.config
+        val config = Instances.config
         // when
         store.init()
         store.accept(EditorAttachmentsStore.Intent.UpdateInstanceConfig(config))
@@ -57,14 +56,14 @@ internal class EditorAttachmentsStoreTest :
     fun `four correct files should be loaded ok`() = runTest {
         // given
         val files = listOf(
-            PlatformFileStubs.imageNormal.copy(name = "test1.jpg"),
-            PlatformFileStubs.imageNormal.copy(name = "test2.jpg"),
-            PlatformFileStubs.imageNormal.copy(name = "test3.jpg"),
-            PlatformFileStubs.imageNormal.copy(name = "test4.jpg"),
+            Instances.imageNormal.copy(name = "test1.jpg"),
+            Instances.imageNormal.copy(name = "test2.jpg"),
+            Instances.imageNormal.copy(name = "test3.jpg"),
+            Instances.imageNormal.copy(name = "test4.jpg"),
         )
         // when
         store.init()
-        store.accept(EditorAttachmentsStore.Intent.UpdateInstanceConfig(InstanceConfigStub.config))
+        store.accept(EditorAttachmentsStore.Intent.UpdateInstanceConfig(Instances.config))
         store.accept(EditorAttachmentsStore.Intent.OnFilesSelected(files))
         // then
         assertThat(store.state.selectedFiles.size).isEqualTo(files.size)
@@ -77,14 +76,14 @@ internal class EditorAttachmentsStoreTest :
     fun `three correct files with one incorrect should produce overall loaded as three with exception`() = runTest {
         // given
         val files = listOf(
-            PlatformFileStubs.imageNormal.copy(name = "test1.jpg"),
-            PlatformFileStubs.imageNormal.copy(name = "test2.jpg"),
-            PlatformFileStubs.imageBig.copy(name = "test3.jpg"),
-            PlatformFileStubs.imageNormal.copy(name = "test4.jpg"),
+            Instances.imageNormal.copy(name = "test1.jpg"),
+            Instances.imageNormal.copy(name = "test2.jpg"),
+            Instances.imageBig.copy(name = "test3.jpg"),
+            Instances.imageNormal.copy(name = "test4.jpg"),
         )
         // when
         store.init()
-        store.accept(EditorAttachmentsStore.Intent.UpdateInstanceConfig(InstanceConfigStub.config))
+        store.accept(EditorAttachmentsStore.Intent.UpdateInstanceConfig(Instances.config))
         store.accept(EditorAttachmentsStore.Intent.OnFilesSelected(files))
         // then
         assertThat(store.state.selectedFiles.size).isEqualTo(files.size - 1)
@@ -99,16 +98,16 @@ internal class EditorAttachmentsStoreTest :
     fun `six correct files should produce overall loaded as four with exception`() = runTest {
         // given
         val files = listOf(
-            PlatformFileStubs.imageNormal.copy(name = "test1.jpg"),
-            PlatformFileStubs.imageNormal.copy(name = "test2.jpg"),
-            PlatformFileStubs.imageNormal.copy(name = "test3.jpg"),
-            PlatformFileStubs.imageNormal.copy(name = "test4.jpg"),
-            PlatformFileStubs.imageNormal.copy(name = "test5.jpg"),
-            PlatformFileStubs.imageNormal.copy(name = "test6.jpg"),
+            Instances.imageNormal.copy(name = "test1.jpg"),
+            Instances.imageNormal.copy(name = "test2.jpg"),
+            Instances.imageNormal.copy(name = "test3.jpg"),
+            Instances.imageNormal.copy(name = "test4.jpg"),
+            Instances.imageNormal.copy(name = "test5.jpg"),
+            Instances.imageNormal.copy(name = "test6.jpg"),
         )
         // when
         store.init()
-        store.accept(EditorAttachmentsStore.Intent.UpdateInstanceConfig(InstanceConfigStub.config))
+        store.accept(EditorAttachmentsStore.Intent.UpdateInstanceConfig(Instances.config))
         store.accept(EditorAttachmentsStore.Intent.OnFilesSelected(files))
         // then
         assertThat(store.state.selectedFiles.size).isEqualTo(store.state.config.statuses.maxMediaAttachments)
@@ -123,14 +122,14 @@ internal class EditorAttachmentsStoreTest :
     fun `four incorrect files should produce overall loaded as zero with exception`() = runTest {
         // given
         val files = listOf(
-            PlatformFileStubs.imageBig.copy(name = "test1.jpg"),
-            PlatformFileStubs.videoBig.copy(name = "test2.mp4"),
-            PlatformFileStubs.fileUnsupported.copy(name = "test3.psd"),
-            PlatformFileStubs.fileUnsupported.copy(name = "test4.psd"),
+            Instances.imageBig.copy(name = "test1.jpg"),
+            Instances.videoBig.copy(name = "test2.mp4"),
+            Instances.fileUnsupported.copy(name = "test3.psd"),
+            Instances.fileUnsupported.copy(name = "test4.psd"),
         )
         // when
         store.init()
-        store.accept(EditorAttachmentsStore.Intent.UpdateInstanceConfig(InstanceConfigStub.config))
+        store.accept(EditorAttachmentsStore.Intent.UpdateInstanceConfig(Instances.config))
         store.accept(EditorAttachmentsStore.Intent.OnFilesSelected(files))
         // then
         assertThat(store.state.selectedFiles.size).isEqualTo(0)
@@ -143,15 +142,15 @@ internal class EditorAttachmentsStoreTest :
     fun `api errors should display related status`() = runTest {
         // given
         val files = listOf(
-            PlatformFileStubs.imageNormal.copy(name = "test1.jpg"),
-            PlatformFileStubs.imageNormal.copy(name = "test2.jpg"),
-            PlatformFileStubs.imageNormal.copy(name = "test3.jpg"),
-            PlatformFileStubs.imageNormal.copy(name = "test4.jpg"),
+            Instances.imageNormal.copy(name = "test1.jpg"),
+            Instances.imageNormal.copy(name = "test2.jpg"),
+            Instances.imageNormal.copy(name = "test3.jpg"),
+            Instances.imageNormal.copy(name = "test4.jpg"),
         )
         api.responseWithException = true
         // when
         store.init()
-        store.accept(EditorAttachmentsStore.Intent.UpdateInstanceConfig(InstanceConfigStub.config))
+        store.accept(EditorAttachmentsStore.Intent.UpdateInstanceConfig(Instances.config))
         store.accept(EditorAttachmentsStore.Intent.OnFilesSelected(files))
         // then
         assertThat(store.state.selectedFiles.count { it.status == AttachedFile.Status.ERROR }).isEqualTo(files.size)
@@ -161,14 +160,14 @@ internal class EditorAttachmentsStoreTest :
     fun `delete should remove target file`() = runTest {
         // given
         val files = listOf(
-            PlatformFileStubs.imageNormal.copy(name = "test1.jpg"),
-            PlatformFileStubs.imageNormal.copy(name = "test2.jpg"),
-            PlatformFileStubs.imageNormal.copy(name = "test3.jpg"),
-            PlatformFileStubs.imageNormal.copy(name = "test4.jpg"),
+            Instances.imageNormal.copy(name = "test1.jpg"),
+            Instances.imageNormal.copy(name = "test2.jpg"),
+            Instances.imageNormal.copy(name = "test3.jpg"),
+            Instances.imageNormal.copy(name = "test4.jpg"),
         )
         // when
         store.init()
-        store.accept(EditorAttachmentsStore.Intent.UpdateInstanceConfig(InstanceConfigStub.config))
+        store.accept(EditorAttachmentsStore.Intent.UpdateInstanceConfig(Instances.config))
         store.accept(EditorAttachmentsStore.Intent.OnFilesSelected(files))
         // given
         val fileToDelete = store.state.selectedFiles[1]
@@ -183,18 +182,18 @@ internal class EditorAttachmentsStoreTest :
     fun `retry should relaunch download`() = runTest {
         // given
         val files1 = listOf(
-            PlatformFileStubs.imageNormal.copy(name = "test1.jpg"),
-            PlatformFileStubs.imageNormal.copy(name = "test2.jpg"),
-            PlatformFileStubs.imageNormal.copy(name = "test3.jpg"),
+            Instances.imageNormal.copy(name = "test1.jpg"),
+            Instances.imageNormal.copy(name = "test2.jpg"),
+            Instances.imageNormal.copy(name = "test3.jpg"),
         )
 
         val files2 = listOf(
-            PlatformFileStubs.imageNormal.copy(name = "test4.jpg"),
+            Instances.imageNormal.copy(name = "test4.jpg"),
         )
 
         // when
         store.init()
-        store.accept(EditorAttachmentsStore.Intent.UpdateInstanceConfig(InstanceConfigStub.config))
+        store.accept(EditorAttachmentsStore.Intent.UpdateInstanceConfig(Instances.config))
         store.accept(EditorAttachmentsStore.Intent.OnFilesSelected(files1))
         api.responseWithException = true
         store.accept(EditorAttachmentsStore.Intent.OnFilesSelected(files2))
@@ -212,18 +211,18 @@ internal class EditorAttachmentsStoreTest :
     fun `retry error should show error message`() = runTest {
         // given
         val files1 = listOf(
-            PlatformFileStubs.imageNormal.copy(name = "test1.jpg"),
-            PlatformFileStubs.imageNormal.copy(name = "test2.jpg"),
-            PlatformFileStubs.imageNormal.copy(name = "test3.jpg"),
+            Instances.imageNormal.copy(name = "test1.jpg"),
+            Instances.imageNormal.copy(name = "test2.jpg"),
+            Instances.imageNormal.copy(name = "test3.jpg"),
         )
 
         val files2 = listOf(
-            PlatformFileStubs.imageNormal.copy(name = "test4.jpg"),
+            Instances.imageNormal.copy(name = "test4.jpg"),
         )
 
         // when
         store.init()
-        store.accept(EditorAttachmentsStore.Intent.UpdateInstanceConfig(InstanceConfigStub.config))
+        store.accept(EditorAttachmentsStore.Intent.UpdateInstanceConfig(Instances.config))
         store.accept(EditorAttachmentsStore.Intent.OnFilesSelected(files1))
         api.responseWithException = true
         store.accept(EditorAttachmentsStore.Intent.OnFilesSelected(files2))

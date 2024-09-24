@@ -1,12 +1,13 @@
 package com.sedsoftware.tackle.editor.details.stubs
 
 import com.sedsoftware.tackle.domain.model.MediaAttachment
+import com.sedsoftware.tackle.editor.details.Responses
 import com.sedsoftware.tackle.editor.details.EditorAttachmentDetailsGateways
 import com.sedsoftware.tackle.utils.test.BaseStub
 
 class EditorAttachmentDetailsApiStub : BaseStub(), EditorAttachmentDetailsGateways.Api {
 
-    var response: MediaAttachment = EditorAttachmentDetailsApiStubResponses.basicResponse
+    var response: MediaAttachment = Responses.basicResponse
 
     override suspend fun updateFile(id: String, description: String?, focus: String?): MediaAttachment =
         asResponse(response)

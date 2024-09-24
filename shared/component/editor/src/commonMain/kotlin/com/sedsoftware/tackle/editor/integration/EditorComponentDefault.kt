@@ -158,6 +158,8 @@ class EditorComponentDefault(
         lifecycle.doOnDestroy {
             scope.cancel()
         }
+
+        store.accept(EditorStore.Intent.FetchCachedInstanceInfo)
     }
 
     override val model: Value<Model> = store.asValue().map(stateToModel)
@@ -364,7 +366,7 @@ class EditorComponentDefault(
         )
 
     @Serializable
-    private data class AttachmentDetailsConfig(
+    data class AttachmentDetailsConfig(
         val attachmentType: MediaAttachmentType,
         val attachmentUrl: String,
         val attachmentId: String,

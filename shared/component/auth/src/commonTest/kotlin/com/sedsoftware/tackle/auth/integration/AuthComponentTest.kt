@@ -8,9 +8,9 @@ import assertk.assertions.isNotEmpty
 import com.arkivanov.decompose.DefaultComponentContext
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import com.sedsoftware.tackle.auth.AuthComponent
+import com.sedsoftware.tackle.auth.Constants
 import com.sedsoftware.tackle.auth.model.CredentialsState
 import com.sedsoftware.tackle.auth.stubs.AuthComponentApiStub
-import com.sedsoftware.tackle.auth.stubs.AuthComponentApiStubResponses
 import com.sedsoftware.tackle.auth.stubs.AuthComponentDatabaseStub
 import com.sedsoftware.tackle.auth.stubs.AuthComponentSettingsStub
 import com.sedsoftware.tackle.auth.stubs.AuthComponentToolsStub
@@ -129,6 +129,16 @@ class AuthComponentTest : ComponentTest<AuthComponent>() {
         assertThat(componentOutput.count { it is ComponentOutput.Common.ErrorCaught }).isGreaterThan(0)
     }
 
+    @Test
+    fun `component destroying cancels scope`() = runTest {
+        // given
+
+        // when
+
+        // then
+
+    }
+
     override fun createComponent(): AuthComponent =
         AuthComponentDefault(
             componentContext = DefaultComponentContext(lifecycle),
@@ -142,12 +152,12 @@ class AuthComponentTest : ComponentTest<AuthComponent>() {
         )
 
     private fun asAuthorized() {
-        settings.domainNormalized = AuthComponentApiStubResponses.Constants.DOMAIN
-        settings.token = AuthComponentApiStubResponses.Constants.TOKEN
+        settings.domainNormalized = Constants.DOMAIN
+        settings.token = Constants.TOKEN
     }
 
     private fun asUnauthorized() {
-        settings.domainNormalized = AuthComponentApiStubResponses.Constants.DOMAIN
+        settings.domainNormalized = Constants.DOMAIN
         settings.token = ""
     }
 }

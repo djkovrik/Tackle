@@ -1,4 +1,4 @@
-package com.sedsoftware.tackle.auth.stubs
+package com.sedsoftware.tackle.auth
 
 import com.sedsoftware.tackle.domain.model.Account
 import com.sedsoftware.tackle.domain.model.Application
@@ -6,18 +6,7 @@ import com.sedsoftware.tackle.domain.model.Instance
 import com.sedsoftware.tackle.utils.extension.toLocalDate
 import com.sedsoftware.tackle.utils.extension.toLocalDateTime
 
-object AuthComponentApiStubResponses {
-
-    internal object Constants {
-        const val NAME = "Tackle"
-        const val DOMAIN = "https://mastodon.social"
-        const val URI = "tackle://sedsoftware.com"
-        const val SCOPES = "read write push"
-        const val WEBSITE = "https://sedsoftware.com"
-        const val CLIENT_ID = "client_id"
-        const val CLIENT_SECRET = "client_secret"
-        const val TOKEN = "token"
-    }
+internal object Responses {
 
     val validApplicationDetails: Application =
         Application(

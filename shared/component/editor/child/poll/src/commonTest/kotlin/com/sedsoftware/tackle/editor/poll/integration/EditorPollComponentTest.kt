@@ -9,7 +9,7 @@ import com.arkivanov.decompose.DefaultComponentContext
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import com.sedsoftware.tackle.editor.poll.EditorPollComponent
 import com.sedsoftware.tackle.editor.poll.model.PollDuration
-import com.sedsoftware.tackle.editor.poll.stubs.InstanceConfigStub
+import com.sedsoftware.tackle.editor.poll.Instances
 import com.sedsoftware.tackle.utils.test.ComponentTest
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
@@ -71,7 +71,7 @@ class EditorPollComponentTest : ComponentTest<EditorPollComponent>() {
     @Test
     fun `onTextInput should update input`() = runTest {
         // given
-        component.updateInstanceConfig(InstanceConfigStub.config)
+        component.updateInstanceConfig(Instances.config)
         val id = activeModel.options.first().id
         val text = "text"
         // when
@@ -109,7 +109,7 @@ class EditorPollComponentTest : ComponentTest<EditorPollComponent>() {
     @Test
     fun `option controls should add and remove options`() = runTest {
         // given
-        component.updateInstanceConfig(InstanceConfigStub.config)
+        component.updateInstanceConfig(Instances.config)
         // when
         component.onAddPollOptionClick()
         // then

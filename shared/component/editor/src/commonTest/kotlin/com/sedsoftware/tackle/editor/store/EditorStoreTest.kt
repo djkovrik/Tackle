@@ -13,14 +13,13 @@ import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import com.sedsoftware.tackle.domain.model.NewStatusBundle
 import com.sedsoftware.tackle.editor.EditorComponentGateways
+import com.sedsoftware.tackle.editor.Instances
 import com.sedsoftware.tackle.editor.domain.EditorManager
 import com.sedsoftware.tackle.editor.model.EditorInputHintItem
 import com.sedsoftware.tackle.editor.model.EditorInputHintRequest
 import com.sedsoftware.tackle.editor.stubs.EditorComponentApiStub
 import com.sedsoftware.tackle.editor.stubs.EditorComponentDatabaseStub
 import com.sedsoftware.tackle.editor.stubs.EditorComponentToolsStub
-import com.sedsoftware.tackle.editor.stubs.EmojiStub
-import com.sedsoftware.tackle.editor.stubs.InstanceStub
 import com.sedsoftware.tackle.utils.test.StoreTest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.runTest
@@ -52,12 +51,13 @@ internal class EditorStoreTest : StoreTest<EditorStore.Intent, EditorStore.State
     }
 
     @Test
-    fun `store init should call for FetchCachedInstanceInfo`() = runTest {
+    fun `FetchCachedInstanceInfo should call for FetchCachedInstanceInfo`() = runTest {
         // given
         // when
         store.init()
+        store.accept(EditorStore.Intent.FetchCachedInstanceInfo)
         // then
-        assertThat(store.state.instanceInfo).isEqualTo(InstanceStub.instance)
+        assertThat(store.state.instanceInfo).isEqualTo(Instances.instanceInfo)
     }
 
     @Test
@@ -66,6 +66,7 @@ internal class EditorStoreTest : StoreTest<EditorStore.Intent, EditorStore.State
         database.responseWithException = true
         // when
         store.init()
+        store.accept(EditorStore.Intent.FetchCachedInstanceInfo)
         // then
         assertThat(labels.count { it is EditorStore.Label.ErrorCaught }).isEqualTo(1)
     }
@@ -76,6 +77,7 @@ internal class EditorStoreTest : StoreTest<EditorStore.Intent, EditorStore.State
         val minutesGap = 15
         // when
         store.init()
+        store.accept(EditorStore.Intent.FetchCachedInstanceInfo)
         // then
         assertThat(store.state.scheduledHour).isEqualTo(12)
         assertThat(store.state.scheduledMinute).isEqualTo(34 + minutesGap)
@@ -88,6 +90,7 @@ internal class EditorStoreTest : StoreTest<EditorStore.Intent, EditorStore.State
         val selection = text.length to text.length
         // when
         store.init()
+        store.accept(EditorStore.Intent.FetchCachedInstanceInfo)
         store.accept(EditorStore.Intent.OnTextInput(text, selection))
         // then
         assertThat(store.state.statusText).isEqualTo(text)
@@ -99,12 +102,13 @@ internal class EditorStoreTest : StoreTest<EditorStore.Intent, EditorStore.State
     fun `OnTextInput should not enter text which exceeds the limit`() = runTest {
         // given
         val sb = StringBuilder()
-        val limit = InstanceStub.config.statuses.maxCharacters
+        val limit = Instances.instanceConfig.statuses.maxCharacters
         repeat(limit + 10) { sb.append("X") }
         val text = sb.toString()
         val selection = text.length to text.length
         // when
         store.init()
+        store.accept(EditorStore.Intent.FetchCachedInstanceInfo)
         store.accept(EditorStore.Intent.OnTextInput(text, selection))
         // then
         assertThat(store.state.statusTextSelection).isEqualTo(limit to limit)
@@ -115,9 +119,10 @@ internal class EditorStoreTest : StoreTest<EditorStore.Intent, EditorStore.State
     @Test
     fun `OnEmojiSelect should update status text and selection`() = runTest {
         // given
-        val emoji = EmojiStub.single
+        val emoji = Instances.emoji
         // when
         store.init()
+        store.accept(EditorStore.Intent.FetchCachedInstanceInfo)
         store.accept(EditorStore.Intent.OnEmojiSelect(emoji))
         // then
         assertThat(store.state.statusText).isEqualTo(":${emoji.shortcode}:")
@@ -128,6 +133,7 @@ internal class EditorStoreTest : StoreTest<EditorStore.Intent, EditorStore.State
         // given
         // when
         store.init()
+        store.accept(EditorStore.Intent.FetchCachedInstanceInfo)
         // then
         assertThat(store.state.instanceInfoLoaded).isTrue()
         assertThat(store.state.instanceInfo.domain).isNotEmpty()
@@ -137,7 +143,7 @@ internal class EditorStoreTest : StoreTest<EditorStore.Intent, EditorStore.State
         val label = labels.first()
         assertThat(label).hasClass(EditorStore.Label.InstanceConfigLoaded::class)
         label as EditorStore.Label.InstanceConfigLoaded
-        assertThat(label.config).isEqualTo(InstanceStub.config)
+        assertThat(label.config).isEqualTo(Instances.instanceConfig)
     }
 
     @Test
@@ -147,9 +153,11 @@ internal class EditorStoreTest : StoreTest<EditorStore.Intent, EditorStore.State
         val text2 = "Some text @"
         val text3 = "Some text @a"
         val text4 = "Some text @ab"
+        val text5 = "Clear"
 
         // when
         store.init()
+        store.accept(EditorStore.Intent.FetchCachedInstanceInfo)
         store.accept(EditorStore.Intent.OnTextInput(text1, text1.length to text1.length))
         // then
         assertThat(store.state.suggestions).isEmpty()
@@ -169,6 +177,11 @@ internal class EditorStoreTest : StoreTest<EditorStore.Intent, EditorStore.State
         // then
         assertThat(store.state.suggestions).isNotEmpty()
         assertThat(store.state.currentSuggestionRequest).isEqualTo(EditorInputHintRequest.Accounts("@ab"))
+
+        // when
+        store.accept(EditorStore.Intent.OnTextInput(text5, text5.length to text5.length))
+        // then
+        assertThat(store.state.suggestions).isEmpty()
     }
     
     @Test
@@ -178,6 +191,7 @@ internal class EditorStoreTest : StoreTest<EditorStore.Intent, EditorStore.State
         api.responseWithException = true
         // when
         store.init()
+        store.accept(EditorStore.Intent.FetchCachedInstanceInfo)
         store.accept(EditorStore.Intent.OnTextInput(text, text.length to text.length))
         // then
         assertThat(labels.count { it is EditorStore.Label.ErrorCaught }).isEqualTo(1)
@@ -190,9 +204,10 @@ internal class EditorStoreTest : StoreTest<EditorStore.Intent, EditorStore.State
         val text2 = "Some text :"
         val text3 = "Some text :a"
         val text4 = "Some text :ab"
-
+        val text5 = "Clear"
         // when
         store.init()
+        store.accept(EditorStore.Intent.FetchCachedInstanceInfo)
         store.accept(EditorStore.Intent.OnTextInput(text1, text1.length to text1.length))
         // then
         assertThat(store.state.suggestions).isEmpty()
@@ -212,6 +227,11 @@ internal class EditorStoreTest : StoreTest<EditorStore.Intent, EditorStore.State
         // then
         assertThat(store.state.suggestions).isNotEmpty()
         assertThat(store.state.currentSuggestionRequest).isEqualTo(EditorInputHintRequest.Emojis(":ab"))
+
+        // when
+        store.accept(EditorStore.Intent.OnTextInput(text5, text5.length to text5.length))
+        // then
+        assertThat(store.state.suggestions).isEmpty()
     }
 
     @Test
@@ -221,8 +241,9 @@ internal class EditorStoreTest : StoreTest<EditorStore.Intent, EditorStore.State
         // when
         database.responseWithException = false
         store.init()
+        store.accept(EditorStore.Intent.FetchCachedInstanceInfo)
         // then
-        assertThat(store.state.instanceInfo).isEqualTo(InstanceStub.instance)
+        assertThat(store.state.instanceInfo).isEqualTo(Instances.instanceInfo)
         // when
         database.responseWithException = true
         store.accept(EditorStore.Intent.OnTextInput(text, text.length to text.length))
@@ -237,9 +258,11 @@ internal class EditorStoreTest : StoreTest<EditorStore.Intent, EditorStore.State
         val text2 = "Some text #"
         val text3 = "Some text #a"
         val text4 = "Some text #ab"
+        val text5 = "Clear"
 
         // when
         store.init()
+        store.accept(EditorStore.Intent.FetchCachedInstanceInfo)
         store.accept(EditorStore.Intent.OnTextInput(text1, text1.length to text1.length))
         // then
         assertThat(store.state.suggestions).isEmpty()
@@ -259,6 +282,11 @@ internal class EditorStoreTest : StoreTest<EditorStore.Intent, EditorStore.State
         // then
         assertThat(store.state.suggestions).isNotEmpty()
         assertThat(store.state.currentSuggestionRequest).isEqualTo(EditorInputHintRequest.HashTags("#ab"))
+
+        // when
+        store.accept(EditorStore.Intent.OnTextInput(text5, text5.length to text5.length))
+        // then
+        assertThat(store.state.suggestions).isEmpty()
     }
 
     @Test
@@ -268,6 +296,7 @@ internal class EditorStoreTest : StoreTest<EditorStore.Intent, EditorStore.State
         api.responseWithException = true
         // when
         store.init()
+        store.accept(EditorStore.Intent.FetchCachedInstanceInfo)
         store.accept(EditorStore.Intent.OnTextInput(text, text.length to text.length))
         // then
         assertThat(labels.count { it is EditorStore.Label.ErrorCaught }).isEqualTo(1)
@@ -282,6 +311,7 @@ internal class EditorStoreTest : StoreTest<EditorStore.Intent, EditorStore.State
         val selection = text.length to text.length
         // when
         store.init()
+        store.accept(EditorStore.Intent.FetchCachedInstanceInfo)
         store.accept(EditorStore.Intent.OnTextInput(text, selection))
         // then
         assertThat(store.state.currentSuggestionRequest).isEqualTo(EditorInputHintRequest.Accounts("@tes"))
@@ -297,6 +327,7 @@ internal class EditorStoreTest : StoreTest<EditorStore.Intent, EditorStore.State
         // given
         // when
         store.init()
+        store.accept(EditorStore.Intent.FetchCachedInstanceInfo)
         store.accept(EditorStore.Intent.OnRequestDatePicker(true))
         // then
         assertThat(store.state.datePickerVisible).isTrue()
@@ -312,6 +343,7 @@ internal class EditorStoreTest : StoreTest<EditorStore.Intent, EditorStore.State
         val newDate = 1234567L
         // when
         store.init()
+        store.accept(EditorStore.Intent.FetchCachedInstanceInfo)
         store.accept(EditorStore.Intent.OnScheduleDate(newDate))
         // then
         assertThat(store.state.scheduledDate).isEqualTo(newDate)
@@ -322,6 +354,7 @@ internal class EditorStoreTest : StoreTest<EditorStore.Intent, EditorStore.State
         // given
         // when
         store.init()
+        store.accept(EditorStore.Intent.FetchCachedInstanceInfo)
         store.accept(EditorStore.Intent.OnRequestTimePicker(true))
         // then
         assertThat(store.state.timePickerVisible).isTrue()
@@ -339,6 +372,7 @@ internal class EditorStoreTest : StoreTest<EditorStore.Intent, EditorStore.State
         val format = false
         // when
         store.init()
+        store.accept(EditorStore.Intent.FetchCachedInstanceInfo)
         store.accept(EditorStore.Intent.OnScheduleTime(hour, minute, format))
         // then
         assertThat(store.state.scheduledHour).isEqualTo(hour)
@@ -354,6 +388,7 @@ internal class EditorStoreTest : StoreTest<EditorStore.Intent, EditorStore.State
         val newDate = 1234567L
         // when
         store.init()
+        store.accept(EditorStore.Intent.FetchCachedInstanceInfo)
         store.accept(EditorStore.Intent.OnScheduleTime(hour, minute, true))
         store.accept(EditorStore.Intent.OnScheduleDate(newDate))
         // then
@@ -373,6 +408,7 @@ internal class EditorStoreTest : StoreTest<EditorStore.Intent, EditorStore.State
         val bundle = NewStatusBundle.Builder().status("Test").build()
         // when
         store.init()
+        store.accept(EditorStore.Intent.FetchCachedInstanceInfo)
         store.accept(EditorStore.Intent.SendStatus(bundle))
         // then
         assertThat(labels.count { it is EditorStore.Label.StatusSent }).isEqualTo(1)
@@ -396,6 +432,7 @@ internal class EditorStoreTest : StoreTest<EditorStore.Intent, EditorStore.State
             .build()
         // when
         store.init()
+        store.accept(EditorStore.Intent.FetchCachedInstanceInfo)
         store.accept(EditorStore.Intent.OnScheduleTime(hour, minute, true))
         store.accept(EditorStore.Intent.OnScheduleDate(newDate))
         store.accept(EditorStore.Intent.SendStatus(bundle))
@@ -410,6 +447,7 @@ internal class EditorStoreTest : StoreTest<EditorStore.Intent, EditorStore.State
         val bundle = NewStatusBundle.Builder().status("Test").build()
         // when
         store.init()
+        store.accept(EditorStore.Intent.FetchCachedInstanceInfo)
         api.responseWithException = true
         store.accept(EditorStore.Intent.SendStatus(bundle))
         // then

@@ -1,4 +1,4 @@
-package com.sedsoftware.tackle.editor.stubs
+package com.sedsoftware.tackle.editor
 
 import com.sedsoftware.tackle.domain.model.CustomEmoji
 import com.sedsoftware.tackle.domain.model.HashTag
@@ -9,11 +9,11 @@ import com.sedsoftware.tackle.domain.model.ScheduledStatus
 import com.sedsoftware.tackle.domain.model.ScheduledStatusParams
 import com.sedsoftware.tackle.domain.model.Search
 import com.sedsoftware.tackle.domain.model.Status
-import com.sedsoftware.tackle.domain.model.type.MediaAttachmentType
-import com.sedsoftware.tackle.domain.model.type.StatusVisibility
+import com.sedsoftware.tackle.domain.model.type.MediaAttachmentType.IMAGE
+import com.sedsoftware.tackle.domain.model.type.StatusVisibility.PUBLIC
 import kotlinx.datetime.LocalDateTime
 
-object EditorComponentApiStubResponses {
+internal object Responses {
     val emojis: List<CustomEmoji> = listOf(
         CustomEmoji("kek", "", "", true, "")
     )
@@ -21,10 +21,10 @@ object EditorComponentApiStubResponses {
     val searchResponseDefault: Search =
         Search(
             accounts = listOf(
-                AccountStub.accountDetails.copy(id = "1", username = "name1"),
-                AccountStub.accountDetails.copy(id = "2", username = "name2"),
-                AccountStub.accountDetails.copy(id = "3", username = "name3"),
-                AccountStub.accountDetails.copy(id = "4", username = "name4"),
+                Instances.accountDetails.copy(id = "1", username = "name1"),
+                Instances.accountDetails.copy(id = "2", username = "name2"),
+                Instances.accountDetails.copy(id = "3", username = "name3"),
+                Instances.accountDetails.copy(id = "4", username = "name4"),
             ),
             hashtags = listOf(
                 HashTag("Tag1", "url1", emptyList(), following = false, trendable = false, usable = true, requiresReview = false),
@@ -41,9 +41,9 @@ object EditorComponentApiStubResponses {
             uri = "uri",
             createdAt = LocalDateTime.parse("2023-01-02T23:40:57.120"),
             editedAt = LocalDateTime.parse("2023-01-02T23:40:57.120"),
-            account = AccountStub.accountDetails,
+            account = Instances.accountDetails,
             content = "Test content",
-            visibility = StatusVisibility.PUBLIC,
+            visibility = PUBLIC,
             sensitive = false,
             spoilerText = "",
             mediaAttachments = emptyList(),
@@ -80,7 +80,7 @@ object EditorComponentApiStubResponses {
                 mediaIds = emptyList(),
                 sensitive = false,
                 spoilerText = "",
-                visibility = StatusVisibility.PUBLIC,
+                visibility = PUBLIC,
                 inReplyToId = 0L,
                 language = "en",
                 applicationId = 123,
@@ -92,7 +92,7 @@ object EditorComponentApiStubResponses {
     fun buildAttachmentResponse(description: String?, focus: String?): MediaAttachment =
         MediaAttachment(
             id = "id",
-            type = MediaAttachmentType.IMAGE,
+            type = IMAGE,
             url = "url",
             remoteUrl = "remoteUrl",
             previewUrl = "previewUrl",

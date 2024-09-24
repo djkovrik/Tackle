@@ -8,10 +8,9 @@ import assertk.assertions.isTrue
 import com.arkivanov.decompose.DefaultComponentContext
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import com.sedsoftware.tackle.editor.attachments.EditorAttachmentsComponent
+import com.sedsoftware.tackle.editor.attachments.Instances
 import com.sedsoftware.tackle.editor.attachments.model.AttachedFile
 import com.sedsoftware.tackle.editor.attachments.stubs.EditorAttachmentsApiStub
-import com.sedsoftware.tackle.editor.attachments.stubs.InstanceConfigStub
-import com.sedsoftware.tackle.editor.attachments.stubs.PlatformFileStubs
 import com.sedsoftware.tackle.utils.test.ComponentTest
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
@@ -27,12 +26,12 @@ class EditorAttachmentsComponentTest : ComponentTest<EditorAttachmentsComponent>
     fun `onFileSelectedWrapped should update component model`() = runTest {
         // given
         val files = listOf(
-            PlatformFileStubs.imageNormal.copy(name = "test1.jpg"),
-            PlatformFileStubs.imageNormal.copy(name = "test2.jpg"),
-            PlatformFileStubs.imageNormal.copy(name = "test3.jpg"),
-            PlatformFileStubs.imageNormal.copy(name = "test4.jpg"),
+            Instances.imageNormal.copy(name = "test1.jpg"),
+            Instances.imageNormal.copy(name = "test2.jpg"),
+            Instances.imageNormal.copy(name = "test3.jpg"),
+            Instances.imageNormal.copy(name = "test4.jpg"),
         )
-        val config = InstanceConfigStub.config
+        val config = Instances.config
         // when
         component.updateInstanceConfig(config)
         component.changeComponentAvailability(available = true)
@@ -47,12 +46,12 @@ class EditorAttachmentsComponentTest : ComponentTest<EditorAttachmentsComponent>
     fun `onFileDeleted should update component model`() = runTest {
         // given
         val files = listOf(
-            PlatformFileStubs.imageNormal.copy(name = "test1.jpg"),
-            PlatformFileStubs.imageNormal.copy(name = "test2.jpg"),
-            PlatformFileStubs.imageNormal.copy(name = "test3.jpg"),
-            PlatformFileStubs.imageNormal.copy(name = "test4.jpg"),
+            Instances.imageNormal.copy(name = "test1.jpg"),
+            Instances.imageNormal.copy(name = "test2.jpg"),
+            Instances.imageNormal.copy(name = "test3.jpg"),
+            Instances.imageNormal.copy(name = "test4.jpg"),
         )
-        val config = InstanceConfigStub.config
+        val config = Instances.config
         // when
         component.updateInstanceConfig(config)
         component.changeComponentAvailability(available = true)
@@ -70,17 +69,17 @@ class EditorAttachmentsComponentTest : ComponentTest<EditorAttachmentsComponent>
     fun `onFileRetry should update component model`() = runTest {
         // given
         val files1 = listOf(
-            PlatformFileStubs.imageNormal.copy(name = "test1.jpg"),
-            PlatformFileStubs.imageNormal.copy(name = "test2.jpg"),
-            PlatformFileStubs.imageNormal.copy(name = "test3.jpg"),
+            Instances.imageNormal.copy(name = "test1.jpg"),
+            Instances.imageNormal.copy(name = "test2.jpg"),
+            Instances.imageNormal.copy(name = "test3.jpg"),
         )
 
         val files2 = listOf(
-            PlatformFileStubs.imageNormal.copy(name = "test4.jpg"),
+            Instances.imageNormal.copy(name = "test4.jpg"),
         )
 
         // when
-        val config = InstanceConfigStub.config
+        val config = Instances.config
         api.responseWithException = false
         component.updateInstanceConfig(config)
         component.changeComponentAvailability(available = true)
