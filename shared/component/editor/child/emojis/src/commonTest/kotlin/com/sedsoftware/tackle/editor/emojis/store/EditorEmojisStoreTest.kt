@@ -9,7 +9,7 @@ import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import com.sedsoftware.tackle.editor.emojis.domain.EditorEmojisManager
 import com.sedsoftware.tackle.editor.emojis.stubs.EditorEmojisApiStub
-import com.sedsoftware.tackle.editor.emojis.stubs.EditorEmojisApiStubResponses
+import com.sedsoftware.tackle.editor.emojis.Responses
 import com.sedsoftware.tackle.editor.emojis.stubs.EditorEmojisDatabaseStub
 import com.sedsoftware.tackle.editor.emojis.stubs.EditorEmojisSettingsStub
 import com.sedsoftware.tackle.utils.test.StoreTest
@@ -40,7 +40,7 @@ internal class EditorEmojisStoreTest : StoreTest<EditorEmojisStore.Intent, Edito
     fun `store creation should observe emojis`() = runTest {
         // given
         settings.lastCachedTimestamp = ""
-        api.getServerEmojisResponse = EditorEmojisApiStubResponses.correctResponse
+        api.getServerEmojisResponse = Responses.correctResponse
         _today = LocalDate.parse("2024-01-01")
         // when
         store.init()

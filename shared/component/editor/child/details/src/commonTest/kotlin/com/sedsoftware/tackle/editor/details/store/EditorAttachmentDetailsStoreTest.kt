@@ -11,7 +11,7 @@ import com.sedsoftware.tackle.domain.model.type.MediaAttachmentType
 import com.sedsoftware.tackle.editor.details.domain.EditorAttachmentDetailsManager
 import com.sedsoftware.tackle.editor.details.model.AttachmentParams
 import com.sedsoftware.tackle.editor.details.stubs.EditorAttachmentDetailsApiStub
-import com.sedsoftware.tackle.editor.details.stubs.EditorAttachmentDetailsApiStubResponses
+import com.sedsoftware.tackle.editor.details.Responses
 import com.sedsoftware.tackle.utils.test.StoreTest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.runTest
@@ -34,17 +34,17 @@ internal class EditorAttachmentDetailsStoreTest :
         // when
         store.init()
         // then
-        assertThat(store.state.initialDescription).isEqualTo(EditorAttachmentDetailsApiStubResponses.basicResponse.description)
-        assertThat(store.state.description).isEqualTo(EditorAttachmentDetailsApiStubResponses.basicResponse.description)
+        assertThat(store.state.initialDescription).isEqualTo(Responses.basicResponse.description)
+        assertThat(store.state.description).isEqualTo(Responses.basicResponse.description)
 
         assertThat(store.state.initialFocus).isEqualTo(
-            EditorAttachmentDetailsApiStubResponses.basicResponse.meta?.focus?.x to
-                EditorAttachmentDetailsApiStubResponses.basicResponse.meta?.focus?.y
+            Responses.basicResponse.meta?.focus?.x to
+                Responses.basicResponse.meta?.focus?.y
         )
 
         assertThat(store.state.focus).isEqualTo(
-            EditorAttachmentDetailsApiStubResponses.basicResponse.meta?.focus?.x to
-                EditorAttachmentDetailsApiStubResponses.basicResponse.meta?.focus?.y
+            Responses.basicResponse.meta?.focus?.x to
+                Responses.basicResponse.meta?.focus?.y
         )
 
         assertThat(store.state.dataChanged).isFalse()

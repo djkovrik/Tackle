@@ -3,6 +3,7 @@ package com.sedsoftware.tackle.editor.stubs
 import com.sedsoftware.tackle.domain.model.CustomEmoji
 import com.sedsoftware.tackle.domain.model.Instance
 import com.sedsoftware.tackle.editor.EditorComponentGateways
+import com.sedsoftware.tackle.editor.Instances
 import com.sedsoftware.tackle.utils.test.BaseStub
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
@@ -24,7 +25,7 @@ class EditorComponentDatabaseStub : BaseStub(), EditorComponentGateways.Database
         asResponse(flowOf(emojisCache.groupBy { it.category }))
 
     override suspend fun getCachedInstanceInfo(): Flow<Instance> =
-        asResponse(flowOf(InstanceStub.instance))
+        asResponse(flowOf(Instances.instanceInfo))
 
     override suspend fun findEmojis(query: String): Flow<List<CustomEmoji>> =
         asResponse(flowOf(emojisCache))

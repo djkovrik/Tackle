@@ -25,6 +25,7 @@
     <string name="common_error_file_type_unknown">File type is not supported</string>
     <string name="common_error_file_not_available">File not available</string>
     <string name="common_error_attachments_limit">Max possible attachments already</string>
+    <string name="common_error_schedule_date">Date must be at least 10 minutes ahead</string>
     <string name="common_error_unknown">Something went wrong</string>
 
     <!-- Auth component -->
@@ -62,6 +63,7 @@
     <string name="editor_content_description_attach">Attach file</string>
     <string name="editor_content_description_emoji">Emojis</string>
     <string name="editor_content_description_poll">Poll</string>
+    <string name="editor_content_description_send">Send</string>
     <string name="editor_content_description_warning">Sensitive content</string>
     <string name="editor_content_description_schedule">Scheduled post</string>
     <string name="editor_no_category">No category</string>
@@ -95,4 +97,12 @@
     <string name="editor_attachment_alternate_text">Alternate text</string>
     <string name="editor_attachment_alternate_text_description">Describe the file content for additional context and accessibility purposes:</string>
     <string name="editor_attachment_focus">Select the main focus point of the image to ensure that this image part will be always visible on preview:</string>
+
+    <!-- Home component -->
+    <string name="home_scheduled_posts">Scheduled posts</string>
+    <string name="home_new_post">New post</string>
+
+    <!-- Status -->
+    <string name="status_warning_image">Author flagged this image as sensitive content</string>
+    <string name="status_sensitive_image_content_description">Toggle sensitive image visibility</string>
 </resources>

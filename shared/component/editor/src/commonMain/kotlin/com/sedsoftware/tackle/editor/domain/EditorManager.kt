@@ -1,5 +1,6 @@
 package com.sedsoftware.tackle.editor.domain
 
+import com.sedsoftware.tackle.domain.TackleException
 import com.sedsoftware.tackle.domain.model.CustomEmoji
 import com.sedsoftware.tackle.domain.model.Instance
 import com.sedsoftware.tackle.domain.model.NewStatusBundle
@@ -79,12 +80,22 @@ internal class EditorManager(
         val duration: Duration = scheduled - now
         val hasValidScheduleDate: Boolean = duration > SCHEDULED_STATUS_MIN_PERIOD.minutes
 
-        if (hasValidScheduleDate) {
-            api.sendStatusScheduled(bundle)
-            CreatedStatusType.SCHEDULED
-        } else {
-            api.sendStatus(bundle)
-            CreatedStatusType.NORMAL
+        println("Now $now, schedule $scheduled, duration $duration")
+
+        when {
+            bundle.hasScheduledDate && hasValidScheduleDate -> {
+                api.sendStatusScheduled(bundle)
+                CreatedStatusType.SCHEDULED
+            }
+
+            bundle.hasScheduledDate && !hasValidScheduleDate -> {
+                throw TackleException.ScheduleDateTooShort
+            }
+
+            else -> {
+                api.sendStatus(bundle)
+                CreatedStatusType.NORMAL
+            }
         }
     }
 
@@ -153,6 +164,6 @@ internal class EditorManager(
         const val EMOJI_MARKER = ':'
         const val HASHTAG_MARKER = '#'
         const val MINIMAL_INPUT_HELP_LENGTH = 3
-        const val SCHEDULED_STATUS_MIN_PERIOD = 5
+        const val SCHEDULED_STATUS_MIN_PERIOD = 10
     }
 }

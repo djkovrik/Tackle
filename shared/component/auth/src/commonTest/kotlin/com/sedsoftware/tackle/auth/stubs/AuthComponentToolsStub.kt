@@ -1,16 +1,17 @@
 package com.sedsoftware.tackle.auth.stubs
 
 import com.sedsoftware.tackle.auth.AuthComponentGateways
+import com.sedsoftware.tackle.auth.Constants
 import com.sedsoftware.tackle.domain.model.AppClientData
 
 class AuthComponentToolsStub : AuthComponentGateways.Tools {
 
     override fun getClientData(): AppClientData =
         AppClientData(
-            name = AuthComponentApiStubResponses.Constants.NAME,
-            uri = AuthComponentApiStubResponses.Constants.URI,
-            scopes = AuthComponentApiStubResponses.Constants.SCOPES,
-            website = AuthComponentApiStubResponses.Constants.WEBSITE
+            name = Constants.NAME,
+            uri = Constants.URI,
+            scopes = Constants.SCOPES,
+            website = Constants.WEBSITE
         )
 
     override fun openUrl(url: String?) {

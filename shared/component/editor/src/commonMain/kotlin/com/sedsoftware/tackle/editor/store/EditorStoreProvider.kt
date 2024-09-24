@@ -49,27 +49,10 @@ internal class EditorStoreProvider(
             initialState = State(),
             autoInit = autoInit,
             bootstrapper = coroutineBootstrapper {
-                dispatch(Action.FetchCachedInstanceInfo)
                 dispatch(Action.InitCurrentTime)
             },
             executorFactory = coroutineExecutorFactory(mainContext) {
                 var suggestionJob: Job? = null
-
-                onAction<Action.FetchCachedInstanceInfo> {
-                    launch {
-                        unwrap(
-                            result = withContext(ioContext) { manager.getCachedInstanceInfo() },
-                            onSuccess = { cachedInstance: Instance ->
-                                dispatch(Msg.CachedInstanceLoaded(cachedInstance))
-                                dispatch(Msg.StatusCharactersLimitAvailable(cachedInstance.config.statuses.maxCharacters))
-                                publish(Label.InstanceConfigLoaded(cachedInstance.config))
-                            },
-                            onError = { throwable: Throwable ->
-                                publish(Label.ErrorCaught(throwable))
-                            }
-                        )
-                    }
-                }
 
                 onAction<Action.InitCurrentTime> {
                     val timeZone = TimeZone.currentSystemDefault()
@@ -144,6 +127,22 @@ internal class EditorStoreProvider(
                             result = withContext(ioContext) { manager.searchForHashTags(query) },
                             onSuccess = { hashtags: List<EditorInputHintItem> ->
                                 dispatch(Msg.SuggestionsLoaded(hashtags))
+                            },
+                            onError = { throwable: Throwable ->
+                                publish(Label.ErrorCaught(throwable))
+                            }
+                        )
+                    }
+                }
+
+                onIntent<Intent.FetchCachedInstanceInfo> {
+                    launch {
+                        unwrap(
+                            result = withContext(ioContext) { manager.getCachedInstanceInfo() },
+                            onSuccess = { cachedInstance: Instance ->
+                                dispatch(Msg.CachedInstanceLoaded(cachedInstance))
+                                dispatch(Msg.StatusCharactersLimitAvailable(cachedInstance.config.statuses.maxCharacters))
+                                publish(Label.InstanceConfigLoaded(cachedInstance.config))
                             },
                             onError = { throwable: Throwable ->
                                 publish(Label.ErrorCaught(throwable))
@@ -307,7 +306,6 @@ internal class EditorStoreProvider(
         ) {}
 
     private sealed interface Action {
-        data object FetchCachedInstanceInfo : Action
         data object CheckForInputHelper : Action
         data class LoadAccountSuggestion(val query: String) : Action
         data class LoadEmojiSuggestion(val query: String) : Action
@@ -338,6 +336,6 @@ internal class EditorStoreProvider(
     private fun Msg.TextInput.underTheLimit(limit: Int): Boolean = !exceedTheLimit(limit)
 
     private companion object {
-        const val SCHEDULED_POST_GAP = 10
+        const val SCHEDULED_POST_GAP = 15
     }
 }

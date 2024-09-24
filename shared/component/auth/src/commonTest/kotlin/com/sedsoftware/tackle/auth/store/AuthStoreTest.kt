@@ -5,11 +5,12 @@ import assertk.assertions.contains
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNotEmpty
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
+import com.sedsoftware.tackle.auth.Constants
+import com.sedsoftware.tackle.auth.Responses
 import com.sedsoftware.tackle.auth.domain.AuthFlowManager
 import com.sedsoftware.tackle.auth.model.CredentialsState
 import com.sedsoftware.tackle.auth.model.InstanceInfoState
 import com.sedsoftware.tackle.auth.stubs.AuthComponentApiStub
-import com.sedsoftware.tackle.auth.stubs.AuthComponentApiStubResponses
 import com.sedsoftware.tackle.auth.stubs.AuthComponentDatabaseStub
 import com.sedsoftware.tackle.auth.stubs.AuthComponentSettingsStub
 import com.sedsoftware.tackle.auth.stubs.AuthComponentToolsStub
@@ -40,7 +41,7 @@ internal class AuthStoreTest : StoreTest<AuthStore.Intent, AuthStore.State, Auth
     fun `store creation should switch state to UNAUTHORIZED with navigation call if token expired`() = runTest {
         // given
         asAuthorized()
-        api.verifyCredentialsResponse = AuthComponentApiStubResponses.invalidAccountDetails
+        api.verifyCredentialsResponse = Responses.invalidAccountDetails
         api.responseWithException = false
         // when
         store.init()
@@ -94,7 +95,7 @@ internal class AuthStoreTest : StoreTest<AuthStore.Intent, AuthStore.State, Auth
         // given
         val text = "mastodon.social"
         asUnauthorized()
-        api.getServerInfoResponse = AuthComponentApiStubResponses.invalidInstanceDetails
+        api.getServerInfoResponse = Responses.invalidInstanceDetails
         api.responseWithException = false
         // when
         store.init()
@@ -108,7 +109,7 @@ internal class AuthStoreTest : StoreTest<AuthStore.Intent, AuthStore.State, Auth
         // given
         val text = "mastodon.social"
         asUnauthorized()
-        api.getServerInfoResponse = AuthComponentApiStubResponses.invalidInstanceDetails
+        api.getServerInfoResponse = Responses.invalidInstanceDetails
         api.responseWithException = true
         // when
         store.init()
@@ -199,12 +200,12 @@ internal class AuthStoreTest : StoreTest<AuthStore.Intent, AuthStore.State, Auth
     }
 
     private fun asAuthorized() {
-        settings.domainNormalized = AuthComponentApiStubResponses.Constants.DOMAIN
-        settings.token = AuthComponentApiStubResponses.Constants.TOKEN
+        settings.domainNormalized = Constants.DOMAIN
+        settings.token = Constants.TOKEN
     }
 
     private fun asUnauthorized() {
-        settings.domainNormalized = AuthComponentApiStubResponses.Constants.DOMAIN
+        settings.domainNormalized = Constants.DOMAIN
         settings.token = ""
     }
 }

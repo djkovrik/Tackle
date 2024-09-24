@@ -2,10 +2,10 @@ package com.sedsoftware.tackle.editor.extension
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import com.sedsoftware.tackle.editor.Instances
 import com.sedsoftware.tackle.editor.model.EditorInputHintItem
 import com.sedsoftware.tackle.editor.model.EditorInputHintRequest
 import com.sedsoftware.tackle.editor.store.EditorStore
-import com.sedsoftware.tackle.editor.stubs.EmojiStub
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 
@@ -14,7 +14,7 @@ class StringExtTest {
     @Test
     fun `insertEmoji should update state text after emoji insert at the end when far from the limit`() = runTest {
         // given
-        val emoji = EmojiStub.single
+        val emoji = Instances.emoji
         val enteredText = "Some input text "
         val expectedText = "Some input text :${emoji.shortcode}:"
         val currentSelection = enteredText.length to enteredText.length
@@ -36,7 +36,7 @@ class StringExtTest {
     @Test
     fun `insertEmoji should update state text after emoji insert in the middle when far from the limit`() = runTest {
         // given
-        val emoji = EmojiStub.single
+        val emoji = Instances.emoji
         val enteredText = "Some input text"
         val expectedText = "Some:${emoji.shortcode}: input text"
         val currentSelection = 4 to 4
@@ -58,7 +58,7 @@ class StringExtTest {
     @Test
     fun `insertEmoji should update state text after emoji insert at the end when near the limit`() = runTest {
         // given
-        val emoji = EmojiStub.single
+        val emoji = Instances.emoji
         val enteredText = "Some input text "
         val expectedText = "Some input text :${emoji.shortcode}:".take(20)
         val currentSelection = enteredText.length to enteredText.length
@@ -80,7 +80,7 @@ class StringExtTest {
     @Test
     fun `insertEmoji should update state text after emoji insert in the middle when near the limit`() = runTest {
         // given
-        val emoji = EmojiStub.single
+        val emoji = Instances.emoji
         val enteredText = "Some input text"
         val expectedText = "Some:${emoji.shortcode}: input text".take(20)
         val currentSelection = 4 to 4
@@ -102,7 +102,7 @@ class StringExtTest {
     @Test
     fun `getNewPosition should calculate position text after emoji insert at the end when far from the limit`() = runTest {
         // given
-        val emoji = EmojiStub.single
+        val emoji = Instances.emoji
         val enteredText = "Some input text "
         val currentSelection = enteredText.length to enteredText.length
         val limit = 123
@@ -125,7 +125,7 @@ class StringExtTest {
     @Test
     fun `getNewPosition should calculate position text after emoji insert in the middle when far from the limit`() = runTest {
         // given
-        val emoji = EmojiStub.single
+        val emoji = Instances.emoji
         val enteredText = "Some input text"
         val currentSelection = 4 to 4
         val limit = 123
@@ -147,7 +147,7 @@ class StringExtTest {
     @Test
     fun `getNewPosition should calculate position text after emoji insert at the end when near the limit`() = runTest {
         // given
-        val emoji = EmojiStub.single
+        val emoji = Instances.emoji
         val enteredText = "Some input text "
         val currentSelection = enteredText.length to enteredText.length
         val limit = 20
@@ -169,7 +169,7 @@ class StringExtTest {
     @Test
     fun `getNewPosition should calculate position text after emoji insert in the middle when near the limit`() = runTest {
         // given
-        val emoji = EmojiStub.single
+        val emoji = Instances.emoji
         val enteredText = "Some input text"
         val currentSelection = 4 to 4
         val limit = 20
@@ -191,7 +191,7 @@ class StringExtTest {
     @Test
     fun `getNewLength should calculate new input length when far from the limit`() {
         // given
-        val emoji = EmojiStub.single
+        val emoji = Instances.emoji
         val enteredText = "Some input text "
         val currentSelection = enteredText.length to enteredText.length
         val limit = 123
@@ -213,7 +213,7 @@ class StringExtTest {
     @Test
     fun `getNewLength should calculate new input length when near the limit`() {
         // given
-        val emoji = EmojiStub.single
+        val emoji = Instances.emoji
         val enteredText = "Some input text "
         val currentSelection = enteredText.length to enteredText.length
         val limit = 20
@@ -558,5 +558,22 @@ class StringExtTest {
         assertThat(newStatusText).isEqualTo(expectedText)
         assertThat(newSelection).isEqualTo(expectedSelection)
         assertThat(newLength).isEqualTo(expectedLength)
+    }
+    
+    @Test
+    fun `getNewLength returns hint length for none request`() = runTest {
+        // given
+        val currentText = ""
+        val state = EditorStore.State(
+            statusText = currentText,
+            currentSuggestionRequest = EditorInputHintRequest.None,
+            statusCharactersLimit = 500,
+        )
+        val hintText = "test"
+        val hint = EditorInputHintItem.HashTag(hintText)
+        // when
+        val newLength = currentText.getNewLength(hint, state)
+        // then
+        assertThat(newLength).isEqualTo(hintText.length + 1)
     }
 }

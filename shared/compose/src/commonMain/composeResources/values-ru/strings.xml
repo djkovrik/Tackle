@@ -22,6 +22,7 @@
     <string name="common_error_file_type_unknown">Данный тип файлов не поддерживается</string>
     <string name="common_error_file_not_available">Файл недоступен</string>
     <string name="common_error_attachments_limit">Достигнуто максимальное количество вложений</string>
+    <string name="common_error_schedule_date">Дата должна быть хотя бы на 10 минут впереди</string>
     <string name="common_error_unknown">Что-то пошло не так</string>
 
     <!-- Auth component -->
@@ -59,6 +60,7 @@
     <string name="editor_content_description_attach">Прикрепить файл</string>
     <string name="editor_content_description_emoji">Смайлы</string>
     <string name="editor_content_description_poll">Опрос</string>
+    <string name="editor_content_description_send">Отправить</string>
     <string name="editor_content_description_warning">Чувствительный контент</string>
     <string name="editor_content_description_schedule">Отложенный пост</string>
     <string name="editor_no_category">No category</string>
@@ -92,4 +94,12 @@
     <string name="editor_attachment_alternate_text">Альтернативный текст</string>
     <string name="editor_attachment_alternate_text_description">Опишите содержимое файла для дополнительного контекста и улучшения доступности для людей с ограниченными возможностями:</string>
     <string name="editor_attachment_focus">Выберите основную точку фокуса на изображении, чтобы убедиться что выбранная область обязательно будет видна на превью:</string>
+
+    <!-- Home component -->
+    <string name="home_scheduled_posts">Запланированные посты</string>
+    <string name="home_new_post">Новый пост</string>
+
+    <!-- Status -->
+    <string name="status_warning_image">Автор пометил данное изображение как деликатный контент</string>
+    <string name="status_sensitive_image_content_description">Переключить видимость деликатного контента</string>
 </resources>

@@ -7,22 +7,34 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
 import assertk.assertions.isNotEmpty
 import assertk.assertions.isTrue
+import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.DefaultComponentContext
+import com.arkivanov.decompose.router.slot.ChildSlot
+import com.arkivanov.decompose.router.slot.SlotNavigation
+import com.arkivanov.decompose.router.slot.child
+import com.arkivanov.decompose.router.slot.childSlot
+import com.arkivanov.decompose.router.slot.dismiss
+import com.arkivanov.decompose.value.Value
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import com.sedsoftware.tackle.domain.ComponentOutput
 import com.sedsoftware.tackle.domain.model.CustomEmoji
 import com.sedsoftware.tackle.domain.model.PlatformFileWrapper
 import com.sedsoftware.tackle.editor.EditorComponent
+import com.sedsoftware.tackle.editor.Instances
 import com.sedsoftware.tackle.editor.attachments.EditorAttachmentsComponent
+import com.sedsoftware.tackle.editor.details.EditorAttachmentDetailsComponent
+import com.sedsoftware.tackle.editor.details.integration.EditorAttachmentDetailsComponentDefault
+import com.sedsoftware.tackle.editor.details.model.AttachmentParams
 import com.sedsoftware.tackle.editor.emojis.EditorEmojisComponent
 import com.sedsoftware.tackle.editor.header.EditorHeaderComponent
+import com.sedsoftware.tackle.editor.integration.EditorComponentDefault.AttachmentDetailsConfig
+import com.sedsoftware.tackle.editor.integration.attachments.EditorAttachmentDetailsComponentApi
 import com.sedsoftware.tackle.editor.model.EditorInputHintItem
 import com.sedsoftware.tackle.editor.poll.EditorPollComponent
 import com.sedsoftware.tackle.editor.stubs.EditorComponentApiStub
 import com.sedsoftware.tackle.editor.stubs.EditorComponentDatabaseStub
 import com.sedsoftware.tackle.editor.stubs.EditorComponentSettingsStub
 import com.sedsoftware.tackle.editor.stubs.EditorComponentToolsStub
-import com.sedsoftware.tackle.editor.stubs.InstanceStub
 import com.sedsoftware.tackle.editor.warning.EditorWarningComponent
 import com.sedsoftware.tackle.utils.test.ComponentTest
 import kotlinx.coroutines.test.runTest
@@ -48,16 +60,20 @@ class EditorComponentTest : ComponentTest<EditorComponent>() {
     private val warningActiveModel: EditorWarningComponent.Model
         get() = component.warning.model.value
 
+    private val api: EditorComponentApiStub = EditorComponentApiStub()
+    private val context: DefaultComponentContext = DefaultComponentContext(lifecycle)
+    private val storeFactory: DefaultStoreFactory = DefaultStoreFactory()
+    private val navigation = SlotNavigation<AttachmentDetailsConfig>()
+    private val childComponentOutput: MutableList<ComponentOutput> = mutableListOf()
+
     @Test
     fun `component creation should initialize all available children`() = runTest {
         // given
         // when
-        component.attachments.updateInstanceConfig(InstanceStub.config)
-        component.poll.updateInstanceConfig(InstanceStub.config)
         // then
         assertThat(editorActiveModel.statusText).isEmpty()
         assertThat(editorActiveModel.statusTextSelection).isEqualTo(0 to 0)
-        assertThat(editorActiveModel.statusCharactersLeft).isEqualTo(InstanceStub.config.statuses.maxCharacters)
+        assertThat(editorActiveModel.statusCharactersLeft).isEqualTo(Instances.instanceConfig.statuses.maxCharacters)
 
         assertThat(attachmentsActiveModel.attachmentsButtonAvailable).isTrue()
         assertThat(attachmentsActiveModel.attachmentsContentVisible).isFalse()
@@ -80,13 +96,11 @@ class EditorComponentTest : ComponentTest<EditorComponent>() {
         val inputText = "Test tests"
         val inputSelection = inputText.length to inputText.length
         // when
-        component.attachments.updateInstanceConfig(InstanceStub.config)
-        component.poll.updateInstanceConfig(InstanceStub.config)
         component.onTextInput(inputText, inputSelection)
         // then
         assertThat(editorActiveModel.statusText).isEqualTo(inputText)
         assertThat(editorActiveModel.statusTextSelection).isEqualTo(inputSelection)
-        assertThat(editorActiveModel.statusCharactersLeft).isEqualTo(InstanceStub.config.statuses.maxCharacters - inputText.length)
+        assertThat(editorActiveModel.statusCharactersLeft).isEqualTo(Instances.instanceConfig.statuses.maxCharacters - inputText.length)
     }
 
     @Test
@@ -94,8 +108,6 @@ class EditorComponentTest : ComponentTest<EditorComponent>() {
         // given
         val emoji = CustomEmoji(":cool:", "", "", true, "")
         // when
-        component.attachments.updateInstanceConfig(InstanceStub.config)
-        component.poll.updateInstanceConfig(InstanceStub.config)
         component.onEmojiSelected(emoji)
         // then
         assertThat(editorActiveModel.statusText).contains(emoji.shortcode)
@@ -105,8 +117,6 @@ class EditorComponentTest : ComponentTest<EditorComponent>() {
     fun `onPollButtonClicked should display poll and update buttons`() = runTest {
         // given
         // when
-        component.attachments.updateInstanceConfig(InstanceStub.config)
-        component.poll.updateInstanceConfig(InstanceStub.config)
         component.onPollButtonClicked()
         // then
         assertThat(pollActiveModel.pollButtonAvailable).isTrue()
@@ -124,8 +134,6 @@ class EditorComponentTest : ComponentTest<EditorComponent>() {
     fun `onEmojisButtonClicked should display emojis and update buttons`() = runTest {
         // given
         // when
-        component.attachments.updateInstanceConfig(InstanceStub.config)
-        component.poll.updateInstanceConfig(InstanceStub.config)
         component.onEmojisButtonClicked()
         // then
         assertThat(emojisActiveModel.emojisContentVisible).isTrue()
@@ -143,8 +151,6 @@ class EditorComponentTest : ComponentTest<EditorComponent>() {
         val expectedText = "Some text and test #hashtag"
         val hint = EditorInputHintItem.HashTag("hashtag")
         // when
-        component.attachments.updateInstanceConfig(InstanceStub.config)
-        component.poll.updateInstanceConfig(InstanceStub.config)
         component.onTextInput(inputText, inputTextSelection)
         component.onInputHintSelected(hint)
         // then
@@ -155,8 +161,6 @@ class EditorComponentTest : ComponentTest<EditorComponent>() {
     fun `onWarningButtonClicked should display warning and update buttons`() = runTest {
         // given
         // when
-        component.attachments.updateInstanceConfig(InstanceStub.config)
-        component.poll.updateInstanceConfig(InstanceStub.config)
         component.onWarningButtonClicked()
         // then
         assertThat(warningActiveModel.warningContentVisible).isTrue()
@@ -186,8 +190,6 @@ class EditorComponentTest : ComponentTest<EditorComponent>() {
         )
 
         // when
-        component.attachments.updateInstanceConfig(InstanceStub.config)
-        component.poll.updateInstanceConfig(InstanceStub.config)
         component.attachments.onFilesSelectedWrapped(files)
 
         // then
@@ -270,7 +272,7 @@ class EditorComponentTest : ComponentTest<EditorComponent>() {
     @Test
     fun `onSendButtonClicked should send new status`() = runTest {
         // given
-        val text = "Status text"
+        val text = ""
         component.onTextInput(text, text.length to text.length)
         component.warning.onTextInput("Warning")
         component.warning.toggleComponentVisibility()
@@ -288,13 +290,29 @@ class EditorComponentTest : ComponentTest<EditorComponent>() {
         val files = listOf(
             image.copy(name = "test1.jpg"),
         )
-        component.attachments.updateInstanceConfig(InstanceStub.config)
-        component.poll.updateInstanceConfig(InstanceStub.config)
+
+        component.poll.onTextInput(pollActiveModel.options[0].id, "Text 1")
+        component.poll.onTextInput(pollActiveModel.options[1].id, "Text 2")
+        component.poll.toggleComponentVisibility()
+
         component.attachments.onFilesSelectedWrapped(files)
         // when
         component.onSendButtonClicked()
         // then
         assertThat(editorActiveModel.statusText).isEmpty()
+    }
+
+    @Test
+    fun `onSendButtonClicked with api error should show error message`() = runTest {
+        // given
+        val text = "Status text"
+        component.onTextInput(text, text.length to text.length)
+        api.responseWithException = true
+
+        // when
+        component.onSendButtonClicked()
+        // then
+        assertThat(componentOutput).isNotEmpty()
     }
 
     @Test
@@ -318,8 +336,6 @@ class EditorComponentTest : ComponentTest<EditorComponent>() {
         val files = listOf(
             image.copy(name = "test1.jpg"),
         )
-        component.attachments.updateInstanceConfig(InstanceStub.config)
-        component.poll.updateInstanceConfig(InstanceStub.config)
         component.attachments.onFilesSelectedWrapped(files)
         component.onScheduleDateSelected(1231819497600000L)
         component.onScheduleTimeSelected(12, 12, true)
@@ -328,7 +344,7 @@ class EditorComponentTest : ComponentTest<EditorComponent>() {
         // then
         assertThat(editorActiveModel.statusText).isEmpty()
     }
-    
+
     @Test
     fun `onBackButtonClicked should call back button output`() = runTest {
         // given
@@ -337,12 +353,73 @@ class EditorComponentTest : ComponentTest<EditorComponent>() {
         // then
         assertThat(componentOutput).contains(ComponentOutput.StatusEditor.BackButtonClicked)
     }
+    
+    @Test
+    fun `child output should call components`() = runTest {
+        // given
+    
+        // when
+    
+        // then
+    
+    }
+
+    @Test
+    fun `attachment details requests shows dialog`() = runTest {
+        // given
+        val attachment = Instances.fileToAttach
+
+        val emptySlot = context.childSlot(config = null)
+        val dialogSlot = context.childSlot(config = AttachmentDetailsConfig(
+            attachmentId = attachment.id,
+            attachmentType = attachment.type,
+            attachmentUrl = attachment.url,
+            attachmentImageParams = AttachmentParams(
+                width = attachment.meta!!.width,
+                height = attachment.meta!!.height,
+                ratio = attachment.meta!!.aspect,
+                blurhash = attachment.blurhash,
+            ),
+        ))
+        // when
+        assertThat(component.attachmentDetailsDialog.child).isEqualTo(emptySlot.child)
+        component.attachments.onFileEdit(attachment)
+        // then
+        assertThat(component.attachmentDetailsDialog.child?.configuration).isEqualTo(dialogSlot.child?.configuration)
+    }
+
+    private fun ComponentContext.childSlot(config: AttachmentDetailsConfig?): Value<ChildSlot<*, EditorAttachmentDetailsComponent>> =
+        childSlot(
+            source = navigation,
+            serializer = null,
+            handleBackButton = true,
+            initialConfiguration = { config },
+            childFactory = ::component,
+            key = config?.attachmentId ?: "key",
+        )
+
+    private fun component(
+        config: AttachmentDetailsConfig,
+        componentContext: ComponentContext,
+    ): EditorAttachmentDetailsComponent =
+        EditorAttachmentDetailsComponentDefault(
+            attachmentType = config.attachmentType,
+            attachmentUrl = config.attachmentUrl,
+            attachmentId = config.attachmentId,
+            attachmentImageParams = config.attachmentImageParams,
+            componentContext = componentContext,
+            storeFactory = storeFactory,
+            api = EditorAttachmentDetailsComponentApi(api),
+            dispatchers = testDispatchers,
+            output = { childComponentOutput.add(it) },
+            onDismiss = navigation::dismiss,
+        )
 
     override fun createComponent(): EditorComponentDefault =
         EditorComponentDefault(
-            componentContext = DefaultComponentContext(lifecycle),
-            storeFactory = DefaultStoreFactory(),
-            api = EditorComponentApiStub(),
+            componentContext = context,
+            storeFactory = storeFactory,
+            api = api,
             database = EditorComponentDatabaseStub(),
             settings = EditorComponentSettingsStub(),
             tools = EditorComponentToolsStub(),

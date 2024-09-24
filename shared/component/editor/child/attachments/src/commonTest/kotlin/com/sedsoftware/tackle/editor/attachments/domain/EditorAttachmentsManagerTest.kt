@@ -7,11 +7,10 @@ import assertk.assertions.isSameInstanceAs
 import assertk.assertions.isTrue
 import com.sedsoftware.tackle.domain.TackleException
 import com.sedsoftware.tackle.domain.model.PlatformFileWrapper
+import com.sedsoftware.tackle.editor.attachments.Instances
+import com.sedsoftware.tackle.editor.attachments.Responses
 import com.sedsoftware.tackle.editor.attachments.model.AttachedFile
 import com.sedsoftware.tackle.editor.attachments.stubs.EditorAttachmentsApiStub
-import com.sedsoftware.tackle.editor.attachments.stubs.EditorAttachmentsApiStubResponses
-import com.sedsoftware.tackle.editor.attachments.stubs.InstanceConfigStub
-import com.sedsoftware.tackle.editor.attachments.stubs.PlatformFileStubs
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 
@@ -25,11 +24,11 @@ class EditorAttachmentsManagerTest {
         // given
         val attachment = AttachedFile(
             id = "123",
-            file = PlatformFileStubs.imageNormal,
+            file = Instances.imageNormal,
             status = AttachedFile.Status.PENDING,
         )
         api.responseWithException = false
-        api.sendFileResponse = EditorAttachmentsApiStubResponses.sendFileCorrectResponse
+        api.sendFileResponse = Responses.sendFileCorrectResponse
         // when
         val result = manager.upload(attachment)
         // then
@@ -55,7 +54,7 @@ class EditorAttachmentsManagerTest {
             status = AttachedFile.Status.PENDING,
         )
         api.responseWithException = true
-        api.sendFileResponse = EditorAttachmentsApiStubResponses.sendFileCorrectResponse
+        api.sendFileResponse = Responses.sendFileCorrectResponse
         // when
         val result = manager.upload(attachment)
         // then
@@ -66,8 +65,8 @@ class EditorAttachmentsManagerTest {
     @Test
     fun `prepare with empty file size should throw FileNotAvailable exception`() = runTest {
         // given
-        val file = PlatformFileStubs.imageEmpty
-        val config = InstanceConfigStub.config
+        val file = Instances.imageEmpty
+        val config = Instances.config
         // when
         val result = manager.prepare(file, config)
         // then
@@ -79,8 +78,8 @@ class EditorAttachmentsManagerTest {
     @Test
     fun `prepare with unsupported type should throw FileTypeNotSupported exception`() = runTest {
         // given
-        val file = PlatformFileStubs.fileUnsupported
-        val config = InstanceConfigStub.config
+        val file = Instances.fileUnsupported
+        val config = Instances.config
         // when
         val result = manager.prepare(file, config)
         // then
@@ -92,8 +91,8 @@ class EditorAttachmentsManagerTest {
     @Test
     fun `prepare with big image should throw FileSizeExceeded exception`() = runTest {
         // given
-        val file = PlatformFileStubs.imageBig
-        val config = InstanceConfigStub.config
+        val file = Instances.imageBig
+        val config = Instances.config
         // when
         val result = manager.prepare(file, config)
         // then
@@ -105,8 +104,8 @@ class EditorAttachmentsManagerTest {
     @Test
     fun `prepare with big video should throw FileSizeExceeded exception`() = runTest {
         // given
-        val file = PlatformFileStubs.videoBig
-        val config = InstanceConfigStub.config
+        val file = Instances.videoBig
+        val config = Instances.config
         // when
         val result = manager.prepare(file, config)
         // then
@@ -118,9 +117,9 @@ class EditorAttachmentsManagerTest {
     @Test
     fun `prepare with normal file should return AttachedFile`() = runTest {
         // given
-        val file1 = PlatformFileStubs.imageNormal
-        val file2 = PlatformFileStubs.videoNormal
-        val config = InstanceConfigStub.config
+        val file1 = Instances.imageNormal
+        val file2 = Instances.videoNormal
+        val config = Instances.config
         // when
         val result1 = manager.prepare(file1, config)
         val result2 = manager.prepare(file2, config)

@@ -4,7 +4,7 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNotEmpty
 import com.sedsoftware.tackle.editor.poll.model.PollDuration
-import com.sedsoftware.tackle.editor.poll.stubs.InstanceConfigStub
+import com.sedsoftware.tackle.editor.poll.Instances
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 
@@ -15,7 +15,7 @@ class EditorPollManagerTest {
     @Test
     fun `getAvailableDurations should check min max bounds`() = runTest {
         // given
-        val config = InstanceConfigStub.config
+        val config = Instances.config
         // when
         val result: List<PollDuration> = manager.getAvailableDurations(config)
         // then

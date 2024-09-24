@@ -8,6 +8,7 @@ import com.sedsoftware.tackle.home.HomeTabComponent.Model
 class HomeTabComponentPreview : HomeTabComponent {
 
     override fun onNewPostClick() = Unit
+    override fun onScheduledPostsClick() = Unit
 
     override val model: Value<Model> = MutableValue(
         Model(text = "Home tab component")

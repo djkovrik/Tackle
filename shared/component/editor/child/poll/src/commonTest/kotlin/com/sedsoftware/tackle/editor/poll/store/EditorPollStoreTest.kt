@@ -12,7 +12,7 @@ import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import com.sedsoftware.tackle.editor.poll.domain.EditorPollManager
 import com.sedsoftware.tackle.editor.poll.model.PollDuration
-import com.sedsoftware.tackle.editor.poll.stubs.InstanceConfigStub
+import com.sedsoftware.tackle.editor.poll.Instances
 import com.sedsoftware.tackle.utils.test.StoreTest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.runTest
@@ -25,7 +25,7 @@ internal class EditorPollStoreTest : StoreTest<EditorPollStore.Intent, EditorPol
     @Test
     fun `UpdateInstanceConfig should update state config`() = runTest {
         // given
-        val config = InstanceConfigStub.config
+        val config = Instances.config
         // when
         store.init()
         store.accept(EditorPollStore.Intent.UpdateInstanceConfig(config))
@@ -37,7 +37,7 @@ internal class EditorPollStoreTest : StoreTest<EditorPollStore.Intent, EditorPol
     @Test
     fun `UpdateInstanceConfig should populate available durations`() = runTest {
         // given
-        val config = InstanceConfigStub.config
+        val config = Instances.config
         // when
         store.init()
         store.accept(EditorPollStore.Intent.UpdateInstanceConfig(config))
@@ -49,7 +49,7 @@ internal class EditorPollStoreTest : StoreTest<EditorPollStore.Intent, EditorPol
     @Test
     fun `UpdateInstanceConfig should populate default options`() = runTest {
         // given
-        val config = InstanceConfigStub.config
+        val config = Instances.config
         // when
         store.init()
         store.accept(EditorPollStore.Intent.UpdateInstanceConfig(config))
@@ -146,7 +146,7 @@ internal class EditorPollStoreTest : StoreTest<EditorPollStore.Intent, EditorPol
     fun `OnTextInput should update related poll item`() = runTest {
         // given
         val text = "text text"
-        val config = InstanceConfigStub.config
+        val config = Instances.config
         // when
         store.init()
         store.accept(EditorPollStore.Intent.UpdateInstanceConfig(config))
@@ -166,7 +166,7 @@ internal class EditorPollStoreTest : StoreTest<EditorPollStore.Intent, EditorPol
     @Test
     fun `OnAddPollOption and OnDeletePollOption should update state and controls`() = runTest {
         // given
-        val config = InstanceConfigStub.config
+        val config = Instances.config
         // when
         store.init()
         store.accept(EditorPollStore.Intent.UpdateInstanceConfig(config))

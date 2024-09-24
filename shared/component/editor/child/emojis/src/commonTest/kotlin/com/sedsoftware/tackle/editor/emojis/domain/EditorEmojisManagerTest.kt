@@ -5,7 +5,7 @@ import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNotEmpty
 import com.sedsoftware.tackle.editor.emojis.stubs.EditorEmojisApiStub
-import com.sedsoftware.tackle.editor.emojis.stubs.EditorEmojisApiStubResponses
+import com.sedsoftware.tackle.editor.emojis.Responses
 import com.sedsoftware.tackle.editor.emojis.stubs.EditorEmojisDatabaseStub
 import com.sedsoftware.tackle.editor.emojis.stubs.EditorEmojisSettingsStub
 import kotlinx.coroutines.flow.first
@@ -42,7 +42,7 @@ class EditorEmojisManagerTest {
     fun `fetchServerEmojis should fetch emojis for the new day`() = runTest {
         // given
         settings.lastCachedTimestamp = ""
-        api.getServerEmojisResponse = EditorEmojisApiStubResponses.correctResponse
+        api.getServerEmojisResponse = Responses.correctResponse
         _today = LocalDate.parse("2024-01-01")
         // when
         manager.fetchServerEmojis()
@@ -55,7 +55,7 @@ class EditorEmojisManagerTest {
     fun `fetchServerEmojis should not fetch emojis for the same day`() = runTest {
         // given
         settings.lastCachedTimestamp = "2024-01-01"
-        api.getServerEmojisResponse = EditorEmojisApiStubResponses.correctResponse
+        api.getServerEmojisResponse = Responses.correctResponse
         _today = LocalDate.parse("2024-01-01")
         db.cachedEmoji = emptyList()
         // when
@@ -68,7 +68,7 @@ class EditorEmojisManagerTest {
     fun `observeCachedEmojis should return cached emojis`() = runTest {
         // given
         settings.lastCachedTimestamp = ""
-        api.getServerEmojisResponse = EditorEmojisApiStubResponses.correctResponse
+        api.getServerEmojisResponse = Responses.correctResponse
         _today = LocalDate.parse("2024-01-01")
         manager.fetchServerEmojis()
         // when

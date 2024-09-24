@@ -1,16 +1,16 @@
-package com.sedsoftware.tackle.editor.details.stubs
+package com.sedsoftware.tackle.editor.details
 
 import com.sedsoftware.tackle.domain.model.MediaAttachment
 import com.sedsoftware.tackle.domain.model.MediaAttachmentFocus
 import com.sedsoftware.tackle.domain.model.MediaAttachmentMeta
-import com.sedsoftware.tackle.domain.model.type.MediaAttachmentType
+import com.sedsoftware.tackle.domain.model.type.MediaAttachmentType.IMAGE
 
-object EditorAttachmentDetailsApiStubResponses {
+object Responses {
 
     val basicResponse: MediaAttachment =
         MediaAttachment(
             id = "123456",
-            type = MediaAttachmentType.IMAGE,
+            type = IMAGE,
             url = "http://some.url",
             previewUrl = "http://some.url/preview",
             remoteUrl = "http://some.url/remote",

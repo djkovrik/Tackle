@@ -1,8 +1,26 @@
-package com.sedsoftware.tackle.editor.attachments.stubs
+package com.sedsoftware.tackle.editor.attachments
 
+import com.sedsoftware.tackle.domain.model.Instance.Config
+import com.sedsoftware.tackle.domain.model.Instance.Config.MediaAttachments
+import com.sedsoftware.tackle.domain.model.Instance.Config.Statuses
 import com.sedsoftware.tackle.domain.model.PlatformFileWrapper
 
-internal object PlatformFileStubs {
+internal object Instances {
+    val config: Config = Config(
+        statuses = Statuses(
+            maxMediaAttachments = 4,
+        ),
+        mediaAttachments = MediaAttachments(
+            imageSizeLimit = 123456L,
+            videoSizeLimit = 123456L,
+            supportedMimeTypes = listOf(
+                "video/mp4",
+                "image/jpeg",
+                "image/png",
+            )
+        )
+    )
+
 
     val imageNormal: PlatformFileWrapper = PlatformFileWrapper(
         name = "normal.jpg",

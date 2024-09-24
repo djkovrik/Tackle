@@ -1,5 +1,6 @@
 package com.sedsoftware.tackle.utils
 
+import com.sedsoftware.tackle.domain.model.type.ShortDateUnit
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
@@ -39,4 +40,39 @@ object DateTimeUtils {
     fun getAsDateTimeUTC(fromDate: LocalDateTime, fromTimeZone: TimeZone = TimeZone.currentSystemDefault()): LocalDateTime {
         return fromDate.toInstant(timeZone = fromTimeZone).toLocalDateTime(timeZone = TimeZone.UTC)
     }
+
+    fun getDateShortLabel(date: LocalDateTime, now: LocalDateTime, timeZone: TimeZone = TimeZone.currentSystemDefault()): ShortDateUnit {
+        val current: Instant = now.toInstant(timeZone)
+        val target: Instant = date.toInstant(timeZone)
+        var diffInSeconds: Long = (current - target).inWholeSeconds
+
+        val seconds = diffInSeconds
+        diffInSeconds /= MINUTES_PER_HOUR
+        val minutes = if (diffInSeconds >= SECONDS_PER_MINUTE) (diffInSeconds % SECONDS_PER_MINUTE) else diffInSeconds
+        diffInSeconds /= SECONDS_PER_MINUTE
+        val hours = if (diffInSeconds >= HOURS_PER_DAY) (diffInSeconds % HOURS_PER_DAY) else diffInSeconds
+        diffInSeconds /= HOURS_PER_DAY
+        val days = if (diffInSeconds >= DAYS_PER_MONTH) (diffInSeconds % DAYS_PER_MONTH) else diffInSeconds
+        diffInSeconds /= DAYS_PER_MONTH
+        val months = if (diffInSeconds >= MONTH_PER_YEAR) (diffInSeconds % MONTH_PER_YEAR) else diffInSeconds
+        diffInSeconds /= MONTH_PER_YEAR
+        val years = diffInSeconds
+
+        return when {
+            years > 0 -> ShortDateUnit.Years(years.toInt())
+            months > 0 -> ShortDateUnit.Months(months.toInt())
+            days > 0 -> ShortDateUnit.Days(days.toInt())
+            hours > 0 -> ShortDateUnit.Hours(hours.toInt())
+            minutes > 0 -> ShortDateUnit.Minutes(minutes.toInt())
+            seconds > SECONDS_AFTER_NOW -> ShortDateUnit.Seconds(seconds.toInt())
+            else -> ShortDateUnit.Now
+        }
+    }
+
+    private const val SECONDS_PER_MINUTE = 60
+    private const val MINUTES_PER_HOUR = 60
+    private const val HOURS_PER_DAY = 24
+    private const val DAYS_PER_MONTH = 30
+    private const val MONTH_PER_YEAR = 12
+    private const val SECONDS_AFTER_NOW = 20
 }

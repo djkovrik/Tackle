@@ -5,6 +5,7 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
 import assertk.assertions.isNotEmpty
 import assertk.assertions.isTrue
+import com.sedsoftware.tackle.domain.TackleException
 import com.sedsoftware.tackle.domain.model.NewStatusBundle
 import com.sedsoftware.tackle.domain.model.type.CreatedStatusType
 import com.sedsoftware.tackle.editor.EditorComponentGateways
@@ -417,42 +418,17 @@ class EditorManagerTest {
     }
 
     @Test
-    fun `sendStatus should send normal status if date is under 5 minutes`() = runTest {
+    fun `sendStatus should send scheduled status if date is over 10 minutes`() = runTest {
         // given
         val timeZone: TimeZone = TimeZone.UTC
         val now: LocalDateTime = LocalDateTime.parse("2024-08-12T12:34:56.120")
-        val scheduled: LocalDateTime = LocalDateTime.parse("2024-08-12T12:36:58.120")
+        val scheduled: LocalDateTime = LocalDateTime.parse("2024-08-12T12:45:56.120")
         val scheduledMillis: Long = scheduled.toInstant(timeZone).toEpochMilliseconds()
-        val scheduledHour: Int = 12
-        val scheduledMinute: Int = 36
         val bundle = NewStatusBundle.Builder()
             .status("Status text")
             .scheduledAtDate(scheduledMillis)
-            .scheduledAtHour(scheduledHour)
-            .scheduledAtMinute(scheduledMinute)
-            .build()
-        // when
-        nowProviderStub = now.toInstant(timeZone)
-        val response = manager.sendStatus(bundle)
-        // then
-        assertThat(response.isSuccess).isTrue()
-        assertThat(response.getOrThrow()).isEqualTo(CreatedStatusType.NORMAL)
-    }
-
-    @Test
-    fun `sendStatus should send normal scheduled if date is over 5 minutes`() = runTest {
-        // given
-        val timeZone: TimeZone = TimeZone.UTC
-        val now: LocalDateTime = LocalDateTime.parse("2024-08-12T12:34:56.120")
-        val scheduled: LocalDateTime = LocalDateTime.parse("2024-08-12T12:40:03.120")
-        val scheduledMillis: Long = scheduled.toInstant(timeZone).toEpochMilliseconds()
-        val scheduledHour: Int = 12
-        val scheduledMinute: Int = 40
-        val bundle = NewStatusBundle.Builder()
-            .status("Status text")
-            .scheduledAtDate(scheduledMillis)
-            .scheduledAtHour(scheduledHour)
-            .scheduledAtMinute(scheduledMinute)
+            .scheduledAtHour(scheduled.hour)
+            .scheduledAtMinute(scheduled.minute)
             .build()
         // when
         nowProviderStub = now.toInstant(timeZone)
@@ -460,5 +436,27 @@ class EditorManagerTest {
         // then
         assertThat(response.isSuccess).isTrue()
         assertThat(response.getOrThrow()).isEqualTo(CreatedStatusType.SCHEDULED)
+    }
+
+    @Test
+    fun `sendStatus should throw an exception if date is under 10 minutes`() = runTest {
+        // given
+        val timeZone: TimeZone = TimeZone.UTC
+        val now: LocalDateTime = LocalDateTime.parse("2024-08-12T12:34:56.120")
+        val scheduled: LocalDateTime = LocalDateTime.parse("2024-08-12T12:44:52.120")
+        val scheduledMillis: Long = scheduled.toInstant(timeZone).toEpochMilliseconds()
+        val bundle = NewStatusBundle.Builder()
+            .status("Status text")
+            .scheduledAtDate(scheduledMillis)
+            .scheduledAtHour(scheduled.hour)
+            .scheduledAtMinute(scheduled.minute)
+            .build()
+        // when
+        nowProviderStub = now.toInstant(timeZone)
+        val response = manager.sendStatus(bundle)
+        // then
+        assertThat(response.isSuccess).isFalse()
+        assertThat(response.isFailure).isTrue()
+        assertThat(response.exceptionOrNull()).isEqualTo(TackleException.ScheduleDateTooShort)
     }
 }

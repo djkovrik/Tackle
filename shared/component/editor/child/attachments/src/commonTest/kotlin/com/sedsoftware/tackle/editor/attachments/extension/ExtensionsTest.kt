@@ -7,13 +7,13 @@ import assertk.assertions.isFalse
 import assertk.assertions.isTrue
 import com.sedsoftware.tackle.domain.model.MediaAttachment
 import com.sedsoftware.tackle.domain.model.type.MediaAttachmentType.IMAGE
+import com.sedsoftware.tackle.editor.attachments.Instances
 import com.sedsoftware.tackle.editor.attachments.model.AttachedFile
 import com.sedsoftware.tackle.editor.attachments.model.AttachedFile.Status.ERROR
 import com.sedsoftware.tackle.editor.attachments.model.AttachedFile.Status.LOADED
 import com.sedsoftware.tackle.editor.attachments.model.AttachedFile.Status.LOADING
 import com.sedsoftware.tackle.editor.attachments.model.AttachedFile.Status.PENDING
 import com.sedsoftware.tackle.editor.attachments.model.UploadProgress
-import com.sedsoftware.tackle.editor.attachments.stubs.PlatformFileStubs
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 
@@ -22,7 +22,7 @@ class ExtensionsTest {
     private val attachedFileStub: AttachedFile =
         AttachedFile(
             id = "123",
-            file = PlatformFileStubs.imageNormal,
+            file = Instances.imageNormal,
             status = PENDING,
             uploadProgress = 0.12f,
             serverCopy = null,
