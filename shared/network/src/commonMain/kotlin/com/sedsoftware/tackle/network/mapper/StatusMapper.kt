@@ -7,15 +7,26 @@ import com.sedsoftware.tackle.domain.model.type.StatusVisibility
 import com.sedsoftware.tackle.network.response.StatusMentionResponse
 import com.sedsoftware.tackle.network.response.StatusResponse
 import com.sedsoftware.tackle.network.response.StatusTagResponse
-import com.sedsoftware.tackle.utils.extension.toLocalDateTime
+import com.sedsoftware.tackle.utils.DateTimeUtils
+import com.sedsoftware.tackle.utils.extension.toLocalDateTimeCustom
+import kotlinx.datetime.Clock.System
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 
 internal object StatusMapper {
+
+    private val now: LocalDateTime by lazy {
+        System.now().toLocalDateTime(timeZone = TimeZone.currentSystemDefault())
+    }
 
     fun map(from: StatusResponse): Status =
         Status(
             id = from.id,
             uri = from.uri,
-            createdAt = from.createdAt.toLocalDateTime(),
+            createdAt = from.createdAt.toLocalDateTimeCustom(),
+            createdAtShort = DateTimeUtils.getDateShortLabel(now, from.createdAt.toLocalDateTimeCustom()),
+            createdAtPretty = DateTimeUtils.prettify(from.createdAt.toLocalDateTimeCustom()),
             account = AccountMapper.map(from.account),
             content = from.content,
             visibility = StatusVisibility.entries.firstOrNull { it.name.lowercase() == from.visibility } ?: StatusVisibility.UNKNOWN,
@@ -37,7 +48,9 @@ internal object StatusMapper {
             card = from.card?.let { PreviewCardMapper.map(it) },
             language = from.language,
             text = from.text,
-            editedAt = from.editedAt.toLocalDateTime(),
+            editedAt = from.editedAt?.toLocalDateTimeCustom(),
+            editedAtShort = from.editedAt?.toLocalDateTimeCustom()?.let { DateTimeUtils.getDateShortLabel(now, it) },
+            editedAtPretty = from.editedAt?.toLocalDateTimeCustom()?.let { DateTimeUtils.prettify(it) },
             favourited = from.favourited,
             reblogged = from.reblogged,
             muted = from.muted,

@@ -115,4 +115,15 @@ class DateTimeUtilsTest {
         assertThat(years1Result).isEqualTo(ShortDateUnit.Years(1))
         assertThat(years2Result).isEqualTo(ShortDateUnit.Years(4))
     }
+
+    @Test
+    fun `prettify should format date`() = runTest {
+        // given
+        val given = LocalDateTime.parse("2023-01-02T23:40:57.120")
+        val expected = "02.01.2023 23:40"
+        // when
+        val result = DateTimeUtils.prettify(given)
+        // then
+        assertThat(result).isEqualTo(expected)
+    }
 }

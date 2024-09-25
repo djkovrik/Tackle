@@ -127,9 +127,9 @@ internal object TackleFonts {
             labelSmall = TextStyle(
                 fontFamily = OpenSans(),
                 fontWeight = FontWeight.Normal,
-                fontStyle = FontStyle.Normal,
-                fontSize = 13.sp,
-                lineHeight = 17.sp,
+                fontStyle = FontStyle.Italic,
+                fontSize = 14.sp,
+                lineHeight = 18.sp,
                 letterSpacing = 0.5.sp,
             )
         )

@@ -2,7 +2,7 @@ package com.sedsoftware.tackle.network.mapper
 
 import com.sedsoftware.tackle.domain.model.Field
 import com.sedsoftware.tackle.network.response.FieldResponse
-import com.sedsoftware.tackle.utils.extension.toLocalDateTime
+import com.sedsoftware.tackle.utils.extension.toLocalDateTimeCustom
 
 internal object FieldMapper {
 
@@ -10,6 +10,6 @@ internal object FieldMapper {
         Field(
             name = from.name,
             value = from.value,
-            verifiedAt = from.verifiedAt.toLocalDateTime()
+            verifiedAt = from.verifiedAt.toLocalDateTimeCustom()
         )
 }

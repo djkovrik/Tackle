@@ -15,8 +15,8 @@ import com.sedsoftware.tackle.utils.extension.offsetToFocus
 import com.sedsoftware.tackle.utils.extension.orFalse
 import com.sedsoftware.tackle.utils.extension.orZero
 import com.sedsoftware.tackle.utils.extension.toHumanReadableSize
-import com.sedsoftware.tackle.utils.extension.toLocalDate
-import com.sedsoftware.tackle.utils.extension.toLocalDateTime
+import com.sedsoftware.tackle.utils.extension.toLocalDateCustom
+import com.sedsoftware.tackle.utils.extension.toLocalDateTimeCustom
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.TimeZone
 import kotlin.test.Test
@@ -33,8 +33,8 @@ class ExtensionsTest {
     fun `toLocalDateTime should parse correct date time string`() = runTest {
         // given
         // when
-        val dateTime1 = testDateTime1.toLocalDateTime(timeZone = TimeZone.UTC)
-        val dateTime2 = testDateTime2.toLocalDateTime(timeZone = TimeZone.UTC)
+        val dateTime1 = testDateTime1.toLocalDateTimeCustom(timeZone = TimeZone.UTC)
+        val dateTime2 = testDateTime2.toLocalDateTimeCustom(timeZone = TimeZone.UTC)
         // then
         assertThat(dateTime1.year).isEqualTo(2024)
         assertThat(dateTime1.monthNumber).isEqualTo(6)
@@ -55,7 +55,7 @@ class ExtensionsTest {
     fun `toLocalDateTime should use fallback for incorrect date time string`() = runTest {
         // given
         // when
-        val dateTime = incorrect.toLocalDateTime(timeZone = TimeZone.UTC)
+        val dateTime = incorrect.toLocalDateTimeCustom(timeZone = TimeZone.UTC)
         // then
         assertThat(dateTime.year).isEqualTo(1970)
         assertThat(dateTime.monthNumber).isEqualTo(1)
@@ -69,8 +69,8 @@ class ExtensionsTest {
     fun `toLocalDate should parse correct date string`() = runTest {
         // given
         // when
-        val date1 = testDate1.toLocalDate()
-        val date2 = testDate2.toLocalDate()
+        val date1 = testDate1.toLocalDateCustom()
+        val date2 = testDate2.toLocalDateCustom()
         // then
         assertThat(date1.year).isEqualTo(2024)
         assertThat(date1.monthNumber).isEqualTo(6)
@@ -85,7 +85,7 @@ class ExtensionsTest {
     fun `toLocalDate should use fallback date for incorrect date string`() = runTest {
         // given
         // when
-        val date = incorrect.toLocalDate()
+        val date = incorrect.toLocalDateCustom()
         // then
         assertThat(date.year).isEqualTo(1970)
         assertThat(date.monthNumber).isEqualTo(1)

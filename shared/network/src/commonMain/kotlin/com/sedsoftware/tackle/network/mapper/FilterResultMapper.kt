@@ -10,7 +10,7 @@ import com.sedsoftware.tackle.network.response.FilterKeywordResponse
 import com.sedsoftware.tackle.network.response.FilterResponse
 import com.sedsoftware.tackle.network.response.FilterResultResponse
 import com.sedsoftware.tackle.network.response.FilterStatusResponse
-import com.sedsoftware.tackle.utils.extension.toLocalDateTime
+import com.sedsoftware.tackle.utils.extension.toLocalDateTimeCustom
 
 internal object FilterResultMapper {
 
@@ -31,7 +31,7 @@ internal object FilterResultMapper {
             filterAction = FilterAction.entries.firstOrNull { it.name.lowercase() == from.filterAction } ?: FilterAction.UNKNOWN,
             keywords = from.keywords.map(FilterResultMapper::mapKeyword),
             statuses = from.statuses.map(FilterResultMapper::mapStatus),
-            expiresAt = from.expiresAt.toLocalDateTime(),
+            expiresAt = from.expiresAt.toLocalDateTimeCustom(),
         )
 
     private fun mapKeyword(from: FilterKeywordResponse): FilterKeyword =

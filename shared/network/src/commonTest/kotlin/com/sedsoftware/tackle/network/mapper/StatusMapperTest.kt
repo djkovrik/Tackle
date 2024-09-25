@@ -5,9 +5,11 @@ import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
 import assertk.assertions.isNotEmpty
+import assertk.assertions.isNotEqualTo
 import assertk.assertions.isNotNull
 import assertk.assertions.isTrue
 import com.sedsoftware.tackle.domain.model.Status
+import com.sedsoftware.tackle.domain.model.type.ShortDateUnit
 import com.sedsoftware.tackle.domain.model.type.StatusVisibility
 import com.sedsoftware.tackle.network.response.StatusResponse
 import com.sedsoftware.tackle.utils.test.JsonBasedTest
@@ -26,6 +28,9 @@ class StatusMapperTest : JsonBasedTest() {
         with(mapped) {
             assertThat(id).isNotEmpty()
             assertThat(createdAt).isNotNull()
+            assertThat(createdAtShort).isNotEqualTo(ShortDateUnit.Now)
+            assertThat(editedAt).isNotNull()
+            assertThat(editedAtShort).isNotEqualTo(ShortDateUnit.Now)
             assertThat(inReplyToId).isEmpty()
             assertThat(inReplyToAccountId).isEmpty()
             assertThat(sensitive).isTrue()

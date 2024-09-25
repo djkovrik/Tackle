@@ -16,14 +16,14 @@ fun String.trimUrl(): String =
         .substringAfterLast('@')
 
 @Suppress("SwallowedException")
-fun String.toLocalDateTime(timeZone: TimeZone = TimeZone.currentSystemDefault()): LocalDateTime = try {
+fun String.toLocalDateTimeCustom(timeZone: TimeZone = TimeZone.currentSystemDefault()): LocalDateTime = try {
     Instant.parse(this).toLocalDateTime(timeZone = timeZone)
 } catch (exception: IllegalArgumentException) {
     Instant.parse(ExtensionConstants.FALLBACK_DATE_TIME).toLocalDateTime(timeZone = timeZone)
 }
 
 @Suppress("SwallowedException")
-fun String.toLocalDate(): LocalDate = try {
+fun String.toLocalDateCustom(): LocalDate = try {
     LocalDate.parse(this)
 } catch (exception: IllegalArgumentException) {
     LocalDate.parse(ExtensionConstants.FALLBACK_DATE)
