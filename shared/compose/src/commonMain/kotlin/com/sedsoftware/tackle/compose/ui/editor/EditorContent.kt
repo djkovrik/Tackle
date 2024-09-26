@@ -157,7 +157,7 @@ internal fun EditorContent(
             withStyle(
                 style = SpanStyle(
                     color = MaterialTheme.colorScheme.secondary,
-                    fontWeight = FontWeight.Bold,
+                    fontWeight = FontWeight.Medium,
                 )
             ) {
                 append(result.value)

@@ -34,7 +34,6 @@ internal object StatusMapper {
             account = AccountMapper.map(from.account),
             content = from.content,
             contentAsPlainText = statusPlainText,
-            contentInline = StringUtils.buildInlineContent(statusPlainText, statusEmojis),
             visibility = StatusVisibility.entries.firstOrNull { it.name.lowercase() == from.visibility } ?: StatusVisibility.UNKNOWN,
             sensitive = from.sensitive,
             spoilerText = from.spoilerText,

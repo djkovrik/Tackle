@@ -8,4 +8,8 @@ object TackleRegex {
     val hashtagAndMentions: Regex by lazy {
         "((?=[^\\w!])[#@][\\u4e00-\\u9fa5\\w]+)".toRegex()
     }
+
+    val emoji: Regex by lazy {
+        ":\\w+:".toRegex()
+    }
 }

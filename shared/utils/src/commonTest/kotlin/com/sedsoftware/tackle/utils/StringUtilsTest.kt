@@ -2,8 +2,6 @@ package com.sedsoftware.tackle.utils
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import com.sedsoftware.tackle.domain.model.CustomEmoji
-import com.sedsoftware.tackle.domain.model.type.StatusInlineContent
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 
@@ -21,37 +19,5 @@ class StringUtilsTest {
         val result1 = StringUtils.decodeHtml(content1)
         // then
         assertThat(result1).isEqualTo(expected1)
-    }
-
-    @Test
-    fun `buildInlineContent should split input string to inline content`() = runTest {
-        // given
-        val emojis: List<CustomEmoji> = listOf(
-            CustomEmoji("lol", "", "", true, ""),
-            CustomEmoji("kek", "", "", true, ""),
-            CustomEmoji("banana", "", "", true, ""),
-        )
-        val string1 = "This is some text with :banana: emoji, and broken emoji :lol"
-        val string2 = "Text"
-        val string3 = ":lol::kek:"
-        val string4 = ":lol: :kek:"
-        val string5 = "Text :kek:"
-        val string6 = ":kek text"
-
-        // when
-        val result1 = StringUtils.buildInlineContent(string1, emojis)
-        val result2 = StringUtils.buildInlineContent(string2, emojis)
-        val result3 = StringUtils.buildInlineContent(string3, emojis)
-        val result4 = StringUtils.buildInlineContent(string4, emojis)
-        val result5 = StringUtils.buildInlineContent(string5, emojis)
-        val result6 = StringUtils.buildInlineContent(string6, emojis)
-
-        // then
-        assertThat(result1.size).isEqualTo(3)
-        assertThat(result2.size).isEqualTo(1)
-        assertThat(result3.size).isEqualTo(2)
-        assertThat(result4.size).isEqualTo(3)
-        assertThat(result5.size).isEqualTo(2)
-        assertThat(result6.size).isEqualTo(1)
     }
 }
