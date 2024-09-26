@@ -17,6 +17,7 @@ kotlin {
                 implementation(libs.ark.mvikotlin.extensions)
 
                 implementation(libs.lib.okio)
+                implementation(libs.lib.ksoup)
             }
         }
 

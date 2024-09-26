@@ -56,6 +56,7 @@ internal object PreviewStubs {
         editedAtPretty = "02.01.2023 23:49",
         account = accountStub,
         content = "This is some test status content.",
+        contentAsPlainText = "This is some test status content.",
         visibility = StatusVisibility.PUBLIC,
         sensitive = false,
         spoilerText = "",

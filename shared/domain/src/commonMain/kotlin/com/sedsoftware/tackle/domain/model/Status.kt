@@ -12,6 +12,7 @@ data class Status(
     val createdAtPretty: String,
     val account: Account,
     val content: String,
+    val contentAsPlainText: String,
     val visibility: StatusVisibility,
     val sensitive: Boolean,
     val spoilerText: String,

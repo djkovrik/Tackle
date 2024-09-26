@@ -8,6 +8,7 @@ import com.sedsoftware.tackle.network.response.StatusMentionResponse
 import com.sedsoftware.tackle.network.response.StatusResponse
 import com.sedsoftware.tackle.network.response.StatusTagResponse
 import com.sedsoftware.tackle.utils.DateTimeUtils
+import com.sedsoftware.tackle.utils.StringUtils
 import com.sedsoftware.tackle.utils.extension.toLocalDateTimeCustom
 import kotlinx.datetime.Clock.System
 import kotlinx.datetime.LocalDateTime
@@ -25,10 +26,11 @@ internal object StatusMapper {
             id = from.id,
             uri = from.uri,
             createdAt = from.createdAt.toLocalDateTimeCustom(),
-            createdAtShort = DateTimeUtils.getDateShortLabel(now, from.createdAt.toLocalDateTimeCustom()),
+            createdAtShort = DateTimeUtils.getDateShortLabel(from.createdAt.toLocalDateTimeCustom(), now),
             createdAtPretty = DateTimeUtils.prettify(from.createdAt.toLocalDateTimeCustom()),
             account = AccountMapper.map(from.account),
             content = from.content,
+            contentAsPlainText = StringUtils.decodeHtml(from.content),
             visibility = StatusVisibility.entries.firstOrNull { it.name.lowercase() == from.visibility } ?: StatusVisibility.UNKNOWN,
             sensitive = from.sensitive,
             spoilerText = from.spoilerText,
@@ -49,7 +51,7 @@ internal object StatusMapper {
             language = from.language,
             text = from.text,
             editedAt = from.editedAt?.toLocalDateTimeCustom(),
-            editedAtShort = from.editedAt?.toLocalDateTimeCustom()?.let { DateTimeUtils.getDateShortLabel(now, it) },
+            editedAtShort = from.editedAt?.toLocalDateTimeCustom()?.let { DateTimeUtils.getDateShortLabel(it, now) },
             editedAtPretty = from.editedAt?.toLocalDateTimeCustom()?.let { DateTimeUtils.prettify(it) },
             favourited = from.favourited,
             reblogged = from.reblogged,

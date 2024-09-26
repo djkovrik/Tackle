@@ -48,6 +48,7 @@ internal object Responses {
             editedAtPretty = "02.01.2023 23:40",
             account = Instances.accountDetails,
             content = "Test content",
+            contentAsPlainText = "Test content",
             visibility = PUBLIC,
             sensitive = false,
             spoilerText = "",
