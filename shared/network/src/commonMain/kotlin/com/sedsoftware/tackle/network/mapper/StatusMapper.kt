@@ -1,5 +1,6 @@
 package com.sedsoftware.tackle.network.mapper
 
+import com.sedsoftware.tackle.domain.model.CustomEmoji
 import com.sedsoftware.tackle.domain.model.Status
 import com.sedsoftware.tackle.domain.model.StatusMention
 import com.sedsoftware.tackle.domain.model.StatusTag
@@ -21,8 +22,10 @@ internal object StatusMapper {
         System.now().toLocalDateTime(timeZone = TimeZone.currentSystemDefault())
     }
 
-    fun map(from: StatusResponse): Status =
-        Status(
+    fun map(from: StatusResponse): Status {
+        val statusEmojis: List<CustomEmoji> = CustomEmojiMapper.map(from.emojis)
+        val statusPlainText: String = StringUtils.decodeHtml(from.content)
+        return Status(
             id = from.id,
             uri = from.uri,
             createdAt = from.createdAt.toLocalDateTimeCustom(),
@@ -30,7 +33,8 @@ internal object StatusMapper {
             createdAtPretty = DateTimeUtils.prettify(from.createdAt.toLocalDateTimeCustom()),
             account = AccountMapper.map(from.account),
             content = from.content,
-            contentAsPlainText = StringUtils.decodeHtml(from.content),
+            contentAsPlainText = statusPlainText,
+            contentInline = StringUtils.buildInlineContent(statusPlainText, statusEmojis),
             visibility = StatusVisibility.entries.firstOrNull { it.name.lowercase() == from.visibility } ?: StatusVisibility.UNKNOWN,
             sensitive = from.sensitive,
             spoilerText = from.spoilerText,
@@ -38,7 +42,7 @@ internal object StatusMapper {
             application = from.application?.let { ApplicationMapper.map(it) },
             mentions = from.mentions.map(::mapMention),
             tags = from.tags.map(::mapTag),
-            emojis = CustomEmojiMapper.map(from.emojis),
+            emojis = statusEmojis,
             reblogsCount = from.reblogsCount,
             favouritesCount = from.favouritesCount,
             repliesCount = from.repliesCount,
@@ -60,6 +64,7 @@ internal object StatusMapper {
             pinned = from.pinned,
             filtered = from.filtered.map(FilterResultMapper::map),
         )
+    }
 
     private fun mapMention(from: StatusMentionResponse): StatusMention =
         StatusMention(

@@ -1,6 +1,7 @@
 package com.sedsoftware.tackle.domain.model
 
 import com.sedsoftware.tackle.domain.model.type.ShortDateUnit
+import com.sedsoftware.tackle.domain.model.type.StatusInlineContent
 import com.sedsoftware.tackle.domain.model.type.StatusVisibility
 import kotlinx.datetime.LocalDateTime
 
@@ -13,6 +14,7 @@ data class Status(
     val account: Account,
     val content: String,
     val contentAsPlainText: String,
+    val contentInline: List<StatusInlineContent>,
     val visibility: StatusVisibility,
     val sensitive: Boolean,
     val spoilerText: String,

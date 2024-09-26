@@ -50,6 +50,7 @@ class StatusMapperTest : JsonBasedTest() {
             assertThat(pinned).isFalse()
             assertThat(content).isEqualTo("\u003cp\u003eTest post\u003c/p\u003e")
             assertThat(contentAsPlainText).isEqualTo("Test post")
+            assertThat(contentInline).isNotEmpty()
             assertThat(application!!.name).isNotEmpty()
             assertThat(account).isNotNull()
             assertThat(mediaAttachments).isNotEmpty()

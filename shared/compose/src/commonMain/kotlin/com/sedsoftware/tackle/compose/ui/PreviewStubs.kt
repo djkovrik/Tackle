@@ -7,6 +7,7 @@ import com.sedsoftware.tackle.domain.model.Status
 import com.sedsoftware.tackle.domain.model.StatusMention
 import com.sedsoftware.tackle.domain.model.StatusTag
 import com.sedsoftware.tackle.domain.model.type.ShortDateUnit
+import com.sedsoftware.tackle.domain.model.type.StatusInlineContent
 import com.sedsoftware.tackle.domain.model.type.StatusVisibility
 import com.sedsoftware.tackle.utils.extension.toLocalDateCustom
 import com.sedsoftware.tackle.utils.extension.toLocalDateTimeCustom
@@ -57,6 +58,7 @@ internal object PreviewStubs {
         account = accountStub,
         content = "This is some test status content.",
         contentAsPlainText = "This is some test status content.",
+        contentInline = listOf(StatusInlineContent.TextPart("This is some test status content.")),
         visibility = StatusVisibility.PUBLIC,
         sensitive = false,
         spoilerText = "",
@@ -99,11 +101,25 @@ internal object PreviewStubs {
     )
 
     val statusWithEmbeddedContent: Status = statusBase.copy(
-        text = "Status with emoji :blobcat: and hashtag #protip and mention @djkovrik ok",
+        text = "",
         content = "\u003cp\u003eStatus with emoji :blobcat: and hashtag \u003ca href=\"https://mastodon.social/tags/protip\" " +
             "class=\"mention hashtag\" rel=\"tag\"\u003e#\u003cspan\u003eprotip\u003c/span\u003e\u003c/a\u003e and mention " +
             "\u003cspan class=\"h-card\" translate=\"no\"\u003e\u003ca href=\"https://mastodon.social/@djkovrik\" class=\"u-url " +
             "mention\"\u003e@\u003cspan\u003edjkovrik\u003c/span\u003e\u003c/a\u003e\u003c/span\u003e ok\u003c/p\u003e",
+        contentAsPlainText = "Status with emoji :blobcat: and hashtag #protip and mention @djkovrik ok",
+        contentInline = listOf(
+            StatusInlineContent.TextPart("Status with emoji "),
+            StatusInlineContent.EmojiPart(
+                ":blobcat:", CustomEmoji(
+                    shortcode = "blobcat",
+                    url = "https://files.mastodon.social/custom_emojis/images/000/023/743/original/f31b4b0111ad8b08.png",
+                    staticUrl = "https://files.mastodon.social/custom_emojis/images/000/023/743/static/f31b4b0111ad8b08.png",
+                    visibleInPicker = true,
+                    category = ""
+                )
+            ),
+            StatusInlineContent.TextPart(" and hashtag #protip and mention @djkovrik ok"),
+        ),
         mentions = listOf(
             StatusMention(
                 id = "1111",

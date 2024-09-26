@@ -11,6 +11,7 @@ import com.sedsoftware.tackle.domain.model.Search
 import com.sedsoftware.tackle.domain.model.Status
 import com.sedsoftware.tackle.domain.model.type.MediaAttachmentType.IMAGE
 import com.sedsoftware.tackle.domain.model.type.ShortDateUnit
+import com.sedsoftware.tackle.domain.model.type.StatusInlineContent
 import com.sedsoftware.tackle.domain.model.type.StatusVisibility.PUBLIC
 import kotlinx.datetime.LocalDateTime
 
@@ -49,6 +50,7 @@ internal object Responses {
             account = Instances.accountDetails,
             content = "Test content",
             contentAsPlainText = "Test content",
+            contentInline = listOf(StatusInlineContent.TextPart("Test content")),
             visibility = PUBLIC,
             sensitive = false,
             spoilerText = "",
