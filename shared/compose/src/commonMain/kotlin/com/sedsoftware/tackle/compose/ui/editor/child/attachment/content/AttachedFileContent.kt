@@ -49,9 +49,7 @@ import com.sedsoftware.tackle.compose.extension.hasProcessingVideo
 import com.sedsoftware.tackle.compose.extension.hasVideoThumbnail
 import com.sedsoftware.tackle.compose.model.AttachedFilePreviewType
 import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
-import com.sedsoftware.tackle.domain.model.MediaAttachment
 import com.sedsoftware.tackle.domain.model.PlatformFileWrapper
-import com.sedsoftware.tackle.domain.model.type.MediaAttachmentType
 import com.sedsoftware.tackle.editor.attachments.model.AttachedFile
 import com.sedsoftware.tackle.utils.extension.isImage
 import org.jetbrains.compose.resources.painterResource
@@ -377,41 +375,5 @@ private fun AttachedFileContentPlaceholdersPreview() {
                 AttachedFileContent(attachment = image.copy(file = platformFile.copy(mimeType = "abc")))
             }
         }
-    }
-}
-
-@Preview
-@Composable
-private fun AttachedVideoProcessingPreview() {
-    val platformFile = PlatformFileWrapper(
-        name = "test.mp4",
-        extension = "mp4",
-        path = "",
-        mimeType = "video/mpeg",
-        size = 0L,
-        sizeLabel = "123 Mb",
-        readBytes = { ByteArray(0) },
-    )
-
-    val video = AttachedFile(
-        id = "id",
-        file = platformFile,
-        status = AttachedFile.Status.LOADED,
-        uploadProgress = 0.1f,
-        serverCopy = MediaAttachment(
-            id = "id",
-            type = MediaAttachmentType.VIDEO,
-            url = "",
-            previewUrl = "",
-            remoteUrl = "",
-            description = "",
-            blurhash = "",
-            meta = null,
-        )
-    )
-
-
-    TackleScreenPreview {
-        AttachedFileContent(attachment = video)
     }
 }
