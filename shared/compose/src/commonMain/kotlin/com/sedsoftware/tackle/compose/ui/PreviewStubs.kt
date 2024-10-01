@@ -100,7 +100,7 @@ internal object PreviewStubs {
 
     val statusWithEmbeddedContent: Status = statusBase.copy(
         text = "",
-        contentAsPlainText = "Status with emoji :blobcat: and hashtag #protip and mention @djkovrik :lol::kek:" +
+        contentAsPlainText = "Status with emoji :blobcat: and hashtag #protip and mention @djkovrik :lol: :kek:" +
             " Let also add a link like https://google.com here and no schema google.com as well.",
         mentions = listOf(
             StatusMention(

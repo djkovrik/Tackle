@@ -5,18 +5,18 @@ import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.coroutineBootstrapper
 import com.arkivanov.mvikotlin.extensions.coroutines.coroutineExecutorFactory
 import com.sedsoftware.tackle.auth.domain.AuthFlowManager
-import com.sedsoftware.tackle.auth.extension.isValidUrl
-import com.sedsoftware.tackle.auth.extension.normalizeUrl
 import com.sedsoftware.tackle.auth.model.CredentialsState
 import com.sedsoftware.tackle.auth.model.InstanceInfoState
 import com.sedsoftware.tackle.auth.model.ObtainedCredentials
 import com.sedsoftware.tackle.auth.store.AuthStore.Intent
 import com.sedsoftware.tackle.auth.store.AuthStore.Label
 import com.sedsoftware.tackle.auth.store.AuthStore.State
+import com.sedsoftware.tackle.domain.StoreCreate
 import com.sedsoftware.tackle.domain.TackleException.MissedRegistrationData
 import com.sedsoftware.tackle.domain.model.Instance
-import com.sedsoftware.tackle.domain.StoreCreate
 import com.sedsoftware.tackle.utils.extension.isUnauthorized
+import com.sedsoftware.tackle.utils.extension.isValidUrl
+import com.sedsoftware.tackle.utils.extension.toNormalizedUrl
 import com.sedsoftware.tackle.utils.extension.trimUrl
 import com.sedsoftware.tackle.utils.extension.unwrap
 import kotlinx.coroutines.Job
@@ -102,7 +102,7 @@ internal class AuthStoreProvider(
                         if (displayedUrl.isValidUrl()) {
                             dispatch(Msg.ServerInfoLoadingStarted)
 
-                            val normalizedUrl = url.normalizeUrl()
+                            val normalizedUrl = url.toNormalizedUrl()
 
                             unwrap(
                                 result = withContext(ioContext) { manager.getInstanceInfo(normalizedUrl) },

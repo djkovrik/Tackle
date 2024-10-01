@@ -4,13 +4,16 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
 import assertk.assertions.isTrue
+import assertk.assertions.startsWith
 import com.sedsoftware.tackle.domain.TackleException
 import com.sedsoftware.tackle.domain.model.PlatformFileWrapper
 import com.sedsoftware.tackle.utils.extension.focusToOffset
 import com.sedsoftware.tackle.utils.extension.isAudio
 import com.sedsoftware.tackle.utils.extension.isImage
 import com.sedsoftware.tackle.utils.extension.isUnauthorized
+import com.sedsoftware.tackle.utils.extension.isValidUrl
 import com.sedsoftware.tackle.utils.extension.isVideo
+import com.sedsoftware.tackle.utils.extension.toNormalizedUrl
 import com.sedsoftware.tackle.utils.extension.offsetToFocus
 import com.sedsoftware.tackle.utils.extension.orFalse
 import com.sedsoftware.tackle.utils.extension.orZero
@@ -257,5 +260,31 @@ class ExtensionsTest {
         assertThat(resultTopRight).isEqualTo(expectedFocusTopRight)
         assertThat(resultBottomLeft).isEqualTo(expectedFocusBottomLeft)
         assertThat(resultBottomRight).isEqualTo(expectedFocusBottomRight)
+    }
+
+    @Test
+    fun `normalizeUrl should return url`() = runTest {
+        assertThat("test.ru".toNormalizedUrl()).startsWith("https")
+    }
+
+    @Test
+    fun `isValidUrl returns true for valid url`() = runTest {
+        assertThat("test.ru".isValidUrl()).isEqualTo(true)
+        assertThat("abc.def.com".isValidUrl()).isEqualTo(true)
+        assertThat("http://google.com".isValidUrl()).isEqualTo(true)
+        assertThat("https://mastodon.social".isValidUrl()).isEqualTo(true)
+        assertThat("https://mastodon.social/a/b/c".isValidUrl()).isEqualTo(true)
+        assertThat("http://x.ru".isValidUrl()).isEqualTo(true)
+    }
+
+    @Test
+    fun `isValidUrl returns false for invalid url`() = runTest {
+        assertThat("test".isValidUrl()).isEqualTo(false)
+        assertThat(" ".isValidUrl()).isEqualTo(false)
+        assertThat("http:/".isValidUrl()).isEqualTo(false)
+        assertThat("http://".isValidUrl()).isEqualTo(false)
+        assertThat("http://x".isValidUrl()).isEqualTo(false)
+        assertThat("a b c".isValidUrl()).isEqualTo(false)
+        assertThat("test..ru".isValidUrl()).isEqualTo(false)
     }
 }
