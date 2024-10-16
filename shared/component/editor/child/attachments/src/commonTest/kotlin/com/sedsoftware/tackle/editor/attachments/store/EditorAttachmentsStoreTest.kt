@@ -236,6 +236,47 @@ internal class EditorAttachmentsStoreTest :
         assertThat(labels.count { it is EditorAttachmentsStore.Label.ErrorCaught }).isEqualTo(2)
     }
 
+    @Test
+    fun `selected files with different types should throw an exception`() {
+        // given
+        val files = listOf(
+            Instances.imageNormal.copy(name = "test1.jpg"),
+            Instances.videoNormal.copy(name = "video.mp4"),
+        )
+
+        // when
+        store.init()
+        store.accept(EditorAttachmentsStore.Intent.UpdateInstanceConfig(Instances.config))
+        store.accept(EditorAttachmentsStore.Intent.OnFilesSelected(files))
+        assertThat(labels.count { it is EditorAttachmentsStore.Label.ErrorCaught }).isEqualTo(1)
+        assertThat(labels.contains(EditorAttachmentsStore.Label.ErrorCaught(TackleException.AttachmentDifferentType)))
+    }
+
+    @Test
+    fun `selected files with different types and existing selection should throw an exception`() {
+        // given
+        val files1 = listOf(
+            Instances.imageNormal.copy(name = "test1.jpg"),
+        )
+
+        val files2 = listOf(
+            Instances.videoNormal.copy(name = "video.mp4"),
+        )
+
+        // when
+        store.init()
+        store.accept(EditorAttachmentsStore.Intent.UpdateInstanceConfig(Instances.config))
+        store.accept(EditorAttachmentsStore.Intent.OnFilesSelected(files1))
+
+        // then
+        assertThat(labels.count { it is EditorAttachmentsStore.Label.ErrorCaught }).isEqualTo(0)
+        // and when
+        // then
+        store.accept(EditorAttachmentsStore.Intent.OnFilesSelected(files2))
+        assertThat(labels.count { it is EditorAttachmentsStore.Label.ErrorCaught }).isEqualTo(1)
+        assertThat(labels.contains(EditorAttachmentsStore.Label.ErrorCaught(TackleException.AttachmentDifferentType)))
+    }
+
     override fun createStore(): Store<EditorAttachmentsStore.Intent, EditorAttachmentsStore.State, EditorAttachmentsStore.Label> =
         EditorAttachmentsStoreProvider(
             storeFactory = DefaultStoreFactory(),
