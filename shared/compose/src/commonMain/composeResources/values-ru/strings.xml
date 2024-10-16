@@ -23,6 +23,7 @@
     <string name="common_error_file_not_available">Файл недоступен</string>
     <string name="common_error_attachments_limit">Достигнуто максимальное количество вложений</string>
     <string name="common_error_schedule_date">Дата должна быть хотя бы на 10 минут впереди</string>
+    <string name="common_error_attachment_type">Вложенные файлы должны быть одного типа</string>
     <string name="common_error_unknown">Что-то пошло не так</string>
     <string name="common_time_now">сейчас</string>
     <string name="common_time_seconds">сек</string>
