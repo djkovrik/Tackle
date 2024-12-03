@@ -3,9 +3,11 @@ package com.sedsoftware.tackle.compose.ui
 import com.sedsoftware.tackle.domain.model.Account
 import com.sedsoftware.tackle.domain.model.Application
 import com.sedsoftware.tackle.domain.model.CustomEmoji
+import com.sedsoftware.tackle.domain.model.MediaAttachment
 import com.sedsoftware.tackle.domain.model.Status
 import com.sedsoftware.tackle.domain.model.StatusMention
 import com.sedsoftware.tackle.domain.model.StatusTag
+import com.sedsoftware.tackle.domain.model.type.MediaAttachmentType
 import com.sedsoftware.tackle.domain.model.type.ShortDateUnit
 import com.sedsoftware.tackle.domain.model.type.StatusVisibility
 import com.sedsoftware.tackle.utils.extension.toLocalDateCustom
@@ -101,7 +103,7 @@ internal object PreviewStubs {
     val statusWithEmbeddedContent: Status = statusBase.copy(
         text = "",
         contentAsPlainText = "Status with emoji :blobcat: and hashtag #protip and mention @djkovrik :lol: :kek:" +
-            " Let also add a link like https://google.com here and no schema google.com as well.",
+                " Let also add a link like https://google.com here and no schema google.com as well.",
         mentions = listOf(
             StatusMention(
                 id = "1111",
@@ -139,5 +141,16 @@ internal object PreviewStubs {
                 category = ""
             ),
         )
+    )
+
+    val mediaAttachment: MediaAttachment = MediaAttachment(
+        id = "id",
+        type = MediaAttachmentType.UNKNOWN,
+        url = "url",
+        previewUrl = "previewUrl",
+        remoteUrl = "remoteUrl",
+        description = "description",
+        blurhash = "blurhash",
+        meta = null,
     )
 }

@@ -83,7 +83,12 @@ private fun StatusTextPreviewContent() {
     Surface(color = MaterialTheme.colorScheme.background) {
         StatusText(
             status = status,
-            inlinedContent = { Box(modifier = Modifier.fillMaxSize().background(color = Color.Red)) }
+            inlinedContent = {
+                Box(modifier = Modifier
+                    .fillMaxSize()
+                    .background(color = Color.Red)
+                )
+            }
         )
     }
 }
