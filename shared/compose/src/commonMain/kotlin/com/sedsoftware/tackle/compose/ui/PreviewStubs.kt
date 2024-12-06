@@ -150,7 +150,7 @@ internal object PreviewStubs {
         previewUrl = "previewUrl",
         remoteUrl = "remoteUrl",
         description = "description",
-        blurhash = "blurhash",
+        blurhash = "",
         meta = null,
     )
 }

@@ -28,6 +28,7 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import com.sedsoftware.tackle.utils.extension.roundToDecimals
 import org.jetbrains.compose.resources.painterResource
 import tackle.shared.compose.generated.resources.Res
@@ -83,6 +84,7 @@ internal fun TackleProgressIndicator(
             progress = progressValue,
             visible = progressVisible,
             color = indicatorColor,
+            strokeWidth = 2.dp,
             modifier = Modifier
                 .alpha(alpha = progressAlpha)
                 .size(size = size * 0.85f),

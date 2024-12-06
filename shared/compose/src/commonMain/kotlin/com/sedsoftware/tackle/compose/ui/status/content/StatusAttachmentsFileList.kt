@@ -37,9 +37,7 @@ internal fun StatusAttachmentsFileList(
     onCancelClick: () -> Unit = {},
     onDoneClick: () -> Unit = {},
 ) {
-    LazyRow(
-        modifier = modifier,
-    ) {
+    LazyRow(modifier = modifier) {
         itemsIndexed(
             items = attachments,
             key = { index: Int, _ -> index }
