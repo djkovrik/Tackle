@@ -16,11 +16,23 @@ import com.sedsoftware.tackle.editor.poll.Instances
 import com.sedsoftware.tackle.utils.test.StoreTest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.runTest
+import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
 import kotlin.test.Test
 
 internal class EditorPollStoreTest : StoreTest<EditorPollStore.Intent, EditorPollStore.State, Nothing>() {
 
     private val manager: EditorPollManager = EditorPollManager()
+
+    @BeforeTest
+    fun beforeTest() {
+        setUp()
+    }
+
+    @AfterTest
+    fun afterTest() {
+        tearDown()
+    }
 
     @Test
     fun `UpdateInstanceConfig should update state config`() = runTest {

@@ -38,6 +38,8 @@ import com.sedsoftware.tackle.editor.stubs.EditorComponentToolsStub
 import com.sedsoftware.tackle.editor.warning.EditorWarningComponent
 import com.sedsoftware.tackle.utils.test.ComponentTest
 import kotlinx.coroutines.test.runTest
+import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
 import kotlin.test.Test
 
 class EditorComponentTest : ComponentTest<EditorComponent>() {
@@ -65,6 +67,16 @@ class EditorComponentTest : ComponentTest<EditorComponent>() {
     private val storeFactory: DefaultStoreFactory = DefaultStoreFactory()
     private val navigation = SlotNavigation<AttachmentDetailsConfig>()
     private val childComponentOutput: MutableList<ComponentOutput> = mutableListOf()
+
+    @BeforeTest
+    fun beforeTest() {
+        setUp()
+    }
+
+    @AfterTest
+    fun afterTest() {
+        tearDown()
+    }
 
     @Test
     fun `component creation should initialize all available children`() = runTest {

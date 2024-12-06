@@ -16,9 +16,21 @@ import com.sedsoftware.tackle.utils.test.StoreTest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.LocalDate
+import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
 import kotlin.test.Test
 
 internal class EditorEmojisStoreTest : StoreTest<EditorEmojisStore.Intent, EditorEmojisStore.State, EditorEmojisStore.Label>() {
+
+    @BeforeTest
+    fun beforeTest() {
+        setUp()
+    }
+
+    @AfterTest
+    fun afterTest() {
+        tearDown()
+    }
 
     private val api: EditorEmojisApiStub = EditorEmojisApiStub()
     private val db: EditorEmojisDatabaseStub = EditorEmojisDatabaseStub()

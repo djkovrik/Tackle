@@ -15,10 +15,21 @@ import com.sedsoftware.tackle.editor.details.Responses
 import com.sedsoftware.tackle.utils.test.StoreTest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.runTest
+import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
 import kotlin.test.Test
 
-internal class EditorAttachmentDetailsStoreTest :
-    StoreTest<EditorAttachmentDetailsStore.Intent, EditorAttachmentDetailsStore.State, EditorAttachmentDetailsStore.Label>() {
+internal class EditorAttachmentDetailsStoreTest : StoreTest<EditorAttachmentDetailsStore.Intent, EditorAttachmentDetailsStore.State, EditorAttachmentDetailsStore.Label>() {
+
+    @BeforeTest
+    fun beforeTest() {
+        setUp()
+    }
+
+    @AfterTest
+    fun afterTest() {
+        tearDown()
+    }
 
     private val attachmentType: MediaAttachmentType = MediaAttachmentType.IMAGE
     private val attachmentUrl: String = "url"

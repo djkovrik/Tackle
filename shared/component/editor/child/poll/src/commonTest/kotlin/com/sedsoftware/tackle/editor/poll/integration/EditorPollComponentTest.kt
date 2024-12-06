@@ -12,12 +12,24 @@ import com.sedsoftware.tackle.editor.poll.model.PollDuration
 import com.sedsoftware.tackle.editor.poll.Instances
 import com.sedsoftware.tackle.utils.test.ComponentTest
 import kotlinx.coroutines.test.runTest
+import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
 import kotlin.test.Test
 
 class EditorPollComponentTest : ComponentTest<EditorPollComponent>() {
 
     private val activeModel: EditorPollComponent.Model
         get() = component.model.value
+
+    @BeforeTest
+    fun beforeTest() {
+        setUp()
+    }
+
+    @AfterTest
+    fun afterTest() {
+        tearDown()
+    }
 
     @Test
     fun `onDurationPickerRequested should show duration picker`() = runTest {

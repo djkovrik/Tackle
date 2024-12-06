@@ -15,6 +15,8 @@ import com.sedsoftware.tackle.editor.header.stubs.EditorHeaderSettingsStub
 import com.sedsoftware.tackle.editor.header.stubs.EditorHeaderToolsStub
 import com.sedsoftware.tackle.utils.test.ComponentTest
 import kotlinx.coroutines.test.runTest
+import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
 import kotlin.test.Test
 
 class EditorHeaderComponentTest : ComponentTest<EditorHeaderComponent>() {
@@ -23,6 +25,16 @@ class EditorHeaderComponentTest : ComponentTest<EditorHeaderComponent>() {
         get() = component.model.value
 
     private val settings: EditorHeaderSettingsStub = EditorHeaderSettingsStub()
+
+    @BeforeTest
+    fun beforeTest() {
+        setUp()
+    }
+
+    @AfterTest
+    fun afterTest() {
+        tearDown()
+    }
 
     @Test
     fun `onLocalePickerRequested should change locale picker visibility`() = runTest {

@@ -15,6 +15,8 @@ import com.sedsoftware.tackle.editor.details.model.AttachmentParams
 import com.sedsoftware.tackle.editor.details.stubs.EditorAttachmentDetailsApiStub
 import com.sedsoftware.tackle.utils.test.ComponentTest
 import kotlinx.coroutines.test.runTest
+import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
 import kotlin.test.Test
 
 class EditorAttachmentDetailsComponentTest : ComponentTest<EditorAttachmentDetailsComponentDefault>() {
@@ -30,6 +32,16 @@ class EditorAttachmentDetailsComponentTest : ComponentTest<EditorAttachmentDetai
     private val api: EditorAttachmentDetailsApiStub = EditorAttachmentDetailsApiStub()
 
     private var dismissCounter: Int = 0
+
+    @BeforeTest
+    fun beforeTest() {
+        setUp()
+    }
+
+    @AfterTest
+    fun afterTest() {
+        tearDown()
+    }
 
     @Test
     fun `onAttachmentDescriptionInput should update model state`() = runTest {
