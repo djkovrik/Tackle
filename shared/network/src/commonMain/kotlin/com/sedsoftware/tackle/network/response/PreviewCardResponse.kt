@@ -9,6 +9,7 @@ internal class PreviewCardResponse(
     @SerialName("title") val title: String,
     @SerialName("description") val description: String,
     @SerialName("type") val type: String = "",
+    @SerialName("authors") val authors: List<PreviewCardAuthorResponse> = emptyList(),
     @SerialName("author_name") val authorName: String,
     @SerialName("author_url") val authorUrl: String,
     @SerialName("provider_name") val providerName: String,
