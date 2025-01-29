@@ -22,6 +22,7 @@ import com.sedsoftware.tackle.network.response.ScheduledStatusResponse
 import com.sedsoftware.tackle.network.response.SearchResponse
 import com.sedsoftware.tackle.network.response.StatusResponse
 import com.sedsoftware.tackle.utils.DateTimeUtils
+import com.sedsoftware.tackle.utils.extension.orZero
 import io.ktor.client.plugins.onUpload
 import io.ktor.client.request.forms.MultiPartFormDataContent
 import io.ktor.client.request.forms.formData
@@ -89,8 +90,8 @@ internal class TackleAuthorizedApi(
             var currentProgress = 0f
             var realProgress = 0f
 
-            onUpload { sendTotal: Long, contentLength: Long ->
-                realProgress = sendTotal.toFloat() / contentLength.toFloat()
+            onUpload { sendTotal: Long, contentLength: Long? ->
+                realProgress = sendTotal.toFloat() / (contentLength?.toFloat() ?: 1f)
                 if (sendTotal == contentLength || realProgress >= currentProgress + PROGRESS_STEP) {
                     currentProgress += PROGRESS_STEP
                     if (currentProgress > 1f) currentProgress = 1f

@@ -2,43 +2,43 @@
 
 # Android constants
 android-minSdk = "24"
-android-compileSdk = "34"
-android-targetSdk = "34"
+android-compileSdk = "35"
+android-targetSdk = "35"
 
 # Core
-kotlin = "2.0.0"
-compose = "1.6.8"
+kotlin = "2.1.0"
+compose = "1.7.0"
 compose-plugin = "1.6.11"
 agp = "8.2.2"
 
 # AndroidX
-androidx-activityCompose = "1.9.0"
+androidx-activityCompose = "1.10.0"
 androidx-appcompat = "1.7.0"
-androidx-core-ktx = "1.13.1"
+androidx-core-ktx = "1.15.0"
 androidx-material = "1.12.0"
 androidx-preferences = "1.2.1"
 androidx-test-junit = "1.1.5"
 
 # Ark
-decompose = "3.1.0"
-mviKotlin = "4.1.0"
-essenty = "2.1.0"
+decompose = "3.2.2"
+mviKotlin = "4.3.0"
+essenty = "2.4.0"
 
 # Libs
 detekt = "1.23.5"
-kotlinx-coroutines = "1.8.1"
+kotlinx-coroutines = "1.9.0"
 kotlinx-serialization = "1.6.3"
-kotlinx-datetime = "0.6.0"
-multiplatformSettings = "1.1.1"
+kotlinx-datetime = "0.6.1"
+multiplatformSettings = "1.3.0"
 napier = "2.7.1"
-ktor = "2.3.11"
+ktor = "3.0.3"
 sqlDelight = "2.0.2"
-oidc = "0.9.1"
-imageLoader = "1.8.1"
-fileKit = "0.7.0"
-okio = "3.9.0"
+oidc = "0.12.1"
+imageLoader = "1.10.0"
+fileKit = "0.8.8"
+okio = "3.10.2"
 blurhash = "0.3.0"
-ksoup = "0.4.0"
+ksoup = "0.5.0"
 
 # Testing
 assertk = "0.28.1"
