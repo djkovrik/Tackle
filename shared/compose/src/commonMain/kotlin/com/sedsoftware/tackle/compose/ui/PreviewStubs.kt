@@ -4,10 +4,13 @@ import com.sedsoftware.tackle.domain.model.Account
 import com.sedsoftware.tackle.domain.model.Application
 import com.sedsoftware.tackle.domain.model.CustomEmoji
 import com.sedsoftware.tackle.domain.model.MediaAttachment
+import com.sedsoftware.tackle.domain.model.PreviewCard
+import com.sedsoftware.tackle.domain.model.PreviewCardAuthor
 import com.sedsoftware.tackle.domain.model.Status
 import com.sedsoftware.tackle.domain.model.StatusMention
 import com.sedsoftware.tackle.domain.model.StatusTag
 import com.sedsoftware.tackle.domain.model.type.MediaAttachmentType
+import com.sedsoftware.tackle.domain.model.type.PreviewCardType
 import com.sedsoftware.tackle.domain.model.type.ShortDateUnit
 import com.sedsoftware.tackle.domain.model.type.StatusVisibility
 import com.sedsoftware.tackle.utils.extension.toLocalDateCustom
@@ -152,5 +155,77 @@ internal object PreviewStubs {
         description = "description",
         blurhash = "",
         meta = null,
+    )
+
+    val previewCardImage = PreviewCard(
+        url = "https://www.flickr.com/photos/tomfenskephotography/49088768431/",
+        title = "Oregon",
+        description = "",
+        type = PreviewCardType.PHOTO,
+        authors = listOf(
+            PreviewCardAuthor(
+                name = "Tom Fenske Photography",
+                url = "https://www.flickr.com/photos/tomfenskephotography/",
+                account = null,
+            )
+        ),
+        authorName = "Tom Fenske Photography",
+        authorUrl = "https://www.flickr.com/photos/tomfenskephotography/",
+        providerName = "Flickr",
+        providerUrl = "https://www.flickr.com/",
+        html = "",
+        width = 1024,
+        height = 427,
+        image = "https://files.mastodon.social/preview_cards/images/014/287/139/original/651b1c6976817824.jpeg",
+        embedUrl = "https://live.staticflickr.com/65535/49088768431_6a4322b3bb_b.jpg",
+        blurhash = "UnE{@jt6M_oIAhjYs+ayT2WBf9ayRkkDXAj[",
+    )
+
+    val previewCardVideo = PreviewCard(
+        url = "https://www.youtube.com/watch?v=OMv_EPMED8Y",
+        title = "♪ Brand New Friend (Christmas Song!)",
+        description = "",
+        type = PreviewCardType.VIDEO,
+        authors = listOf(
+            PreviewCardAuthor(
+                name = "YOGSCAST Lewis & Simon",
+                url = "https://www.youtube.com/user/BlueXephos",
+                account = null,
+            )
+        ),
+        authorName = "YOGSCAST Lewis & Simon",
+        authorUrl = "https://www.youtube.com/user/BlueXephos",
+        providerName = "YouTube",
+        providerUrl = "https://www.youtube.com/",
+        html = "",
+        width = 480,
+        height = 270,
+        image = "https://files.mastodon.social/preview_cards/images/014/179/145/original/9cf4b7cf5567b569.jpeg",
+        embedUrl = "",
+        blurhash = "UvK0HNkV,:s9xBR%njog0fo2W=WBS5ozofV@",
+    )
+
+    val previewCardLink = PreviewCard(
+        url = "https://www.nbcnews.com/specials/plan-your-vote-2022-elections/index.html",
+        title = "Plan Your Vote: 2022 Elections",
+        description = "Everything you need to know about the voting rules where you live, including registration, mail-in voting, changes since 2020, and more.",
+        type = PreviewCardType.LINK,
+        authors = listOf(
+            PreviewCardAuthor(
+                name = "NBC News",
+                url = "",
+                account = null,
+            )
+        ),
+        authorName = "NBC News",
+        authorUrl = "",
+        providerName = "NBC News",
+        providerUrl = "",
+        html = "",
+        width = 400,
+        height = 225,
+        image = "https://files.mastodon.social/cache/preview_cards/images/045/027/478/original/0783d5e91a14fd49.jpeg",
+        embedUrl = "",
+        blurhash = "UcQmF#ay~qofj[WBj[j[~qof9Fayofofayay",
     )
 }

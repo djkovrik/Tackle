@@ -7,8 +7,8 @@ android-targetSdk = "35"
 
 # Core
 kotlin = "2.1.0"
-compose = "1.7.0"
-compose-plugin = "1.6.11"
+compose = "1.7.3"
+compose-plugin = "1.7.3"
 agp = "8.2.2"
 
 # AndroidX
