@@ -141,7 +141,7 @@ private fun IconButtonWithText(
         horizontalArrangement = Arrangement.Center,
         modifier = modifier
             .height(height = BUTTON_SIZE.dp)
-            .clip(shape = RoundedCornerShape(size = 32.dp))
+            .clip(shape = MaterialTheme.shapes.extraLarge)
             .alsoIf(
                 enabled,
                 Modifier.clickableOnce(onClick = onClick)

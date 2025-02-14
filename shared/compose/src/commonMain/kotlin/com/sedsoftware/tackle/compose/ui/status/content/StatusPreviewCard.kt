@@ -1,12 +1,11 @@
 package com.sedsoftware.tackle.compose.ui.status.content
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -23,21 +22,6 @@ import com.sedsoftware.tackle.compose.ui.PreviewStubs
 import com.sedsoftware.tackle.compose.widget.TackleImage
 import com.sedsoftware.tackle.domain.model.PreviewCard
 
-//val url: String,
-//val title: String,
-//val description: String,
-//val type: PreviewCardType,
-//val authorName: String,
-//val authorUrl: String,
-//val providerName: String,
-//val providerUrl: String,
-//val html: String,
-//val width: Int,
-//val height: Int,
-//val image: String,
-//val embedUrl: String,
-//val blurhash: String,
-
 @Composable
 internal fun StatusPreviewCard(
     card: PreviewCard,
@@ -48,7 +32,7 @@ internal fun StatusPreviewCard(
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.tertiaryContainer,
         ),
-        modifier = modifier,
+        modifier = modifier.clickable { onUrlClick.invoke(card.url) },
     ) {
         Column(modifier = Modifier.padding(all = 16.dp)) {
             Text(
@@ -80,7 +64,7 @@ internal fun StatusPreviewCard(
                             1f
                         },
                     ),
-                    modifier = Modifier.clip(shape = RoundedCornerShape(size = 4.dp)),
+                    modifier = Modifier.clip(shape = MaterialTheme.shapes.small),
                 )
             }
 

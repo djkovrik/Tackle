@@ -93,7 +93,7 @@ private fun StatusAttachmentGalleryItem(
 ) {
     Box(
         modifier = modifier
-            .clip(shape = RoundedCornerShape(size = 8.dp))
+            .clip(shape = MaterialTheme.shapes.extraSmall)
             .border(
                 width = 1.dp,
                 color = if (selected) {
@@ -101,7 +101,7 @@ private fun StatusAttachmentGalleryItem(
                 } else {
                     MaterialTheme.colorScheme.surface.copy(alpha = 0.1f)
                 },
-                shape = RoundedCornerShape(size = 8.dp)
+                shape = MaterialTheme.shapes.extraSmall,
             )
             .clickable(onClick = onSelect)
     ) {

@@ -53,7 +53,7 @@ private fun CustomPollDurationDialogContent(
 ) {
     Card(
         modifier = Modifier.padding(all = 16.dp),
-        shape = RoundedCornerShape(size = 16.dp),
+        shape = MaterialTheme.shapes.small
     ) {
         Column(modifier = Modifier.width(width = 260.dp)) {
             Text(

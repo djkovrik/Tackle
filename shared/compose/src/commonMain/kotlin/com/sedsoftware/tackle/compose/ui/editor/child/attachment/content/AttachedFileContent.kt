@@ -115,8 +115,6 @@ internal fun AttachedFileContent(
         }
     }
 
-    val containerShape = RoundedCornerShape(size = 8.dp)
-
     Column(
         modifier = modifier
             .border(
@@ -124,9 +122,9 @@ internal fun AttachedFileContent(
                 color = MaterialTheme.colorScheme.primary.copy(
                     alpha = 0.25f,
                 ),
-                shape = containerShape
+                shape = MaterialTheme.shapes.medium
             )
-            .clip(shape = containerShape),
+            .clip(shape = MaterialTheme.shapes.medium),
     ) {
         // Image
         Box(

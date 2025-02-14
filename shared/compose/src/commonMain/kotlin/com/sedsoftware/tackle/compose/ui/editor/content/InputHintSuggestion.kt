@@ -129,7 +129,7 @@ private fun InputHintContainer(
         colors = CardDefaults.cardColors(
             containerColor = containerColor,
         ),
-        shape = RoundedCornerShape(size = 32.dp),
+        shape = MaterialTheme.shapes.extraLarge,
     ) {
         Box(
             contentAlignment = Alignment.Center,

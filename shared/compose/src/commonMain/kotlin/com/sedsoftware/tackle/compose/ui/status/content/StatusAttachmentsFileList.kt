@@ -73,7 +73,7 @@ private fun StatusAttachmentNoPreview(
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
-            .clip(shape = RoundedCornerShape(size = 8.dp))
+            .clip(shape = MaterialTheme.shapes.extraSmall)
             .background(color = MaterialTheme.colorScheme.surfaceVariant)
             .padding(start = 8.dp)
     ) {

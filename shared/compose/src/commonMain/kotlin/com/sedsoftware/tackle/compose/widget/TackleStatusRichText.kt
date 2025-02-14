@@ -15,26 +15,30 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.em
 import com.sedsoftware.tackle.compose.custom.CustomClickableText
 import com.sedsoftware.tackle.domain.model.CustomEmoji
-import com.sedsoftware.tackle.domain.model.Status
 import com.sedsoftware.tackle.utils.TackleRegex
 
 @Composable
 fun TackleStatusRichText(
-    status: Status,
+    content: String,
+    emojis: List<CustomEmoji>,
     modifier: Modifier = Modifier,
     style: TextStyle = MaterialTheme.typography.bodyMedium,
     textColor: Color = MaterialTheme.colorScheme.onBackground,
     highlightColor: Color = MaterialTheme.colorScheme.secondary,
+    softWrap: Boolean = true,
+    overflow: TextOverflow = TextOverflow.Clip,
+    maxLines: Int = Int.MAX_VALUE,
     inlinedContent: @Composable (String) -> Unit = {},
     onClick: (String) -> Unit = {},
 ) {
     val inlineContent: Map<String, InlineTextContent> = remember {
         buildMap {
-            status.emojis.forEach { emoji: CustomEmoji ->
+            emojis.forEach { emoji: CustomEmoji ->
                 put(
                     ":${emoji.shortcode}:",
                     InlineTextContent(
@@ -51,7 +55,7 @@ fun TackleStatusRichText(
         }
     }
 
-    val annotatedStringWithEmojis = buildAnnotatedStringWithEmojis(status.contentAsPlainText, textColor)
+    val annotatedStringWithEmojis = buildAnnotatedStringWithEmojis(content, textColor)
     val annotatedStringData = buildAnnotatedStringWithHashTagsAndMentions(annotatedStringWithEmojis, highlightColor)
 
     CustomClickableText(
@@ -59,6 +63,9 @@ fun TackleStatusRichText(
         style = style,
         modifier = modifier,
         inlineContent = inlineContent,
+        softWrap = softWrap,
+        overflow = overflow,
+        maxLines = maxLines,
         onClick = { position ->
             val annotatedStringRange = annotatedStringData.second.first { it.start < position && position < it.end }
             if (annotatedStringRange.tag == "link") {

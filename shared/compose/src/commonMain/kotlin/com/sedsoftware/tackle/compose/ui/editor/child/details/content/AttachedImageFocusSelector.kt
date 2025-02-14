@@ -82,7 +82,7 @@ internal fun AttachedImageFocusSelector(
             ),
             modifier = modifier
                 .fillMaxSize()
-                .clip(shape = RoundedCornerShape(size = 4.dp)),
+                .clip(shape = MaterialTheme.shapes.extraSmall),
         )
 
         FocusPointerIndicator(

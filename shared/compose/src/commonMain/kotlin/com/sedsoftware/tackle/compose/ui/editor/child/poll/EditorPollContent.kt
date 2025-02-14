@@ -82,9 +82,12 @@ internal fun EditorPollContent(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
                     .height(height = 42.dp)
-                    .clip(shape = RoundedCornerShape(size = 32.dp))
+                    .clip(shape = MaterialTheme.shapes.extraLarge)
                     .clickable(onClick = onDurationPickerCall)
-                    .background(color = containerColor, shape = RoundedCornerShape(size = 32.dp)),
+                    .background(
+                        color = containerColor,
+                        shape = MaterialTheme.shapes.extraLarge
+                    ),
             ) {
                 Text(
                     text = stringResource(resource = model.duration.getTitle()),
