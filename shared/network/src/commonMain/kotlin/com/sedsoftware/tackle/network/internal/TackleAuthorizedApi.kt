@@ -22,7 +22,6 @@ import com.sedsoftware.tackle.network.response.ScheduledStatusResponse
 import com.sedsoftware.tackle.network.response.SearchResponse
 import com.sedsoftware.tackle.network.response.StatusResponse
 import com.sedsoftware.tackle.utils.DateTimeUtils
-import com.sedsoftware.tackle.utils.extension.orZero
 import io.ktor.client.plugins.onUpload
 import io.ktor.client.request.forms.MultiPartFormDataContent
 import io.ktor.client.request.forms.formData
