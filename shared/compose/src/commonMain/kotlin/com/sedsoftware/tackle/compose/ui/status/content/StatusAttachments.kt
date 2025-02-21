@@ -29,9 +29,6 @@ internal fun StatusAttachments(
         StatusAttachmentsImageList(
             attachments = attachments,
             modifier = modifier,
-            onDownloadClick = onDownloadClick,
-            onCancelClick = onCancelClick,
-            onDoneClick = onDoneClick
         )
     }
 }

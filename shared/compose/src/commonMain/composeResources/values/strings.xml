@@ -115,4 +115,8 @@
     <string name="status_sensitive_image_content_description">Toggle sensitive image visibility</string>
     <string name="status_info_created">Created</string>
     <string name="status_info_edited">Edited</string>
+    <string name="status_poll_active_till">Poll active till:</string>
+    <string name="status_poll_completed">Poll completed</string>
+    <string name="status_poll_multi_choice">Multiple choice available</string>
+    <string name="status_poll_voters">Voters:</string>
 </resources>

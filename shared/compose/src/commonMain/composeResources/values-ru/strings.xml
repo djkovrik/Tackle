@@ -112,4 +112,8 @@
     <string name="status_sensitive_image_content_description">Переключить видимость деликатного контента</string>
     <string name="status_info_created">Создан</string>
     <string name="status_info_edited">Отредактирован</string>
+    <string name="status_poll_active_till">Опрос активен до:</string>
+    <string name="status_poll_completed">Опрос завершен</string>
+    <string name="status_poll_multi_choice">Доступен множественный выбор</string>
+    <string name="status_poll_voters">Проголосовавших:</string>
 </resources>

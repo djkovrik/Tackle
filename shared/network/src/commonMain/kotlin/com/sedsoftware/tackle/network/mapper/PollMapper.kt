@@ -4,6 +4,7 @@ import com.sedsoftware.tackle.domain.model.Poll
 import com.sedsoftware.tackle.domain.model.PollOption
 import com.sedsoftware.tackle.network.response.PollOptionResponse
 import com.sedsoftware.tackle.network.response.PollResponse
+import com.sedsoftware.tackle.utils.DateTimeUtils
 import com.sedsoftware.tackle.utils.extension.toLocalDateTimeCustom
 
 internal object PollMapper {
@@ -12,6 +13,7 @@ internal object PollMapper {
         Poll(
             id = from.id,
             expiresAt = from.expiresAt.toLocalDateTimeCustom(),
+            expiresAtStr = DateTimeUtils.prettify(from.expiresAt.toLocalDateTimeCustom()),
             expired = from.expired,
             multiple = from.multiple,
             votesCount = from.votesCount,

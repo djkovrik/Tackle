@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun TackleCheckbox(
     checked: Boolean,
+    expired: Boolean,
     size: Dp,
     borderWidth: Dp,
     backgroundColorUnchecked: Color,
@@ -43,10 +44,12 @@ fun TackleCheckbox(
             )
             .border(
                 width = borderWidth,
-                color = if (checked) borderColorChecked else borderColorUnchecked,
+                color = (if (checked) borderColorChecked else borderColorUnchecked).copy(
+                    alpha = if (expired) 0.25f else 1f,
+                ),
                 shape = CircleShape,
             )
-            .clickable { onCheckedChange(!checked) },
+            .clickable { if (!expired) onCheckedChange(!checked) },
         contentAlignment = Alignment.Center,
     ) {
         AnimatedVisibility(

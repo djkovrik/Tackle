@@ -45,7 +45,8 @@ internal fun StatusText(
     }
 ) {
     TackleStatusRichText(
-        status = status,
+        content = status.contentAsPlainText,
+        emojis = status.emojis,
         modifier = modifier,
         style = style,
         textColor = textColor,

@@ -4,6 +4,8 @@ import com.sedsoftware.tackle.domain.model.Account
 import com.sedsoftware.tackle.domain.model.Application
 import com.sedsoftware.tackle.domain.model.CustomEmoji
 import com.sedsoftware.tackle.domain.model.MediaAttachment
+import com.sedsoftware.tackle.domain.model.Poll
+import com.sedsoftware.tackle.domain.model.PollOption
 import com.sedsoftware.tackle.domain.model.PreviewCard
 import com.sedsoftware.tackle.domain.model.PreviewCardAuthor
 import com.sedsoftware.tackle.domain.model.Status
@@ -227,5 +229,54 @@ internal object PreviewStubs {
         image = "https://files.mastodon.social/cache/preview_cards/images/045/027/478/original/0783d5e91a14fd49.jpeg",
         embedUrl = "",
         blurhash = "UcQmF#ay~qofj[WBj[j[~qof9Fayofofayay",
+    )
+
+    val pollNotVoted = Poll(
+        id = "123",
+        expiresAt = LocalDateTime.parse("2025-01-02T23:44:57.120"),
+        expiresAtStr = "02.01.2025 23:44",
+        expired = false,
+        multiple = true,
+        votesCount = 100,
+        votersCount = 100,
+        options = listOf(
+            PollOption(title = "This is the first poll option and some very long text here to check how it looks", 17),
+            PollOption(title = "Option 2", 54),
+            PollOption(title = "Option with emoji :kek: here", 29),
+        ),
+        emojis = listOf(
+            CustomEmoji(
+                shortcode = "kek",
+                url = "https://files.mastodon.social/custom_emojis/images/000/023/743/original/f31b4b0111ad8b08.png",
+                staticUrl = "https://files.mastodon.social/custom_emojis/images/000/023/743/static/f31b4b0111ad8b08.png",
+                visibleInPicker = true,
+                category = ""
+            )
+        ),
+        voted = false,
+        hideTotals = false,
+        ownVotes = emptyList(),
+    )
+
+    val pollNotVotedExpired = pollNotVoted.copy(
+        multiple = false,
+        expiresAt = LocalDateTime.parse("2023-01-02T23:44:57.120"),
+        expiresAtStr = "02.01.2023 23:44",
+        expired = true,
+    )
+
+    val pollVoted = pollNotVoted.copy(
+        multiple = true,
+        voted = true,
+        ownVotes = listOf(1),
+    )
+
+    val pollVotedExpired = pollNotVoted.copy(
+        multiple = false,
+        voted = true,
+        ownVotes = listOf(1),
+        expiresAt = LocalDateTime.parse("2023-01-02T23:44:57.120"),
+        expiresAtStr = "02.01.2023 23:44",
+        expired = true,
     )
 }
