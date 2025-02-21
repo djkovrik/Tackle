@@ -6,23 +6,15 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.format
+import kotlinx.datetime.format.DateTimeFormat
 import kotlinx.datetime.format.Padding
 import kotlinx.datetime.format.char
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 
 object DateTimeUtils {
-    fun getDateTimeFromPickers(millis: Long, hour: Int, minute: Int, timeZone: TimeZone = TimeZone.currentSystemDefault()): LocalDateTime {
-        val selected: LocalDate = Instant.fromEpochMilliseconds(millis).toLocalDateTime(timeZone = timeZone).date
-        return with(selected) { LocalDateTime(year, month, dayOfMonth, hour, minute) }
-    }
-
-    fun getDisplayingLabelFromPickers(millis: Long, hour: Int, minute: Int): String {
-        if (millis < 0L || hour < 0 || minute < 0) return ""
-
-        val selectedDateTime: LocalDateTime = getDateTimeFromPickers(millis, hour, minute)
-
-        val outputFormat = LocalDateTime.Format {
+    private val dateTimeFormatter: DateTimeFormat<LocalDateTime> by lazy {
+        LocalDateTime.Format {
             dayOfMonth(padding = Padding.ZERO)
             char('.')
             monthNumber(padding = Padding.ZERO)
@@ -33,8 +25,17 @@ object DateTimeUtils {
             char(':')
             minute(padding = Padding.ZERO)
         }
+    }
 
-        return selectedDateTime.format(outputFormat)
+    fun getDateTimeFromPickers(millis: Long, hour: Int, minute: Int, timeZone: TimeZone = TimeZone.currentSystemDefault()): LocalDateTime {
+        val selected: LocalDate = Instant.fromEpochMilliseconds(millis).toLocalDateTime(timeZone = timeZone).date
+        return with(selected) { LocalDateTime(year, month, dayOfMonth, hour, minute) }
+    }
+
+    fun getDisplayingLabelFromPickers(millis: Long, hour: Int, minute: Int): String {
+        if (millis < 0L || hour < 0 || minute < 0) return ""
+        val selectedDateTime: LocalDateTime = getDateTimeFromPickers(millis, hour, minute)
+        return selectedDateTime.format(dateTimeFormatter)
     }
 
     fun getAsDateTimeUTC(fromDate: LocalDateTime, fromTimeZone: TimeZone = TimeZone.currentSystemDefault()): LocalDateTime {
@@ -67,6 +68,10 @@ object DateTimeUtils {
             seconds > SECONDS_AFTER_NOW -> ShortDateUnit.Seconds(seconds.toInt())
             else -> ShortDateUnit.Now
         }
+    }
+
+    fun prettify(from: LocalDateTime): String {
+        return from.format(dateTimeFormatter)
     }
 
     private const val SECONDS_PER_MINUTE = 60

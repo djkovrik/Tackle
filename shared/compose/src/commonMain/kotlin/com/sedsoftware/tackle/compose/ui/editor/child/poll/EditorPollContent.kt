@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.MaterialTheme
@@ -82,9 +81,12 @@ internal fun EditorPollContent(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
                     .height(height = 42.dp)
-                    .clip(shape = RoundedCornerShape(size = 32.dp))
+                    .clip(shape = MaterialTheme.shapes.extraLarge)
                     .clickable(onClick = onDurationPickerCall)
-                    .background(color = containerColor, shape = RoundedCornerShape(size = 32.dp)),
+                    .background(
+                        color = containerColor,
+                        shape = MaterialTheme.shapes.extraLarge
+                    ),
             ) {
                 Text(
                     text = stringResource(resource = model.duration.getTitle()),

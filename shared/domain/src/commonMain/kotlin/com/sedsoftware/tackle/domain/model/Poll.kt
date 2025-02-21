@@ -5,6 +5,7 @@ import kotlinx.datetime.LocalDateTime
 data class Poll(
     val id: String,
     val expiresAt: LocalDateTime,
+    val expiresAtStr: String,
     val expired: Boolean,
     val multiple: Boolean,
     val votesCount: Long,

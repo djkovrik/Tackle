@@ -26,7 +26,15 @@
     <string name="common_error_file_not_available">File not available</string>
     <string name="common_error_attachments_limit">Max possible attachments already</string>
     <string name="common_error_schedule_date">Date must be at least 10 minutes ahead</string>
+    <string name="common_error_attachment_type">Attached files must have the same type</string>
     <string name="common_error_unknown">Something went wrong</string>
+    <string name="common_time_now">now</string>
+    <string name="common_time_seconds">sec</string>
+    <string name="common_time_minutes">min</string>
+    <string name="common_time_hours">hr</string>
+    <string name="common_time_days">d</string>
+    <string name="common_time_months">mon</string>
+    <string name="common_time_years">y</string>
 
     <!-- Auth component -->
     <string name="auth_server_address">Server address</string>
@@ -105,4 +113,10 @@
     <!-- Status -->
     <string name="status_warning_image">Author flagged this image as sensitive content</string>
     <string name="status_sensitive_image_content_description">Toggle sensitive image visibility</string>
+    <string name="status_info_created">Created</string>
+    <string name="status_info_edited">Edited</string>
+    <string name="status_poll_active_till">Poll active till:</string>
+    <string name="status_poll_completed">Poll completed</string>
+    <string name="status_poll_multi_choice">Multiple choice available</string>
+    <string name="status_poll_voters">Voters:</string>
 </resources>

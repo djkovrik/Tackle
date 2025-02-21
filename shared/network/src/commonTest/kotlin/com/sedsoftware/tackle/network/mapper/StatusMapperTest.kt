@@ -5,9 +5,12 @@ import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
 import assertk.assertions.isNotEmpty
+import assertk.assertions.isNotEqualTo
 import assertk.assertions.isNotNull
+import assertk.assertions.isNull
 import assertk.assertions.isTrue
 import com.sedsoftware.tackle.domain.model.Status
+import com.sedsoftware.tackle.domain.model.type.ShortDateUnit
 import com.sedsoftware.tackle.domain.model.type.StatusVisibility
 import com.sedsoftware.tackle.network.response.StatusResponse
 import com.sedsoftware.tackle.utils.test.JsonBasedTest
@@ -26,6 +29,9 @@ class StatusMapperTest : JsonBasedTest() {
         with(mapped) {
             assertThat(id).isNotEmpty()
             assertThat(createdAt).isNotNull()
+            assertThat(createdAtShort).isNotEqualTo(ShortDateUnit.Now)
+            assertThat(editedAt).isNull()
+            assertThat(editedAtShort).isNull()
             assertThat(inReplyToId).isEmpty()
             assertThat(inReplyToAccountId).isEmpty()
             assertThat(sensitive).isTrue()
@@ -42,7 +48,8 @@ class StatusMapperTest : JsonBasedTest() {
             assertThat(muted).isFalse()
             assertThat(bookmarked).isFalse()
             assertThat(pinned).isFalse()
-            assertThat(content).isNotEmpty()
+            assertThat(content).isEqualTo("\u003cp\u003eTest post\u003c/p\u003e")
+            assertThat(contentAsPlainText).isEqualTo("Test post")
             assertThat(application!!.name).isNotEmpty()
             assertThat(account).isNotNull()
             assertThat(mediaAttachments).isNotEmpty()

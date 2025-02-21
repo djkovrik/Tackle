@@ -28,6 +28,8 @@ import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
+import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
 import kotlin.test.Test
 
 internal class EditorStoreTest : StoreTest<EditorStore.Intent, EditorStore.State, EditorStore.Label>() {
@@ -48,6 +50,16 @@ internal class EditorStoreTest : StoreTest<EditorStore.Intent, EditorStore.State
 
     private val todayMock: LocalDateTime by lazy {
         LocalDateTime.parse("2024-08-12T12:34:56.120")
+    }
+
+    @BeforeTest
+    fun beforeTest() {
+        setUp()
+    }
+
+    @AfterTest
+    fun afterTest() {
+        tearDown()
     }
 
     @Test

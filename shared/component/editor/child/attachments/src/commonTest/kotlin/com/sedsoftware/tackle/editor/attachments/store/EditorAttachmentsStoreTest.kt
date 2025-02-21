@@ -19,10 +19,21 @@ import com.sedsoftware.tackle.editor.attachments.stubs.EditorAttachmentsApiStub
 import com.sedsoftware.tackle.utils.test.StoreTest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.runTest
+import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
 import kotlin.test.Test
 
-internal class EditorAttachmentsStoreTest :
-    StoreTest<EditorAttachmentsStore.Intent, EditorAttachmentsStore.State, EditorAttachmentsStore.Label>() {
+internal class EditorAttachmentsStoreTest : StoreTest<EditorAttachmentsStore.Intent, EditorAttachmentsStore.State, EditorAttachmentsStore.Label>() {
+
+    @BeforeTest
+    fun beforeTest() {
+        setUp()
+    }
+
+    @AfterTest
+    fun afterTest() {
+        tearDown()
+    }
 
     private val api: EditorAttachmentsApiStub = EditorAttachmentsApiStub()
     private val manager: EditorAttachmentsManager = EditorAttachmentsManager(api)
@@ -69,30 +80,35 @@ internal class EditorAttachmentsStoreTest :
         assertThat(store.state.selectedFiles.size).isEqualTo(files.size)
         assertThat(store.state.attachmentsAtLimit).isTrue()
         assertThat(store.state.selectedFiles.hasPending).isFalse()
-        assertThat(labels).contains(EditorAttachmentsStore.Label.PendingAttachmentsCountUpdated(files.size))
+        assertThat(labels).contains(
+            EditorAttachmentsStore.Label.PendingAttachmentsCountUpdated(
+                files.size
+            )
+        )
     }
 
     @Test
-    fun `three correct files with one incorrect should produce overall loaded as three with exception`() = runTest {
-        // given
-        val files = listOf(
-            Instances.imageNormal.copy(name = "test1.jpg"),
-            Instances.imageNormal.copy(name = "test2.jpg"),
-            Instances.imageBig.copy(name = "test3.jpg"),
-            Instances.imageNormal.copy(name = "test4.jpg"),
-        )
-        // when
-        store.init()
-        store.accept(EditorAttachmentsStore.Intent.UpdateInstanceConfig(Instances.config))
-        store.accept(EditorAttachmentsStore.Intent.OnFilesSelected(files))
-        // then
-        assertThat(store.state.selectedFiles.size).isEqualTo(files.size - 1)
-        assertThat(store.state.attachmentsAtLimit).isFalse()
-        assertThat(store.state.selectedFiles.hasPending).isFalse()
-        assertThat(labels).isNotEmpty()
-        assertThat((labels.find { it is EditorAttachmentsStore.Label.ErrorCaught } as EditorAttachmentsStore.Label.ErrorCaught).throwable)
-            .hasClass(TackleException.FileSizeExceeded::class)
-    }
+    fun `three correct files with one incorrect should produce overall loaded as three with exception`() =
+        runTest {
+            // given
+            val files = listOf(
+                Instances.imageNormal.copy(name = "test1.jpg"),
+                Instances.imageNormal.copy(name = "test2.jpg"),
+                Instances.imageBig.copy(name = "test3.jpg"),
+                Instances.imageNormal.copy(name = "test4.jpg"),
+            )
+            // when
+            store.init()
+            store.accept(EditorAttachmentsStore.Intent.UpdateInstanceConfig(Instances.config))
+            store.accept(EditorAttachmentsStore.Intent.OnFilesSelected(files))
+            // then
+            assertThat(store.state.selectedFiles.size).isEqualTo(files.size - 1)
+            assertThat(store.state.attachmentsAtLimit).isFalse()
+            assertThat(store.state.selectedFiles.hasPending).isFalse()
+            assertThat(labels).isNotEmpty()
+            assertThat((labels.find { it is EditorAttachmentsStore.Label.ErrorCaught } as EditorAttachmentsStore.Label.ErrorCaught).throwable)
+                .hasClass(TackleException.FileSizeExceeded::class)
+        }
 
     @Test
     fun `six correct files should produce overall loaded as four with exception`() = runTest {
@@ -153,7 +169,9 @@ internal class EditorAttachmentsStoreTest :
         store.accept(EditorAttachmentsStore.Intent.UpdateInstanceConfig(Instances.config))
         store.accept(EditorAttachmentsStore.Intent.OnFilesSelected(files))
         // then
-        assertThat(store.state.selectedFiles.count { it.status == AttachedFile.Status.ERROR }).isEqualTo(files.size)
+        assertThat(store.state.selectedFiles.count { it.status == AttachedFile.Status.ERROR }).isEqualTo(
+            files.size
+        )
     }
 
     @Test
@@ -175,7 +193,11 @@ internal class EditorAttachmentsStoreTest :
         store.accept(EditorAttachmentsStore.Intent.OnFileDeleted(fileToDelete.id))
         // then
         assertThat(store.state.selectedFiles).containsNone(fileToDelete)
-        assertThat(labels).contains(EditorAttachmentsStore.Label.PendingAttachmentsCountUpdated(files.size - 1))
+        assertThat(labels).contains(
+            EditorAttachmentsStore.Label.PendingAttachmentsCountUpdated(
+                files.size - 1
+            )
+        )
     }
 
     @Test
@@ -198,13 +220,17 @@ internal class EditorAttachmentsStoreTest :
         api.responseWithException = true
         store.accept(EditorAttachmentsStore.Intent.OnFilesSelected(files2))
         // then
-        assertThat(store.state.selectedFiles.count { it.status == AttachedFile.Status.ERROR }).isEqualTo(files2.size)
+        assertThat(store.state.selectedFiles.count { it.status == AttachedFile.Status.ERROR }).isEqualTo(
+            files2.size
+        )
         // and when
         api.responseWithException = false
         val target = store.state.selectedFiles.first { it.status == AttachedFile.Status.ERROR }
         store.accept(EditorAttachmentsStore.Intent.OnFileRetry(target.id))
         // then
-        assertThat(store.state.selectedFiles.count { it.status == AttachedFile.Status.ERROR }).isEqualTo(0)
+        assertThat(store.state.selectedFiles.count { it.status == AttachedFile.Status.ERROR }).isEqualTo(
+            0
+        )
     }
 
     @Test
@@ -227,13 +253,56 @@ internal class EditorAttachmentsStoreTest :
         api.responseWithException = true
         store.accept(EditorAttachmentsStore.Intent.OnFilesSelected(files2))
         // then
-        assertThat(store.state.selectedFiles.count { it.status == AttachedFile.Status.ERROR }).isEqualTo(files2.size)
+        assertThat(store.state.selectedFiles.count { it.status == AttachedFile.Status.ERROR }).isEqualTo(
+            files2.size
+        )
         // and when
         api.responseWithException = true
         val target = store.state.selectedFiles.first { it.status == AttachedFile.Status.ERROR }
         store.accept(EditorAttachmentsStore.Intent.OnFileRetry(target.id))
         // then
         assertThat(labels.count { it is EditorAttachmentsStore.Label.ErrorCaught }).isEqualTo(2)
+    }
+
+    @Test
+    fun `selected files with different types should throw an exception`() {
+        // given
+        val files = listOf(
+            Instances.imageNormal.copy(name = "test1.jpg"),
+            Instances.videoNormal.copy(name = "video.mp4"),
+        )
+
+        // when
+        store.init()
+        store.accept(EditorAttachmentsStore.Intent.UpdateInstanceConfig(Instances.config))
+        store.accept(EditorAttachmentsStore.Intent.OnFilesSelected(files))
+        assertThat(labels.count { it is EditorAttachmentsStore.Label.ErrorCaught }).isEqualTo(1)
+        assertThat(labels.contains(EditorAttachmentsStore.Label.ErrorCaught(TackleException.AttachmentDifferentType)))
+    }
+
+    @Test
+    fun `selected files with different types and existing selection should throw an exception`() {
+        // given
+        val files1 = listOf(
+            Instances.imageNormal.copy(name = "test1.jpg"),
+        )
+
+        val files2 = listOf(
+            Instances.videoNormal.copy(name = "video.mp4"),
+        )
+
+        // when
+        store.init()
+        store.accept(EditorAttachmentsStore.Intent.UpdateInstanceConfig(Instances.config))
+        store.accept(EditorAttachmentsStore.Intent.OnFilesSelected(files1))
+
+        // then
+        assertThat(labels.count { it is EditorAttachmentsStore.Label.ErrorCaught }).isEqualTo(0)
+        // and when
+        // then
+        store.accept(EditorAttachmentsStore.Intent.OnFilesSelected(files2))
+        assertThat(labels.count { it is EditorAttachmentsStore.Label.ErrorCaught }).isEqualTo(1)
+        assertThat(labels.contains(EditorAttachmentsStore.Label.ErrorCaught(TackleException.AttachmentDifferentType)))
     }
 
     override fun createStore(): Store<EditorAttachmentsStore.Intent, EditorAttachmentsStore.State, EditorAttachmentsStore.Label> =

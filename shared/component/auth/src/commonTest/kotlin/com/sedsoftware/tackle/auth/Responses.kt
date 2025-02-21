@@ -3,8 +3,8 @@ package com.sedsoftware.tackle.auth
 import com.sedsoftware.tackle.domain.model.Account
 import com.sedsoftware.tackle.domain.model.Application
 import com.sedsoftware.tackle.domain.model.Instance
-import com.sedsoftware.tackle.utils.extension.toLocalDate
-import com.sedsoftware.tackle.utils.extension.toLocalDateTime
+import com.sedsoftware.tackle.utils.extension.toLocalDateCustom
+import com.sedsoftware.tackle.utils.extension.toLocalDateTimeCustom
 
 internal object Responses {
 
@@ -64,8 +64,8 @@ internal object Responses {
             noIndex = false,
             suspended = false,
             limited = false,
-            createdAt = "2023-01-02T23:40:57.12".toLocalDateTime(),
-            lastStatusAt = "2023-01-02".toLocalDate(),
+            createdAt = "2023-01-02T23:40:57.12".toLocalDateTimeCustom(),
+            lastStatusAt = "2023-01-02".toLocalDateCustom(),
             statusesCount = 123L,
             followersCount = 321L,
             followingCount = 1234L,
@@ -96,8 +96,8 @@ internal object Responses {
             noIndex = false,
             suspended = false,
             limited = false,
-            createdAt = "2023-01-02T23:40:57.12".toLocalDateTime(),
-            lastStatusAt = "2023-01-02".toLocalDate(),
+            createdAt = "2023-01-02T23:40:57.12".toLocalDateTimeCustom(),
+            lastStatusAt = "2023-01-02".toLocalDateCustom(),
             statusesCount = 123L,
             followersCount = 321L,
             followingCount = 1234L,

@@ -1,5 +1,6 @@
 package com.sedsoftware.tackle.utils.extension
 
+import com.sedsoftware.tackle.utils.TackleRegex
 import com.sedsoftware.tackle.utils.extension.ExtensionConstants.BASE_SIZE_VALUE_BINARY
 import com.sedsoftware.tackle.utils.extension.ExtensionConstants.BASE_SIZE_VALUE_DECIMAL
 import kotlinx.datetime.Instant
@@ -16,17 +17,26 @@ fun String.trimUrl(): String =
         .substringAfterLast('@')
 
 @Suppress("SwallowedException")
-fun String.toLocalDateTime(timeZone: TimeZone = TimeZone.currentSystemDefault()): LocalDateTime = try {
+fun String.toLocalDateTimeCustom(timeZone: TimeZone = TimeZone.currentSystemDefault()): LocalDateTime = try {
     Instant.parse(this).toLocalDateTime(timeZone = timeZone)
 } catch (exception: IllegalArgumentException) {
     Instant.parse(ExtensionConstants.FALLBACK_DATE_TIME).toLocalDateTime(timeZone = timeZone)
 }
 
 @Suppress("SwallowedException")
-fun String.toLocalDate(): LocalDate = try {
+fun String.toLocalDateCustom(): LocalDate = try {
     LocalDate.parse(this)
 } catch (exception: IllegalArgumentException) {
     LocalDate.parse(ExtensionConstants.FALLBACK_DATE)
+}
+
+fun String.toNormalizedUrl(): String {
+    val trimmed: String = this.trimUrl()
+    return "https://$trimmed"
+}
+
+fun String.isValidUrl(): Boolean {
+    return TackleRegex.url.containsMatchIn(this)
 }
 
 fun Long?.orZero(): Long = this ?: 0L

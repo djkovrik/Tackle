@@ -7,8 +7,6 @@ import com.sedsoftware.tackle.domain.ComponentOutput
 import com.sedsoftware.tackle.domain.api.TackleDispatchers
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import kotlin.test.AfterTest
-import kotlin.test.BeforeTest
 
 abstract class ComponentTest<Component : Any> {
 
@@ -28,15 +26,13 @@ abstract class ComponentTest<Component : Any> {
 
     private var _component: Component? = null
 
-    @BeforeTest
-    fun beforeTest() {
+    fun setUp() {
         _component = createComponent()
         isAssertOnMainThreadEnabled = false
         lifecycle.resume()
     }
 
-    @AfterTest
-    fun afterTest() {
+    fun tearDown() {
         isAssertOnMainThreadEnabled = true
         _component = null
         componentOutput.clear()

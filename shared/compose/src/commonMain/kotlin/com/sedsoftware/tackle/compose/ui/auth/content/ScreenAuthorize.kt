@@ -122,8 +122,8 @@ internal fun ScreenAuthorize(
                         )
                     },
                     keyboardOptions = KeyboardOptions(
-                        autoCorrect = false,
-                        imeAction = ImeAction.Done,
+                        autoCorrectEnabled = false,
+                        imeAction = ImeAction.Done
                     ),
                     keyboardActions = KeyboardActions(
                         onDone = {

@@ -4,8 +4,8 @@ import com.sedsoftware.tackle.domain.model.Account
 import com.sedsoftware.tackle.domain.model.CredentialAccountSource
 import com.sedsoftware.tackle.domain.model.type.CredentialPrivacy
 import com.sedsoftware.tackle.network.response.AccountResponse
-import com.sedsoftware.tackle.utils.extension.toLocalDate
-import com.sedsoftware.tackle.utils.extension.toLocalDateTime
+import com.sedsoftware.tackle.utils.extension.toLocalDateCustom
+import com.sedsoftware.tackle.utils.extension.toLocalDateTimeCustom
 
 internal object AccountMapper {
 
@@ -32,8 +32,8 @@ internal object AccountMapper {
             moved = from.moved?.let { map(it) },
             suspended = from.suspended,
             limited = from.limited,
-            createdAt = from.createdAt.toLocalDateTime(),
-            lastStatusAt = from.lastStatusAt.toLocalDate(),
+            createdAt = from.createdAt.toLocalDateTimeCustom(),
+            lastStatusAt = from.lastStatusAt.toLocalDateCustom(),
             statusesCount = from.statusesCount,
             followersCount = from.followersCount,
             followingCount = from.followingCount,

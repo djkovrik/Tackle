@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -141,7 +140,7 @@ private fun IconButtonWithText(
         horizontalArrangement = Arrangement.Center,
         modifier = modifier
             .height(height = BUTTON_SIZE.dp)
-            .clip(shape = RoundedCornerShape(size = 32.dp))
+            .clip(shape = MaterialTheme.shapes.extraLarge)
             .alsoIf(
                 enabled,
                 Modifier.clickableOnce(onClick = onClick)

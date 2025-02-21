@@ -16,9 +16,21 @@ import com.sedsoftware.tackle.editor.header.stubs.EditorHeaderToolsStub
 import com.sedsoftware.tackle.utils.test.StoreTest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.runTest
+import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
 import kotlin.test.Test
 
 internal class EditorHeaderStoreTest : StoreTest<EditorHeaderStore.Intent, EditorHeaderStore.State, EditorHeaderStore.Label>() {
+
+    @BeforeTest
+    fun beforeTest() {
+        setUp()
+    }
+
+    @AfterTest
+    fun afterTest() {
+        tearDown()
+    }
 
     private val settings: EditorHeaderSettingsStub = EditorHeaderSettingsStub()
     private val tools: EditorHeaderToolsStub = EditorHeaderToolsStub()

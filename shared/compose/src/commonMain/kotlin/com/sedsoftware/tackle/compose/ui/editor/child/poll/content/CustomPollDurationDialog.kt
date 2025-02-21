@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -53,7 +52,7 @@ private fun CustomPollDurationDialogContent(
 ) {
     Card(
         modifier = Modifier.padding(all = 16.dp),
-        shape = RoundedCornerShape(size = 16.dp),
+        shape = MaterialTheme.shapes.small
     ) {
         Column(modifier = Modifier.width(width = 260.dp)) {
             Text(

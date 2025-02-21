@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -82,7 +81,7 @@ internal fun AttachedImageFocusSelector(
             ),
             modifier = modifier
                 .fillMaxSize()
-                .clip(shape = RoundedCornerShape(size = 4.dp)),
+                .clip(shape = MaterialTheme.shapes.extraSmall),
         )
 
         FocusPointerIndicator(

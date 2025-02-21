@@ -13,6 +13,8 @@ import com.sedsoftware.tackle.editor.attachments.model.AttachedFile
 import com.sedsoftware.tackle.editor.attachments.stubs.EditorAttachmentsApiStub
 import com.sedsoftware.tackle.utils.test.ComponentTest
 import kotlinx.coroutines.test.runTest
+import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
 import kotlin.test.Test
 
 class EditorAttachmentsComponentTest : ComponentTest<EditorAttachmentsComponent>() {
@@ -21,6 +23,16 @@ class EditorAttachmentsComponentTest : ComponentTest<EditorAttachmentsComponent>
 
     private val activeModel: EditorAttachmentsComponent.Model
         get() = component.model.value
+
+    @BeforeTest
+    fun beforeTest() {
+        setUp()
+    }
+
+    @AfterTest
+    fun afterTest() {
+        tearDown()
+    }
 
     @Test
     fun `onFileSelectedWrapped should update component model`() = runTest {

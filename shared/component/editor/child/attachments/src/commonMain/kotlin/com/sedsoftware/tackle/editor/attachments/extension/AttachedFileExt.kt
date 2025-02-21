@@ -3,8 +3,12 @@ package com.sedsoftware.tackle.editor.attachments.extension
 import com.sedsoftware.tackle.domain.model.MediaAttachment
 import com.sedsoftware.tackle.domain.model.PlatformFileWrapper
 import com.sedsoftware.tackle.editor.attachments.model.AttachedFile
+import com.sedsoftware.tackle.editor.attachments.model.AttachedFileType
 import com.sedsoftware.tackle.editor.attachments.model.UploadProgress
 import com.sedsoftware.tackle.utils.FileUtils
+import com.sedsoftware.tackle.utils.extension.isAudio
+import com.sedsoftware.tackle.utils.extension.isImage
+import com.sedsoftware.tackle.utils.extension.isVideo
 import com.sedsoftware.tackle.utils.extension.orZero
 import com.sedsoftware.tackle.utils.extension.toHumanReadableSize
 
@@ -31,6 +35,14 @@ internal fun List<AttachedFile>.getById(id: String): AttachedFile? =
 
 internal fun List<AttachedFile>.delete(id: String): List<AttachedFile> =
     filterNot { it.id == id }
+
+internal val PlatformFileWrapper.type: AttachedFileType
+    get() = when {
+        isAudio -> AttachedFileType.AUDIO
+        isImage -> AttachedFileType.IMAGE
+        isVideo -> AttachedFileType.VIDEO
+        else -> AttachedFileType.FILE
+    }
 
 internal fun wrap(
     name: String,

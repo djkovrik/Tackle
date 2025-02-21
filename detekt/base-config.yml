@@ -641,6 +641,7 @@ style:
     excludeImportStatements: true
     excludeCommentStatements: false
     excludeRawStrings: true
+    excludes: [ '**/Preview**', '**/**Test.kt']
   MayBeConst:
     active: true
   ModifierOrder:

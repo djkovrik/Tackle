@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
@@ -61,7 +60,7 @@ private fun LanguageSelectorDialogContent(
             .wrapContentWidth()
             .height(height = 440.dp)
             .padding(all = 16.dp),
-        shape = RoundedCornerShape(size = 16.dp),
+        shape = MaterialTheme.shapes.small,
     ) {
         Column(
             horizontalAlignment = Alignment.End,

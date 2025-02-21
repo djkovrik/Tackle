@@ -7,6 +7,7 @@ data class PreviewCard(
     val title: String,
     val description: String,
     val type: PreviewCardType,
+    val authors: List<PreviewCardAuthor>,
     val authorName: String,
     val authorUrl: String,
     val providerName: String,

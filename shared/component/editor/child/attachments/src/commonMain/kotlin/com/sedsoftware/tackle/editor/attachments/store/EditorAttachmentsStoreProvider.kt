@@ -12,6 +12,7 @@ import com.sedsoftware.tackle.domain.model.PlatformFileWrapper
 import com.sedsoftware.tackle.editor.attachments.domain.EditorAttachmentsManager
 import com.sedsoftware.tackle.editor.attachments.extension.delete
 import com.sedsoftware.tackle.editor.attachments.extension.getById
+import com.sedsoftware.tackle.editor.attachments.extension.type
 import com.sedsoftware.tackle.editor.attachments.extension.updateProgress
 import com.sedsoftware.tackle.editor.attachments.extension.updateServerCopy
 import com.sedsoftware.tackle.editor.attachments.extension.updateStatus
@@ -98,6 +99,26 @@ internal class EditorAttachmentsStoreProvider(
                     val limit = state().config.statuses.maxMediaAttachments
                     var newSelectionSize = it.files.size
                     val total = currentSelectionSize + newSelectionSize
+
+                    when {
+                        // no attachments + selected multiple
+                        currentSelectionSize == 0 && it.files.size > 1 -> {
+                            val firstFileType = it.files.first().type
+                            if (it.files.count { file -> file.type != firstFileType } > 0) {
+                                publish(Label.ErrorCaught(TackleException.AttachmentDifferentType))
+                                return@onIntent
+                            }
+                        }
+
+                        // something already attached
+                        currentSelectionSize != 0 -> {
+                            val firstFileType = state().selectedFiles.first().file.type
+                            if (it.files.count { file -> file.type != firstFileType } > 0) {
+                                publish(Label.ErrorCaught(TackleException.AttachmentDifferentType))
+                                return@onIntent
+                            }
+                        }
+                    }
 
                     if (total > limit) {
                         publish(Label.ErrorCaught(TackleException.AttachmentsLimitExceeded(limit)))

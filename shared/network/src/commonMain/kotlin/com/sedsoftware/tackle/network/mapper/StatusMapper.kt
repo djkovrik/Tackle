@@ -1,5 +1,6 @@
 package com.sedsoftware.tackle.network.mapper
 
+import com.sedsoftware.tackle.domain.model.CustomEmoji
 import com.sedsoftware.tackle.domain.model.Status
 import com.sedsoftware.tackle.domain.model.StatusMention
 import com.sedsoftware.tackle.domain.model.StatusTag
@@ -7,17 +8,32 @@ import com.sedsoftware.tackle.domain.model.type.StatusVisibility
 import com.sedsoftware.tackle.network.response.StatusMentionResponse
 import com.sedsoftware.tackle.network.response.StatusResponse
 import com.sedsoftware.tackle.network.response.StatusTagResponse
-import com.sedsoftware.tackle.utils.extension.toLocalDateTime
+import com.sedsoftware.tackle.utils.DateTimeUtils
+import com.sedsoftware.tackle.utils.StringUtils
+import com.sedsoftware.tackle.utils.extension.toLocalDateTimeCustom
+import kotlinx.datetime.Clock.System
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 
 internal object StatusMapper {
 
-    fun map(from: StatusResponse): Status =
-        Status(
+    private val now: LocalDateTime by lazy {
+        System.now().toLocalDateTime(timeZone = TimeZone.currentSystemDefault())
+    }
+
+    fun map(from: StatusResponse): Status {
+        val statusEmojis: List<CustomEmoji> = CustomEmojiMapper.map(from.emojis)
+        val statusPlainText: String = StringUtils.decodeHtml(from.content)
+        return Status(
             id = from.id,
             uri = from.uri,
-            createdAt = from.createdAt.toLocalDateTime(),
+            createdAt = from.createdAt.toLocalDateTimeCustom(),
+            createdAtShort = DateTimeUtils.getDateShortLabel(from.createdAt.toLocalDateTimeCustom(), now),
+            createdAtPretty = DateTimeUtils.prettify(from.createdAt.toLocalDateTimeCustom()),
             account = AccountMapper.map(from.account),
             content = from.content,
+            contentAsPlainText = statusPlainText,
             visibility = StatusVisibility.entries.firstOrNull { it.name.lowercase() == from.visibility } ?: StatusVisibility.UNKNOWN,
             sensitive = from.sensitive,
             spoilerText = from.spoilerText,
@@ -25,7 +41,7 @@ internal object StatusMapper {
             application = from.application?.let { ApplicationMapper.map(it) },
             mentions = from.mentions.map(::mapMention),
             tags = from.tags.map(::mapTag),
-            emojis = CustomEmojiMapper.map(from.emojis),
+            emojis = statusEmojis,
             reblogsCount = from.reblogsCount,
             favouritesCount = from.favouritesCount,
             repliesCount = from.repliesCount,
@@ -37,7 +53,9 @@ internal object StatusMapper {
             card = from.card?.let { PreviewCardMapper.map(it) },
             language = from.language,
             text = from.text,
-            editedAt = from.editedAt.toLocalDateTime(),
+            editedAt = from.editedAt?.toLocalDateTimeCustom(),
+            editedAtShort = from.editedAt?.toLocalDateTimeCustom()?.let { DateTimeUtils.getDateShortLabel(it, now) },
+            editedAtPretty = from.editedAt?.toLocalDateTimeCustom()?.let { DateTimeUtils.prettify(it) },
             favourited = from.favourited,
             reblogged = from.reblogged,
             muted = from.muted,
@@ -45,6 +63,7 @@ internal object StatusMapper {
             pinned = from.pinned,
             filtered = from.filtered.map(FilterResultMapper::map),
         )
+    }
 
     private fun mapMention(from: StatusMentionResponse): StatusMention =
         StatusMention(

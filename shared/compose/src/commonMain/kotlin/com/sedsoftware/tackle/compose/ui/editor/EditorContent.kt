@@ -81,6 +81,7 @@ import com.sedsoftware.tackle.editor.poll.EditorPollComponent
 import com.sedsoftware.tackle.editor.poll.model.PollChoiceOption
 import com.sedsoftware.tackle.editor.poll.model.PollDuration
 import com.sedsoftware.tackle.editor.warning.EditorWarningComponent
+import com.sedsoftware.tackle.utils.TackleRegex
 import com.sedsoftware.tackle.utils.extension.orZero
 import io.github.vinceglb.filekit.compose.PickerResultLauncher
 import io.github.vinceglb.filekit.compose.rememberFilePickerLauncher
@@ -146,7 +147,7 @@ internal fun EditorContent(
     )
 
     val annotatedText: AnnotatedString = buildAnnotatedString {
-        val regex = Regex("(@\\w+) | #\\w+")
+        val regex: Regex = TackleRegex.hashtagAndMentions
         var lastIndex = 0
 
         regex.findAll(editorModel.statusText).forEach { result ->
@@ -156,7 +157,7 @@ internal fun EditorContent(
             withStyle(
                 style = SpanStyle(
                     color = MaterialTheme.colorScheme.secondary,
-                    fontWeight = FontWeight.Bold,
+                    fontWeight = FontWeight.Medium,
                 )
             ) {
                 append(result.value)

@@ -11,6 +11,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.OutlinedTextFieldDefaults.Container
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldColors
 import androidx.compose.runtime.Composable
@@ -80,7 +81,7 @@ internal fun TackleTextField(
                 trailingIcon = trailingIcon,
                 contentPadding = PaddingValues(horizontal = 16.dp, vertical = 12.dp),
                 container = {
-                    OutlinedTextFieldDefaults.ContainerBox(
+                    Container(
                         enabled = enabled,
                         isError = isError,
                         interactionSource = interactionSource,
@@ -150,7 +151,7 @@ internal fun TackleTextField(
                 placeholder = placeholder,
                 contentPadding = PaddingValues(horizontal = 16.dp, vertical = 12.dp),
                 container = {
-                    OutlinedTextFieldDefaults.ContainerBox(
+                    Container(
                         enabled = enabled,
                         isError = isError,
                         interactionSource = interactionSource,

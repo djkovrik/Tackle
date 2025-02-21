@@ -89,8 +89,8 @@ internal class TackleAuthorizedApi(
             var currentProgress = 0f
             var realProgress = 0f
 
-            onUpload { sendTotal: Long, contentLength: Long ->
-                realProgress = sendTotal.toFloat() / contentLength.toFloat()
+            onUpload { sendTotal: Long, contentLength: Long? ->
+                realProgress = sendTotal.toFloat() / (contentLength?.toFloat() ?: 1f)
                 if (sendTotal == contentLength || realProgress >= currentProgress + PROGRESS_STEP) {
                     currentProgress += PROGRESS_STEP
                     if (currentProgress > 1f) currentProgress = 1f

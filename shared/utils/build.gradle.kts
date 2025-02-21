@@ -7,8 +7,6 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                implementation(kotlin("test-junit"))
-
                 implementation(project(":shared:domain"))
 
                 implementation(libs.ark.decompose.core)
@@ -17,12 +15,7 @@ kotlin {
                 implementation(libs.ark.mvikotlin.extensions)
 
                 implementation(libs.lib.okio)
-            }
-        }
-
-        commonTest {
-            dependencies {
-                implementation(kotlin("test-junit"))
+                implementation(libs.lib.ksoup)
             }
         }
     }

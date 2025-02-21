@@ -6,14 +6,14 @@ import com.sedsoftware.tackle.domain.model.ScheduledStatusPoll
 import com.sedsoftware.tackle.domain.model.type.StatusVisibility
 import com.sedsoftware.tackle.network.response.ScheduledStatusParamsResponse
 import com.sedsoftware.tackle.network.response.ScheduledStatusResponse
-import com.sedsoftware.tackle.utils.extension.toLocalDateTime
+import com.sedsoftware.tackle.utils.extension.toLocalDateTimeCustom
 
 internal object ScheduledStatusMapper {
 
     fun map(from: ScheduledStatusResponse): ScheduledStatus =
         ScheduledStatus(
             id = from.id,
-            scheduledAt = from.scheduledAt.toLocalDateTime(),
+            scheduledAt = from.scheduledAt.toLocalDateTimeCustom(),
             params = mapParams(from.params),
             mediaAttachments = from.mediaAttachments.map { MediaAttachmentMapper.map(it) },
         )

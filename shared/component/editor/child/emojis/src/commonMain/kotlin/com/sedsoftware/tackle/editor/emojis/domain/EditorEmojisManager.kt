@@ -2,7 +2,7 @@ package com.sedsoftware.tackle.editor.emojis.domain
 
 import com.sedsoftware.tackle.domain.model.CustomEmoji
 import com.sedsoftware.tackle.editor.emojis.EditorEmojisGateways
-import com.sedsoftware.tackle.utils.extension.toLocalDate
+import com.sedsoftware.tackle.utils.extension.toLocalDateCustom
 import kotlinx.coroutines.flow.Flow
 import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
@@ -17,7 +17,7 @@ internal class EditorEmojisManager(
 ) {
 
     suspend fun fetchServerEmojis(): Result<Unit> = runCatching {
-        val lastSyncDate: LocalDate = settings.emojiLastCachedTimestamp.toLocalDate()
+        val lastSyncDate: LocalDate = settings.emojiLastCachedTimestamp.toLocalDateCustom()
 
         if (isDateNotToday(lastSyncDate)) {
             val response: List<CustomEmoji> = api.getServerEmojis()

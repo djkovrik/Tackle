@@ -10,6 +10,7 @@ import com.sedsoftware.tackle.domain.model.ScheduledStatusParams
 import com.sedsoftware.tackle.domain.model.Search
 import com.sedsoftware.tackle.domain.model.Status
 import com.sedsoftware.tackle.domain.model.type.MediaAttachmentType.IMAGE
+import com.sedsoftware.tackle.domain.model.type.ShortDateUnit
 import com.sedsoftware.tackle.domain.model.type.StatusVisibility.PUBLIC
 import kotlinx.datetime.LocalDateTime
 
@@ -40,9 +41,14 @@ internal object Responses {
             id = "id",
             uri = "uri",
             createdAt = LocalDateTime.parse("2023-01-02T23:40:57.120"),
+            createdAtShort = ShortDateUnit.Now,
+            createdAtPretty = "02.01.2023 23:40",
             editedAt = LocalDateTime.parse("2023-01-02T23:40:57.120"),
+            editedAtShort = ShortDateUnit.Now,
+            editedAtPretty = "02.01.2023 23:40",
             account = Instances.accountDetails,
             content = "Test content",
+            contentAsPlainText = "Test content",
             visibility = PUBLIC,
             sensitive = false,
             spoilerText = "",
@@ -51,9 +57,9 @@ internal object Responses {
             mentions = emptyList(),
             tags = emptyList(),
             emojis = emptyList(),
-            reblogsCount = 1L,
-            favouritesCount = 2L,
-            repliesCount = 3L,
+            reblogsCount = 1,
+            favouritesCount = 2,
+            repliesCount = 3,
             url = "url",
             inReplyToId = "",
             inReplyToAccountId = "",

@@ -1,13 +1,13 @@
 package com.sedsoftware.tackle.auth.domain
 
 import com.sedsoftware.tackle.auth.AuthComponentGateways
-import com.sedsoftware.tackle.auth.extension.normalizeUrl
 import com.sedsoftware.tackle.auth.model.ObtainedCredentials
 import com.sedsoftware.tackle.domain.TackleException
 import com.sedsoftware.tackle.domain.model.Account
 import com.sedsoftware.tackle.domain.model.AppClientData
 import com.sedsoftware.tackle.domain.model.Application
 import com.sedsoftware.tackle.domain.model.Instance
+import com.sedsoftware.tackle.utils.extension.toNormalizedUrl
 
 internal class AuthFlowManager(
     private val api: AuthComponentGateways.Api,
@@ -39,7 +39,7 @@ internal class AuthFlowManager(
     }
 
     suspend fun createApp(domain: String): Result<ObtainedCredentials> = runCatching {
-        settings.domainNormalized = domain.normalizeUrl()
+        settings.domainNormalized = domain.toNormalizedUrl()
         settings.domainShort = domain
 
         val response: Application = api.createApp(clientAppData)

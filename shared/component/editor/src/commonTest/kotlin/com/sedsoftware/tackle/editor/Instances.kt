@@ -11,8 +11,8 @@ import com.sedsoftware.tackle.domain.model.MediaAttachmentFocus
 import com.sedsoftware.tackle.domain.model.MediaAttachmentInfo
 import com.sedsoftware.tackle.domain.model.MediaAttachmentMeta
 import com.sedsoftware.tackle.domain.model.type.MediaAttachmentType
-import com.sedsoftware.tackle.utils.extension.toLocalDate
-import com.sedsoftware.tackle.utils.extension.toLocalDateTime
+import com.sedsoftware.tackle.utils.extension.toLocalDateCustom
+import com.sedsoftware.tackle.utils.extension.toLocalDateTimeCustom
 
 internal object Instances {
 
@@ -37,8 +37,8 @@ internal object Instances {
         noIndex = false,
         suspended = false,
         limited = false,
-        createdAt = "2023-01-02T23:40:57.12".toLocalDateTime(),
-        lastStatusAt = "2023-01-02".toLocalDate(),
+        createdAt = "2023-01-02T23:40:57.12".toLocalDateTimeCustom(),
+        lastStatusAt = "2023-01-02".toLocalDateCustom(),
         statusesCount = 123L,
         followersCount = 321L,
         followingCount = 1234L,

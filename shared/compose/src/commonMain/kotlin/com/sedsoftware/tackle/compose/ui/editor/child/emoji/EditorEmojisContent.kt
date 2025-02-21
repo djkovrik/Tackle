@@ -2,6 +2,7 @@ package com.sedsoftware.tackle.compose.ui.editor.child.emoji
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
@@ -14,6 +15,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
@@ -39,9 +41,8 @@ internal fun EditorEmojisContent(
     onClick: (CustomEmoji) -> Unit = {},
     painter: @Composable (String) -> Painter = { rememberImagePainter(it) },
 ) {
-    BoxWithConstraints(modifier = modifier) {
-        val width = maxWidth
-        val columns = (width / emojiContainerSize).toInt()
+    BoxWithConstraints(modifier = modifier.background(color = MaterialTheme.colorScheme.background)) {
+        val columns = remember { (maxWidth / emojiContainerSize).toInt() }
 
         LazyColumn {
             emojis.forEach { (category, emojis) ->
@@ -53,6 +54,7 @@ internal fun EditorEmojisContent(
                         color = MaterialTheme.colorScheme.onSecondaryContainer,
                         style = MaterialTheme.typography.bodyLarge,
                         modifier = Modifier.fillMaxSize()
+                            .background(color = MaterialTheme.colorScheme.background)
                             .fillMaxWidth()
                             .padding(all = 8.dp)
                     )

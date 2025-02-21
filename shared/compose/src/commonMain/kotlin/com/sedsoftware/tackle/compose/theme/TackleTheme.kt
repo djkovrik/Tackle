@@ -31,11 +31,11 @@ fun TackleTheme(
             colorScheme = if (isDark) DarkColorScheme else LightColorScheme,
             typography = TackleFonts.Typography(),
             shapes = Shapes(
-                extraSmall = RoundedCornerShape(size = 6.dp),
-                small = RoundedCornerShape(size = 6.dp),
-                medium = RoundedCornerShape(size = 8.dp),
-                large = RoundedCornerShape(size = 10.dp),
-                extraLarge = RoundedCornerShape(size = 12.dp)
+                extraSmall = RoundedCornerShape(size = 8.dp),
+                small = RoundedCornerShape(size = 14.dp),
+                medium = RoundedCornerShape(size = 20.dp),
+                large = RoundedCornerShape(size = 26.dp),
+                extraLarge = RoundedCornerShape(size = 32.dp)
             ),
             content = content,
         )

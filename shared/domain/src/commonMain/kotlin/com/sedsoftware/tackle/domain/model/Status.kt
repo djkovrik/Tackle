@@ -1,5 +1,6 @@
 package com.sedsoftware.tackle.domain.model
 
+import com.sedsoftware.tackle.domain.model.type.ShortDateUnit
 import com.sedsoftware.tackle.domain.model.type.StatusVisibility
 import kotlinx.datetime.LocalDateTime
 
@@ -7,8 +8,11 @@ data class Status(
     val id: String,
     val uri: String,
     val createdAt: LocalDateTime,
+    val createdAtShort: ShortDateUnit,
+    val createdAtPretty: String,
     val account: Account,
     val content: String,
+    val contentAsPlainText: String,
     val visibility: StatusVisibility,
     val sensitive: Boolean,
     val spoilerText: String,
@@ -17,9 +21,9 @@ data class Status(
     val mentions: List<StatusMention>,
     val tags: List<StatusTag>,
     val emojis: List<CustomEmoji>,
-    val reblogsCount: Long,
-    val favouritesCount: Long,
-    val repliesCount: Long,
+    val reblogsCount: Int,
+    val favouritesCount: Int,
+    val repliesCount: Int,
     val url: String,
     val inReplyToId: String,
     val inReplyToAccountId: String,
@@ -28,7 +32,9 @@ data class Status(
     val card: PreviewCard?,
     val language: String,
     val text: String,
-    val editedAt: LocalDateTime,
+    val editedAt: LocalDateTime?,
+    val editedAtShort: ShortDateUnit?,
+    val editedAtPretty: String?,
     val favourited: Boolean,
     val reblogged: Boolean,
     val muted: Boolean,

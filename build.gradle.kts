@@ -69,6 +69,8 @@ dependencies {
             kover(this)
         }
     }
+
+    detektPlugins("io.github.ajiekcx.detekt:decompose-detekt-rules:0.2.0")
 }
 
 // Src: https://bitspittle.dev/blog/2022/kover-badge
