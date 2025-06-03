@@ -7,22 +7,22 @@ android-targetSdk = "35"
 
 # Core
 kotlin = "2.1.0"
-compose = "1.7.3"
-compose-plugin = "1.7.3"
-agp = "8.8.0"
+compose = "1.8.0-rc01"
+compose-plugin = "1.8.0-rc01"
+agp = "8.8.2"
 
 # AndroidX
-androidx-activityCompose = "1.10.0"
+androidx-activityCompose = "1.10.1"
 androidx-appcompat = "1.7.0"
-androidx-core-ktx = "1.15.0"
+androidx-core-ktx = "1.16.0"
 androidx-material = "1.12.0"
 androidx-preferences = "1.2.1"
 androidx-test-junit = "1.1.5"
 
 # Ark
-decompose = "3.2.2"
+decompose = "3.4.0-alpha02"
 mviKotlin = "4.3.0"
-essenty = "2.4.0"
+essenty = "2.5.0"
 
 # Libs
 detekt = "1.23.5"
