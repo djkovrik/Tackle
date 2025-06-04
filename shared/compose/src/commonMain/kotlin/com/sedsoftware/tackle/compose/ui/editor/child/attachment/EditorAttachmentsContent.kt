@@ -1,6 +1,5 @@
 package com.sedsoftware.tackle.compose.ui.editor.child.attachment
 
-import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -20,6 +19,7 @@ import com.sedsoftware.tackle.domain.model.MediaAttachment
 import com.sedsoftware.tackle.domain.model.PlatformFileWrapper
 import com.sedsoftware.tackle.editor.attachments.EditorAttachmentsComponent
 import com.sedsoftware.tackle.editor.attachments.model.AttachedFile
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 @OptIn(ExperimentalLayoutApi::class)

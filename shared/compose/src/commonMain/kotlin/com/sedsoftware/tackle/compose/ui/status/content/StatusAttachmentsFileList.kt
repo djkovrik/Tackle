@@ -1,6 +1,5 @@
 package com.sedsoftware.tackle.compose.ui.status.content
 
-import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -24,6 +23,7 @@ import com.sedsoftware.tackle.compose.widget.TackleProgressIndicator
 import com.sedsoftware.tackle.domain.model.MediaAttachment
 import com.sedsoftware.tackle.domain.model.type.MediaAttachmentType
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
 import tackle.shared.compose.generated.resources.Res
 import tackle.shared.compose.generated.resources.editor_attachment_audio
 import tackle.shared.compose.generated.resources.editor_attachment_unknown

@@ -1,6 +1,5 @@
 package com.sedsoftware.tackle.compose.ui.status.content
 
-import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -19,6 +18,7 @@ import com.sedsoftware.tackle.compose.widget.TackleStatusRichText
 import com.sedsoftware.tackle.domain.model.Status
 import com.sedsoftware.tackle.utils.extension.isValidUrl
 import com.seiko.imageloader.rememberImagePainter
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 internal fun StatusText(

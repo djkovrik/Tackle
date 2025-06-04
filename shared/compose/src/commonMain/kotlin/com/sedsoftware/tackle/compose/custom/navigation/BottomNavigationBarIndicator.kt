@@ -1,6 +1,5 @@
 package com.sedsoftware.tackle.compose.custom.navigation
 
-import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,6 +17,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
 import com.sedsoftware.tackle.main.model.TackleNavigationTab
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 internal fun BottomNavigationBarIndicator(

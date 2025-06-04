@@ -3,7 +3,6 @@ package com.sedsoftware.tackle.compose.custom.navigation
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.spring
-import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -17,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import com.sedsoftware.tackle.compose.model.NavigationBarConfig
 import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
 import com.sedsoftware.tackle.main.model.TackleNavigationTab
+import org.jetbrains.compose.ui.tooling.preview.Preview
 import tackle.shared.compose.generated.resources.Res
 import tackle.shared.compose.generated.resources.main_tab_explore
 import tackle.shared.compose.generated.resources.main_tab_home

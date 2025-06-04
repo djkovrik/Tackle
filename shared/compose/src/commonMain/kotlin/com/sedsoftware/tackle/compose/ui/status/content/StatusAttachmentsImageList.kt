@@ -1,7 +1,6 @@
 package com.sedsoftware.tackle.compose.ui.status.content
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -30,6 +29,7 @@ import com.sedsoftware.tackle.compose.widget.TackleImage
 import com.sedsoftware.tackle.domain.model.MediaAttachment
 import com.sedsoftware.tackle.domain.model.type.MediaAttachmentType
 import com.sedsoftware.tackle.utils.extension.orZero
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 internal fun StatusAttachmentsImageList(

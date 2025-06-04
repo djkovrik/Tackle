@@ -1,6 +1,5 @@
 package com.sedsoftware.tackle.compose.ui.editor.child.emoji
 
-import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -25,6 +24,7 @@ import com.sedsoftware.tackle.domain.model.CustomEmoji
 import com.seiko.imageloader.rememberImagePainter
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
 import tackle.shared.compose.generated.resources.Res
 import tackle.shared.compose.generated.resources.editor_no_category
 import tackle.shared.compose.generated.resources.emoji_sample

@@ -1,6 +1,5 @@
 package com.sedsoftware.tackle.compose.widget
 
-import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -16,6 +15,7 @@ import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 internal fun TackleSnackbar(

@@ -1,6 +1,5 @@
 package com.sedsoftware.tackle.compose.ui.status.content
 
-import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -21,6 +20,7 @@ import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
 import com.sedsoftware.tackle.compose.ui.PreviewStubs
 import com.sedsoftware.tackle.compose.widget.TackleImage
 import com.sedsoftware.tackle.domain.model.PreviewCard
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 internal fun StatusPreviewCard(

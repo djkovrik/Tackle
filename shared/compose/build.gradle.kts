@@ -42,6 +42,7 @@ kotlin {
             implementation(compose.foundation)
             implementation(compose.material3)
             implementation(compose.ui)
+            implementation(compose.uiTooling)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
 
@@ -53,9 +54,6 @@ kotlin {
             implementation(libs.lib.fileKit.compose)
             implementation(libs.lib.imageLoader)
             implementation(libs.lib.blurhash)
-        }
-        androidMain.dependencies {
-            implementation(libs.compose.ui.tooling.preview)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)

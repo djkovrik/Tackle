@@ -1,6 +1,5 @@
 package com.sedsoftware.tackle.compose.ui.editor.child.poll.content
 
-import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -21,6 +20,7 @@ import com.sedsoftware.tackle.editor.poll.model.PollDuration
 import com.sedsoftware.tackle.editor.poll.model.PollDuration.NOT_SELECTED
 import com.sedsoftware.tackle.editor.poll.model.PollDuration.THREE_DAYS
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
 import tackle.shared.compose.generated.resources.Res
 import tackle.shared.compose.generated.resources.editor_poll_duration
 

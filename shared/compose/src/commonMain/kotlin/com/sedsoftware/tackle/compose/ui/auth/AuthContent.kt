@@ -1,6 +1,5 @@
 package com.sedsoftware.tackle.compose.ui.auth
 
-import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
@@ -18,6 +17,7 @@ import com.sedsoftware.tackle.compose.ui.auth.content.ScreenAuthorize
 import com.sedsoftware.tackle.compose.ui.auth.content.ScreenFailedToConnect
 import com.sedsoftware.tackle.compose.ui.auth.content.ScreenGenericSplash
 import com.sedsoftware.tackle.compose.ui.auth.content.ScreenLearnMore
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 internal fun AuthContent(

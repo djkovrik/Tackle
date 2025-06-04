@@ -1,6 +1,5 @@
 package com.sedsoftware.tackle.compose.ui.home
 
-import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
@@ -23,6 +22,7 @@ import com.sedsoftware.tackle.home.HomeTabComponent
 import com.sedsoftware.tackle.home.integration.HomeTabComponentPreview
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
 import tackle.shared.compose.generated.resources.Res
 import tackle.shared.compose.generated.resources.home_new_post
 import tackle.shared.compose.generated.resources.home_scheduled_posts
