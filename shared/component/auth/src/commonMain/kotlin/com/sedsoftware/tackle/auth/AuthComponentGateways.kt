@@ -25,6 +25,7 @@ interface AuthComponentGateways {
         var token: String
         var ownAvatar: String
         var ownUsername: String
+        var ownId: String
     }
 
     interface Tools {

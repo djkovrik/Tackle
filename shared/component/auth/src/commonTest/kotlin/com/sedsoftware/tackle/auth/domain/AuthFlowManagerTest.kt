@@ -12,6 +12,7 @@ import com.sedsoftware.tackle.auth.stubs.AuthComponentDatabaseStub
 import com.sedsoftware.tackle.auth.stubs.AuthComponentSettingsStub
 import com.sedsoftware.tackle.auth.stubs.AuthComponentToolsStub
 import com.sedsoftware.tackle.domain.TackleException
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 
@@ -65,6 +66,19 @@ class AuthFlowManagerTest {
         val result = manager.verifyCredentials()
         // then
         assertThat(result.exceptionOrNull()).isSameInstanceAs(TackleException.MissedRegistrationData)
+    }
+
+    @Test
+    fun `verifyCredentials should store current user info`() = runTest {
+        // given
+        settings.domainNormalized = Constants.DOMAIN
+        settings.token = Constants.TOKEN
+        // when
+        manager.verifyCredentials()
+        // then
+        assertThat(settings.ownAvatar).isEqualTo(Constants.OWN_AVATAR)
+        assertThat(settings.ownUsername).isEqualTo(Constants.OWN_USERNAME)
+        assertThat(settings.ownId).isEqualTo(Constants.OWN_USER_ID)
     }
 
     @Test

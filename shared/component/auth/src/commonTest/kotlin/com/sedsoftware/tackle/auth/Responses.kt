@@ -44,15 +44,15 @@ internal object Responses {
 
     val validAccountDetails: Account =
         Account(
-            id = "12345",
-            username = "djkovrik",
-            acct = "djkovrik",
-            displayName = "djkovrik",
+            id = Constants.OWN_USER_ID,
+            username = Constants.OWN_USERNAME,
+            acct = Constants.OWN_USERNAME,
+            displayName = Constants.OWN_USERNAME,
             note = "123",
             url = "url",
             uri = "uri",
-            avatar = "url",
-            avatarStatic = "url",
+            avatar = Constants.OWN_AVATAR,
+            avatarStatic = Constants.OWN_AVATAR,
             header = "url",
             headerStatic = "url",
             locked = false,

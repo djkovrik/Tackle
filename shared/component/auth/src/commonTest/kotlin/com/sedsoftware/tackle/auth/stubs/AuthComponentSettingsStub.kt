@@ -11,6 +11,7 @@ class AuthComponentSettingsStub : AuthComponentGateways.Settings {
     private var tokenStub: String = ""
     private var avatarStub: String = ""
     private var usernameStub: String = ""
+    private var ownIdStub: String = ""
 
     override var domainNormalized: String
         get() = domainStub
@@ -52,5 +53,11 @@ class AuthComponentSettingsStub : AuthComponentGateways.Settings {
         get() = usernameStub
         set(value) {
             usernameStub = value
+        }
+
+    override var ownId: String
+        get() = ownIdStub
+        set(value) {
+            ownIdStub = value
         }
 }

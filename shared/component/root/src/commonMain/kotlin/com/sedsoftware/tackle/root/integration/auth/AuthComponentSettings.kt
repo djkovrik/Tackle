@@ -48,4 +48,10 @@ internal class AuthComponentSettings(
         set(value) {
             settings.ownUsername = value
         }
+
+    override var ownId: String
+        get() = settings.ownId
+        set(value) {
+            settings.ownId = value
+        }
 }
