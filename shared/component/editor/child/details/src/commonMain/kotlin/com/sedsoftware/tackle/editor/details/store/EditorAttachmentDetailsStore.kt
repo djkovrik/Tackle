@@ -9,10 +9,10 @@ import com.sedsoftware.tackle.editor.details.store.EditorAttachmentDetailsStore.
 
 internal interface EditorAttachmentDetailsStore : Store<Intent, State, Label> {
 
-    sealed class Intent {
-        data class OnAlternateTextInput(val text: String) : Intent()
-        data class OnFocusInput(val x: Float, val y: Float) : Intent()
-        data object SendAttachmentUpdate : Intent()
+    sealed interface Intent {
+        data class OnAlternateTextInput(val text: String) : Intent
+        data class OnFocusInput(val x: Float, val y: Float) : Intent
+        data object SendAttachmentUpdate : Intent
     }
 
     data class State(

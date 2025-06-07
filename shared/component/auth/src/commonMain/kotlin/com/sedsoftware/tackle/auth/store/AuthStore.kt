@@ -10,11 +10,11 @@ import com.sedsoftware.tackle.domain.model.Instance
 
 internal interface AuthStore : Store<Intent, State, Label> {
 
-    sealed class Intent {
-        data class OnTextInput(val text: String) : Intent()
-        data object OnRetryButtonClick : Intent()
-        data object OnAuthenticateButtonClick : Intent()
-        data class ShowLearnMore(val show: Boolean) : Intent()
+    sealed interface Intent {
+        data class OnTextInput(val text: String) : Intent
+        data object OnRetryButtonClick : Intent
+        data object OnAuthenticateButtonClick : Intent
+        data class ShowLearnMore(val show: Boolean) : Intent
     }
 
     data class State(

@@ -32,6 +32,7 @@ include(
     ":shared:component:editor:child:header",
     ":shared:component:editor:child:poll",
     ":shared:component:editor:child:warning",
+    ":shared:component:status",
     ":shared:component:tab:home",
     ":shared:component:tab:explore",
     ":shared:component:tab:publications",
