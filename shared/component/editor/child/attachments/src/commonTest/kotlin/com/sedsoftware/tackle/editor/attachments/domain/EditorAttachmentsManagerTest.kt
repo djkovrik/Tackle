@@ -7,16 +7,24 @@ import assertk.assertions.isSameInstanceAs
 import assertk.assertions.isTrue
 import com.sedsoftware.tackle.domain.TackleException
 import com.sedsoftware.tackle.domain.model.PlatformFileWrapper
+import com.sedsoftware.tackle.editor.attachments.EditorAttachmentsGateways
 import com.sedsoftware.tackle.editor.attachments.Instances
 import com.sedsoftware.tackle.editor.attachments.Responses
 import com.sedsoftware.tackle.editor.attachments.model.AttachedFile
-import com.sedsoftware.tackle.editor.attachments.stubs.EditorAttachmentsApiStub
+import dev.mokkery.answering.returns
+import dev.mokkery.answering.throws
+import dev.mokkery.everySuspend
+import dev.mokkery.matcher.any
+import dev.mokkery.mock
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 
 class EditorAttachmentsManagerTest {
 
-    private val api: EditorAttachmentsApiStub = EditorAttachmentsApiStub()
+    private val api: EditorAttachmentsGateways.Api = mock {
+        everySuspend { sendFile(any(), any(), any()) } returns Responses.sendFileCorrectResponse
+    }
+
     private val manager: EditorAttachmentsManager = EditorAttachmentsManager(api)
 
     @Test
@@ -27,8 +35,7 @@ class EditorAttachmentsManagerTest {
             file = Instances.imageNormal,
             status = AttachedFile.Status.PENDING,
         )
-        api.responseWithException = false
-        api.sendFileResponse = Responses.sendFileCorrectResponse
+
         // when
         val result = manager.upload(attachment)
         // then
@@ -53,8 +60,7 @@ class EditorAttachmentsManagerTest {
             ),
             status = AttachedFile.Status.PENDING,
         )
-        api.responseWithException = true
-        api.sendFileResponse = Responses.sendFileCorrectResponse
+        everySuspend { api.sendFile(any(), any(), any()) } throws IllegalStateException("Test")
         // when
         val result = manager.upload(attachment)
         // then

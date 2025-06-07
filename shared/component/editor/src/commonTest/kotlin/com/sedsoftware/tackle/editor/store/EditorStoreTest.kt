@@ -14,14 +14,19 @@ import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import com.sedsoftware.tackle.domain.model.NewStatusBundle
 import com.sedsoftware.tackle.editor.EditorComponentGateways
 import com.sedsoftware.tackle.editor.Instances
+import com.sedsoftware.tackle.editor.Responses
 import com.sedsoftware.tackle.editor.domain.EditorManager
 import com.sedsoftware.tackle.editor.model.EditorInputHintItem
 import com.sedsoftware.tackle.editor.model.EditorInputHintRequest
-import com.sedsoftware.tackle.editor.stubs.EditorComponentApiStub
-import com.sedsoftware.tackle.editor.stubs.EditorComponentDatabaseStub
 import com.sedsoftware.tackle.editor.stubs.EditorComponentToolsStub
 import com.sedsoftware.tackle.utils.test.StoreTest
+import dev.mokkery.answering.returns
+import dev.mokkery.answering.throws
+import dev.mokkery.everySuspend
+import dev.mokkery.matcher.any
+import dev.mokkery.mock
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.Clock.System
 import kotlinx.datetime.Instant
@@ -36,8 +41,23 @@ internal class EditorStoreTest : StoreTest<EditorStore.Intent, EditorStore.State
 
     private var nowProviderStub: Instant = System.now()
 
-    private val api: EditorComponentApiStub = EditorComponentApiStub()
-    private val database: EditorComponentDatabaseStub = EditorComponentDatabaseStub()
+    private val api: EditorComponentGateways.Api = mock {
+        everySuspend { getServerEmojis() } returns Responses.emojis
+        everySuspend { sendFile(any(), any()) } returns Responses.buildAttachmentResponse(null, null)
+        everySuspend { search(any()) } returns Responses.searchResponseDefault
+        everySuspend { sendStatus(any()) } returns Responses.statusNormal
+        everySuspend { sendStatusScheduled(any()) } returns Responses.statusScheduled
+        everySuspend { updateFile(any(), any(), any()) } returns Responses.buildAttachmentResponse(null, null)
+        everySuspend { getFile(any()) } returns Responses.buildAttachmentResponse(null, null)
+    }
+
+    private val database: EditorComponentGateways.Database = mock {
+        everySuspend { cacheServerEmojis(any()) } returns Unit
+        everySuspend { observeCachedEmojis() } returns flowOf(Instances.customEmojiList.groupBy { it.category })
+        everySuspend { findEmojis(any()) } returns flowOf(Instances.customEmojiList)
+        everySuspend { getCachedInstanceInfo() } returns flowOf(Instances.instanceInfo)
+    }
+
     private val tools: EditorComponentGateways.Tools = EditorComponentToolsStub()
 
     private val manager: EditorManager = EditorManager(
@@ -75,7 +95,7 @@ internal class EditorStoreTest : StoreTest<EditorStore.Intent, EditorStore.State
     @Test
     fun `error on store init should show error message`() = runTest {
         // given
-        database.responseWithException = true
+        everySuspend { database.getCachedInstanceInfo() } throws IllegalStateException("Test")
         // when
         store.init()
         store.accept(EditorStore.Intent.FetchCachedInstanceInfo)
@@ -195,12 +215,12 @@ internal class EditorStoreTest : StoreTest<EditorStore.Intent, EditorStore.State
         // then
         assertThat(store.state.suggestions).isEmpty()
     }
-    
+
     @Test
     fun `account suggestion loading error should show error message`() = runTest {
         // given
         val text = "Some text @ab"
-        api.responseWithException = true
+        everySuspend { api.search(any()) } throws IllegalStateException("Test")
         // when
         store.init()
         store.accept(EditorStore.Intent.FetchCachedInstanceInfo)
@@ -251,13 +271,12 @@ internal class EditorStoreTest : StoreTest<EditorStore.Intent, EditorStore.State
         // given
         val text = "Some text :ab"
         // when
-        database.responseWithException = false
         store.init()
         store.accept(EditorStore.Intent.FetchCachedInstanceInfo)
         // then
         assertThat(store.state.instanceInfo).isEqualTo(Instances.instanceInfo)
         // when
-        database.responseWithException = true
+        everySuspend { database.findEmojis(any()) } throws IllegalStateException("Test")
         store.accept(EditorStore.Intent.OnTextInput(text, text.length to text.length))
         // then
         assertThat(labels.count { it is EditorStore.Label.ErrorCaught }).isEqualTo(1)
@@ -305,7 +324,7 @@ internal class EditorStoreTest : StoreTest<EditorStore.Intent, EditorStore.State
     fun `hashTag suggestion loading error should show error message`() = runTest {
         // given
         val text = "Some text #ab"
-        api.responseWithException = true
+        everySuspend { api.search(any()) } throws IllegalStateException("Test")
         // when
         store.init()
         store.accept(EditorStore.Intent.FetchCachedInstanceInfo)
@@ -460,7 +479,7 @@ internal class EditorStoreTest : StoreTest<EditorStore.Intent, EditorStore.State
         // when
         store.init()
         store.accept(EditorStore.Intent.FetchCachedInstanceInfo)
-        api.responseWithException = true
+        everySuspend { api.sendStatus(any()) } throws IllegalStateException("Test")
         store.accept(EditorStore.Intent.SendStatus(bundle))
         // then
         assertThat(labels.count { it is EditorStore.Label.ErrorCaught }).isEqualTo(1)

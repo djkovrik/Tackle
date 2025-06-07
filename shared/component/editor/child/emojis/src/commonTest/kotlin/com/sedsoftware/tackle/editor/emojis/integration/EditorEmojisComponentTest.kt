@@ -9,10 +9,14 @@ import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import com.sedsoftware.tackle.domain.ComponentOutput
 import com.sedsoftware.tackle.domain.model.CustomEmoji
 import com.sedsoftware.tackle.editor.emojis.EditorEmojisComponent
-import com.sedsoftware.tackle.editor.emojis.stubs.EditorEmojisApiStub
+import com.sedsoftware.tackle.editor.emojis.EditorEmojisGateways
+import com.sedsoftware.tackle.editor.emojis.Responses
 import com.sedsoftware.tackle.editor.emojis.stubs.EditorEmojisDatabaseStub
 import com.sedsoftware.tackle.editor.emojis.stubs.EditorEmojisSettingsStub
 import com.sedsoftware.tackle.utils.test.ComponentTest
+import dev.mokkery.answering.returns
+import dev.mokkery.everySuspend
+import dev.mokkery.mock
 import kotlinx.coroutines.test.runTest
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
@@ -22,6 +26,10 @@ class EditorEmojisComponentTest : ComponentTest<EditorEmojisComponent>() {
 
     private val activeModel: EditorEmojisComponent.Model
         get() = component.model.value
+
+    private val api: EditorEmojisGateways.Api = mock {
+        everySuspend { getServerEmojis() } returns Responses.correctResponse
+    }
 
     @BeforeTest
     fun beforeTest() {
@@ -60,7 +68,7 @@ class EditorEmojisComponentTest : ComponentTest<EditorEmojisComponent>() {
         EditorEmojisComponentDefault(
             componentContext = DefaultComponentContext(lifecycle),
             storeFactory = DefaultStoreFactory(),
-            api = EditorEmojisApiStub(),
+            api = api,
             database = EditorEmojisDatabaseStub(),
             settings = EditorEmojisSettingsStub(),
             dispatchers = testDispatchers,

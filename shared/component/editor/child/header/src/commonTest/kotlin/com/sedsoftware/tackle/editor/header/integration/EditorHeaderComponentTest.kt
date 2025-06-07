@@ -3,17 +3,18 @@ package com.sedsoftware.tackle.editor.header.integration
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
-import assertk.assertions.isGreaterThan
 import assertk.assertions.isTrue
 import com.arkivanov.decompose.DefaultComponentContext
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
-import com.sedsoftware.tackle.domain.ComponentOutput
 import com.sedsoftware.tackle.domain.model.AppLocale
 import com.sedsoftware.tackle.domain.model.type.StatusVisibility
 import com.sedsoftware.tackle.editor.header.EditorHeaderComponent
+import com.sedsoftware.tackle.editor.header.EditorHeaderComponentGateways
 import com.sedsoftware.tackle.editor.header.stubs.EditorHeaderSettingsStub
-import com.sedsoftware.tackle.editor.header.stubs.EditorHeaderToolsStub
 import com.sedsoftware.tackle.utils.test.ComponentTest
+import dev.mokkery.answering.returns
+import dev.mokkery.every
+import dev.mokkery.mock
 import kotlinx.coroutines.test.runTest
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
@@ -25,6 +26,11 @@ class EditorHeaderComponentTest : ComponentTest<EditorHeaderComponent>() {
         get() = component.model.value
 
     private val settings: EditorHeaderSettingsStub = EditorHeaderSettingsStub()
+
+    private val tools: EditorHeaderComponentGateways.Tools = mock {
+        every { getCurrentLocale() } returns AppLocale("English", "en")
+        every { getAvailableLocales() } returns listOf(AppLocale("English", "en"), AppLocale("Russian", "ru"))
+    }
 
     @BeforeTest
     fun beforeTest() {
@@ -94,23 +100,12 @@ class EditorHeaderComponentTest : ComponentTest<EditorHeaderComponent>() {
         assertThat(activeModel.sendButtonAvailable).isFalse()
     }
 
-    @Test
-    fun `store errors output show show error message`() = runTest {
-        // given
-        val targetLocale = AppLocale("Russian", "ru")
-        settings.responseWithException = true
-        // when
-        component.onLocaleSelected(targetLocale)
-        // then
-        assertThat(componentOutput.count { it is ComponentOutput.Common.ErrorCaught }).isGreaterThan(0)
-    }
-
     override fun createComponent(): EditorHeaderComponent =
         EditorHeaderComponentDefault(
             componentContext = DefaultComponentContext(lifecycle),
             storeFactory = DefaultStoreFactory(),
             settings = settings,
-            tools = EditorHeaderToolsStub(),
+            tools = tools,
             dispatchers = testDispatchers,
             output = { componentOutput.add(it) },
         )

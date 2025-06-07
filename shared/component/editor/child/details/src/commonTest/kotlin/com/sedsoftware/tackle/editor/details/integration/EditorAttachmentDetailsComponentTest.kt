@@ -11,9 +11,15 @@ import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import com.sedsoftware.tackle.domain.ComponentOutput
 import com.sedsoftware.tackle.domain.model.type.MediaAttachmentType
 import com.sedsoftware.tackle.editor.details.EditorAttachmentDetailsComponent
+import com.sedsoftware.tackle.editor.details.EditorAttachmentDetailsGateways
+import com.sedsoftware.tackle.editor.details.Responses
 import com.sedsoftware.tackle.editor.details.model.AttachmentParams
-import com.sedsoftware.tackle.editor.details.stubs.EditorAttachmentDetailsApiStub
 import com.sedsoftware.tackle.utils.test.ComponentTest
+import dev.mokkery.answering.returns
+import dev.mokkery.answering.throws
+import dev.mokkery.everySuspend
+import dev.mokkery.matcher.any
+import dev.mokkery.mock
 import kotlinx.coroutines.test.runTest
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
@@ -29,7 +35,10 @@ class EditorAttachmentDetailsComponentTest : ComponentTest<EditorAttachmentDetai
     private val attachmentId: String = "id"
     private val attachmentImageParams: AttachmentParams = AttachmentParams(123, 123, 1f, "blurhash")
 
-    private val api: EditorAttachmentDetailsApiStub = EditorAttachmentDetailsApiStub()
+    private val api: EditorAttachmentDetailsGateways.Api = mock {
+        everySuspend { getFile(any()) } returns Responses.basicResponse
+        everySuspend { updateFile(any(), any(), any()) } returns Responses.basicResponse
+    }
 
     private var dismissCounter: Int = 0
 
@@ -86,7 +95,7 @@ class EditorAttachmentDetailsComponentTest : ComponentTest<EditorAttachmentDetai
         component.onAttachmentDescriptionInput(alternateText)
         component.onAttachmentFocusInput(alternateFocus.first, alternateFocus.second)
         // when
-        api.responseWithException = true
+        everySuspend { api.updateFile(any(), any(), any()) } throws IllegalStateException("Test")
         component.onUpdateButtonClicked()
         // then
         assertThat(componentOutput.count { it is ComponentOutput.Common.ErrorCaught }).isGreaterThan(0)

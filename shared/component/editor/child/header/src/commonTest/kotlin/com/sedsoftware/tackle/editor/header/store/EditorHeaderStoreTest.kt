@@ -10,10 +10,14 @@ import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import com.sedsoftware.tackle.domain.model.AppLocale
 import com.sedsoftware.tackle.domain.model.type.StatusVisibility
+import com.sedsoftware.tackle.editor.header.EditorHeaderComponentGateways
 import com.sedsoftware.tackle.editor.header.domain.EditorHeaderManager
 import com.sedsoftware.tackle.editor.header.stubs.EditorHeaderSettingsStub
-import com.sedsoftware.tackle.editor.header.stubs.EditorHeaderToolsStub
 import com.sedsoftware.tackle.utils.test.StoreTest
+import dev.mokkery.answering.returns
+import dev.mokkery.answering.throws
+import dev.mokkery.every
+import dev.mokkery.mock
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.runTest
 import kotlin.test.AfterTest
@@ -33,7 +37,12 @@ internal class EditorHeaderStoreTest : StoreTest<EditorHeaderStore.Intent, Edito
     }
 
     private val settings: EditorHeaderSettingsStub = EditorHeaderSettingsStub()
-    private val tools: EditorHeaderToolsStub = EditorHeaderToolsStub()
+
+    private val tools: EditorHeaderComponentGateways.Tools = mock {
+        every { getCurrentLocale() } returns AppLocale("English", "en")
+        every { getAvailableLocales() } returns listOf(AppLocale("English", "en"), AppLocale("Russian", "ru"))
+    }
+
     private val manager: EditorHeaderManager = EditorHeaderManager(settings, tools)
 
     @Test
@@ -69,8 +78,8 @@ internal class EditorHeaderStoreTest : StoreTest<EditorHeaderStore.Intent, Edito
         settings.domain = domain
         settings.nickname = nickname
         // when
-        settings.responseWithException = true
-        tools.responseWithException = true
+        every { tools.getCurrentLocale() } throws IllegalStateException("Test")
+        every { tools.getAvailableLocales() } throws IllegalStateException("Test")
         store.init()
         // then
         assertThat(labels.count { it is EditorHeaderStore.Label.ErrorCaught }).isGreaterThan(0)
@@ -106,7 +115,8 @@ internal class EditorHeaderStoreTest : StoreTest<EditorHeaderStore.Intent, Edito
         // given
         val targetLocale = AppLocale("Russian", "ru")
         // when
-        settings.responseWithException = true
+        every { tools.getCurrentLocale() } throws IllegalStateException("Test")
+        every { tools.getAvailableLocales() } throws IllegalStateException("Test")
         store.init()
         store.accept(EditorHeaderStore.Intent.OnLocaleSelected(targetLocale))
         // then

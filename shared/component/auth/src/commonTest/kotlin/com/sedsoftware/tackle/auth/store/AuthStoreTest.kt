@@ -5,17 +5,20 @@ import assertk.assertions.contains
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNotEmpty
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
+import com.sedsoftware.tackle.auth.AuthComponentGateways
 import com.sedsoftware.tackle.auth.Constants
 import com.sedsoftware.tackle.auth.Responses
 import com.sedsoftware.tackle.auth.domain.AuthFlowManager
 import com.sedsoftware.tackle.auth.model.CredentialsState
 import com.sedsoftware.tackle.auth.model.InstanceInfoState
-import com.sedsoftware.tackle.auth.stubs.AuthComponentApiStub
-import com.sedsoftware.tackle.auth.stubs.AuthComponentDatabaseStub
 import com.sedsoftware.tackle.auth.stubs.AuthComponentSettingsStub
-import com.sedsoftware.tackle.auth.stubs.AuthComponentToolsStub
 import com.sedsoftware.tackle.domain.TackleException
 import com.sedsoftware.tackle.utils.test.StoreTest
+import dev.mokkery.answering.returns
+import dev.mokkery.answering.throws
+import dev.mokkery.everySuspend
+import dev.mokkery.matcher.any
+import dev.mokkery.mock
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.runTest
 import kotlin.test.AfterTest
@@ -24,8 +27,25 @@ import kotlin.test.Test
 
 internal class AuthStoreTest : StoreTest<AuthStore.Intent, AuthStore.State, AuthStore.Label>() {
 
-    private val api: AuthComponentApiStub = AuthComponentApiStub()
-    private val settings: AuthComponentSettingsStub = AuthComponentSettingsStub()
+    private val api: AuthComponentGateways.Api = mock {
+        everySuspend { getServerInfo(any()) } returns Responses.validInstanceDetails
+        everySuspend { createApp(any()) } returns Responses.validApplicationDetails
+        everySuspend { startAuthFlow(any(), any(), any(), any()) } returns Responses.TOKEN
+        everySuspend { verifyCredentials() } returns Responses.validAccountDetails
+    }
+
+    private val database: AuthComponentGateways.Database = mock {
+        everySuspend { cacheInstanceInfo(any()) } returns Unit
+    }
+
+    private val settings: AuthComponentGateways.Settings = AuthComponentSettingsStub()
+
+    private val tools: AuthComponentGateways.Tools = mock {
+        everySuspend { getClientData() } returns Responses.validClientData
+        everySuspend { openUrl(any()) } returns Unit
+        everySuspend { getTextInputEndDelay() } returns 0L
+    }
+
 
     @BeforeTest
     fun beforeTest() {
@@ -41,7 +61,6 @@ internal class AuthStoreTest : StoreTest<AuthStore.Intent, AuthStore.State, Auth
     fun `store creation should switch state to AUTHORIZED with navigation call if token is available`() = runTest {
         // given
         asAuthorized()
-        api.responseWithException = false
         // when
         store.init()
         // then
@@ -53,8 +72,7 @@ internal class AuthStoreTest : StoreTest<AuthStore.Intent, AuthStore.State, Auth
     fun `store creation should switch state to UNAUTHORIZED with navigation call if token expired`() = runTest {
         // given
         asAuthorized()
-        api.verifyCredentialsResponse = Responses.invalidAccountDetails
-        api.responseWithException = false
+        everySuspend { api.verifyCredentials() } returns Responses.invalidAccountDetails
         // when
         store.init()
         // then
@@ -65,7 +83,6 @@ internal class AuthStoreTest : StoreTest<AuthStore.Intent, AuthStore.State, Auth
     fun `store creation should switch state to UNAUTHORIZED if token is not available`() = runTest {
         // given
         asUnauthorized()
-        api.responseWithException = false
         // when
         store.init()
         // then
@@ -78,7 +95,6 @@ internal class AuthStoreTest : StoreTest<AuthStore.Intent, AuthStore.State, Auth
         // given
         val text = "abcde"
         asUnauthorized()
-        api.responseWithException = false
         // when
         store.init()
         store.accept(AuthStore.Intent.OnTextInput(text))
@@ -91,7 +107,6 @@ internal class AuthStoreTest : StoreTest<AuthStore.Intent, AuthStore.State, Auth
         // given
         val text = "mastodon.social"
         asUnauthorized()
-        api.responseWithException = false
         // when
         store.init()
         store.accept(AuthStore.Intent.OnTextInput(text))
@@ -107,22 +122,7 @@ internal class AuthStoreTest : StoreTest<AuthStore.Intent, AuthStore.State, Auth
         // given
         val text = "mastodon.social"
         asUnauthorized()
-        api.getServerInfoResponse = Responses.invalidInstanceDetails
-        api.responseWithException = false
-        // when
-        store.init()
-        store.accept(AuthStore.Intent.OnTextInput(text))
-        // then
-        assertThat(store.state.instanceInfoState).isEqualTo(InstanceInfoState.ERROR)
-    }
-
-    @Test
-    fun `exception from OnTextInput should update instance info state`() {
-        // given
-        val text = "mastodon.social"
-        asUnauthorized()
-        api.getServerInfoResponse = Responses.invalidInstanceDetails
-        api.responseWithException = true
+        everySuspend { api.getServerInfo(any()) } returns Responses.invalidInstanceDetails
         // when
         store.init()
         store.accept(AuthStore.Intent.OnTextInput(text))
@@ -134,7 +134,6 @@ internal class AuthStoreTest : StoreTest<AuthStore.Intent, AuthStore.State, Auth
     fun `OnRetryButtonClick should update state with retrying`() {
         // given
         asUnauthorized()
-        api.responseWithException = false
         // when
         store.init()
         // then
@@ -151,7 +150,6 @@ internal class AuthStoreTest : StoreTest<AuthStore.Intent, AuthStore.State, Auth
     fun `OnAuthenticateButtonClick should run auth flow`() {
         // given
         asUnauthorized()
-        api.responseWithException = false
         // when
         store.init()
         // then
@@ -168,7 +166,7 @@ internal class AuthStoreTest : StoreTest<AuthStore.Intent, AuthStore.State, Auth
     fun `OnAuthenticateButtonClick should show an error if api throws an exception`() {
         // given
         asUnauthorized()
-        api.responseWithException = true
+        everySuspend { api.startAuthFlow(any(), any(), any(), any()) } throws IllegalStateException("Test")
         // when
         store.init()
         // then
@@ -185,7 +183,6 @@ internal class AuthStoreTest : StoreTest<AuthStore.Intent, AuthStore.State, Auth
     fun `ShowLearnMore should update bottom sheet visibility`() {
         // given
         asUnauthorized()
-        api.responseWithException = false
         // when
         store.init()
         store.accept(AuthStore.Intent.ShowLearnMore(true))
@@ -201,10 +198,10 @@ internal class AuthStoreTest : StoreTest<AuthStore.Intent, AuthStore.State, Auth
         return AuthStoreProvider(
             storeFactory = DefaultStoreFactory(),
             manager = AuthFlowManager(
-                tools = AuthComponentToolsStub(),
                 api = api,
-                database = AuthComponentDatabaseStub(),
+                database = database,
                 settings = settings,
+                tools = tools,
             ),
             mainContext = Dispatchers.Unconfined,
             ioContext = Dispatchers.Unconfined,

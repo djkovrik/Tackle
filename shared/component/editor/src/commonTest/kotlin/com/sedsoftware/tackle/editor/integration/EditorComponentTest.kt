@@ -20,7 +20,9 @@ import com.sedsoftware.tackle.domain.ComponentOutput
 import com.sedsoftware.tackle.domain.model.CustomEmoji
 import com.sedsoftware.tackle.domain.model.PlatformFileWrapper
 import com.sedsoftware.tackle.editor.EditorComponent
+import com.sedsoftware.tackle.editor.EditorComponentGateways
 import com.sedsoftware.tackle.editor.Instances
+import com.sedsoftware.tackle.editor.Responses
 import com.sedsoftware.tackle.editor.attachments.EditorAttachmentsComponent
 import com.sedsoftware.tackle.editor.details.EditorAttachmentDetailsComponent
 import com.sedsoftware.tackle.editor.details.integration.EditorAttachmentDetailsComponentDefault
@@ -31,12 +33,16 @@ import com.sedsoftware.tackle.editor.integration.EditorComponentDefault.Attachme
 import com.sedsoftware.tackle.editor.integration.attachments.EditorAttachmentDetailsComponentApi
 import com.sedsoftware.tackle.editor.model.EditorInputHintItem
 import com.sedsoftware.tackle.editor.poll.EditorPollComponent
-import com.sedsoftware.tackle.editor.stubs.EditorComponentApiStub
-import com.sedsoftware.tackle.editor.stubs.EditorComponentDatabaseStub
 import com.sedsoftware.tackle.editor.stubs.EditorComponentSettingsStub
 import com.sedsoftware.tackle.editor.stubs.EditorComponentToolsStub
 import com.sedsoftware.tackle.editor.warning.EditorWarningComponent
 import com.sedsoftware.tackle.utils.test.ComponentTest
+import dev.mokkery.answering.returns
+import dev.mokkery.answering.throws
+import dev.mokkery.everySuspend
+import dev.mokkery.matcher.any
+import dev.mokkery.mock
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
@@ -62,7 +68,25 @@ class EditorComponentTest : ComponentTest<EditorComponent>() {
     private val warningActiveModel: EditorWarningComponent.Model
         get() = component.warning.model.value
 
-    private val api: EditorComponentApiStub = EditorComponentApiStub()
+    private val api: EditorComponentGateways.Api = mock {
+        everySuspend { getServerEmojis() } returns Responses.emojis
+        everySuspend { sendFile(any(), any()) } returns Responses.buildAttachmentResponse(null, null)
+        everySuspend { search(any()) } returns Responses.searchResponseDefault
+        everySuspend { sendStatus(any()) } returns Responses.statusNormal
+        everySuspend { sendStatusScheduled(any()) } returns Responses.statusScheduled
+        everySuspend { updateFile(any(), any(), any()) } returns Responses.buildAttachmentResponse(null, null)
+        everySuspend { getFile(any()) } returns Responses.buildAttachmentResponse(null, null)
+    }
+
+    private val database: EditorComponentGateways.Database = mock {
+        everySuspend { cacheServerEmojis(any()) } returns Unit
+        everySuspend { observeCachedEmojis() } returns flowOf(Instances.customEmojiList.groupBy { it.category })
+        everySuspend { findEmojis(any()) } returns flowOf(Instances.customEmojiList)
+        everySuspend { getCachedInstanceInfo() } returns flowOf(Instances.instanceInfo)
+    }
+
+    private val tools: EditorComponentGateways.Tools = EditorComponentToolsStub()
+
     private val context: DefaultComponentContext = DefaultComponentContext(lifecycle)
     private val storeFactory: DefaultStoreFactory = DefaultStoreFactory()
     private val navigation = SlotNavigation<AttachmentDetailsConfig>()
@@ -319,7 +343,7 @@ class EditorComponentTest : ComponentTest<EditorComponent>() {
         // given
         val text = "Status text"
         component.onTextInput(text, text.length to text.length)
-        api.responseWithException = true
+        everySuspend { api.sendStatus(any()) } throws IllegalStateException("Test")
 
         // when
         component.onSendButtonClicked()
@@ -365,15 +389,15 @@ class EditorComponentTest : ComponentTest<EditorComponent>() {
         // then
         assertThat(componentOutput).contains(ComponentOutput.StatusEditor.BackButtonClicked)
     }
-    
+
     @Test
     fun `child output should call components`() = runTest {
         // given
-    
+
         // when
-    
+
         // then
-    
+
     }
 
     @Test
@@ -382,17 +406,19 @@ class EditorComponentTest : ComponentTest<EditorComponent>() {
         val attachment = Instances.fileToAttach
 
         val emptySlot = context.childSlot(config = null)
-        val dialogSlot = context.childSlot(config = AttachmentDetailsConfig(
-            attachmentId = attachment.id,
-            attachmentType = attachment.type,
-            attachmentUrl = attachment.url,
-            attachmentImageParams = AttachmentParams(
-                width = attachment.meta!!.width,
-                height = attachment.meta!!.height,
-                ratio = attachment.meta!!.aspect,
-                blurhash = attachment.blurhash,
-            ),
-        ))
+        val dialogSlot = context.childSlot(
+            config = AttachmentDetailsConfig(
+                attachmentId = attachment.id,
+                attachmentType = attachment.type,
+                attachmentUrl = attachment.url,
+                attachmentImageParams = AttachmentParams(
+                    width = attachment.meta!!.width,
+                    height = attachment.meta!!.height,
+                    ratio = attachment.meta!!.aspect,
+                    blurhash = attachment.blurhash,
+                ),
+            )
+        )
         // when
         assertThat(component.attachmentDetailsDialog.child).isEqualTo(emptySlot.child)
         component.attachments.onFileEdit(attachment)
@@ -432,9 +458,9 @@ class EditorComponentTest : ComponentTest<EditorComponent>() {
             componentContext = context,
             storeFactory = storeFactory,
             api = api,
-            database = EditorComponentDatabaseStub(),
+            database = database,
             settings = EditorComponentSettingsStub(),
-            tools = EditorComponentToolsStub(),
+            tools = tools,
             dispatchers = testDispatchers,
             editorOutput = { componentOutput.add(it) },
         )

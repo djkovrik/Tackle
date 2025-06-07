@@ -11,12 +11,18 @@ import assertk.assertions.isTrue
 import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import com.sedsoftware.tackle.domain.TackleException
+import com.sedsoftware.tackle.editor.attachments.EditorAttachmentsGateways
 import com.sedsoftware.tackle.editor.attachments.Instances
+import com.sedsoftware.tackle.editor.attachments.Responses
 import com.sedsoftware.tackle.editor.attachments.domain.EditorAttachmentsManager
 import com.sedsoftware.tackle.editor.attachments.extension.hasPending
 import com.sedsoftware.tackle.editor.attachments.model.AttachedFile
-import com.sedsoftware.tackle.editor.attachments.stubs.EditorAttachmentsApiStub
 import com.sedsoftware.tackle.utils.test.StoreTest
+import dev.mokkery.answering.returns
+import dev.mokkery.answering.throws
+import dev.mokkery.everySuspend
+import dev.mokkery.matcher.any
+import dev.mokkery.mock
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.runTest
 import kotlin.test.AfterTest
@@ -24,6 +30,12 @@ import kotlin.test.BeforeTest
 import kotlin.test.Test
 
 internal class EditorAttachmentsStoreTest : StoreTest<EditorAttachmentsStore.Intent, EditorAttachmentsStore.State, EditorAttachmentsStore.Label>() {
+
+    private val api: EditorAttachmentsGateways.Api = mock {
+        everySuspend { sendFile(any(), any(), any()) } returns Responses.sendFileCorrectResponse
+    }
+
+    private val manager: EditorAttachmentsManager = EditorAttachmentsManager(api)
 
     @BeforeTest
     fun beforeTest() {
@@ -34,9 +46,6 @@ internal class EditorAttachmentsStoreTest : StoreTest<EditorAttachmentsStore.Int
     fun afterTest() {
         tearDown()
     }
-
-    private val api: EditorAttachmentsApiStub = EditorAttachmentsApiStub()
-    private val manager: EditorAttachmentsManager = EditorAttachmentsManager(api)
 
     @Test
     fun `ChangeFeatureAvailability should change feature availability`() = runTest {
@@ -163,7 +172,7 @@ internal class EditorAttachmentsStoreTest : StoreTest<EditorAttachmentsStore.Int
             Instances.imageNormal.copy(name = "test3.jpg"),
             Instances.imageNormal.copy(name = "test4.jpg"),
         )
-        api.responseWithException = true
+        everySuspend { api.sendFile(any(), any(), any()) } throws IllegalStateException("Test")
         // when
         store.init()
         store.accept(EditorAttachmentsStore.Intent.UpdateInstanceConfig(Instances.config))
@@ -217,14 +226,14 @@ internal class EditorAttachmentsStoreTest : StoreTest<EditorAttachmentsStore.Int
         store.init()
         store.accept(EditorAttachmentsStore.Intent.UpdateInstanceConfig(Instances.config))
         store.accept(EditorAttachmentsStore.Intent.OnFilesSelected(files1))
-        api.responseWithException = true
+        everySuspend { api.sendFile(any(), any(), any()) } throws IllegalStateException("Test")
         store.accept(EditorAttachmentsStore.Intent.OnFilesSelected(files2))
         // then
         assertThat(store.state.selectedFiles.count { it.status == AttachedFile.Status.ERROR }).isEqualTo(
             files2.size
         )
         // and when
-        api.responseWithException = false
+        everySuspend { api.sendFile(any(), any(), any()) } returns Responses.sendFileCorrectResponse
         val target = store.state.selectedFiles.first { it.status == AttachedFile.Status.ERROR }
         store.accept(EditorAttachmentsStore.Intent.OnFileRetry(target.id))
         // then
@@ -250,14 +259,14 @@ internal class EditorAttachmentsStoreTest : StoreTest<EditorAttachmentsStore.Int
         store.init()
         store.accept(EditorAttachmentsStore.Intent.UpdateInstanceConfig(Instances.config))
         store.accept(EditorAttachmentsStore.Intent.OnFilesSelected(files1))
-        api.responseWithException = true
+        everySuspend { api.sendFile(any(), any(), any()) } throws IllegalStateException("Test")
         store.accept(EditorAttachmentsStore.Intent.OnFilesSelected(files2))
         // then
         assertThat(store.state.selectedFiles.count { it.status == AttachedFile.Status.ERROR }).isEqualTo(
             files2.size
         )
         // and when
-        api.responseWithException = true
+        everySuspend { api.sendFile(any(), any(), any()) } throws IllegalStateException("Test")
         val target = store.state.selectedFiles.first { it.status == AttachedFile.Status.ERROR }
         store.accept(EditorAttachmentsStore.Intent.OnFileRetry(target.id))
         // then

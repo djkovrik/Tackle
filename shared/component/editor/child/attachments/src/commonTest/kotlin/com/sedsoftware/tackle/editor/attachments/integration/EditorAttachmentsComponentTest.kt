@@ -8,10 +8,16 @@ import assertk.assertions.isTrue
 import com.arkivanov.decompose.DefaultComponentContext
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import com.sedsoftware.tackle.editor.attachments.EditorAttachmentsComponent
+import com.sedsoftware.tackle.editor.attachments.EditorAttachmentsGateways
 import com.sedsoftware.tackle.editor.attachments.Instances
+import com.sedsoftware.tackle.editor.attachments.Responses
 import com.sedsoftware.tackle.editor.attachments.model.AttachedFile
-import com.sedsoftware.tackle.editor.attachments.stubs.EditorAttachmentsApiStub
 import com.sedsoftware.tackle.utils.test.ComponentTest
+import dev.mokkery.answering.returns
+import dev.mokkery.answering.throws
+import dev.mokkery.everySuspend
+import dev.mokkery.matcher.any
+import dev.mokkery.mock
 import kotlinx.coroutines.test.runTest
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
@@ -19,7 +25,9 @@ import kotlin.test.Test
 
 class EditorAttachmentsComponentTest : ComponentTest<EditorAttachmentsComponent>() {
 
-    private val api: EditorAttachmentsApiStub = EditorAttachmentsApiStub()
+    private val api: EditorAttachmentsGateways.Api = mock {
+        everySuspend { sendFile(any(), any(), any()) } returns Responses.sendFileCorrectResponse
+    }
 
     private val activeModel: EditorAttachmentsComponent.Model
         get() = component.model.value
@@ -92,16 +100,17 @@ class EditorAttachmentsComponentTest : ComponentTest<EditorAttachmentsComponent>
 
         // when
         val config = Instances.config
-        api.responseWithException = false
+
         component.updateInstanceConfig(config)
         component.changeComponentAvailability(available = true)
         component.onFilesSelectedWrapped(files1)
-        api.responseWithException = true
+
+        everySuspend { api.sendFile(any(), any(), any()) } throws IllegalStateException("Test")
         component.onFilesSelectedWrapped(files2)
         // then
         assertThat(activeModel.attachments.count { it.status == AttachedFile.Status.ERROR }).isEqualTo(files2.size)
         // and when
-        api.responseWithException = false
+        everySuspend { api.sendFile(any(), any(), any()) } returns Responses.sendFileCorrectResponse
         val target = activeModel.attachments.first { it.status == AttachedFile.Status.ERROR }
         component.onFileRetry(target.id)
         // then

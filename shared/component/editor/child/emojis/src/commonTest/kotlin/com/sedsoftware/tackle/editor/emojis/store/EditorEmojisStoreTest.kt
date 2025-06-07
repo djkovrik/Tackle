@@ -7,12 +7,16 @@ import assertk.assertions.isNotEmpty
 import assertk.assertions.isTrue
 import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
-import com.sedsoftware.tackle.editor.emojis.domain.EditorEmojisManager
-import com.sedsoftware.tackle.editor.emojis.stubs.EditorEmojisApiStub
+import com.sedsoftware.tackle.editor.emojis.EditorEmojisGateways
 import com.sedsoftware.tackle.editor.emojis.Responses
+import com.sedsoftware.tackle.editor.emojis.domain.EditorEmojisManager
 import com.sedsoftware.tackle.editor.emojis.stubs.EditorEmojisDatabaseStub
 import com.sedsoftware.tackle.editor.emojis.stubs.EditorEmojisSettingsStub
 import com.sedsoftware.tackle.utils.test.StoreTest
+import dev.mokkery.answering.returns
+import dev.mokkery.answering.throws
+import dev.mokkery.everySuspend
+import dev.mokkery.mock
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.LocalDate
@@ -32,8 +36,12 @@ internal class EditorEmojisStoreTest : StoreTest<EditorEmojisStore.Intent, Edito
         tearDown()
     }
 
-    private val api: EditorEmojisApiStub = EditorEmojisApiStub()
+    private val api: EditorEmojisGateways.Api = mock {
+        everySuspend { getServerEmojis() } returns Responses.correctResponse
+    }
+
     private val db: EditorEmojisDatabaseStub = EditorEmojisDatabaseStub()
+
     private val settings: EditorEmojisSettingsStub = EditorEmojisSettingsStub()
 
     private val today: LocalDate
@@ -52,7 +60,6 @@ internal class EditorEmojisStoreTest : StoreTest<EditorEmojisStore.Intent, Edito
     fun `store creation should observe emojis`() = runTest {
         // given
         settings.lastCachedTimestamp = ""
-        api.getServerEmojisResponse = Responses.correctResponse
         _today = LocalDate.parse("2024-01-01")
         // when
         store.init()
@@ -64,7 +71,7 @@ internal class EditorEmojisStoreTest : StoreTest<EditorEmojisStore.Intent, Edito
     @Test
     fun `fetching emojis error should throw error message`() = runTest {
         // given
-        api.responseWithException = true
+        everySuspend { api.getServerEmojis() } throws IllegalStateException("Test")
         // when
         store.init()
         // then
