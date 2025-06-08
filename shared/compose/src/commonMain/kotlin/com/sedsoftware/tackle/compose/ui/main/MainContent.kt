@@ -54,7 +54,7 @@ private fun ChildrenContent(
 ) {
     Children(
         stack = component.childStack,
-        animation = stackAnimation(fade()),
+        animation = stackAnimation(animator = fade()),
         modifier = modifier,
     ) {
         when (val child = it.instance) {
