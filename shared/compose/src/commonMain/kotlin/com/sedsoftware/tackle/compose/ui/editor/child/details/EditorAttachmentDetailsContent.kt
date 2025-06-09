@@ -50,7 +50,7 @@ internal fun EditorAttachmentDetailsContent(
     TackleScreenTemplate(
         title = null,
         navigationIcon = Res.drawable.editor_back,
-        onNavigationClick = component::onBackButtonClicked,
+        onNavigationClick = component::onBackButtonClick,
         colors = TackleScreenDefaults.colors(
             headerContainerColor = MaterialTheme.colorScheme.surfaceVariant,
             headerContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -71,7 +71,7 @@ internal fun EditorAttachmentDetailsContent(
             TackleAppBarButton(
                 iconRes = Res.drawable.editor_done,
                 contentDescriptionRes = Res.string.editor_content_description_send,
-                onClick = component::onUpdateButtonClicked,
+                onClick = component::onUpdateButtonClick,
                 enabled = model.dataChanged,
             )
         },

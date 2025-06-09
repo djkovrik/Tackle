@@ -38,7 +38,7 @@ internal class AuthStoreProvider(
             name = "AuthStore",
             initialState = State(),
             autoInit = autoInit,
-            bootstrapper = coroutineBootstrapper {
+            bootstrapper = coroutineBootstrapper(mainContext) {
                 dispatch(Action.CheckCurrentCredentials)
             },
             executorFactory = coroutineExecutorFactory(mainContext) {
@@ -118,12 +118,12 @@ internal class AuthStoreProvider(
                     }
                 }
 
-                onIntent<Intent.OnRetryButtonClick> {
+                onIntent<Intent.OnRetryButtonClicked> {
                     dispatch(Msg.CredentialsStateChanged(newState = CredentialsState.RETRYING))
                     forward(Action.CheckCurrentCredentials)
                 }
 
-                onIntent<Intent.OnAuthenticateButtonClick> {
+                onIntent<Intent.OnAuthenticateButtonClicked> {
                     dispatch(Msg.OAuthFlowStateChanged(active = true))
                     val domain = state().instanceInfo.domain
 

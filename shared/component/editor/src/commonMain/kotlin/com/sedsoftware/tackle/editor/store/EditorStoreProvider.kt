@@ -48,7 +48,7 @@ internal class EditorStoreProvider(
             name = "EditorStore",
             initialState = State(),
             autoInit = autoInit,
-            bootstrapper = coroutineBootstrapper {
+            bootstrapper = coroutineBootstrapper(mainContext) {
                 dispatch(Action.InitCurrentTime)
             },
             executorFactory = coroutineExecutorFactory(mainContext) {
@@ -157,24 +157,24 @@ internal class EditorStoreProvider(
                     publish(Label.TextUpdated(state().statusText))
                 }
 
-                onIntent<Intent.OnInputHintSelect> {
+                onIntent<Intent.OnInputHintSelected> {
                     dispatch(Msg.InputHintSelected(it.hint))
                     forward(Action.CheckForInputHelper)
                     publish(Label.TextUpdated(state().statusText))
                 }
 
-                onIntent<Intent.OnEmojiSelect> {
+                onIntent<Intent.OnEmojiSelected> {
                     dispatch(Msg.EmojiSelected(it.emoji))
                     publish(Label.TextUpdated(state().statusText))
                 }
 
-                onIntent<Intent.OnRequestDatePicker> { dispatch(Msg.DateDialogVisibilityChanged(it.show)) }
+                onIntent<Intent.OnDatePickerRequested> { dispatch(Msg.DateDialogVisibilityChanged(it.show)) }
 
-                onIntent<Intent.OnScheduleDate> { dispatch(Msg.ScheduleDateSelected(it.millis)) }
+                onIntent<Intent.OnDateScheduled> { dispatch(Msg.ScheduleDateSelected(it.millis)) }
 
-                onIntent<Intent.OnRequestTimePicker> { dispatch(Msg.TimeDialogVisibilityChanged(it.show)) }
+                onIntent<Intent.OnTimePickerRequested> { dispatch(Msg.TimeDialogVisibilityChanged(it.show)) }
 
-                onIntent<Intent.OnScheduleTime> { dispatch(Msg.ScheduleTimeSelected(it.hour, it.minute, it.formatIn24hr)) }
+                onIntent<Intent.OnTimeScheduled> { dispatch(Msg.ScheduleTimeSelected(it.hour, it.minute, it.formatIn24hr)) }
 
                 onIntent<Intent.OnScheduledDateTimeReset> { dispatch(Msg.ScheduledDateTimeReset) }
 

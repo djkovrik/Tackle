@@ -13,7 +13,7 @@ interface MainComponent {
 
     val childStack: Value<ChildStack<*, Child>>
 
-    fun onTabClicked(tab: TackleNavigationTab)
+    fun onTabClick(tab: TackleNavigationTab)
 
     sealed class Child {
         class HomeTab(val component: HomeTabComponent) : Child()

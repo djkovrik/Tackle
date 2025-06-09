@@ -180,49 +180,49 @@ class EditorComponentDefault(
         store.accept(EditorStore.Intent.OnTextInput(text, selection))
     }
 
-    override fun onEmojiSelected(emoji: CustomEmoji) {
-        store.accept(EditorStore.Intent.OnEmojiSelect(emoji))
+    override fun onEmojiSelect(emoji: CustomEmoji) {
+        store.accept(EditorStore.Intent.OnEmojiSelected(emoji))
     }
 
-    override fun onInputHintSelected(hint: EditorInputHintItem) {
-        store.accept(EditorStore.Intent.OnInputHintSelect(hint))
+    override fun onInputHintSelect(hint: EditorInputHintItem) {
+        store.accept(EditorStore.Intent.OnInputHintSelected(hint))
     }
 
-    override fun onPollButtonClicked() {
+    override fun onPollButtonClick() {
         val isPollVisibleNow = poll.model.value.pollContentVisible
         attachments.changeComponentAvailability(available = isPollVisibleNow)
         poll.toggleComponentVisibility()
     }
 
-    override fun onEmojisButtonClicked() {
+    override fun onEmojisButtonClick() {
         emojis.toggleComponentVisibility()
     }
 
-    override fun onWarningButtonClicked() {
+    override fun onWarningButtonClick() {
         warning.toggleComponentVisibility()
     }
 
-    override fun onScheduleDatePickerRequested(show: Boolean) {
-        store.accept(EditorStore.Intent.OnRequestDatePicker(show))
+    override fun onScheduleDatePickerRequest(show: Boolean) {
+        store.accept(EditorStore.Intent.OnDatePickerRequested(show))
     }
 
-    override fun onScheduleDateSelected(millis: Long) {
-        store.accept(EditorStore.Intent.OnScheduleDate(millis))
+    override fun onScheduleDateSelect(millis: Long) {
+        store.accept(EditorStore.Intent.OnDateScheduled(millis))
     }
 
-    override fun onScheduleTimePickerRequested(show: Boolean) {
-        store.accept(EditorStore.Intent.OnRequestTimePicker(show))
+    override fun onScheduleTimePickerRequest(show: Boolean) {
+        store.accept(EditorStore.Intent.OnTimePickerRequested(show))
     }
 
-    override fun onScheduleTimeSelected(hour: Int, minute: Int, formatIn24hr: Boolean) {
-        store.accept(EditorStore.Intent.OnScheduleTime(hour, minute, formatIn24hr))
+    override fun onScheduleTimeSelect(hour: Int, minute: Int, formatIn24hr: Boolean) {
+        store.accept(EditorStore.Intent.OnTimeScheduled(hour, minute, formatIn24hr))
     }
 
     override fun resetScheduledDateTime() {
         store.accept(EditorStore.Intent.OnScheduledDateTimeReset)
     }
 
-    override fun onSendButtonClicked() {
+    override fun onSendButtonClick() {
         val bundle: NewStatusBundle = NewStatusBundle.Builder().apply {
             applyStatus(this)
             applyLanguage(this)
@@ -237,7 +237,7 @@ class EditorComponentDefault(
         store.accept(EditorStore.Intent.SendStatus(bundle))
     }
 
-    override fun onBackButtonClicked() {
+    override fun onBackButtonClick() {
         editorOutput(ComponentOutput.StatusEditor.BackButtonClicked)
     }
 
@@ -331,7 +331,7 @@ class EditorComponentDefault(
             }
 
             is ComponentOutput.StatusEditor.EmojiSelected -> {
-                onEmojiSelected(output.emoji)
+                onEmojiSelect(output.emoji)
             }
 
             is ComponentOutput.StatusEditor.AttachmentDetailsRequested -> {

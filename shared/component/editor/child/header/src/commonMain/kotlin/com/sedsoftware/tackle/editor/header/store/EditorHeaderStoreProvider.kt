@@ -30,7 +30,7 @@ internal class EditorHeaderStoreProvider(
             name = "EditorHeaderStore",
             initialState = State(),
             autoInit = autoInit,
-            bootstrapper = coroutineBootstrapper {
+            bootstrapper = coroutineBootstrapper(mainContext) {
                 dispatch(Action.FetchProfileData)
                 dispatch(Action.FetchRecommendedLocale)
                 dispatch(Action.FetchAvailableLocales)
@@ -78,7 +78,7 @@ internal class EditorHeaderStoreProvider(
                     }
                 }
 
-                onIntent<Intent.OnRequestLocalePicker> { dispatch(Msg.LocaleDialogVisibilityChanged(it.show)) }
+                onIntent<Intent.OnLocalePickerRequested> { dispatch(Msg.LocaleDialogVisibilityChanged(it.show)) }
 
                 onIntent<Intent.OnLocaleSelected> {
                     launch {
@@ -94,7 +94,7 @@ internal class EditorHeaderStoreProvider(
                     }
                 }
 
-                onIntent<Intent.OnRequestVisibilityPicker> { dispatch(Msg.StatusDialogVisibilityChanged(it.show)) }
+                onIntent<Intent.OnVisibilityPickerRequested> { dispatch(Msg.StatusDialogVisibilityChanged(it.show)) }
 
                 onIntent<Intent.OnVisibilityPickerSelected> { dispatch(Msg.VisibilitySelected(it.visibility)) }
 

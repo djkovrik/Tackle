@@ -11,9 +11,9 @@ interface EditorAttachmentsComponent {
 
     val model: Value<Model>
 
-    fun onFilesSelected(files: List<PlatformFile>)
-    fun onFilesSelectedWrapped(files: List<PlatformFileWrapper>)
-    fun onFileDeleted(id: String)
+    fun onFilesSelect(files: List<PlatformFile>)
+    fun onWrappedFilesSelect(files: List<PlatformFileWrapper>)
+    fun onFileDelete(id: String)
     fun onFileRetry(id: String)
     fun onFileEdit(attachment: MediaAttachment)
     fun changeComponentAvailability(available: Boolean)

@@ -42,11 +42,11 @@ class EditorEmojisComponentTest : ComponentTest<EditorEmojisComponent>() {
     }
 
     @Test
-    fun `onEmojiClicked should use output`() = runTest {
+    fun `onEmojiClick should use output`() = runTest {
         // given
         val emoji = CustomEmoji("a", "b", "c", true, "d")
         // when
-        component.onEmojiClicked(emoji)
+        component.onEmojiClick(emoji)
         // then
         assertThat(componentOutput).contains(ComponentOutput.StatusEditor.EmojiSelected(emoji))
     }

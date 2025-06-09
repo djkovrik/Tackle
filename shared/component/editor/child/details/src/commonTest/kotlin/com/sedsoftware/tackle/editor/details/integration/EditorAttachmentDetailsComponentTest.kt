@@ -75,20 +75,20 @@ class EditorAttachmentDetailsComponentTest : ComponentTest<EditorAttachmentDetai
     }
 
     @Test
-    fun `onUpdateButtonClicked should send data on success`() = runTest {
+    fun `onUpdateButtonClick should send data on success`() = runTest {
         // given
         val alternateText = "Alt text"
         val alternateFocus = -0.5f to 0.5f
         component.onAttachmentDescriptionInput(alternateText)
         component.onAttachmentFocusInput(alternateFocus.first, alternateFocus.second)
         // when
-        component.onUpdateButtonClicked()
+        component.onUpdateButtonClick()
         // then
         assertThat(componentOutput).contains(ComponentOutput.StatusEditor.AttachmentDataUpdated)
     }
 
     @Test
-    fun `onUpdateButtonClicked should show error message on api error`() = runTest {
+    fun `onUpdateButtonClick should show error message on api error`() = runTest {
         // given
         val alternateText = "Alt text"
         val alternateFocus = -0.5f to 0.5f
@@ -96,17 +96,17 @@ class EditorAttachmentDetailsComponentTest : ComponentTest<EditorAttachmentDetai
         component.onAttachmentFocusInput(alternateFocus.first, alternateFocus.second)
         // when
         everySuspend { api.updateFile(any(), any(), any()) } throws IllegalStateException("Test")
-        component.onUpdateButtonClicked()
+        component.onUpdateButtonClick()
         // then
         assertThat(componentOutput.count { it is ComponentOutput.Common.ErrorCaught }).isGreaterThan(0)
     }
 
     @Test
-    fun `onBackButtonClicked should call for back callback`() = runTest {
+    fun `onBackButtonClick should call for back callback`() = runTest {
         // given
         val currentCounter = dismissCounter
         // when
-        component.onBackButtonClicked()
+        component.onBackButtonClick()
         // then
         assertThat(currentCounter).isNotEqualTo(dismissCounter)
     }

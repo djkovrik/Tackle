@@ -235,7 +235,7 @@ internal class EditorAttachmentsStoreTest : StoreTest<EditorAttachmentsStore.Int
         // and when
         everySuspend { api.sendFile(any(), any(), any()) } returns Responses.sendFileCorrectResponse
         val target = store.state.selectedFiles.first { it.status == AttachedFile.Status.ERROR }
-        store.accept(EditorAttachmentsStore.Intent.OnFileRetry(target.id))
+        store.accept(EditorAttachmentsStore.Intent.OnFileRetryClicked(target.id))
         // then
         assertThat(store.state.selectedFiles.count { it.status == AttachedFile.Status.ERROR }).isEqualTo(
             0
@@ -268,7 +268,7 @@ internal class EditorAttachmentsStoreTest : StoreTest<EditorAttachmentsStore.Int
         // and when
         everySuspend { api.sendFile(any(), any(), any()) } throws IllegalStateException("Test")
         val target = store.state.selectedFiles.first { it.status == AttachedFile.Status.ERROR }
-        store.accept(EditorAttachmentsStore.Intent.OnFileRetry(target.id))
+        store.accept(EditorAttachmentsStore.Intent.OnFileRetryClicked(target.id))
         // then
         assertThat(labels.count { it is EditorAttachmentsStore.Label.ErrorCaught }).isEqualTo(2)
     }

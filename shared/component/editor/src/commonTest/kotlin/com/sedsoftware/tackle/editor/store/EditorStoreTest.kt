@@ -149,13 +149,13 @@ internal class EditorStoreTest : StoreTest<EditorStore.Intent, EditorStore.State
     }
 
     @Test
-    fun `OnEmojiSelect should update status text and selection`() = runTest {
+    fun `OnEmojiSelected should update status text and selection`() = runTest {
         // given
         val emoji = Instances.emoji
         // when
         store.init()
         store.accept(EditorStore.Intent.FetchCachedInstanceInfo)
-        store.accept(EditorStore.Intent.OnEmojiSelect(emoji))
+        store.accept(EditorStore.Intent.OnEmojiSelected(emoji))
         // then
         assertThat(store.state.statusText).isEqualTo(":${emoji.shortcode}:")
     }
@@ -334,7 +334,7 @@ internal class EditorStoreTest : StoreTest<EditorStore.Intent, EditorStore.State
     }
 
     @Test
-    fun `OnInputHintSelect should insert input hint`() = runTest {
+    fun `OnInputHintSelected should insert input hint`() = runTest {
         // given
         val hint = EditorInputHintItem.Account("", "testtest", "")
         val text = "Some text @tes"
@@ -347,56 +347,56 @@ internal class EditorStoreTest : StoreTest<EditorStore.Intent, EditorStore.State
         // then
         assertThat(store.state.currentSuggestionRequest).isEqualTo(EditorInputHintRequest.Accounts("@tes"))
         // and when
-        store.accept(EditorStore.Intent.OnInputHintSelect(hint))
+        store.accept(EditorStore.Intent.OnInputHintSelected(hint))
         // then
         assertThat(store.state.statusText).isEqualTo(expectedText)
         assertThat(store.state.statusTextSelection).isEqualTo(expectedText.length to expectedText.length)
     }
 
     @Test
-    fun `OnRequestDatePicker should update dialog visibility`() = runTest {
+    fun `OnDatePickerRequested should update dialog visibility`() = runTest {
         // given
         // when
         store.init()
         store.accept(EditorStore.Intent.FetchCachedInstanceInfo)
-        store.accept(EditorStore.Intent.OnRequestDatePicker(true))
+        store.accept(EditorStore.Intent.OnDatePickerRequested(true))
         // then
         assertThat(store.state.datePickerVisible).isTrue()
         // and when
-        store.accept(EditorStore.Intent.OnRequestDatePicker(false))
+        store.accept(EditorStore.Intent.OnDatePickerRequested(false))
         // then
         assertThat(store.state.datePickerVisible).isFalse()
     }
 
     @Test
-    fun `OnScheduleDate should update scheduled date`() = runTest {
+    fun `OnDateScheduled should update scheduled date`() = runTest {
         // given
         val newDate = 1234567L
         // when
         store.init()
         store.accept(EditorStore.Intent.FetchCachedInstanceInfo)
-        store.accept(EditorStore.Intent.OnScheduleDate(newDate))
+        store.accept(EditorStore.Intent.OnDateScheduled(newDate))
         // then
         assertThat(store.state.scheduledDate).isEqualTo(newDate)
     }
 
     @Test
-    fun `OnRequestTimePicker should update dialog visibility`() = runTest {
+    fun `OnTimePickerRequested should update dialog visibility`() = runTest {
         // given
         // when
         store.init()
         store.accept(EditorStore.Intent.FetchCachedInstanceInfo)
-        store.accept(EditorStore.Intent.OnRequestTimePicker(true))
+        store.accept(EditorStore.Intent.OnTimePickerRequested(true))
         // then
         assertThat(store.state.timePickerVisible).isTrue()
         // and when
-        store.accept(EditorStore.Intent.OnRequestTimePicker(false))
+        store.accept(EditorStore.Intent.OnTimePickerRequested(false))
         // then
         assertThat(store.state.timePickerVisible).isFalse()
     }
 
     @Test
-    fun `OnScheduleTime should update scheduled time`() = runTest {
+    fun `OnTimeScheduled should update scheduled time`() = runTest {
         // given
         val hour = 16
         val minute = 54
@@ -404,7 +404,7 @@ internal class EditorStoreTest : StoreTest<EditorStore.Intent, EditorStore.State
         // when
         store.init()
         store.accept(EditorStore.Intent.FetchCachedInstanceInfo)
-        store.accept(EditorStore.Intent.OnScheduleTime(hour, minute, format))
+        store.accept(EditorStore.Intent.OnTimeScheduled(hour, minute, format))
         // then
         assertThat(store.state.scheduledHour).isEqualTo(hour)
         assertThat(store.state.scheduledMinute).isEqualTo(minute)
@@ -412,7 +412,7 @@ internal class EditorStoreTest : StoreTest<EditorStore.Intent, EditorStore.State
     }
 
     @Test
-    fun `OnScheduledDateTimeReset should reset scheduled date and time`() = runTest {
+    fun `OnDateScheduled should reset scheduled date and time`() = runTest {
         // given
         val hour = 16
         val minute = 54
@@ -420,8 +420,8 @@ internal class EditorStoreTest : StoreTest<EditorStore.Intent, EditorStore.State
         // when
         store.init()
         store.accept(EditorStore.Intent.FetchCachedInstanceInfo)
-        store.accept(EditorStore.Intent.OnScheduleTime(hour, minute, true))
-        store.accept(EditorStore.Intent.OnScheduleDate(newDate))
+        store.accept(EditorStore.Intent.OnTimeScheduled(hour, minute, true))
+        store.accept(EditorStore.Intent.OnDateScheduled(newDate))
         // then
         assertThat(store.state.scheduledHour).isEqualTo(hour)
         assertThat(store.state.scheduledMinute).isEqualTo(minute)
@@ -464,8 +464,8 @@ internal class EditorStoreTest : StoreTest<EditorStore.Intent, EditorStore.State
         // when
         store.init()
         store.accept(EditorStore.Intent.FetchCachedInstanceInfo)
-        store.accept(EditorStore.Intent.OnScheduleTime(hour, minute, true))
-        store.accept(EditorStore.Intent.OnScheduleDate(newDate))
+        store.accept(EditorStore.Intent.OnTimeScheduled(hour, minute, true))
+        store.accept(EditorStore.Intent.OnDateScheduled(newDate))
         store.accept(EditorStore.Intent.SendStatus(bundle))
         // then
         assertThat(labels.count { it is EditorStore.Label.ScheduledStatusSent }).isEqualTo(1)

@@ -48,7 +48,7 @@ class MainComponentTest : ComponentTest<MainComponent>() {
     fun `click to HOME tab should switch to TabHome`() {
         // given
         // when
-        component.onTabClicked(TackleNavigationTab.HOME)
+        component.onTabClick(TackleNavigationTab.HOME)
         // then
         assertThat(component.childStack.active.instance).hasClass(MainComponent.Child.HomeTab::class)
     }
@@ -57,7 +57,7 @@ class MainComponentTest : ComponentTest<MainComponent>() {
     fun `click to EXPLORE tab should switch to TabExplore`() {
         // given
         // when
-        component.onTabClicked(TackleNavigationTab.EXPLORE)
+        component.onTabClick(TackleNavigationTab.EXPLORE)
         // then
         assertThat(component.childStack.active.instance).hasClass(MainComponent.Child.ExploreTab::class)
     }
@@ -66,7 +66,7 @@ class MainComponentTest : ComponentTest<MainComponent>() {
     fun `click to PUBLICATIONS tab should switch to TabPublications`() {
         // given
         // when
-        component.onTabClicked(TackleNavigationTab.PUBLICATIONS)
+        component.onTabClick(TackleNavigationTab.PUBLICATIONS)
         // then
         assertThat(component.childStack.active.instance).hasClass(MainComponent.Child.PublicationsTab::class)
     }
@@ -75,7 +75,7 @@ class MainComponentTest : ComponentTest<MainComponent>() {
     fun `click to NOTIFICATIONS tab should switch to TabNotifications`() {
         // given
         // when
-        component.onTabClicked(TackleNavigationTab.NOTIFICATIONS)
+        component.onTabClick(TackleNavigationTab.NOTIFICATIONS)
         // then
         assertThat(component.childStack.active.instance).hasClass(MainComponent.Child.NotificationsTab::class)
     }
@@ -84,7 +84,7 @@ class MainComponentTest : ComponentTest<MainComponent>() {
     fun `click to PROFILE tab should switch to TabEditor`() {
         // given
         // when
-        component.onTabClicked(TackleNavigationTab.PROFILE)
+        component.onTabClick(TackleNavigationTab.PROFILE)
         // then
         assertThat(component.childStack.active.instance).hasClass(MainComponent.Child.ProfileTab::class)
     }

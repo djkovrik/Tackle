@@ -37,9 +37,9 @@ class EditorHeaderComponentPreview(
             )
         )
 
-    override fun onLocalePickerRequested(show: Boolean) = Unit
-    override fun onLocaleSelected(language: AppLocale) = Unit
-    override fun onStatusVisibilityPickerRequested(show: Boolean) = Unit
-    override fun onStatusVisibilitySelected(visibility: StatusVisibility) = Unit
+    override fun onLocalePickerRequest(show: Boolean) = Unit
+    override fun onLocaleSelect(language: AppLocale) = Unit
+    override fun onStatusVisibilityPickerRequest(show: Boolean) = Unit
+    override fun onStatusVisibilitySelect(visibility: StatusVisibility) = Unit
     override fun changeSendingAvailability(available: Boolean) = Unit
 }

@@ -60,7 +60,7 @@ class EditorEmojisComponentDefault(
 
     override val model: Value<Model> = store.asValue().map(stateToModel)
 
-    override fun onEmojiClicked(emoji: CustomEmoji) {
+    override fun onEmojiClick(emoji: CustomEmoji) {
         output(ComponentOutput.StatusEditor.EmojiSelected(emoji))
     }
 

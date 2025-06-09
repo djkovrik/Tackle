@@ -33,19 +33,19 @@ class EditorPollComponentDefault(
 
     override val model: Value<Model> = store.asValue().map(stateToModel)
 
-    override fun onDurationPickerRequested(show: Boolean) {
-        store.accept(EditorPollStore.Intent.OnRequestDurationPicker(show))
+    override fun onDurationPickerRequest(show: Boolean) {
+        store.accept(EditorPollStore.Intent.OnDurationPickerRequested(show))
     }
 
-    override fun onDurationSelected(duration: PollDuration) {
+    override fun onDurationSelect(duration: PollDuration) {
         store.accept(EditorPollStore.Intent.OnDurationSelected(duration))
     }
 
-    override fun onMultiselectEnabled(enabled: Boolean) {
+    override fun onMultiselectEnable(enabled: Boolean) {
         store.accept(EditorPollStore.Intent.OnMultiselectEnabled(enabled))
     }
 
-    override fun onHideTotalsEnabled(enabled: Boolean) {
+    override fun onHideTotalsEnable(enabled: Boolean) {
         store.accept(EditorPollStore.Intent.OnHideTotalsEnabled(enabled))
     }
 
@@ -54,11 +54,11 @@ class EditorPollComponentDefault(
     }
 
     override fun onAddPollOptionClick() {
-        store.accept(EditorPollStore.Intent.OnAddPollOption)
+        store.accept(EditorPollStore.Intent.OnPollOptionAdded)
     }
 
     override fun onDeletePollOptionClick(id: String) {
-        store.accept(EditorPollStore.Intent.OnDeletePollOption(id))
+        store.accept(EditorPollStore.Intent.OnPollOptionDeleted(id))
     }
 
     override fun changeComponentAvailability(available: Boolean) {

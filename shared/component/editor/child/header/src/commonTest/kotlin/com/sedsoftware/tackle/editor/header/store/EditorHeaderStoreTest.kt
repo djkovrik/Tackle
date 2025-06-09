@@ -86,15 +86,15 @@ internal class EditorHeaderStoreTest : StoreTest<EditorHeaderStore.Intent, Edito
     }
 
     @Test
-    fun `OnShowLocalePicker should change locale picker visibility`() = runTest {
+    fun `OnLocalePickerRequested should change locale picker visibility`() = runTest {
         // given
         // when
         store.init()
-        store.accept(EditorHeaderStore.Intent.OnRequestLocalePicker(true))
+        store.accept(EditorHeaderStore.Intent.OnLocalePickerRequested(true))
         // then
         assertThat(store.state.localePickerDisplayed).isTrue()
         // and when
-        store.accept(EditorHeaderStore.Intent.OnRequestLocalePicker(false))
+        store.accept(EditorHeaderStore.Intent.OnLocalePickerRequested(false))
         // then
         assertThat(store.state.localePickerDisplayed).isFalse()
     }
@@ -124,21 +124,21 @@ internal class EditorHeaderStoreTest : StoreTest<EditorHeaderStore.Intent, Edito
     }
 
     @Test
-    fun `OnShowStatusVisibilityPicker should change locale picker visibility`() = runTest {
+    fun `OnVisibilityPickerRequested should change locale picker visibility`() = runTest {
         // given
         // when
         store.init()
-        store.accept(EditorHeaderStore.Intent.OnRequestVisibilityPicker(true))
+        store.accept(EditorHeaderStore.Intent.OnVisibilityPickerRequested(true))
         // then
         assertThat(store.state.statusVisibilityPickerDisplayed).isTrue()
         // and when
-        store.accept(EditorHeaderStore.Intent.OnRequestVisibilityPicker(false))
+        store.accept(EditorHeaderStore.Intent.OnVisibilityPickerRequested(false))
         // then
         assertThat(store.state.statusVisibilityPickerDisplayed).isFalse()
     }
 
     @Test
-    fun `OnStatusVisibilitySelected should update visibility`() = runTest {
+    fun `OnVisibilityPickerSelected should update visibility`() = runTest {
         // given
         // when
         store.init()

@@ -30,7 +30,7 @@ internal class EditorEmojisStoreProvider(
             name = "EditorEmojisStore",
             initialState = State(),
             autoInit = autoInit,
-            bootstrapper = coroutineBootstrapper {
+            bootstrapper = coroutineBootstrapper(mainContext) {
                 dispatch(Action.FetchServerEmojis)
                 dispatch(Action.ObserveCachedEmojis)
             },

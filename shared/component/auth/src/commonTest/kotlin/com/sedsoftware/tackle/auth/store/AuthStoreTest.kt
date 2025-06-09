@@ -131,7 +131,7 @@ internal class AuthStoreTest : StoreTest<AuthStore.Intent, AuthStore.State, Auth
     }
 
     @Test
-    fun `OnRetryButtonClick should update state with retrying`() {
+    fun `OnRetryButtonClicked should update state with retrying`() {
         // given
         asUnauthorized()
         // when
@@ -140,14 +140,14 @@ internal class AuthStoreTest : StoreTest<AuthStore.Intent, AuthStore.State, Auth
         assertThat(store.state.credentialsState, "Credentials state").isEqualTo(CredentialsState.UNAUTHORIZED)
         // and when
         asAuthorized()
-        store.accept(AuthStore.Intent.OnRetryButtonClick)
+        store.accept(AuthStore.Intent.OnRetryButtonClicked)
         // then
         assertThat(store.state.credentialsState, "Credentials state").isEqualTo(CredentialsState.AUTHORIZED)
         assertThat(labels).contains(AuthStore.Label.NavigateToMainScreen)
     }
 
     @Test
-    fun `OnAuthenticateButtonClick should run auth flow`() {
+    fun `OnAuthenticateButtonClicked should run auth flow`() {
         // given
         asUnauthorized()
         // when
@@ -156,14 +156,14 @@ internal class AuthStoreTest : StoreTest<AuthStore.Intent, AuthStore.State, Auth
         assertThat(store.state.credentialsState, "Credentials state").isEqualTo(CredentialsState.UNAUTHORIZED)
         // and when
         asAuthorized()
-        store.accept(AuthStore.Intent.OnAuthenticateButtonClick)
+        store.accept(AuthStore.Intent.OnAuthenticateButtonClicked)
         // then
         assertThat(store.state.credentialsState, "Credentials state").isEqualTo(CredentialsState.AUTHORIZED)
         assertThat(labels).contains(AuthStore.Label.NavigateToMainScreen)
     }
 
     @Test
-    fun `OnAuthenticateButtonClick should show an error if api throws an exception`() {
+    fun `OnAuthenticateButtonClicked should show an error if api throws an exception`() {
         // given
         asUnauthorized()
         everySuspend { api.startAuthFlow(any(), any(), any(), any()) } throws IllegalStateException("Test")
@@ -173,7 +173,7 @@ internal class AuthStoreTest : StoreTest<AuthStore.Intent, AuthStore.State, Auth
         assertThat(store.state.credentialsState, "Credentials state").isEqualTo(CredentialsState.UNAUTHORIZED)
         // and when
         asAuthorized()
-        store.accept(AuthStore.Intent.OnAuthenticateButtonClick)
+        store.accept(AuthStore.Intent.OnAuthenticateButtonClicked)
         // then
         assertThat(store.state.oauthFlowActive, "Credentials state").isEqualTo(false)
         assertThat(labels).isNotEmpty()

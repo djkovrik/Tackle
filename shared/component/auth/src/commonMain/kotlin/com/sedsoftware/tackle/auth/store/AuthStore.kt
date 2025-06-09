@@ -12,8 +12,8 @@ internal interface AuthStore : Store<Intent, State, Label> {
 
     sealed interface Intent {
         data class OnTextInput(val text: String) : Intent
-        data object OnRetryButtonClick : Intent
-        data object OnAuthenticateButtonClick : Intent
+        data object OnRetryButtonClicked : Intent
+        data object OnAuthenticateButtonClicked : Intent
         data class ShowLearnMore(val show: Boolean) : Intent
     }
 

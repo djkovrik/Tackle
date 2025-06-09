@@ -43,7 +43,7 @@ class EditorAttachmentsComponentTest : ComponentTest<EditorAttachmentsComponent>
     }
 
     @Test
-    fun `onFileSelectedWrapped should update component model`() = runTest {
+    fun `onWrappedFilesSelect should update component model`() = runTest {
         // given
         val files = listOf(
             Instances.imageNormal.copy(name = "test1.jpg"),
@@ -55,7 +55,7 @@ class EditorAttachmentsComponentTest : ComponentTest<EditorAttachmentsComponent>
         // when
         component.updateInstanceConfig(config)
         component.changeComponentAvailability(available = true)
-        component.onFilesSelectedWrapped(files)
+        component.onWrappedFilesSelect(files)
         // then
         assertThat(activeModel.attachments.size).isEqualTo(files.size)
         assertThat(activeModel.attachmentsButtonAvailable).isFalse()
@@ -63,7 +63,7 @@ class EditorAttachmentsComponentTest : ComponentTest<EditorAttachmentsComponent>
     }
 
     @Test
-    fun `onFileDeleted should update component model`() = runTest {
+    fun `onFileDelete should update component model`() = runTest {
         // given
         val files = listOf(
             Instances.imageNormal.copy(name = "test1.jpg"),
@@ -75,11 +75,11 @@ class EditorAttachmentsComponentTest : ComponentTest<EditorAttachmentsComponent>
         // when
         component.updateInstanceConfig(config)
         component.changeComponentAvailability(available = true)
-        component.onFilesSelectedWrapped(files)
+        component.onWrappedFilesSelect(files)
         // given
         val fileToDelete = activeModel.attachments[2]
         // when
-        component.onFileDeleted(fileToDelete.id)
+        component.onFileDelete(fileToDelete.id)
         // then
         assertThat(activeModel.attachments).containsNone(fileToDelete)
         assertThat(activeModel.attachmentsButtonAvailable).isTrue()
@@ -103,10 +103,10 @@ class EditorAttachmentsComponentTest : ComponentTest<EditorAttachmentsComponent>
 
         component.updateInstanceConfig(config)
         component.changeComponentAvailability(available = true)
-        component.onFilesSelectedWrapped(files1)
+        component.onWrappedFilesSelect(files1)
 
         everySuspend { api.sendFile(any(), any(), any()) } throws IllegalStateException("Test")
-        component.onFilesSelectedWrapped(files2)
+        component.onWrappedFilesSelect(files2)
         // then
         assertThat(activeModel.attachments.count { it.status == AttachedFile.Status.ERROR }).isEqualTo(files2.size)
         // and when

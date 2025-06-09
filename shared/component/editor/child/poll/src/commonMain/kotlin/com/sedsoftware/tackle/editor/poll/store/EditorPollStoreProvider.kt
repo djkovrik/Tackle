@@ -45,7 +45,7 @@ internal class EditorPollStoreProvider(
                     forward(Action.RefreshAvailableDurations)
                 }
 
-                onIntent<Intent.OnRequestDurationPicker> { dispatch(Msg.DurationDialogVisibilityChanged(it.show)) }
+                onIntent<Intent.OnDurationPickerRequested> { dispatch(Msg.DurationDialogVisibilityChanged(it.show)) }
 
                 onIntent<Intent.OnDurationSelected> { dispatch(Msg.DurationSelected(it.duration)) }
 
@@ -59,9 +59,9 @@ internal class EditorPollStoreProvider(
 
                 onIntent<Intent.OnTextInput> { dispatch(Msg.TextInput(it.id, it.text)) }
 
-                onIntent<Intent.OnAddPollOption> { dispatch(Msg.PollOptionAdded) }
+                onIntent<Intent.OnPollOptionAdded> { dispatch(Msg.PollOptionAdded) }
 
-                onIntent<Intent.OnDeletePollOption> { dispatch(Msg.PollOptionDeleted(it.id)) }
+                onIntent<Intent.OnPollOptionDeleted> { dispatch(Msg.PollOptionDeleted(it.id)) }
             },
             reducer = { msg ->
                 when (msg) {

@@ -7,7 +7,7 @@ interface EditorEmojisComponent {
 
     val model: Value<Model>
 
-    fun onEmojiClicked(emoji: CustomEmoji)
+    fun onEmojiClick(emoji: CustomEmoji)
     fun toggleComponentVisibility()
 
     data class Model(

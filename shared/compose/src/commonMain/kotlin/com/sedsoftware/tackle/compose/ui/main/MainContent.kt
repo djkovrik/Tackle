@@ -42,7 +42,7 @@ internal fun MainContent(
         BottomNavigationBar(
             activeTab = activeTab,
             modifier = Modifier.fillMaxWidth(),
-            onTabClick = component::onTabClicked,
+            onTabClick = component::onTabClick,
         )
     }
 }
