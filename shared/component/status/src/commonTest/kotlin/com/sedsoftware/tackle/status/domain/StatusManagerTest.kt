@@ -193,12 +193,12 @@ class StatusManagerTest {
         val statusMuted = Responses.status.copy(muted = true)
         val statusNotMuted = Responses.status.copy(muted = false)
         // when
-        val actionsPinned = manager.buildContextActions(status = statusPinned, isOwn = true).getOrThrow()
-        val actionsNotPinned = manager.buildContextActions(status = statusNotPinned, isOwn = true).getOrThrow()
-        val actionsBookmarked = manager.buildContextActions(status = statusBookmarked).getOrThrow()
-        val actionsNotBookmarked = manager.buildContextActions(status = statusNotBookmarked).getOrThrow()
-        val actionsMuted = manager.buildContextActions(status = statusMuted).getOrThrow()
-        val actionsNotMuted = manager.buildContextActions(status = statusNotMuted).getOrThrow()
+        val actionsPinned = manager.buildContextActions(status = statusPinned, isOwn = true, translated = false).getOrThrow()
+        val actionsNotPinned = manager.buildContextActions(status = statusNotPinned, isOwn = true, translated = false).getOrThrow()
+        val actionsBookmarked = manager.buildContextActions(status = statusBookmarked, isOwn = false, translated = false).getOrThrow()
+        val actionsNotBookmarked = manager.buildContextActions(status = statusNotBookmarked, isOwn = false, translated = false).getOrThrow()
+        val actionsMuted = manager.buildContextActions(status = statusMuted, isOwn = false, translated = false).getOrThrow()
+        val actionsNotMuted = manager.buildContextActions(status = statusNotMuted, isOwn = false, translated = false).getOrThrow()
         // then
         assertThat(actionsPinned).contains(StatusContextAction.UNPIN)
         assertThat(actionsNotPinned).contains(StatusContextAction.PIN)

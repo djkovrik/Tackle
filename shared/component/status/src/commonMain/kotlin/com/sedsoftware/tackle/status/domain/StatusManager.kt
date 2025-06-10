@@ -75,7 +75,7 @@ internal class StatusManager(
         return@runCatching response.muted
     }
 
-    fun buildContextActions(status: Status, isOwn: Boolean = false, translated: Boolean = false): Result<List<StatusContextAction>> = runCatching {
+    fun buildContextActions(status: Status, isOwn: Boolean, translated: Boolean): Result<List<StatusContextAction>> = runCatching {
         val currentLocale = tools.getCurrentLocale()
 
         return@runCatching buildList {

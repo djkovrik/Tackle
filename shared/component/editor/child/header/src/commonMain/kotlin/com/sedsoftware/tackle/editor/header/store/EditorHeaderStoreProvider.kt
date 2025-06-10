@@ -43,7 +43,7 @@ internal class EditorHeaderStoreProvider(
                             onSuccess = { profileData: EditorProfileData ->
                                 dispatch(Msg.ProfileDataLoaded(profileData))
                             },
-                            onError = { throwable ->
+                            onError = { throwable: Throwable ->
                                 publish(Label.ErrorCaught(throwable))
                             }
                         )
@@ -57,7 +57,7 @@ internal class EditorHeaderStoreProvider(
                             onSuccess = { recommended: AppLocale ->
                                 dispatch(Msg.RecommendedLocaleLoaded(recommended))
                             },
-                            onError = { throwable ->
+                            onError = { throwable: Throwable ->
                                 publish(Label.ErrorCaught(throwable))
                             }
                         )
@@ -71,7 +71,7 @@ internal class EditorHeaderStoreProvider(
                             onSuccess = { availableLocales: List<AppLocale> ->
                                 dispatch(Msg.AvailableLocalesLoaded(availableLocales))
                             },
-                            onError = { throwable ->
+                            onError = { throwable: Throwable ->
                                 publish(Label.ErrorCaught(throwable))
                             }
                         )
@@ -84,10 +84,10 @@ internal class EditorHeaderStoreProvider(
                     launch {
                         unwrap(
                             result = withContext(ioContext) { manager.saveSelectedLocale(it.language) },
-                            onSuccess = {
-                                dispatch(Msg.LocaleSelected(it))
+                            onSuccess = { locale: AppLocale ->
+                                dispatch(Msg.LocaleSelected(locale))
                             },
-                            onError = { throwable ->
+                            onError = { throwable: Throwable ->
                                 publish(Label.ErrorCaught(throwable))
                             }
                         )

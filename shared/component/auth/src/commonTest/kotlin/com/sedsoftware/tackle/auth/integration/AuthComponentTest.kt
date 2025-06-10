@@ -14,7 +14,6 @@ import com.sedsoftware.tackle.auth.Responses
 import com.sedsoftware.tackle.auth.model.CredentialsState
 import com.sedsoftware.tackle.auth.stubs.AuthComponentSettingsStub
 import com.sedsoftware.tackle.domain.ComponentOutput
-import com.sedsoftware.tackle.domain.model.AppClientData
 import com.sedsoftware.tackle.utils.test.ComponentTest
 import dev.mokkery.answering.returns
 import dev.mokkery.answering.throws
@@ -46,7 +45,6 @@ class AuthComponentTest : ComponentTest<AuthComponent>() {
         everySuspend { openUrl(any()) } returns Unit
         everySuspend { getTextInputEndDelay() } returns 0L
     }
-
 
     private val activeModel: AuthComponent.Model
         get() = component.model.value

@@ -1,3 +1,4 @@
+@file:Suppress("TooManyFunctions")
 package com.sedsoftware.tackle.domain.api
 
 import com.sedsoftware.tackle.domain.model.Account

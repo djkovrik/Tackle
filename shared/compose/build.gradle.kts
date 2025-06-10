@@ -61,3 +61,7 @@ kotlin {
         }
     }
 }
+
+dependencies {
+    debugImplementation(libs.compose.ui.tooling)
+}

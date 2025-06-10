@@ -40,7 +40,7 @@ internal class EditorEmojisStoreProvider(
                         unwrap(
                             result = withContext(ioContext) { manager.fetchServerEmojis() },
                             onSuccess = {},
-                            onError = { throwable ->
+                            onError = { throwable: Throwable ->
                                 publish(Label.ErrorCaught(throwable))
                             }
                         )

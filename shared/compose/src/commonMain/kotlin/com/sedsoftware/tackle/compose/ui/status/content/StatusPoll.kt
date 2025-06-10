@@ -172,22 +172,39 @@ private fun StatusPollOption(
 
 @Preview
 @Composable
-private fun StatusPollPreviewLight() {
+private fun StatusPollPreviewLight1() {
     TackleScreenPreview {
-        StatusPollContent()
+        StatusPollContent1()
     }
 }
 
 @Preview
 @Composable
-private fun StatusPollPreviewDark() {
+private fun StatusPollPreviewLight2() {
+    TackleScreenPreview {
+        StatusPollContent2()
+    }
+}
+
+
+@Preview
+@Composable
+private fun StatusPollPreviewDark1() {
     TackleScreenPreview(darkTheme = true) {
-        StatusPollContent()
+        StatusPollContent1()
+    }
+}
+
+@Preview
+@Composable
+private fun StatusPollPreviewDark2() {
+    TackleScreenPreview(darkTheme = true) {
+        StatusPollContent2()
     }
 }
 
 @Composable
-private fun StatusPollContent() {
+private fun StatusPollContent1() {
     Column(
         modifier = Modifier
             .background(
@@ -201,11 +218,17 @@ private fun StatusPollContent() {
                 .background(color = MaterialTheme.colorScheme.surface)
         )
         StatusPoll(poll = PreviewStubs.pollNotVotedExpired)
-        Spacer(
-            modifier = Modifier
-                .height(height = 32.dp).fillMaxWidth()
-                .background(color = MaterialTheme.colorScheme.surface)
-        )
+    }
+}
+
+@Composable
+private fun StatusPollContent2() {
+    Column(
+        modifier = Modifier
+            .background(
+                color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f)
+            )
+    ) {
         StatusPoll(poll = PreviewStubs.pollVoted)
         Spacer(
             modifier = Modifier
