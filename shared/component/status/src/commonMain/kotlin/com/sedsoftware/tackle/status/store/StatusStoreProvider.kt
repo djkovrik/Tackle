@@ -18,12 +18,12 @@ import kotlinx.coroutines.withContext
 import kotlin.coroutines.CoroutineContext
 
 internal class StatusStoreProvider(
-    private val status: Status,
-    private val isOwn: Boolean,
     private val storeFactory: StoreFactory,
     private val manager: StatusManager,
     private val mainContext: CoroutineContext,
     private val ioContext: CoroutineContext,
+    private val status: Status,
+    private val isOwn: Boolean,
 ) {
 
     @StoreCreate

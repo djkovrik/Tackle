@@ -350,11 +350,11 @@ internal class StatusStoreTest : StoreTest<StatusStore.Intent, StatusStore.State
 
     override fun createStore(): Store<StatusStore.Intent, StatusStore.State, StatusStore.Label> =
         StatusStoreProvider(
-            status = testStatus,
-            isOwn = true,
             storeFactory = DefaultStoreFactory(),
             manager = manager,
             mainContext = Dispatchers.Unconfined,
             ioContext = Dispatchers.Unconfined,
+            status = testStatus,
+            isOwn = true,
         ).create(autoInit = false)
 }
