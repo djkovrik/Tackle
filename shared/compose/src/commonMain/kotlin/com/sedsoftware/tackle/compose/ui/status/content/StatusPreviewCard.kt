@@ -2,8 +2,6 @@ package com.sedsoftware.tackle.compose.ui.status.content
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -16,17 +14,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.sedsoftware.tackle.compose.model.TackleImageParams
-import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
-import com.sedsoftware.tackle.compose.ui.PreviewStubs
 import com.sedsoftware.tackle.compose.widget.TackleImage
 import com.sedsoftware.tackle.domain.model.PreviewCard
-import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 internal fun StatusPreviewCard(
     card: PreviewCard,
+    onUrlClick: (String) -> Unit,
     modifier: Modifier = Modifier,
-    onUrlClick: (String) -> Unit = {},
 ) {
     Card(
         colors = CardDefaults.cardColors(
@@ -79,32 +74,5 @@ internal fun StatusPreviewCard(
                 )
             }
         }
-    }
-}
-
-@Preview
-@Composable
-private fun StatusPreviewCardPreviewLight() {
-    TackleScreenPreview {
-        StatusPreviewCardContent()
-    }
-}
-
-@Preview
-@Composable
-private fun StatusPreviewCardPreviewDark() {
-    TackleScreenPreview(darkTheme = true) {
-        StatusPreviewCardContent()
-    }
-}
-
-@Composable
-private fun StatusPreviewCardContent() {
-    Column(modifier = Modifier.padding(all = 4.dp)) {
-        StatusPreviewCard(card = PreviewStubs.previewCardImage)
-        Spacer(modifier = Modifier.height(height = 4.dp))
-        StatusPreviewCard(card = PreviewStubs.previewCardVideo)
-        Spacer(modifier = Modifier.height(height = 4.dp))
-        StatusPreviewCard(card = PreviewStubs.previewCardLink)
     }
 }

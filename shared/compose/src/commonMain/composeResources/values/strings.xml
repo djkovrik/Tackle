@@ -115,8 +115,21 @@
     <string name="status_sensitive_image_content_description">Toggle sensitive image visibility</string>
     <string name="status_info_created">Created</string>
     <string name="status_info_edited">Edited</string>
+    <string name="status_translating">Translating</string>
+    <string name="status_translated">Translated with</string>
     <string name="status_poll_active_till">Poll active till:</string>
     <string name="status_poll_completed">Poll completed</string>
     <string name="status_poll_multi_choice">Multiple choice available</string>
     <string name="status_poll_voters">Voters:</string>
+    <string name="status_poll_button">Vote</string>
+    <!-- Status context menu -->
+    <string name="status_menu_translate">Translate</string>
+    <string name="status_menu_show_original">Show original</string>
+    <string name="status_menu_delete">Delete</string>
+    <string name="status_menu_pin">Pin</string>
+    <string name="status_menu_unpin">Unpin</string>
+    <string name="status_menu_bookmark">Bookmark</string>
+    <string name="status_menu_unbookmark">Unbookmark</string>
+    <string name="status_menu_mute">Mute</string>
+    <string name="status_menu_unmute">Unmute</string>
 </resources>

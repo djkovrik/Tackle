@@ -8,10 +8,10 @@ import com.sedsoftware.tackle.domain.model.type.MediaAttachmentType
 @Composable
 internal fun StatusAttachments(
     attachments: List<MediaAttachment>,
+    onDownloadClick: () -> Unit,
+    onCancelClick: () -> Unit,
+    onDoneClick: () -> Unit,
     modifier: Modifier = Modifier,
-    onDownloadClick: () -> Unit = {},
-    onCancelClick: () -> Unit = {},
-    onDoneClick: () -> Unit = {},
 ) {
     require(attachments.isNotEmpty()) { "Attachments list should not be empty" }
 

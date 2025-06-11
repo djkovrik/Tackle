@@ -23,13 +23,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.sedsoftware.tackle.compose.model.TackleImageParams
-import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
-import com.sedsoftware.tackle.compose.ui.PreviewStubs
 import com.sedsoftware.tackle.compose.widget.TackleImage
 import com.sedsoftware.tackle.domain.model.MediaAttachment
-import com.sedsoftware.tackle.domain.model.type.MediaAttachmentType
 import com.sedsoftware.tackle.utils.extension.orZero
-import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 internal fun StatusAttachmentsImageList(
@@ -82,9 +78,9 @@ internal fun StatusAttachmentsImageList(
 private fun StatusAttachmentGalleryItem(
     url: String,
     selected: Boolean,
+    onSelect: () -> Unit,
     params: TackleImageParams? = null,
     modifier: Modifier = Modifier,
-    onSelect: () -> Unit = {},
 ) {
     Box(
         modifier = modifier
@@ -109,33 +105,4 @@ private fun StatusAttachmentGalleryItem(
                 .aspectRatio(ratio = params?.ratio ?: 1f)
         )
     }
-}
-
-@Preview
-@Composable
-private fun StatusAttachmentsFileListPreviewLight() {
-    TackleScreenPreview {
-        StatusAttachmentsFileListPreviewContent()
-    }
-}
-
-@Preview
-@Composable
-private fun StatusAttachmentsFileListPreviewDark() {
-    TackleScreenPreview(darkTheme = true) {
-        StatusAttachmentsFileListPreviewContent()
-    }
-}
-
-
-@Composable
-private fun StatusAttachmentsFileListPreviewContent() {
-    StatusAttachmentsImageList(
-        attachments = listOf(
-            PreviewStubs.mediaAttachment.copy(type = MediaAttachmentType.IMAGE),
-            PreviewStubs.mediaAttachment.copy(type = MediaAttachmentType.IMAGE),
-            PreviewStubs.mediaAttachment.copy(type = MediaAttachmentType.IMAGE),
-            PreviewStubs.mediaAttachment.copy(type = MediaAttachmentType.IMAGE),
-        )
-    )
 }

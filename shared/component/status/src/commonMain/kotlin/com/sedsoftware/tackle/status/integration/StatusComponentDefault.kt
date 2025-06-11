@@ -52,7 +52,7 @@ class StatusComponentDefault(
         scope.launch {
             store.labels.collect { label ->
                 when (label) {
-                    is Label.StatusDeleted -> Unit // TODO React on status deletion
+                    is Label.StatusDeleted -> TODO("StatusDeleted")
                     is Label.ErrorCaught -> output(ComponentOutput.Common.ErrorCaught(label.exception))
                 }
             }

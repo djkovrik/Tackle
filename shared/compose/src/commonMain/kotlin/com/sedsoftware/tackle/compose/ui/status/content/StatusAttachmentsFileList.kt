@@ -17,13 +17,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
-import com.sedsoftware.tackle.compose.ui.PreviewStubs
 import com.sedsoftware.tackle.compose.widget.TackleProgressIndicator
 import com.sedsoftware.tackle.domain.model.MediaAttachment
 import com.sedsoftware.tackle.domain.model.type.MediaAttachmentType
 import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
 import tackle.shared.compose.generated.resources.Res
 import tackle.shared.compose.generated.resources.editor_attachment_audio
 import tackle.shared.compose.generated.resources.editor_attachment_unknown
@@ -31,10 +28,10 @@ import tackle.shared.compose.generated.resources.editor_attachment_unknown
 @Composable
 internal fun StatusAttachmentsFileList(
     attachments: List<MediaAttachment>,
+    onDownloadClick: () -> Unit,
+    onCancelClick: () -> Unit,
+    onDoneClick: () -> Unit,
     modifier: Modifier = Modifier,
-    onDownloadClick: () -> Unit = {},
-    onCancelClick: () -> Unit = {},
-    onDoneClick: () -> Unit = {},
 ) {
     LazyRow(modifier = modifier) {
         itemsIndexed(
@@ -64,10 +61,10 @@ internal fun StatusAttachmentsFileList(
 private fun StatusAttachmentNoPreview(
     label: String,
     index: Int,
+    onDownloadClick: () -> Unit,
+    onCancelClick: () -> Unit,
+    onDoneClick: () -> Unit,
     modifier: Modifier = Modifier,
-    onDownloadClick: () -> Unit = {},
-    onCancelClick: () -> Unit = {},
-    onDoneClick: () -> Unit = {},
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -103,32 +100,4 @@ private fun StatusAttachmentNoPreview(
             modifier = modifier.padding(horizontal = 8.dp, vertical = 16.dp),
         )
     }
-}
-
-@Preview
-@Composable
-private fun StatusAttachmentsFileListPreviewLight() {
-    TackleScreenPreview {
-        StatusAttachmentsFileListPreviewContent()
-    }
-}
-
-@Preview
-@Composable
-private fun StatusAttachmentsFileListPreviewDark() {
-    TackleScreenPreview(darkTheme = true) {
-        StatusAttachmentsFileListPreviewContent()
-    }
-}
-
-@Composable
-private fun StatusAttachmentsFileListPreviewContent() {
-    StatusAttachmentsFileList(
-        attachments = listOf(
-            PreviewStubs.mediaAttachment.copy(type = MediaAttachmentType.AUDIO),
-            PreviewStubs.mediaAttachment.copy(type = MediaAttachmentType.UNKNOWN),
-            PreviewStubs.mediaAttachment.copy(type = MediaAttachmentType.AUDIO),
-            PreviewStubs.mediaAttachment.copy(type = MediaAttachmentType.UNKNOWN),
-        )
-    )
 }
