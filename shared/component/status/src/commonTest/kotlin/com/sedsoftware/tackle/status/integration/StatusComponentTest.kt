@@ -51,6 +51,7 @@ class StatusComponentTest : ComponentTest<StatusComponent>() {
     private val tools: StatusComponentGateways.Tools = mock {
         every { getCurrentLocale() } returns AppLocale("English", "en")
         every { openUrl(any()) } returns Unit
+        every { shareUrl(any(), any()) } returns Unit
     }
 
     private val activeModel: StatusComponent.Model
@@ -181,6 +182,16 @@ class StatusComponentTest : ComponentTest<StatusComponent>() {
         assertThat(activeModel.status.poll?.ownVotes).isEqualTo(listOf(1))
         verifySuspend(exactly(1)) { api.vote(activeModel.status.poll?.id.orEmpty(), listOf(1)) }
     }
+
+    @Test
+    fun `onShareClick should call for share`() = runTest {
+        // given
+        // when
+        component.onShareClick()
+        // then
+        verify(exactly(1)) { tools.shareUrl(testStatus.account.displayName, testStatus.url) }
+    }
+
 
     @Test
     fun `onUrlClick should call for open url`() = runTest {

@@ -188,6 +188,19 @@ internal class StatusStoreProvider(
                     }
                 }
 
+                onIntent<Intent.OnShareClicked> {
+                    launch {
+                        val title = status.account.displayName.takeIf { it.isNotEmpty() } ?: status.account.username
+                        val url = status.url
+
+                        unwrap(
+                            result = manager.share(title, url),
+                            onSuccess = {},
+                            onError = { publish(Label.ErrorCaught(it)) },
+                        )
+                    }
+                }
+
                 onIntent<Intent.OnMenuVisibilityChanged> {
                     dispatch(Msg.MenuVisibilityChanged(it.visible))
                 }
@@ -215,6 +228,16 @@ internal class StatusStoreProvider(
                                 onError = { publish(Label.ErrorCaught(it)) },
                             )
                         }
+                    }
+                }
+
+                onIntent<Intent.OnUrlClicked> {
+                    launch {
+                        unwrap(
+                            result = manager.openUrl(it.url),
+                            onSuccess = {},
+                            onError = { publish(Label.ErrorCaught(it)) },
+                        )
                     }
                 }
             },

@@ -10,6 +10,7 @@ import platform.Foundation.NSURL
 import platform.Foundation.currentLocale
 import platform.Foundation.languageCode
 import platform.UIKit.UIApplication
+import platform.UIKit.UIActivityViewController
 
 @Suppress("FunctionName")
 fun PlatformToolsFactory(): TacklePlatformTools =
@@ -51,5 +52,16 @@ fun PlatformToolsFactory(): TacklePlatformTools =
                     )
                 }
                 .distinctBy { it.languageCode }
+        }
+
+        override fun shareStatus(title: String, url: String) {
+            val textToShare = "$title\n$url"
+            val currentViewController = UIApplication.sharedApplication().keyWindow?.rootViewController
+            val activityViewController = UIActivityViewController(listOf(textToShare), null)
+            currentViewController?.presentViewController(
+                viewControllerToPresent = activityViewController,
+                animated = true,
+                completion = null
+            )
         }
     }

@@ -25,5 +25,6 @@ interface StatusComponentGateways {
     interface Tools {
         fun getCurrentLocale(): AppLocale
         fun openUrl(url: String)
+        fun shareUrl(title: String, url: String)
     }
 }

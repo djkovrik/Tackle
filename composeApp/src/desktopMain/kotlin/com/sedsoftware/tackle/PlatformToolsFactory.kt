@@ -6,6 +6,9 @@ import com.sedsoftware.tackle.domain.model.AppLocale
 import java.awt.Desktop
 import java.net.URI
 import java.util.Locale
+import java.awt.Toolkit
+import java.awt.datatransfer.Clipboard
+import java.awt.datatransfer.StringSelection
 
 @Suppress("FunctionName")
 fun PlatformToolsFactory(): TacklePlatformTools =
@@ -43,6 +46,13 @@ fun PlatformToolsFactory(): TacklePlatformTools =
                 .filter { it.language.length == languageCodeLength }
                 .distinctBy { it.language }
                 .map { AppLocale(languageName = it.displayLanguage.capitalizeDisplayName(locale), languageCode = it.language) }
+        }
+
+        override fun shareStatus(title: String, url: String) {
+            val textToCopy = "$title\n$url"
+            val selection = StringSelection(textToCopy)
+            val clipboard: Clipboard = Toolkit.getDefaultToolkit().systemClipboard
+            clipboard.setContents(selection, selection)
         }
 
         private fun String.capitalizeDisplayName(locale: Locale): String =

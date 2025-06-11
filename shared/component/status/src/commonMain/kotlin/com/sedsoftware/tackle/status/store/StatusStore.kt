@@ -19,9 +19,11 @@ internal interface StatusStore : Store<Intent, State, Label> {
         data object OnBookmarkClicked : Intent
         data object OnPinClicked : Intent
         data object OnMuteClicked : Intent
+        data object OnShareClicked : Intent
         data class OnMenuVisibilityChanged(val visible: Boolean) : Intent
         data class OnPollOptionSelected(val index: Int, val multiselect: Boolean) : Intent
         data object OnVoteClicked : Intent
+        data class OnUrlClicked(val url: String): Intent
     }
 
     data class State(

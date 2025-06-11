@@ -22,6 +22,7 @@ import dev.mokkery.every
 import dev.mokkery.everySuspend
 import dev.mokkery.matcher.any
 import dev.mokkery.mock
+import dev.mokkery.verify
 import dev.mokkery.verify.VerifyMode.Companion.exactly
 import dev.mokkery.verifySuspend
 import kotlinx.coroutines.Dispatchers
@@ -277,11 +278,31 @@ internal class StatusStoreTest : StoreTest<StatusStore.Intent, StatusStore.State
 
     @Test
     fun `OnMuteClicked should publish ErrorCaught label on failure`() = runTest {
-        everySuspend { api.mute(any()) } throws IllegalStateException("Test")
         // given
+        everySuspend { api.mute(any()) } throws IllegalStateException("Test")
         store.init()
         // when
         store.accept(StatusStore.Intent.OnMuteClicked)
+        // then
+        assertThat(labels.count { it is StatusStore.Label.ErrorCaught }).isEqualTo(1)
+    }
+
+    @Test
+    fun `OnShareClicked should share status url on success`() = runTest {
+        store.init()
+        // when
+        store.accept(StatusStore.Intent.OnShareClicked)
+        // then
+        verify(exactly(1)) { tools.shareUrl(testStatus.account.displayName, testStatus.url) }
+    }
+
+    @Test
+    fun `OnShareClicked should publish ErrorCaught label on failure `() = runTest {
+        // given
+        every { tools.shareUrl(any(), any()) } throws IllegalStateException("Test")
+        store.init()
+        // when
+        store.accept(StatusStore.Intent.OnShareClicked)
         // then
         assertThat(labels.count { it is StatusStore.Label.ErrorCaught }).isEqualTo(1)
     }
@@ -347,6 +368,30 @@ internal class StatusStoreTest : StoreTest<StatusStore.Intent, StatusStore.State
         // then
         assertThat(labels.count { it is StatusStore.Label.ErrorCaught }).isEqualTo(1)
     }
+
+    @Test
+    fun `OnUrlClicked should open url on success`() = runTest {
+        // given
+        val url = "https://ya.ru"
+        store.init()
+        // when
+        store.accept(StatusStore.Intent.OnUrlClicked(url))
+        // then
+        verify(exactly(1)) { tools.openUrl(url) }
+    }
+
+    @Test
+    fun `OnUrlClicked should publish ErrorCaught label on failure `() = runTest {
+        // given
+        val url = "https://ya.ru"
+        every { tools.openUrl(any()) } throws IllegalStateException("Test")
+        store.init()
+        // when
+        store.accept(StatusStore.Intent.OnUrlClicked(url))
+        // then
+        assertThat(labels.count { it is StatusStore.Label.ErrorCaught }).isEqualTo(1)
+    }
+
 
     override fun createStore(): Store<StatusStore.Intent, StatusStore.State, StatusStore.Label> =
         StatusStoreProvider(

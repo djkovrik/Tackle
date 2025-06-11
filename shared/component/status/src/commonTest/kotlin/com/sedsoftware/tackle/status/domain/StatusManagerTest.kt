@@ -13,6 +13,8 @@ import dev.mokkery.every
 import dev.mokkery.everySuspend
 import dev.mokkery.matcher.any
 import dev.mokkery.mock
+import dev.mokkery.verify
+import dev.mokkery.verify.VerifyMode.Companion.exactly
 import dev.mokkery.verifySuspend
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
@@ -161,6 +163,27 @@ class StatusManagerTest {
         verifySuspend { api.unmute(testStatusId) }
         assertThat(response.isSuccess).isTrue()
         assertThat(response.getOrThrow()).isFalse()
+    }
+
+    @Test
+    fun `share should call for tools`() = runTest {
+        // given
+        val title = "title"
+        val url = "https://google.ru"
+        // when
+        manager.share(title, url)
+        // then
+        verify(exactly(1)) { tools.shareUrl(title, url) }
+    }
+
+    @Test
+    fun `open url should call for tools`() = runTest {
+        // given
+        val url = "https://google.ru"
+        // when
+        manager.openUrl(url)
+        // then
+        verify(exactly(1)) { tools.openUrl(url) }
     }
 
     @Test

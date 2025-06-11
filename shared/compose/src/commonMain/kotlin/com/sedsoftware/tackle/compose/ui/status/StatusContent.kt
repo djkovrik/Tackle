@@ -30,7 +30,7 @@ internal fun StatusContent(
         onMenuRequest = component::onMenuRequest,
         onMenuActionClick = component::onMenuActionClick,
         onReplyClick = TODO("Reply"),
-        onShareClick = TODO("Share"),
+        onShareClick = component::onShareClick,
     ) {
 
         if (model.status.content.isNotEmpty()) {

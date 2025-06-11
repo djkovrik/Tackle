@@ -26,4 +26,12 @@ interface TacklePlatformTools {
      * Get all locales available at the device
      */
     fun getAvailableLocales(): List<AppLocale>
+
+    /**
+     * Open share content dialog for given url
+     *
+     * @param title status title
+     * @param url link to share
+     */
+    fun shareStatus(title: String, url: String)
 }

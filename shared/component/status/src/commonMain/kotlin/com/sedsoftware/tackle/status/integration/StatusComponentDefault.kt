@@ -99,7 +99,11 @@ class StatusComponentDefault(
         store.accept(StatusStore.Intent.OnVoteClicked)
     }
 
+    override fun onShareClick() {
+        store.accept(StatusStore.Intent.OnShareClicked)
+    }
+
     override fun onUrlClick(url: String) {
-        tools.openUrl(url)
+        store.accept(StatusStore.Intent.OnUrlClicked(url))
     }
 }

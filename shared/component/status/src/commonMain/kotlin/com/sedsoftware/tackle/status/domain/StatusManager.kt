@@ -75,6 +75,14 @@ internal class StatusManager(
         return@runCatching response.muted
     }
 
+    fun share(title: String, url: String): Result<Unit> = runCatching {
+        tools.shareUrl(title, url)
+    }
+
+    fun openUrl(url: String): Result<Unit> = runCatching {
+        tools.openUrl(url)
+    }
+
     fun buildContextActions(status: Status, isOwn: Boolean, translated: Boolean): Result<List<StatusContextAction>> = runCatching {
         val currentLocale = tools.getCurrentLocale()
 
