@@ -7,6 +7,7 @@ import assertk.assertions.isNotNull
 import assertk.assertions.isTrue
 import com.arkivanov.decompose.DefaultComponentContext
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
+import com.sedsoftware.tackle.domain.ComponentOutput
 import com.sedsoftware.tackle.domain.model.AppLocale
 import com.sedsoftware.tackle.domain.model.Status
 import com.sedsoftware.tackle.status.Responses
@@ -79,6 +80,8 @@ class StatusComponentTest : ComponentTest<StatusComponent>() {
         component.onMenuActionClick(StatusContextAction.DELETE)
         // then
         verifySuspend(exactly(1)) { api.delete(testStatus.id, true) }
+        val output = componentOutput.firstOrNull { it is ComponentOutput.Status.Deleted } as ComponentOutput.Status.Deleted
+        assertThat(output.statusId).isEqualTo(testStatus.id)
         // when
         component.onMenuActionClick(StatusContextAction.PIN)
         // then

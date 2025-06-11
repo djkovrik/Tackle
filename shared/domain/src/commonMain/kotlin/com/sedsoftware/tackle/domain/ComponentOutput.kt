@@ -24,6 +24,10 @@ sealed class ComponentOutput {
         data object AttachmentDataUpdated : StatusEditor()
     }
 
+    sealed class Status : ComponentOutput() {
+        data class Deleted(val statusId: String) : Status()
+    }
+
     sealed class Common : ComponentOutput() {
         data class ErrorCaught(val throwable: Throwable) : Common()
     }
