@@ -39,7 +39,7 @@ internal fun StatusContent(
                 modifier = modifier,
                 onHashTagClick = TODO("onHashTagClick"),
                 onMentionClick = TODO("onMentionClick"),
-                onUrlClick = TODO("onUrlClick"),
+                onUrlClick = component::onUrlClick,
             )
         }
 
@@ -66,7 +66,7 @@ internal fun StatusContent(
         model.status.card?.let { previewCard: PreviewCard ->
             StatusPreviewCard(
                 card = previewCard,
-                onUrlClick = TODO("onUrlClick"),
+                onUrlClick = component::onUrlClick,
                 modifier = modifier,
             )
         }

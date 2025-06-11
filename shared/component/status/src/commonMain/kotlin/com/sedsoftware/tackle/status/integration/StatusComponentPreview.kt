@@ -35,4 +35,5 @@ class StatusComponentPreview(
     override fun onMenuRequest(visible: Boolean) = Unit
     override fun onPollSelect(index: Int, multiselect: Boolean) = Unit
     override fun onVoteClick() = Unit
+    override fun onUrlClick(url: String) = Unit
 }

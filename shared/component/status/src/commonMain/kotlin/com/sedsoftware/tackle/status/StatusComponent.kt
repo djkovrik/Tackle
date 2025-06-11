@@ -15,6 +15,7 @@ interface StatusComponent {
     fun onMenuRequest(visible: Boolean)
     fun onPollSelect(index: Int, multiselect: Boolean)
     fun onVoteClick()
+    fun onUrlClick(url: String)
 
     data class Model(
         val status: Status,

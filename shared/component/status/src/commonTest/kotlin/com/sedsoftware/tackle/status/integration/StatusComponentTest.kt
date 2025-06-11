@@ -20,6 +20,7 @@ import dev.mokkery.every
 import dev.mokkery.everySuspend
 import dev.mokkery.matcher.any
 import dev.mokkery.mock
+import dev.mokkery.verify
 import dev.mokkery.verify.VerifyMode.Companion.exactly
 import dev.mokkery.verifySuspend
 import kotlinx.coroutines.test.runTest
@@ -49,6 +50,7 @@ class StatusComponentTest : ComponentTest<StatusComponent>() {
 
     private val tools: StatusComponentGateways.Tools = mock {
         every { getCurrentLocale() } returns AppLocale("English", "en")
+        every { openUrl(any()) } returns Unit
     }
 
     private val activeModel: StatusComponent.Model
@@ -180,6 +182,17 @@ class StatusComponentTest : ComponentTest<StatusComponent>() {
         verifySuspend(exactly(1)) { api.vote(activeModel.status.poll?.id.orEmpty(), listOf(1)) }
     }
 
+    @Test
+    fun `onUrlClick should call for open url`() = runTest {
+        // given
+        val url = "https://google.com"
+        // when
+        component.onUrlClick(url)
+        // then
+        verify(exactly(1)) { tools.openUrl(url) }
+    }
+
+
     override fun createComponent(): StatusComponent =
         StatusComponentDefault(
             componentContext = DefaultComponentContext(lifecycle),
@@ -192,20 +205,3 @@ class StatusComponentTest : ComponentTest<StatusComponent>() {
             isOwn = true,
         )
 }
-
-//fun onMenuActionClick(action: StatusContextAction)
-//fun onFavouriteClick()
-//fun onReblogClick()
-//fun onMenuRequest(visible: Boolean)
-//fun onPollSelect(index: Int, multiselect: Boolean)
-//fun onVoteClick()
-//
-//data class Model(
-//    val status: Status,
-//    val menuVisible: Boolean,
-//    val menuActions: List<StatusContextAction>,
-//    val translation: Translation?,
-//    val translationInProgress: Boolean,
-//    val translationDisplayed: Boolean,
-//)
-
