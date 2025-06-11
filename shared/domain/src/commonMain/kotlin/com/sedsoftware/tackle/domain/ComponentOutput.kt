@@ -26,6 +26,9 @@ sealed class ComponentOutput {
 
     sealed class Status : ComponentOutput() {
         data class Deleted(val statusId: String) : Status()
+        data class ReplyCalled(val statusId: String) : Status()
+        data class HashTagClicked(val hashTag: String) : Status()
+        data class MentionClicked(val mention: String) : Status()
     }
 
     sealed class Common : ComponentOutput() {

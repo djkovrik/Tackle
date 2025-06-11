@@ -106,4 +106,17 @@ class StatusComponentDefault(
     override fun onUrlClick(url: String) {
         store.accept(StatusStore.Intent.OnUrlClicked(url))
     }
+
+    override fun onReplyClick() {
+        val currentStatus: Status = model.value.status
+        output(ComponentOutput.Status.ReplyCalled(currentStatus.id))
+    }
+
+    override fun onHashTagClick(hashTag: String) {
+        output(ComponentOutput.Status.HashTagClicked(hashTag))
+    }
+
+    override fun onMentionClick(mention: String) {
+        output(ComponentOutput.Status.MentionClicked(mention))
+    }
 }

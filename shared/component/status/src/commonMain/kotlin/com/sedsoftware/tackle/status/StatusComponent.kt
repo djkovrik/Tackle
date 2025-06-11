@@ -17,6 +17,9 @@ interface StatusComponent {
     fun onVoteClick()
     fun onShareClick()
     fun onUrlClick(url: String)
+    fun onReplyClick()
+    fun onHashTagClick(hashTag: String)
+    fun onMentionClick(mention: String)
 
     data class Model(
         val status: Status,

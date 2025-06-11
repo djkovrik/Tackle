@@ -203,6 +203,37 @@ class StatusComponentTest : ComponentTest<StatusComponent>() {
         verify(exactly(1)) { tools.openUrl(url) }
     }
 
+    @Test
+    fun `onReplyClick should publish output for replying`() = runTest {
+        // given
+        // when
+        component.onReplyClick()
+        // then
+        val output = componentOutput.firstOrNull { it is ComponentOutput.Status.ReplyCalled } as ComponentOutput.Status.ReplyCalled
+        assertThat(output.statusId).isEqualTo(testStatus.id)
+    }
+
+    @Test
+    fun `onHashTagClick should publish output with hash tag`() = runTest {
+        // given
+        val hashtag = "tag"
+        // when
+        component.onHashTagClick(hashtag)
+        // then
+        val output = componentOutput.firstOrNull { it is ComponentOutput.Status.HashTagClicked } as ComponentOutput.Status.HashTagClicked
+        assertThat(output.hashTag).isEqualTo(hashtag)
+    }
+
+    @Test
+    fun `onMentionClick should publish output with mention`() = runTest {
+        // given
+        val mention = "@mention"
+        // when
+        component.onMentionClick(mention)
+        // then
+        val output = componentOutput.firstOrNull { it is ComponentOutput.Status.MentionClicked } as ComponentOutput.Status.MentionClicked
+        assertThat(output.mention).isEqualTo(mention)
+    }
 
     override fun createComponent(): StatusComponent =
         StatusComponentDefault(

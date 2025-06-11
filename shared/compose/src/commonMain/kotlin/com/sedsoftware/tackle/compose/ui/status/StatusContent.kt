@@ -29,7 +29,7 @@ internal fun StatusContent(
         onReblogClick = component::onReblogClick,
         onMenuRequest = component::onMenuRequest,
         onMenuActionClick = component::onMenuActionClick,
-        onReplyClick = TODO("Reply"),
+        onReplyClick = component::onReplyClick,
         onShareClick = component::onShareClick,
     ) {
 
@@ -37,8 +37,8 @@ internal fun StatusContent(
             StatusText(
                 model = model,
                 modifier = modifier,
-                onHashTagClick = TODO("onHashTagClick"),
-                onMentionClick = TODO("onMentionClick"),
+                onHashTagClick = component::onHashTagClick,
+                onMentionClick = component::onMentionClick,
                 onUrlClick = component::onUrlClick,
             )
         }

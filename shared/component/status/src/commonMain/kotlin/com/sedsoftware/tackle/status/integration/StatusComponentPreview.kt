@@ -37,4 +37,7 @@ class StatusComponentPreview(
     override fun onVoteClick() = Unit
     override fun onShareClick() = Unit
     override fun onUrlClick(url: String) = Unit
+    override fun onReplyClick() = Unit
+    override fun onHashTagClick(hashTag: String) = Unit
+    override fun onMentionClick(mention: String) = Unit
 }
