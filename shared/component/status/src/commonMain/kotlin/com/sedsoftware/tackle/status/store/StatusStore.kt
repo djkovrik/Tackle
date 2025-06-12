@@ -28,6 +28,8 @@ internal interface StatusStore : Store<Intent, State, Label> {
 
     data class State(
         val status: Status,
+        val extendedInfo: Boolean,
+        val isOwn: Boolean,
         val menuVisible: Boolean = false,
         val menuActions: List<StatusContextAction> = emptyList(),
         val translation: Translation? = null,

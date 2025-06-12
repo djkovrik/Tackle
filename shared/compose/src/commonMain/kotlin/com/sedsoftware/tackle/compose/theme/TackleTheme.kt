@@ -4,6 +4,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Shapes
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
@@ -48,6 +49,8 @@ internal fun TackleScreenPreview(
     content: @Composable () -> Unit,
 ) {
     TackleTheme(systemIsDark = darkTheme) {
-        content()
+        Surface(color = MaterialTheme.colorScheme.background) {
+            content()
+        }
     }
 }

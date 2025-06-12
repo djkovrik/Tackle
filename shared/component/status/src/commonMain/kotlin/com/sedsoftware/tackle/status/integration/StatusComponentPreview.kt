@@ -15,6 +15,8 @@ class StatusComponentPreview(
     val translation: Translation? = null,
     val translationInProgress: Boolean = false,
     val translationDisplayed: Boolean = false,
+    val extendedInfo: Boolean = false,
+    val isOwn: Boolean = false,
 ) : StatusComponent {
 
     override val model: Value<Model> =
@@ -26,6 +28,8 @@ class StatusComponentPreview(
                 translation = translation,
                 translationInProgress = translationInProgress,
                 translationDisplayed = translationDisplayed,
+                extendedInfo = extendedInfo,
+                isOwn = isOwn,
             )
         )
 

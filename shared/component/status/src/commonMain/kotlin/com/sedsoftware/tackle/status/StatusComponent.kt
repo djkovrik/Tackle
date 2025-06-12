@@ -28,5 +28,7 @@ interface StatusComponent {
         val translation: Translation?,
         val translationInProgress: Boolean,
         val translationDisplayed: Boolean,
+        val extendedInfo: Boolean,
+        val isOwn: Boolean,
     )
 }

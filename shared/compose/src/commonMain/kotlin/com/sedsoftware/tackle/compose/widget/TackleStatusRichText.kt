@@ -137,7 +137,7 @@ private fun buildAnnotatedStringWithHashTagsAndMentions(
     highlightColor: Color = MaterialTheme.colorScheme.secondary,
 ): Pair<AnnotatedString, MutableList<AnnotatedString.Range<String>>> {
     val plainText = stringWithEmojis.text
-    val primaryStyle = SpanStyle(color = highlightColor, fontWeight = FontWeight.Bold)
+    val primaryStyle = SpanStyle(color = highlightColor, fontWeight = FontWeight.SemiBold)
 
     val hashtags: Regex = TackleRegex.hashtagAndMentions
     val links: Regex = TackleRegex.url

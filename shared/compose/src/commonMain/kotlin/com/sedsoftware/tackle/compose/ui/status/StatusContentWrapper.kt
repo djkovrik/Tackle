@@ -91,8 +91,9 @@ internal fun StatusContentWrapper(
             )
 
             Column(
+                verticalArrangement = Arrangement.SpaceEvenly,
                 modifier = Modifier
-                    .padding(horizontal = 16.dp)
+                    .padding(start = 16.dp)
                     .weight(weight = 1f, fill = true)
             ) {
                 // Name
@@ -103,7 +104,7 @@ internal fun StatusContentWrapper(
                     style = MaterialTheme.typography.bodyMedium,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.padding(bottom = 4.dp),
+                    modifier = Modifier,
                 )
 
                 Row(
@@ -146,9 +147,9 @@ internal fun StatusContentWrapper(
                     Image(
                         painter = painterResource(resource = Res.drawable.status_pinned),
                         contentDescription = null,
-                        colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.outline),
+                        colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.primary),
                         modifier = Modifier
-                            .alpha(alpha = 0.75f)
+                            .alpha(alpha = 0.8f)
                             .size(size = 14.dp),
                     )
                 }
@@ -161,12 +162,11 @@ internal fun StatusContentWrapper(
                     Image(
                         painter = painterResource(resource = Res.drawable.status_bookmarked),
                         contentDescription = null,
-                        colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.outline),
+                        colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.primary),
                         modifier = Modifier
-                            .alpha(alpha = 0.75f)
+                            .alpha(alpha = 0.8f)
                             .size(size = 14.dp),
                     )
-
                 }
 
                 AnimatedVisibility(
@@ -177,9 +177,9 @@ internal fun StatusContentWrapper(
                     Image(
                         painter = painterResource(resource = Res.drawable.status_muted),
                         contentDescription = null,
-                        colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.outline),
+                        colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.primary),
                         modifier = Modifier
-                            .alpha(alpha = 0.75f)
+                            .alpha(alpha = 0.8f)
                             .size(size = 14.dp),
                     )
                 }
@@ -195,7 +195,7 @@ internal fun StatusContentWrapper(
                 color = contentColor,
                 style = MaterialTheme.typography.bodyMedium,
                 maxLines = 1,
-                modifier = Modifier.padding(start = 8.dp),
+                modifier = Modifier.padding(start = 8.dp, bottom = 2.dp),
             )
 
             // More button

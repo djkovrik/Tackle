@@ -400,6 +400,7 @@ internal class StatusStoreTest : StoreTest<StatusStore.Intent, StatusStore.State
             mainContext = Dispatchers.Unconfined,
             ioContext = Dispatchers.Unconfined,
             status = testStatus,
+            extendedInfo = false,
             isOwn = true,
         ).create(autoInit = false)
 }

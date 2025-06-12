@@ -11,5 +11,7 @@ internal val stateToModel: (State) -> Model = {
         translation = it.translation,
         translationInProgress = it.translationInProgress,
         translationDisplayed = it.translationDisplayed,
+        extendedInfo = it.extendedInfo,
+        isOwn = it.isOwn,
     )
 }

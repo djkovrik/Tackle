@@ -2,11 +2,11 @@ package com.sedsoftware.tackle.domain.model
 
 class Translation(
     val content: String,
-    val spoilerText: String,
-    val poll: TranslatedPoll?,
-    val attachments: List<TranslatedAttachment>,
     val language: String,
     val provider: String,
+    val spoilerText: String = "",
+    val poll: TranslatedPoll? = null,
+    val attachments: List<TranslatedAttachment> = emptyList(),
 )
 
 class TranslatedPoll(

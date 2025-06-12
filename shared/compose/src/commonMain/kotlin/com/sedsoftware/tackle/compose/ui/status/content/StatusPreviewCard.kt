@@ -1,6 +1,5 @@
 package com.sedsoftware.tackle.compose.ui.status.content
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
@@ -13,6 +12,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.sedsoftware.tackle.compose.extension.clickableOnce
 import com.sedsoftware.tackle.compose.model.TackleImageParams
 import com.sedsoftware.tackle.compose.widget.TackleImage
 import com.sedsoftware.tackle.domain.model.PreviewCard
@@ -27,7 +27,9 @@ internal fun StatusPreviewCard(
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.tertiaryContainer,
         ),
-        modifier = modifier.clickable { onUrlClick.invoke(card.url) },
+        modifier = modifier
+            .padding(top = 16.dp)
+            .clickableOnce { onUrlClick.invoke(card.url) },
     ) {
         Column(modifier = Modifier.padding(all = 16.dp)) {
             Text(

@@ -85,13 +85,16 @@ internal fun StatusPoll(
             modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 8.dp)
         )
 
-        TackleButton(
-            text = stringResource(resource = Res.string.status_poll_button),
-            onClick = onVote,
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .padding(bottom = 16.dp)
-        )
+        if (!poll.expired) {
+            TackleButton(
+                text = stringResource(resource = Res.string.status_poll_button),
+                onClick = onVote,
+                enabled = poll.ownVotes.isNotEmpty() && !poll.voted,
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(bottom = 16.dp)
+            )
+        }
     }
 }
 

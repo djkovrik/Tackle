@@ -23,6 +23,7 @@ internal class StatusStoreProvider(
     private val mainContext: CoroutineContext,
     private val ioContext: CoroutineContext,
     private val status: Status,
+    private val extendedInfo: Boolean,
     private val isOwn: Boolean,
 ) {
 
@@ -30,7 +31,7 @@ internal class StatusStoreProvider(
     fun create(autoInit: Boolean = true): StatusStore =
         object : StatusStore, Store<Intent, State, Label> by storeFactory.create<Intent, Action, Msg, State, Label>(
             name = "StatusStore",
-            initialState = State(status),
+            initialState = State(status = status, extendedInfo = extendedInfo, isOwn = isOwn),
             autoInit = autoInit,
             bootstrapper = coroutineBootstrapper(mainContext) {
                 dispatch(Action.RefreshContextMenu)

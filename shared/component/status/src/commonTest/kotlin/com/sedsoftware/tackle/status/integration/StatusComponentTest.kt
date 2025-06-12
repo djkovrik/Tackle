@@ -244,6 +244,7 @@ class StatusComponentTest : ComponentTest<StatusComponent>() {
             dispatchers = testDispatchers,
             output = { componentOutput.add(it) },
             status = testStatus,
+            extendedInfo = false,
             isOwn = true,
         )
 }
