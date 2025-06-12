@@ -5,7 +5,6 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
-import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -32,6 +31,7 @@ import com.sedsoftware.tackle.domain.model.type.MediaAttachmentType
 import com.sedsoftware.tackle.editor.details.EditorAttachmentDetailsComponent
 import com.sedsoftware.tackle.editor.details.integration.EditorAttachmentDetailsComponentPreview
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
 import tackle.shared.compose.generated.resources.Res
 import tackle.shared.compose.generated.resources.editor_attachment_alternate_text
 import tackle.shared.compose.generated.resources.editor_attachment_alternate_text_description
@@ -50,7 +50,7 @@ internal fun EditorAttachmentDetailsContent(
     TackleScreenTemplate(
         title = null,
         navigationIcon = Res.drawable.editor_back,
-        onNavigationClick = component::onBackButtonClicked,
+        onNavigationClick = component::onBackButtonClick,
         colors = TackleScreenDefaults.colors(
             headerContainerColor = MaterialTheme.colorScheme.surfaceVariant,
             headerContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -71,7 +71,7 @@ internal fun EditorAttachmentDetailsContent(
             TackleAppBarButton(
                 iconRes = Res.drawable.editor_done,
                 contentDescriptionRes = Res.string.editor_content_description_send,
-                onClick = component::onUpdateButtonClicked,
+                onClick = component::onUpdateButtonClick,
                 enabled = model.dataChanged,
             )
         },

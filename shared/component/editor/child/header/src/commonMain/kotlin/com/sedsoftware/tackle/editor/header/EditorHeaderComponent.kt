@@ -8,10 +8,10 @@ interface EditorHeaderComponent {
 
     val model: Value<Model>
 
-    fun onLocalePickerRequested(show: Boolean)
-    fun onLocaleSelected(language: AppLocale)
-    fun onStatusVisibilityPickerRequested(show: Boolean)
-    fun onStatusVisibilitySelected(visibility: StatusVisibility)
+    fun onLocalePickerRequest(show: Boolean)
+    fun onLocaleSelect(language: AppLocale)
+    fun onStatusVisibilityPickerRequest(show: Boolean)
+    fun onStatusVisibilitySelect(visibility: StatusVisibility)
     fun changeSendingAvailability(available: Boolean)
 
     data class Model(

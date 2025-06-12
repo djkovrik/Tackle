@@ -5,15 +5,23 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isNotEmpty
 import assertk.assertions.isTrue
 import com.sedsoftware.tackle.domain.model.AppLocale
+import com.sedsoftware.tackle.editor.header.EditorHeaderComponentGateways
 import com.sedsoftware.tackle.editor.header.stubs.EditorHeaderSettingsStub
-import com.sedsoftware.tackle.editor.header.stubs.EditorHeaderToolsStub
+import dev.mokkery.answering.returns
+import dev.mokkery.every
+import dev.mokkery.mock
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 
 class EditorHeaderManagerTest {
 
     private val settings: EditorHeaderSettingsStub = EditorHeaderSettingsStub()
-    private val tools: EditorHeaderToolsStub = EditorHeaderToolsStub()
+
+    private val tools: EditorHeaderComponentGateways.Tools = mock {
+        every { getCurrentLocale() } returns AppLocale("English", "en")
+        every { getAvailableLocales() } returns listOf(AppLocale("English", "en"), AppLocale("Russian", "ru"))
+    }
+
     private val manager: EditorHeaderManager = EditorHeaderManager(settings, tools)
 
     @Test

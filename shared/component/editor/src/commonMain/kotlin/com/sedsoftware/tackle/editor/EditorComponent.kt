@@ -23,18 +23,18 @@ interface EditorComponent {
     val attachmentDetailsDialog: Value<ChildSlot<*, EditorAttachmentDetailsComponent>>
 
     fun onTextInput(text: String, selection: Pair<Int, Int>)
-    fun onEmojiSelected(emoji: CustomEmoji)
-    fun onInputHintSelected(hint: EditorInputHintItem)
-    fun onPollButtonClicked()
-    fun onEmojisButtonClicked()
-    fun onWarningButtonClicked()
-    fun onScheduleDatePickerRequested(show: Boolean)
-    fun onScheduleDateSelected(millis: Long)
-    fun onScheduleTimePickerRequested(show: Boolean)
-    fun onScheduleTimeSelected(hour: Int, minute: Int, formatIn24hr: Boolean)
+    fun onEmojiSelect(emoji: CustomEmoji)
+    fun onInputHintSelect(hint: EditorInputHintItem)
+    fun onPollButtonClick()
+    fun onEmojisButtonClick()
+    fun onWarningButtonClick()
+    fun onScheduleDatePickerRequest(show: Boolean)
+    fun onScheduleDateSelect(millis: Long)
+    fun onScheduleTimePickerRequest(show: Boolean)
+    fun onScheduleTimeSelect(hour: Int, minute: Int, formatIn24hr: Boolean)
     fun resetScheduledDateTime()
-    fun onSendButtonClicked()
-    fun onBackButtonClicked()
+    fun onSendButtonClick()
+    fun onBackButtonClick()
 
     data class Model(
         val statusText: String,

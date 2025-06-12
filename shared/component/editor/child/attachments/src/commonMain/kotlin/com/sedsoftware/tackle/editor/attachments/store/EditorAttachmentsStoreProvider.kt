@@ -42,7 +42,7 @@ internal class EditorAttachmentsStoreProvider(
             name = "EditorAttachmentsStore",
             initialState = State(),
             autoInit = autoInit,
-            bootstrapper = coroutineBootstrapper {
+            bootstrapper = coroutineBootstrapper(mainContext) {
                 dispatch(Action.ObserveUploadProgress)
             },
             executorFactory = coroutineExecutorFactory(mainContext) {
@@ -140,7 +140,7 @@ internal class EditorAttachmentsStoreProvider(
                     uploadJobs[it.id]?.cancel()
                 }
 
-                onIntent<Intent.OnFileRetry> {
+                onIntent<Intent.OnFileRetryClicked> {
                     state().selectedFiles.getById(id = it.id)?.let { target ->
                         dispatch(Msg.AttachmentStatusChanged(target.id, AttachedFile.Status.LOADING))
 

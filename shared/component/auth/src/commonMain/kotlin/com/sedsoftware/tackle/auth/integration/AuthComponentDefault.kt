@@ -66,11 +66,11 @@ class AuthComponentDefault(
     }
 
     override fun onRetryButtonClick() {
-        store.accept(AuthStore.Intent.OnRetryButtonClick)
+        store.accept(AuthStore.Intent.OnRetryButtonClicked)
     }
 
     override fun onAuthenticateClick() {
-        store.accept(AuthStore.Intent.OnAuthenticateButtonClick)
+        store.accept(AuthStore.Intent.OnAuthenticateButtonClicked)
     }
 
     override fun onShowLearnMore() {

@@ -1,6 +1,5 @@
 package com.sedsoftware.tackle.compose.ui.editor.content
 
-import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -20,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
 import com.sedsoftware.tackle.compose.widget.TackleImage
 import com.sedsoftware.tackle.editor.model.EditorInputHintItem
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 internal fun InputHintAccount(

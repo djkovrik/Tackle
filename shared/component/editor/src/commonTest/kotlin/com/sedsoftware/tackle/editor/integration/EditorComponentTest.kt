@@ -20,7 +20,9 @@ import com.sedsoftware.tackle.domain.ComponentOutput
 import com.sedsoftware.tackle.domain.model.CustomEmoji
 import com.sedsoftware.tackle.domain.model.PlatformFileWrapper
 import com.sedsoftware.tackle.editor.EditorComponent
+import com.sedsoftware.tackle.editor.EditorComponentGateways
 import com.sedsoftware.tackle.editor.Instances
+import com.sedsoftware.tackle.editor.Responses
 import com.sedsoftware.tackle.editor.attachments.EditorAttachmentsComponent
 import com.sedsoftware.tackle.editor.details.EditorAttachmentDetailsComponent
 import com.sedsoftware.tackle.editor.details.integration.EditorAttachmentDetailsComponentDefault
@@ -31,12 +33,16 @@ import com.sedsoftware.tackle.editor.integration.EditorComponentDefault.Attachme
 import com.sedsoftware.tackle.editor.integration.attachments.EditorAttachmentDetailsComponentApi
 import com.sedsoftware.tackle.editor.model.EditorInputHintItem
 import com.sedsoftware.tackle.editor.poll.EditorPollComponent
-import com.sedsoftware.tackle.editor.stubs.EditorComponentApiStub
-import com.sedsoftware.tackle.editor.stubs.EditorComponentDatabaseStub
 import com.sedsoftware.tackle.editor.stubs.EditorComponentSettingsStub
 import com.sedsoftware.tackle.editor.stubs.EditorComponentToolsStub
 import com.sedsoftware.tackle.editor.warning.EditorWarningComponent
 import com.sedsoftware.tackle.utils.test.ComponentTest
+import dev.mokkery.answering.returns
+import dev.mokkery.answering.throws
+import dev.mokkery.everySuspend
+import dev.mokkery.matcher.any
+import dev.mokkery.mock
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
@@ -62,7 +68,25 @@ class EditorComponentTest : ComponentTest<EditorComponent>() {
     private val warningActiveModel: EditorWarningComponent.Model
         get() = component.warning.model.value
 
-    private val api: EditorComponentApiStub = EditorComponentApiStub()
+    private val api: EditorComponentGateways.Api = mock {
+        everySuspend { getServerEmojis() } returns Responses.emojis
+        everySuspend { sendFile(any(), any()) } returns Responses.buildAttachmentResponse(null, null)
+        everySuspend { search(any()) } returns Responses.searchResponseDefault
+        everySuspend { sendStatus(any()) } returns Responses.statusNormal
+        everySuspend { sendStatusScheduled(any()) } returns Responses.statusScheduled
+        everySuspend { updateFile(any(), any(), any()) } returns Responses.buildAttachmentResponse(null, null)
+        everySuspend { getFile(any()) } returns Responses.buildAttachmentResponse(null, null)
+    }
+
+    private val database: EditorComponentGateways.Database = mock {
+        everySuspend { cacheServerEmojis(any()) } returns Unit
+        everySuspend { observeCachedEmojis() } returns flowOf(Instances.customEmojiList.groupBy { it.category })
+        everySuspend { findEmojis(any()) } returns flowOf(Instances.customEmojiList)
+        everySuspend { getCachedInstanceInfo() } returns flowOf(Instances.instanceInfo)
+    }
+
+    private val tools: EditorComponentGateways.Tools = EditorComponentToolsStub()
+
     private val context: DefaultComponentContext = DefaultComponentContext(lifecycle)
     private val storeFactory: DefaultStoreFactory = DefaultStoreFactory()
     private val navigation = SlotNavigation<AttachmentDetailsConfig>()
@@ -116,26 +140,26 @@ class EditorComponentTest : ComponentTest<EditorComponent>() {
     }
 
     @Test
-    fun `onEmojiSelected should update editor text`() = runTest {
+    fun `onEmojiSelect should update editor text`() = runTest {
         // given
         val emoji = CustomEmoji(":cool:", "", "", true, "")
         // when
-        component.onEmojiSelected(emoji)
+        component.onEmojiSelect(emoji)
         // then
         assertThat(editorActiveModel.statusText).contains(emoji.shortcode)
     }
 
     @Test
-    fun `onPollButtonClicked should display poll and update buttons`() = runTest {
+    fun `onPollButtonClick should display poll and update buttons`() = runTest {
         // given
         // when
-        component.onPollButtonClicked()
+        component.onPollButtonClick()
         // then
         assertThat(pollActiveModel.pollButtonAvailable).isTrue()
         assertThat(pollActiveModel.pollContentVisible).isTrue()
         assertThat(attachmentsActiveModel.attachmentsButtonAvailable).isFalse()
         // when
-        component.onPollButtonClicked()
+        component.onPollButtonClick()
         // then
         assertThat(pollActiveModel.pollButtonAvailable).isTrue()
         assertThat(pollActiveModel.pollContentVisible).isFalse()
@@ -143,20 +167,20 @@ class EditorComponentTest : ComponentTest<EditorComponent>() {
     }
 
     @Test
-    fun `onEmojisButtonClicked should display emojis and update buttons`() = runTest {
+    fun `onEmojisButtonClick should display emojis and update buttons`() = runTest {
         // given
         // when
-        component.onEmojisButtonClicked()
+        component.onEmojisButtonClick()
         // then
         assertThat(emojisActiveModel.emojisContentVisible).isTrue()
         // when
-        component.onEmojisButtonClicked()
+        component.onEmojisButtonClick()
         // then
         assertThat(emojisActiveModel.emojisContentVisible).isFalse()
     }
 
     @Test
-    fun `onInputHintSelected updates input state`() = runTest {
+    fun `onInputHintSelect updates input state`() = runTest {
         // given
         val inputText = "Some text and test #hash"
         val inputTextSelection = inputText.length to inputText.length
@@ -164,20 +188,20 @@ class EditorComponentTest : ComponentTest<EditorComponent>() {
         val hint = EditorInputHintItem.HashTag("hashtag")
         // when
         component.onTextInput(inputText, inputTextSelection)
-        component.onInputHintSelected(hint)
+        component.onInputHintSelect(hint)
         // then
         assertThat(editorActiveModel.statusText).isEqualTo(expectedText)
     }
 
     @Test
-    fun `onWarningButtonClicked should display warning and update buttons`() = runTest {
+    fun `onWarningButtonClick should display warning and update buttons`() = runTest {
         // given
         // when
-        component.onWarningButtonClicked()
+        component.onWarningButtonClick()
         // then
         assertThat(warningActiveModel.warningContentVisible).isTrue()
         // when
-        component.onWarningButtonClicked()
+        component.onWarningButtonClick()
         // then
         assertThat(warningActiveModel.warningContentVisible).isFalse()
     }
@@ -202,7 +226,7 @@ class EditorComponentTest : ComponentTest<EditorComponent>() {
         )
 
         // when
-        component.attachments.onFilesSelectedWrapped(files)
+        component.attachments.onWrappedFilesSelect(files)
 
         // then
         assertThat(attachmentsActiveModel.attachmentsContentVisible).isTrue()
@@ -210,49 +234,49 @@ class EditorComponentTest : ComponentTest<EditorComponent>() {
     }
 
     @Test
-    fun `onScheduleDatePickerRequested should control date picker`() = runTest {
+    fun `onScheduleDatePickerRequest should control date picker`() = runTest {
         // given
         // when
-        component.onScheduleDatePickerRequested(true)
+        component.onScheduleDatePickerRequest(true)
         // then
         assertThat(editorActiveModel.datePickerVisible).isTrue()
         // and when
-        component.onScheduleDatePickerRequested(false)
+        component.onScheduleDatePickerRequest(false)
         // then
         assertThat(editorActiveModel.datePickerVisible).isFalse()
     }
 
     @Test
-    fun `onScheduleDateSelected should update scheduled date`() = runTest {
+    fun `onScheduleDateSelect should update scheduled date`() = runTest {
         // given
         val newDate = 54321L
         // when
-        component.onScheduleDateSelected(newDate)
+        component.onScheduleDateSelect(newDate)
         // then
         assertThat(editorActiveModel.scheduledDate).isEqualTo(newDate)
     }
 
     @Test
-    fun `onScheduleTimePickerRequested should control time picker`() = runTest {
+    fun `onScheduleTimePickerRequest should control time picker`() = runTest {
         // given
         // when
-        component.onScheduleTimePickerRequested(true)
+        component.onScheduleTimePickerRequest(true)
         // then
         assertThat(editorActiveModel.timePickerVisible).isTrue()
         // and when
-        component.onScheduleTimePickerRequested(false)
+        component.onScheduleTimePickerRequest(false)
         // then
         assertThat(editorActiveModel.timePickerVisible).isFalse()
     }
 
     @Test
-    fun `onScheduleTimeSelected should update scheduled date`() = runTest {
+    fun `onScheduleTimeSelect should update scheduled date`() = runTest {
         // given
         val hour = 16
         val minute = 54
         val format = false
         // when
-        component.onScheduleTimeSelected(hour, minute, format)
+        component.onScheduleTimeSelect(hour, minute, format)
         // then
         assertThat(editorActiveModel.scheduledHour).isEqualTo(hour)
         assertThat(editorActiveModel.scheduledMinute).isEqualTo(minute)
@@ -267,8 +291,8 @@ class EditorComponentTest : ComponentTest<EditorComponent>() {
         val minute = 54
         // when
         // when
-        component.onScheduleDateSelected(newDate)
-        component.onScheduleTimeSelected(hour, minute, true)
+        component.onScheduleDateSelect(newDate)
+        component.onScheduleTimeSelect(hour, minute, true)
         // then
         assertThat(editorActiveModel.scheduledHour).isEqualTo(hour)
         assertThat(editorActiveModel.scheduledMinute).isEqualTo(minute)
@@ -282,7 +306,7 @@ class EditorComponentTest : ComponentTest<EditorComponent>() {
     }
 
     @Test
-    fun `onSendButtonClicked should send new status`() = runTest {
+    fun `onSendButtonClick should send new status`() = runTest {
         // given
         val text = ""
         component.onTextInput(text, text.length to text.length)
@@ -307,28 +331,28 @@ class EditorComponentTest : ComponentTest<EditorComponent>() {
         component.poll.onTextInput(pollActiveModel.options[1].id, "Text 2")
         component.poll.toggleComponentVisibility()
 
-        component.attachments.onFilesSelectedWrapped(files)
+        component.attachments.onWrappedFilesSelect(files)
         // when
-        component.onSendButtonClicked()
+        component.onSendButtonClick()
         // then
         assertThat(editorActiveModel.statusText).isEmpty()
     }
 
     @Test
-    fun `onSendButtonClicked with api error should show error message`() = runTest {
+    fun `onSendButtonClick with api error should show error message`() = runTest {
         // given
         val text = "Status text"
         component.onTextInput(text, text.length to text.length)
-        api.responseWithException = true
+        everySuspend { api.sendStatus(any()) } throws IllegalStateException("Test")
 
         // when
-        component.onSendButtonClicked()
+        component.onSendButtonClick()
         // then
         assertThat(componentOutput).isNotEmpty()
     }
 
     @Test
-    fun `onSendButtonClicked should send new scheduled status`() = runTest {
+    fun `onSendButtonClick should send new scheduled status`() = runTest {
         // given
         val text = "Status text"
         component.onTextInput(text, text.length to text.length)
@@ -348,32 +372,22 @@ class EditorComponentTest : ComponentTest<EditorComponent>() {
         val files = listOf(
             image.copy(name = "test1.jpg"),
         )
-        component.attachments.onFilesSelectedWrapped(files)
-        component.onScheduleDateSelected(1231819497600000L)
-        component.onScheduleTimeSelected(12, 12, true)
+        component.attachments.onWrappedFilesSelect(files)
+        component.onScheduleDateSelect(1231819497600000L)
+        component.onScheduleTimeSelect(12, 12, true)
         // when
-        component.onSendButtonClicked()
+        component.onSendButtonClick()
         // then
         assertThat(editorActiveModel.statusText).isEmpty()
     }
 
     @Test
-    fun `onBackButtonClicked should call back button output`() = runTest {
+    fun `onBackButtonClick should call back button output`() = runTest {
         // given
         // when
-        component.onBackButtonClicked()
+        component.onBackButtonClick()
         // then
         assertThat(componentOutput).contains(ComponentOutput.StatusEditor.BackButtonClicked)
-    }
-    
-    @Test
-    fun `child output should call components`() = runTest {
-        // given
-    
-        // when
-    
-        // then
-    
     }
 
     @Test
@@ -382,17 +396,19 @@ class EditorComponentTest : ComponentTest<EditorComponent>() {
         val attachment = Instances.fileToAttach
 
         val emptySlot = context.childSlot(config = null)
-        val dialogSlot = context.childSlot(config = AttachmentDetailsConfig(
-            attachmentId = attachment.id,
-            attachmentType = attachment.type,
-            attachmentUrl = attachment.url,
-            attachmentImageParams = AttachmentParams(
-                width = attachment.meta!!.width,
-                height = attachment.meta!!.height,
-                ratio = attachment.meta!!.aspect,
-                blurhash = attachment.blurhash,
-            ),
-        ))
+        val dialogSlot = context.childSlot(
+            config = AttachmentDetailsConfig(
+                attachmentId = attachment.id,
+                attachmentType = attachment.type,
+                attachmentUrl = attachment.url,
+                attachmentImageParams = AttachmentParams(
+                    width = attachment.meta!!.width,
+                    height = attachment.meta!!.height,
+                    ratio = attachment.meta!!.aspect,
+                    blurhash = attachment.blurhash,
+                ),
+            )
+        )
         // when
         assertThat(component.attachmentDetailsDialog.child).isEqualTo(emptySlot.child)
         component.attachments.onFileEdit(attachment)
@@ -432,9 +448,9 @@ class EditorComponentTest : ComponentTest<EditorComponent>() {
             componentContext = context,
             storeFactory = storeFactory,
             api = api,
-            database = EditorComponentDatabaseStub(),
+            database = database,
             settings = EditorComponentSettingsStub(),
-            tools = EditorComponentToolsStub(),
+            tools = tools,
             dispatchers = testDispatchers,
             editorOutput = { componentOutput.add(it) },
         )

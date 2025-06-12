@@ -1,6 +1,5 @@
 package com.sedsoftware.tackle.compose.ui.editor.child.poll
 
-import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -29,6 +28,7 @@ import com.sedsoftware.tackle.editor.poll.EditorPollComponent
 import com.sedsoftware.tackle.editor.poll.model.PollChoiceOption
 import com.sedsoftware.tackle.editor.poll.model.PollDuration
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
 import tackle.shared.compose.generated.resources.Res
 import tackle.shared.compose.generated.resources.editor_add
 import tackle.shared.compose.generated.resources.editor_poll_hide_totals

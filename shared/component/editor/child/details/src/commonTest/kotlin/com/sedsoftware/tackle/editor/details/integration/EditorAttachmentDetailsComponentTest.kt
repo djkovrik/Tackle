@@ -11,9 +11,15 @@ import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import com.sedsoftware.tackle.domain.ComponentOutput
 import com.sedsoftware.tackle.domain.model.type.MediaAttachmentType
 import com.sedsoftware.tackle.editor.details.EditorAttachmentDetailsComponent
+import com.sedsoftware.tackle.editor.details.EditorAttachmentDetailsGateways
+import com.sedsoftware.tackle.editor.details.Responses
 import com.sedsoftware.tackle.editor.details.model.AttachmentParams
-import com.sedsoftware.tackle.editor.details.stubs.EditorAttachmentDetailsApiStub
 import com.sedsoftware.tackle.utils.test.ComponentTest
+import dev.mokkery.answering.returns
+import dev.mokkery.answering.throws
+import dev.mokkery.everySuspend
+import dev.mokkery.matcher.any
+import dev.mokkery.mock
 import kotlinx.coroutines.test.runTest
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
@@ -29,7 +35,10 @@ class EditorAttachmentDetailsComponentTest : ComponentTest<EditorAttachmentDetai
     private val attachmentId: String = "id"
     private val attachmentImageParams: AttachmentParams = AttachmentParams(123, 123, 1f, "blurhash")
 
-    private val api: EditorAttachmentDetailsApiStub = EditorAttachmentDetailsApiStub()
+    private val api: EditorAttachmentDetailsGateways.Api = mock {
+        everySuspend { getFile(any()) } returns Responses.basicResponse
+        everySuspend { updateFile(any(), any(), any()) } returns Responses.basicResponse
+    }
 
     private var dismissCounter: Int = 0
 
@@ -66,38 +75,38 @@ class EditorAttachmentDetailsComponentTest : ComponentTest<EditorAttachmentDetai
     }
 
     @Test
-    fun `onUpdateButtonClicked should send data on success`() = runTest {
+    fun `onUpdateButtonClick should send data on success`() = runTest {
         // given
         val alternateText = "Alt text"
         val alternateFocus = -0.5f to 0.5f
         component.onAttachmentDescriptionInput(alternateText)
         component.onAttachmentFocusInput(alternateFocus.first, alternateFocus.second)
         // when
-        component.onUpdateButtonClicked()
+        component.onUpdateButtonClick()
         // then
         assertThat(componentOutput).contains(ComponentOutput.StatusEditor.AttachmentDataUpdated)
     }
 
     @Test
-    fun `onUpdateButtonClicked should show error message on api error`() = runTest {
+    fun `onUpdateButtonClick should show error message on api error`() = runTest {
         // given
         val alternateText = "Alt text"
         val alternateFocus = -0.5f to 0.5f
         component.onAttachmentDescriptionInput(alternateText)
         component.onAttachmentFocusInput(alternateFocus.first, alternateFocus.second)
         // when
-        api.responseWithException = true
-        component.onUpdateButtonClicked()
+        everySuspend { api.updateFile(any(), any(), any()) } throws IllegalStateException("Test")
+        component.onUpdateButtonClick()
         // then
         assertThat(componentOutput.count { it is ComponentOutput.Common.ErrorCaught }).isGreaterThan(0)
     }
 
     @Test
-    fun `onBackButtonClicked should call for back callback`() = runTest {
+    fun `onBackButtonClick should call for back callback`() = runTest {
         // given
         val currentCounter = dismissCounter
         // when
-        component.onBackButtonClicked()
+        component.onBackButtonClick()
         // then
         assertThat(currentCounter).isNotEqualTo(dismissCounter)
     }

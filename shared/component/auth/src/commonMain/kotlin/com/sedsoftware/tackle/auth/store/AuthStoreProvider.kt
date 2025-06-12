@@ -38,7 +38,7 @@ internal class AuthStoreProvider(
             name = "AuthStore",
             initialState = State(),
             autoInit = autoInit,
-            bootstrapper = coroutineBootstrapper {
+            bootstrapper = coroutineBootstrapper(mainContext) {
                 dispatch(Action.CheckCurrentCredentials)
             },
             executorFactory = coroutineExecutorFactory(mainContext) {
@@ -48,7 +48,7 @@ internal class AuthStoreProvider(
                     launch {
                         unwrap(
                             result = withContext(ioContext) { manager.verifyCredentials() },
-                            onSuccess = { isCredentialsValid ->
+                            onSuccess = { isCredentialsValid: Boolean ->
                                 if (isCredentialsValid) {
                                     dispatch(Msg.CredentialsStateChanged(newState = CredentialsState.AUTHORIZED))
                                     publish(Label.NavigateToMainScreen)
@@ -56,7 +56,7 @@ internal class AuthStoreProvider(
                                     dispatch(Msg.CredentialsStateChanged(newState = CredentialsState.UNAUTHORIZED))
                                 }
                             },
-                            onError = { throwable ->
+                            onError = { throwable: Throwable ->
                                 if (throwable is MissedRegistrationData || throwable.isUnauthorized) {
                                     dispatch(Msg.CredentialsStateChanged(newState = CredentialsState.UNAUTHORIZED))
                                 } else {
@@ -72,14 +72,14 @@ internal class AuthStoreProvider(
                     launch {
                         unwrap(
                             result = withContext(ioContext) { manager.startAuthFlow(it.credentials) },
-                            onSuccess = { isAuthorized ->
+                            onSuccess = { isAuthorized: Boolean ->
                                 if (isAuthorized) {
                                     forward(Action.CheckCurrentCredentials)
                                 } else {
                                     dispatch(Msg.CredentialsStateChanged(newState = CredentialsState.UNAUTHORIZED))
                                 }
                             },
-                            onError = { throwable ->
+                            onError = { throwable: Throwable ->
                                 dispatch(Msg.OAuthFlowStateChanged(active = false))
                                 publish(Label.ErrorCaught(throwable))
                             }
@@ -106,10 +106,10 @@ internal class AuthStoreProvider(
 
                             unwrap(
                                 result = withContext(ioContext) { manager.getInstanceInfo(normalizedUrl) },
-                                onSuccess = { info ->
+                                onSuccess = { info: Instance ->
                                     dispatch(Msg.ServerInfoLoaded(info = info))
                                 },
-                                onError = { throwable ->
+                                onError = { throwable: Throwable ->
                                     dispatch(Msg.ServerInfoLoadingFailed)
                                     publish(Label.ErrorCaught(throwable))
                                 },
@@ -118,22 +118,22 @@ internal class AuthStoreProvider(
                     }
                 }
 
-                onIntent<Intent.OnRetryButtonClick> {
+                onIntent<Intent.OnRetryButtonClicked> {
                     dispatch(Msg.CredentialsStateChanged(newState = CredentialsState.RETRYING))
                     forward(Action.CheckCurrentCredentials)
                 }
 
-                onIntent<Intent.OnAuthenticateButtonClick> {
+                onIntent<Intent.OnAuthenticateButtonClicked> {
                     dispatch(Msg.OAuthFlowStateChanged(active = true))
                     val domain = state().instanceInfo.domain
 
                     launch {
                         unwrap(
                             result = withContext(ioContext) { manager.createApp(domain) },
-                            onSuccess = { credentials ->
+                            onSuccess = { credentials: ObtainedCredentials ->
                                 forward(Action.StartOAuthFlow(credentials))
                             },
-                            onError = { throwable ->
+                            onError = { throwable: Throwable ->
                                 dispatch(Msg.OAuthFlowStateChanged(active = false))
                                 publish(Label.ErrorCaught(throwable))
                             },

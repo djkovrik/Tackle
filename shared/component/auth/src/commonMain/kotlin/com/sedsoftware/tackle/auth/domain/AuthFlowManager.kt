@@ -34,6 +34,7 @@ internal class AuthFlowManager(
 
         settings.ownAvatar = response.avatarStatic
         settings.ownUsername = response.acct
+        settings.ownId = response.id
 
         return@runCatching response.acct.isNotEmpty()
     }

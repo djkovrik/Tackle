@@ -8,14 +8,18 @@ import assertk.assertions.isNotEmpty
 import com.arkivanov.decompose.DefaultComponentContext
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import com.sedsoftware.tackle.auth.AuthComponent
+import com.sedsoftware.tackle.auth.AuthComponentGateways
 import com.sedsoftware.tackle.auth.Constants
+import com.sedsoftware.tackle.auth.Responses
 import com.sedsoftware.tackle.auth.model.CredentialsState
-import com.sedsoftware.tackle.auth.stubs.AuthComponentApiStub
-import com.sedsoftware.tackle.auth.stubs.AuthComponentDatabaseStub
 import com.sedsoftware.tackle.auth.stubs.AuthComponentSettingsStub
-import com.sedsoftware.tackle.auth.stubs.AuthComponentToolsStub
 import com.sedsoftware.tackle.domain.ComponentOutput
 import com.sedsoftware.tackle.utils.test.ComponentTest
+import dev.mokkery.answering.returns
+import dev.mokkery.answering.throws
+import dev.mokkery.everySuspend
+import dev.mokkery.matcher.any
+import dev.mokkery.mock
 import kotlinx.coroutines.test.runTest
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
@@ -23,8 +27,24 @@ import kotlin.test.Test
 
 class AuthComponentTest : ComponentTest<AuthComponent>() {
 
-    private val api: AuthComponentApiStub = AuthComponentApiStub()
-    private val settings: AuthComponentSettingsStub = AuthComponentSettingsStub()
+    private val api: AuthComponentGateways.Api = mock {
+        everySuspend { getServerInfo(any()) } returns Responses.validInstanceDetails
+        everySuspend { createApp(any()) } returns Responses.validApplicationDetails
+        everySuspend { startAuthFlow(any(), any(), any(), any()) } returns Responses.TOKEN
+        everySuspend { verifyCredentials() } returns Responses.validAccountDetails
+    }
+
+    private val database: AuthComponentGateways.Database = mock {
+        everySuspend { cacheInstanceInfo(any()) } returns Unit
+    }
+
+    private val settings: AuthComponentGateways.Settings = AuthComponentSettingsStub()
+
+    private val tools: AuthComponentGateways.Tools = mock {
+        everySuspend { getClientData() } returns Responses.validClientData
+        everySuspend { openUrl(any()) } returns Unit
+        everySuspend { getTextInputEndDelay() } returns 0L
+    }
 
     private val activeModel: AuthComponent.Model
         get() = component.model.value
@@ -130,8 +150,12 @@ class AuthComponentTest : ComponentTest<AuthComponent>() {
     @Test
     fun `api exceptions should call related output`() = runTest {
         // given
+        val exception = IllegalStateException("Test")
         val url = "mastodon.social"
-        api.responseWithException = true
+        everySuspend { api.getServerInfo(any()) } throws exception
+        everySuspend { api.createApp(any()) } throws exception
+        everySuspend { api.startAuthFlow(any(), any(), any(), any()) } throws exception
+        everySuspend { api.verifyCredentials() } throws exception
         asUnauthorized()
         // when
         component.onTextInput(url)
@@ -141,24 +165,14 @@ class AuthComponentTest : ComponentTest<AuthComponent>() {
         assertThat(componentOutput.count { it is ComponentOutput.Common.ErrorCaught }).isGreaterThan(0)
     }
 
-    @Test
-    fun `component destroying cancels scope`() = runTest {
-        // given
-
-        // when
-
-        // then
-
-    }
-
     override fun createComponent(): AuthComponent =
         AuthComponentDefault(
             componentContext = DefaultComponentContext(lifecycle),
             storeFactory = DefaultStoreFactory(),
             api = api,
-            database = AuthComponentDatabaseStub(),
+            database = database,
             settings = settings,
-            tools = AuthComponentToolsStub(),
+            tools = tools,
             dispatchers = testDispatchers,
             output = { componentOutput.add(it) }
         )

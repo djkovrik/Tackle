@@ -42,7 +42,7 @@ internal fun MainContent(
         BottomNavigationBar(
             activeTab = activeTab,
             modifier = Modifier.fillMaxWidth(),
-            onTabClick = component::onTabClicked,
+            onTabClick = component::onTabClick,
         )
     }
 }
@@ -54,7 +54,7 @@ private fun ChildrenContent(
 ) {
     Children(
         stack = component.childStack,
-        animation = stackAnimation(fade()),
+        animation = stackAnimation(animator = fade()),
         modifier = modifier,
     ) {
         when (val child = it.instance) {

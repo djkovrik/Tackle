@@ -9,10 +9,16 @@ import com.sedsoftware.tackle.domain.TackleException
 import com.sedsoftware.tackle.domain.model.NewStatusBundle
 import com.sedsoftware.tackle.domain.model.type.CreatedStatusType
 import com.sedsoftware.tackle.editor.EditorComponentGateways
+import com.sedsoftware.tackle.editor.Instances
+import com.sedsoftware.tackle.editor.Responses
 import com.sedsoftware.tackle.editor.model.EditorInputHintRequest
-import com.sedsoftware.tackle.editor.stubs.EditorComponentApiStub
-import com.sedsoftware.tackle.editor.stubs.EditorComponentDatabaseStub
 import com.sedsoftware.tackle.editor.stubs.EditorComponentToolsStub
+import dev.mokkery.answering.returns
+import dev.mokkery.answering.throws
+import dev.mokkery.everySuspend
+import dev.mokkery.matcher.any
+import dev.mokkery.mock
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.Clock.System
 import kotlinx.datetime.Instant
@@ -25,8 +31,23 @@ class EditorManagerTest {
 
     private var nowProviderStub: Instant = System.now()
 
-    private val api: EditorComponentApiStub = EditorComponentApiStub()
-    private val database: EditorComponentGateways.Database = EditorComponentDatabaseStub()
+    private val api: EditorComponentGateways.Api = mock {
+        everySuspend { getServerEmojis() } returns Responses.emojis
+        everySuspend { sendFile(any(), any()) } returns Responses.buildAttachmentResponse(null, null)
+        everySuspend { search(any()) } returns Responses.searchResponseDefault
+        everySuspend { sendStatus(any()) } returns Responses.statusNormal
+        everySuspend { sendStatusScheduled(any()) } returns Responses.statusScheduled
+        everySuspend { updateFile(any(), any(), any()) } returns Responses.buildAttachmentResponse(null, null)
+        everySuspend { getFile(any()) } returns Responses.buildAttachmentResponse(null, null)
+    }
+
+    private val database: EditorComponentGateways.Database = mock {
+        everySuspend { cacheServerEmojis(any()) } returns Unit
+        everySuspend { observeCachedEmojis() } returns flowOf(Instances.customEmojiList.groupBy { it.category })
+        everySuspend { findEmojis(any()) } returns flowOf(Instances.customEmojiList)
+        everySuspend { getCachedInstanceInfo() } returns flowOf(Instances.instanceInfo)
+    }
+
     private val tools: EditorComponentGateways.Tools = EditorComponentToolsStub()
 
     private val manager: EditorManager = EditorManager(
@@ -62,7 +83,7 @@ class EditorManagerTest {
     fun `searchForAccounts should return failure on api error`() = runTest {
         // given
         val query = "query"
-        api.responseWithException = true
+        everySuspend { api.search(any()) } throws IllegalStateException("Test")
         // when
         val result = manager.searchForAccounts(query)
         // then
@@ -96,7 +117,7 @@ class EditorManagerTest {
     fun `searchForHashTags should return failure on api error`() = runTest {
         // given
         val query = "query"
-        api.responseWithException = true
+        everySuspend { api.search(any()) } throws IllegalStateException("Test")
         // when
         val result = manager.searchForHashTags(query)
         // then

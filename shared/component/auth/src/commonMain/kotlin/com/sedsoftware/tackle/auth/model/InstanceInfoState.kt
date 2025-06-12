@@ -1,5 +1,5 @@
 package com.sedsoftware.tackle.auth.model
 
-enum class InstanceInfoState {
+internal enum class InstanceInfoState {
     IDLE, LOADING, LOADED, ERROR;
 }

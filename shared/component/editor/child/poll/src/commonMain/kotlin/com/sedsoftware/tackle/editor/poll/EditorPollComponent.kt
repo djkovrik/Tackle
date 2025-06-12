@@ -9,10 +9,10 @@ interface EditorPollComponent {
 
     val model: Value<Model>
 
-    fun onDurationPickerRequested(show: Boolean)
-    fun onDurationSelected(duration: PollDuration)
-    fun onMultiselectEnabled(enabled: Boolean)
-    fun onHideTotalsEnabled(enabled: Boolean)
+    fun onDurationPickerRequest(show: Boolean)
+    fun onDurationSelect(duration: PollDuration)
+    fun onMultiselectEnable(enabled: Boolean)
+    fun onHideTotalsEnable(enabled: Boolean)
     fun onTextInput(id: String, text: String)
     fun onAddPollOptionClick()
     fun onDeletePollOptionClick(id: String)

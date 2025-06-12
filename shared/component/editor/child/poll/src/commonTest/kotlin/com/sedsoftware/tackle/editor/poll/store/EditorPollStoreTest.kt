@@ -101,15 +101,15 @@ internal class EditorPollStoreTest : StoreTest<EditorPollStore.Intent, EditorPol
     }
 
     @Test
-    fun `OnRequestDurationPicker should change picker visibility`() = runTest {
+    fun `OnDurationPickerRequested should change picker visibility`() = runTest {
         // given
         // when
         store.init()
-        store.accept(EditorPollStore.Intent.OnRequestDurationPicker(true))
+        store.accept(EditorPollStore.Intent.OnDurationPickerRequested(true))
         // then
         assertThat(store.state.durationPickerVisible).isTrue()
         // and when
-        store.accept(EditorPollStore.Intent.OnRequestDurationPicker(false))
+        store.accept(EditorPollStore.Intent.OnDurationPickerRequested(false))
         // then
         assertThat(store.state.durationPickerVisible).isFalse()
 
@@ -189,7 +189,7 @@ internal class EditorPollStoreTest : StoreTest<EditorPollStore.Intent, EditorPol
         assertThat(store.state.deletionAvailable).isFalse()
 
         // when adding new option
-        store.accept(EditorPollStore.Intent.OnAddPollOption)
+        store.accept(EditorPollStore.Intent.OnPollOptionAdded)
 
         // then has three options, can insert and can delete
         assertThat(store.state.options.size).isEqualTo(3)
@@ -197,7 +197,7 @@ internal class EditorPollStoreTest : StoreTest<EditorPollStore.Intent, EditorPol
         assertThat(store.state.deletionAvailable).isTrue()
 
         // when adding new option
-        store.accept(EditorPollStore.Intent.OnAddPollOption)
+        store.accept(EditorPollStore.Intent.OnPollOptionAdded)
 
         // then has four options, can't insert and can delete
         assertThat(store.state.options.size).isEqualTo(4)
@@ -205,7 +205,7 @@ internal class EditorPollStoreTest : StoreTest<EditorPollStore.Intent, EditorPol
         assertThat(store.state.deletionAvailable).isTrue()
 
         // when deleting an option
-        store.accept(EditorPollStore.Intent.OnDeletePollOption(store.state.options.first().id))
+        store.accept(EditorPollStore.Intent.OnPollOptionDeleted(store.state.options.first().id))
 
         // then has three options, can insert and can delete
         assertThat(store.state.options.size).isEqualTo(3)
@@ -213,7 +213,7 @@ internal class EditorPollStoreTest : StoreTest<EditorPollStore.Intent, EditorPol
         assertThat(store.state.deletionAvailable).isTrue()
 
         // when deleting an option
-        store.accept(EditorPollStore.Intent.OnDeletePollOption(store.state.options.first().id))
+        store.accept(EditorPollStore.Intent.OnPollOptionDeleted(store.state.options.first().id))
 
         // then has two options, can insert and can't delete
         assertThat(store.state.options.size).isEqualTo(2)

@@ -8,18 +8,36 @@ import assertk.assertions.isTrue
 import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import com.sedsoftware.tackle.domain.model.type.MediaAttachmentType
+import com.sedsoftware.tackle.editor.details.EditorAttachmentDetailsGateways
+import com.sedsoftware.tackle.editor.details.Responses
 import com.sedsoftware.tackle.editor.details.domain.EditorAttachmentDetailsManager
 import com.sedsoftware.tackle.editor.details.model.AttachmentParams
-import com.sedsoftware.tackle.editor.details.stubs.EditorAttachmentDetailsApiStub
-import com.sedsoftware.tackle.editor.details.Responses
 import com.sedsoftware.tackle.utils.test.StoreTest
+import dev.mokkery.answering.returns
+import dev.mokkery.answering.throws
+import dev.mokkery.everySuspend
+import dev.mokkery.matcher.any
+import dev.mokkery.mock
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.runTest
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 
-internal class EditorAttachmentDetailsStoreTest : StoreTest<EditorAttachmentDetailsStore.Intent, EditorAttachmentDetailsStore.State, EditorAttachmentDetailsStore.Label>() {
+internal class EditorAttachmentDetailsStoreTest :
+    StoreTest<EditorAttachmentDetailsStore.Intent, EditorAttachmentDetailsStore.State, EditorAttachmentDetailsStore.Label>() {
+
+    private val attachmentType: MediaAttachmentType = MediaAttachmentType.IMAGE
+    private val attachmentUrl: String = "url"
+    private val attachmentId: String = "id"
+    private val attachmentImageParams: AttachmentParams = AttachmentParams(123, 123, 1f, "blurhash")
+
+    private val api: EditorAttachmentDetailsGateways.Api = mock {
+        everySuspend { getFile(any()) } returns Responses.basicResponse
+        everySuspend { updateFile(any(), any(), any()) } returns Responses.basicResponse
+    }
+
+    private val manager: EditorAttachmentDetailsManager = EditorAttachmentDetailsManager(api)
 
     @BeforeTest
     fun beforeTest() {
@@ -30,14 +48,6 @@ internal class EditorAttachmentDetailsStoreTest : StoreTest<EditorAttachmentDeta
     fun afterTest() {
         tearDown()
     }
-
-    private val attachmentType: MediaAttachmentType = MediaAttachmentType.IMAGE
-    private val attachmentUrl: String = "url"
-    private val attachmentId: String = "id"
-    private val attachmentImageParams: AttachmentParams = AttachmentParams(123, 123, 1f, "blurhash")
-
-    private val api: EditorAttachmentDetailsApiStub = EditorAttachmentDetailsApiStub()
-    private val manager: EditorAttachmentDetailsManager = EditorAttachmentDetailsManager(api)
 
     @Test
     fun `store init should load attachment data`() = runTest {
@@ -50,12 +60,12 @@ internal class EditorAttachmentDetailsStoreTest : StoreTest<EditorAttachmentDeta
 
         assertThat(store.state.initialFocus).isEqualTo(
             Responses.basicResponse.meta?.focus?.x to
-                Responses.basicResponse.meta?.focus?.y
+                    Responses.basicResponse.meta?.focus?.y
         )
 
         assertThat(store.state.focus).isEqualTo(
             Responses.basicResponse.meta?.focus?.x to
-                Responses.basicResponse.meta?.focus?.y
+                    Responses.basicResponse.meta?.focus?.y
         )
 
         assertThat(store.state.dataChanged).isFalse()
@@ -65,7 +75,7 @@ internal class EditorAttachmentDetailsStoreTest : StoreTest<EditorAttachmentDeta
     fun `failed store init show show an error message`() = runTest {
         // given
         // when
-        api.responseWithException = true
+        everySuspend { api.getFile(any()) } throws IllegalStateException("Test")
         store.init()
         // then
         assertThat(labels.count { it is EditorAttachmentDetailsStore.Label.ErrorCaught }).isEqualTo(1)
@@ -118,14 +128,14 @@ internal class EditorAttachmentDetailsStoreTest : StoreTest<EditorAttachmentDeta
         store.init()
         store.accept(EditorAttachmentDetailsStore.Intent.OnAlternateTextInput(alternateText))
         store.accept(EditorAttachmentDetailsStore.Intent.OnFocusInput(alternateFocus.first, alternateFocus.second))
-        api.responseWithException = true
+        everySuspend { api.updateFile(any(), any(), any()) } throws IllegalStateException("Test")
         store.accept(EditorAttachmentDetailsStore.Intent.SendAttachmentUpdate)
         // then
         assertThat(labels.count { it is EditorAttachmentDetailsStore.Label.ErrorCaught }).isEqualTo(1)
     }
 
     override fun createStore():
-        Store<EditorAttachmentDetailsStore.Intent, EditorAttachmentDetailsStore.State, EditorAttachmentDetailsStore.Label> =
+            Store<EditorAttachmentDetailsStore.Intent, EditorAttachmentDetailsStore.State, EditorAttachmentDetailsStore.Label> =
         EditorAttachmentDetailsStoreProvider(
             storeFactory = DefaultStoreFactory(),
             manager = manager,

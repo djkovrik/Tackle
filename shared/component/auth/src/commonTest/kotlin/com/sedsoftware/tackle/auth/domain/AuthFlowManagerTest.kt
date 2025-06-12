@@ -4,23 +4,40 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNotEmpty
 import assertk.assertions.isSameInstanceAs
+import com.sedsoftware.tackle.auth.AuthComponentGateways
 import com.sedsoftware.tackle.auth.Constants
 import com.sedsoftware.tackle.auth.Responses
 import com.sedsoftware.tackle.auth.model.ObtainedCredentials
-import com.sedsoftware.tackle.auth.stubs.AuthComponentApiStub
-import com.sedsoftware.tackle.auth.stubs.AuthComponentDatabaseStub
 import com.sedsoftware.tackle.auth.stubs.AuthComponentSettingsStub
-import com.sedsoftware.tackle.auth.stubs.AuthComponentToolsStub
 import com.sedsoftware.tackle.domain.TackleException
+import dev.mokkery.answering.returns
+import dev.mokkery.everySuspend
+import dev.mokkery.matcher.any
+import dev.mokkery.mock
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 
 class AuthFlowManagerTest {
 
-    private val api: AuthComponentApiStub = AuthComponentApiStub()
-    private val database: AuthComponentDatabaseStub = AuthComponentDatabaseStub()
-    private val settings: AuthComponentSettingsStub = AuthComponentSettingsStub()
-    private val tools: AuthComponentToolsStub = AuthComponentToolsStub()
+    private val api: AuthComponentGateways.Api = mock {
+        everySuspend { getServerInfo(any()) } returns Responses.validInstanceDetails
+        everySuspend { createApp(any()) } returns Responses.validApplicationDetails
+        everySuspend { startAuthFlow(any(), any(), any(), any()) } returns Responses.TOKEN
+        everySuspend { verifyCredentials() } returns Responses.validAccountDetails
+    }
+
+    private val database: AuthComponentGateways.Database = mock {
+        everySuspend { cacheInstanceInfo(any()) } returns Unit
+    }
+
+    private val settings: AuthComponentGateways.Settings = AuthComponentSettingsStub()
+
+    private val tools: AuthComponentGateways.Tools = mock {
+        everySuspend { getClientData() } returns Responses.validClientData
+        everySuspend { openUrl(any()) } returns Unit
+        everySuspend { getTextInputEndDelay() } returns 0L
+    }
+
     private val manager: AuthFlowManager = AuthFlowManager(api, database, settings, tools)
 
     @Test
@@ -68,12 +85,25 @@ class AuthFlowManagerTest {
     }
 
     @Test
+    fun `verifyCredentials should store current user info`() = runTest {
+        // given
+        settings.domainNormalized = Constants.DOMAIN
+        settings.token = Constants.TOKEN
+        // when
+        manager.verifyCredentials()
+        // then
+        assertThat(settings.ownAvatar).isEqualTo(Constants.OWN_AVATAR)
+        assertThat(settings.ownUsername).isEqualTo(Constants.OWN_USERNAME)
+        assertThat(settings.ownId).isEqualTo(Constants.OWN_USER_ID)
+    }
+
+    @Test
     fun `createApp should update id and secret settings on success`() = runTest {
         // given
         settings.domainNormalized = ""
         settings.clientId = ""
         settings.clientSecret = ""
-        api.createAppResponse = Responses.validApplicationDetails
+        everySuspend { api.createApp(any()) } returns Responses.validApplicationDetails
         // when
         val result = manager.createApp(Constants.DOMAIN)
         // then
@@ -104,7 +134,7 @@ class AuthFlowManagerTest {
             clientId = Constants.CLIENT_ID,
             clientSecret = Constants.CLIENT_SECRET,
         )
-        api.startAuthFlowResponse = ""
+        everySuspend { api.startAuthFlow(any(), any(), any(), any()) } returns ""
         // when
         val result = manager.startAuthFlow(credentials)
         // then

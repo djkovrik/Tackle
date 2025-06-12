@@ -34,6 +34,6 @@ class EditorAttachmentDetailsComponentPreview(
 
     override fun onAttachmentDescriptionInput(text: String) = Unit
     override fun onAttachmentFocusInput(x: Float, y: Float) = Unit
-    override fun onUpdateButtonClicked() = Unit
-    override fun onBackButtonClicked() = Unit
+    override fun onUpdateButtonClick() = Unit
+    override fun onBackButtonClick() = Unit
 }

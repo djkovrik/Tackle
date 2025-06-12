@@ -68,21 +68,21 @@ class EditorAttachmentsComponentDefault(
 
     override val model: Value<Model> = store.asValue().map(stateToModel)
 
-    override fun onFilesSelected(files: List<PlatformFile>) {
+    override fun onFilesSelect(files: List<PlatformFile>) {
         val wrapped: List<PlatformFileWrapper> = files.map { wrap(it.name, it.extension, it.path, it::getSize, it::readBytes) }
         store.accept(EditorAttachmentsStore.Intent.OnFilesSelected(wrapped))
     }
 
-    override fun onFilesSelectedWrapped(files: List<PlatformFileWrapper>) {
+    override fun onWrappedFilesSelect(files: List<PlatformFileWrapper>) {
         store.accept(EditorAttachmentsStore.Intent.OnFilesSelected(files))
     }
 
-    override fun onFileDeleted(id: String) {
+    override fun onFileDelete(id: String) {
         store.accept(EditorAttachmentsStore.Intent.OnFileDeleted(id))
     }
 
     override fun onFileRetry(id: String) {
-        store.accept(EditorAttachmentsStore.Intent.OnFileRetry(id))
+        store.accept(EditorAttachmentsStore.Intent.OnFileRetryClicked(id))
     }
 
     override fun onFileEdit(attachment: MediaAttachment) {

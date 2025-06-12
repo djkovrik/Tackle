@@ -10,8 +10,8 @@ interface EditorAttachmentDetailsComponent {
 
     fun onAttachmentDescriptionInput(text: String)
     fun onAttachmentFocusInput(x: Float, y: Float)
-    fun onUpdateButtonClicked()
-    fun onBackButtonClicked()
+    fun onUpdateButtonClick()
+    fun onBackButtonClick()
 
     data class Model(
         val type: MediaAttachmentType,

@@ -30,7 +30,7 @@ internal class EditorEmojisStoreProvider(
             name = "EditorEmojisStore",
             initialState = State(),
             autoInit = autoInit,
-            bootstrapper = coroutineBootstrapper {
+            bootstrapper = coroutineBootstrapper(mainContext) {
                 dispatch(Action.FetchServerEmojis)
                 dispatch(Action.ObserveCachedEmojis)
             },
@@ -40,7 +40,7 @@ internal class EditorEmojisStoreProvider(
                         unwrap(
                             result = withContext(ioContext) { manager.fetchServerEmojis() },
                             onSuccess = {},
-                            onError = { throwable ->
+                            onError = { throwable: Throwable ->
                                 publish(Label.ErrorCaught(throwable))
                             }
                         )

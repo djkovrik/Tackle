@@ -1,10 +1,10 @@
 package com.sedsoftware.tackle.compose.custom
 
-import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.sedsoftware.tackle.compose.platform.BlurHashView
 import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 internal fun BlurHashView(

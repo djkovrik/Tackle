@@ -1,12 +1,15 @@
 package com.sedsoftware.tackle.auth
 
 import com.sedsoftware.tackle.domain.model.Account
+import com.sedsoftware.tackle.domain.model.AppClientData
 import com.sedsoftware.tackle.domain.model.Application
 import com.sedsoftware.tackle.domain.model.Instance
 import com.sedsoftware.tackle.utils.extension.toLocalDateCustom
 import com.sedsoftware.tackle.utils.extension.toLocalDateTimeCustom
 
 internal object Responses {
+
+    const val TOKEN = "Token"
 
     val validApplicationDetails: Application =
         Application(
@@ -44,15 +47,15 @@ internal object Responses {
 
     val validAccountDetails: Account =
         Account(
-            id = "12345",
-            username = "djkovrik",
-            acct = "djkovrik",
-            displayName = "djkovrik",
+            id = Constants.OWN_USER_ID,
+            username = Constants.OWN_USERNAME,
+            acct = Constants.OWN_USERNAME,
+            displayName = Constants.OWN_USERNAME,
             note = "123",
             url = "url",
             uri = "uri",
-            avatar = "url",
-            avatarStatic = "url",
+            avatar = Constants.OWN_AVATAR,
+            avatarStatic = Constants.OWN_AVATAR,
             header = "url",
             headerStatic = "url",
             locked = false,
@@ -105,4 +108,11 @@ internal object Responses {
             source = null,
             role = null,
         )
+
+    val validClientData: AppClientData = AppClientData(
+        name = Constants.NAME,
+        uri = Constants.URI,
+        scopes = Constants.SCOPES,
+        website = Constants.WEBSITE
+    )
 }

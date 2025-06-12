@@ -1,6 +1,5 @@
 package com.sedsoftware.tackle.compose.ui.status.content
 
-import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -8,7 +7,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -24,24 +22,26 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
-import com.sedsoftware.tackle.compose.ui.PreviewStubs
+import com.sedsoftware.tackle.compose.widget.TackleButton
 import com.sedsoftware.tackle.compose.widget.TackleCheckbox
 import com.sedsoftware.tackle.compose.widget.TackleStatusRichText
 import com.sedsoftware.tackle.domain.model.CustomEmoji
 import com.sedsoftware.tackle.domain.model.Poll
+import com.sedsoftware.tackle.domain.model.Translation
 import org.jetbrains.compose.resources.stringResource
 import tackle.shared.compose.generated.resources.Res
 import tackle.shared.compose.generated.resources.status_poll_active_till
+import tackle.shared.compose.generated.resources.status_poll_button
 import tackle.shared.compose.generated.resources.status_poll_completed
 import tackle.shared.compose.generated.resources.status_poll_voters
 
 @Composable
-@Suppress("UnusedParameter")
 internal fun StatusPoll(
     poll: Poll,
+    translation: Translation?,
+    onSelect: (Int, Boolean) -> Unit,
+    onVote: () -> Unit,
     modifier: Modifier = Modifier,
-    onSelect: () -> Unit = {},
 ) {
     Column(modifier = modifier) {
         if (!poll.expired) {
@@ -62,7 +62,11 @@ internal fun StatusPoll(
 
         poll.options.forEachIndexed { index, option ->
             StatusPollOption(
-                title = option.title,
+                title = if (translation?.poll?.options?.size == poll.options.size) {
+                    translation.poll?.options?.get(index)?.title ?: option.title
+                } else {
+                    option.title
+                },
                 votesCount = option.votesCount,
                 votesTotal = poll.votesCount,
                 emojis = poll.emojis,
@@ -70,6 +74,7 @@ internal fun StatusPoll(
                 voted = poll.voted,
                 hideTotals = poll.hideTotals,
                 chosen = poll.ownVotes.contains(index),
+                onClick = { onSelect.invoke(index, poll.multiple) },
             )
         }
 
@@ -77,8 +82,19 @@ internal fun StatusPoll(
             text = "${stringResource(Res.string.status_poll_voters)} ${poll.votersCount}",
             color = MaterialTheme.colorScheme.onTertiaryContainer,
             style = MaterialTheme.typography.bodyMedium,
-            modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp)
+            modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 8.dp)
         )
+
+        if (!poll.expired) {
+            TackleButton(
+                text = stringResource(resource = Res.string.status_poll_button),
+                onClick = onVote,
+                enabled = poll.ownVotes.isNotEmpty() && !poll.voted,
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(bottom = 16.dp)
+            )
+        }
     }
 }
 
@@ -167,51 +183,5 @@ private fun StatusPollOption(
                 )
             }
         }
-    }
-}
-
-@Preview
-@Composable
-private fun StatusPollPreviewLight() {
-    TackleScreenPreview {
-        StatusPollContent()
-    }
-}
-
-@Preview
-@Composable
-private fun StatusPollPreviewDark() {
-    TackleScreenPreview(darkTheme = true) {
-        StatusPollContent()
-    }
-}
-
-@Composable
-private fun StatusPollContent() {
-    Column(
-        modifier = Modifier
-            .background(
-                color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f)
-            )
-    ) {
-        StatusPoll(poll = PreviewStubs.pollNotVoted)
-        Spacer(
-            modifier = Modifier
-                .height(height = 32.dp).fillMaxWidth()
-                .background(color = MaterialTheme.colorScheme.surface)
-        )
-        StatusPoll(poll = PreviewStubs.pollNotVotedExpired)
-        Spacer(
-            modifier = Modifier
-                .height(height = 32.dp).fillMaxWidth()
-                .background(color = MaterialTheme.colorScheme.surface)
-        )
-        StatusPoll(poll = PreviewStubs.pollVoted)
-        Spacer(
-            modifier = Modifier
-                .height(height = 32.dp).fillMaxWidth()
-                .background(color = MaterialTheme.colorScheme.surface)
-        )
-        StatusPoll(poll = PreviewStubs.pollVotedExpired)
     }
 }

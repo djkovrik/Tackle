@@ -128,16 +128,16 @@ class EditorComponentPreview(
         MutableValue(ChildSlot())
 
     override fun onTextInput(text: String, selection: Pair<Int, Int>) = Unit
-    override fun onEmojiSelected(emoji: CustomEmoji) = Unit
-    override fun onInputHintSelected(hint: EditorInputHintItem) = Unit
-    override fun onPollButtonClicked() = Unit
-    override fun onEmojisButtonClicked() = Unit
-    override fun onWarningButtonClicked() = Unit
-    override fun onScheduleDatePickerRequested(show: Boolean) = Unit
-    override fun onScheduleDateSelected(millis: Long) = Unit
-    override fun onScheduleTimePickerRequested(show: Boolean) = Unit
-    override fun onScheduleTimeSelected(hour: Int, minute: Int, formatIn24hr: Boolean) = Unit
+    override fun onEmojiSelect(emoji: CustomEmoji) = Unit
+    override fun onInputHintSelect(hint: EditorInputHintItem) = Unit
+    override fun onPollButtonClick() = Unit
+    override fun onEmojisButtonClick() = Unit
+    override fun onWarningButtonClick() = Unit
+    override fun onScheduleDatePickerRequest(show: Boolean) = Unit
+    override fun onScheduleDateSelect(millis: Long) = Unit
+    override fun onScheduleTimePickerRequest(show: Boolean) = Unit
+    override fun onScheduleTimeSelect(hour: Int, minute: Int, formatIn24hr: Boolean) = Unit
     override fun resetScheduledDateTime() = Unit
-    override fun onSendButtonClicked() = Unit
-    override fun onBackButtonClicked() = Unit
+    override fun onSendButtonClick() = Unit
+    override fun onBackButtonClick() = Unit
 }

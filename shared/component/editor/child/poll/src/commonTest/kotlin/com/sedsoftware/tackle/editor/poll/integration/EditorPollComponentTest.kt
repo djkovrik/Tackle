@@ -32,50 +32,50 @@ class EditorPollComponentTest : ComponentTest<EditorPollComponent>() {
     }
 
     @Test
-    fun `onDurationPickerRequested should show duration picker`() = runTest {
+    fun `onDurationPickerRequest should show duration picker`() = runTest {
         // given
         // when
-        component.onDurationPickerRequested(true)
+        component.onDurationPickerRequest(true)
         // then
         assertThat(activeModel.durationPickerVisible).isTrue()
         // and when
-        component.onDurationPickerRequested(false)
+        component.onDurationPickerRequest(false)
         // then
         assertThat(activeModel.durationPickerVisible).isFalse()
     }
 
     @Test
-    fun `onDurationSelected should set duration`() = runTest {
+    fun `onDurationSelect should set duration`() = runTest {
         // given
         val duration = PollDuration.THREE_DAYS
         // when
-        component.onDurationSelected(duration)
+        component.onDurationSelect(duration)
         // then
         assertThat(activeModel.duration).isEqualTo(duration)
     }
 
     @Test
-    fun `onMultiselectEnabled should enable multiselect`() = runTest {
+    fun `onMultiselectEnable should enable multiselect`() = runTest {
         // given
         // when
-        component.onMultiselectEnabled(true)
+        component.onMultiselectEnable(true)
         // then
         assertThat(activeModel.multiselectEnabled).isTrue()
         // and when
-        component.onMultiselectEnabled(false)
+        component.onMultiselectEnable(false)
         // then
         assertThat(activeModel.multiselectEnabled).isFalse()
     }
 
     @Test
-    fun `onHideTotalsEnabled should enable multiselect`() = runTest {
+    fun `onHideTotalsEnable should enable multiselect`() = runTest {
         // given
         // when
-        component.onHideTotalsEnabled(true)
+        component.onHideTotalsEnable(true)
         // then
         assertThat(activeModel.hideTotalsEnabled).isTrue()
         // and when
-        component.onHideTotalsEnabled(false)
+        component.onHideTotalsEnable(false)
         // then
         assertThat(activeModel.hideTotalsEnabled).isFalse()
     }

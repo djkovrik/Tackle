@@ -30,7 +30,7 @@ internal class EditorHeaderStoreProvider(
             name = "EditorHeaderStore",
             initialState = State(),
             autoInit = autoInit,
-            bootstrapper = coroutineBootstrapper {
+            bootstrapper = coroutineBootstrapper(mainContext) {
                 dispatch(Action.FetchProfileData)
                 dispatch(Action.FetchRecommendedLocale)
                 dispatch(Action.FetchAvailableLocales)
@@ -43,7 +43,7 @@ internal class EditorHeaderStoreProvider(
                             onSuccess = { profileData: EditorProfileData ->
                                 dispatch(Msg.ProfileDataLoaded(profileData))
                             },
-                            onError = { throwable ->
+                            onError = { throwable: Throwable ->
                                 publish(Label.ErrorCaught(throwable))
                             }
                         )
@@ -57,7 +57,7 @@ internal class EditorHeaderStoreProvider(
                             onSuccess = { recommended: AppLocale ->
                                 dispatch(Msg.RecommendedLocaleLoaded(recommended))
                             },
-                            onError = { throwable ->
+                            onError = { throwable: Throwable ->
                                 publish(Label.ErrorCaught(throwable))
                             }
                         )
@@ -71,30 +71,30 @@ internal class EditorHeaderStoreProvider(
                             onSuccess = { availableLocales: List<AppLocale> ->
                                 dispatch(Msg.AvailableLocalesLoaded(availableLocales))
                             },
-                            onError = { throwable ->
+                            onError = { throwable: Throwable ->
                                 publish(Label.ErrorCaught(throwable))
                             }
                         )
                     }
                 }
 
-                onIntent<Intent.OnRequestLocalePicker> { dispatch(Msg.LocaleDialogVisibilityChanged(it.show)) }
+                onIntent<Intent.OnLocalePickerRequested> { dispatch(Msg.LocaleDialogVisibilityChanged(it.show)) }
 
                 onIntent<Intent.OnLocaleSelected> {
                     launch {
                         unwrap(
                             result = withContext(ioContext) { manager.saveSelectedLocale(it.language) },
-                            onSuccess = {
-                                dispatch(Msg.LocaleSelected(it))
+                            onSuccess = { locale: AppLocale ->
+                                dispatch(Msg.LocaleSelected(locale))
                             },
-                            onError = { throwable ->
+                            onError = { throwable: Throwable ->
                                 publish(Label.ErrorCaught(throwable))
                             }
                         )
                     }
                 }
 
-                onIntent<Intent.OnRequestVisibilityPicker> { dispatch(Msg.StatusDialogVisibilityChanged(it.show)) }
+                onIntent<Intent.OnVisibilityPickerRequested> { dispatch(Msg.StatusDialogVisibilityChanged(it.show)) }
 
                 onIntent<Intent.OnVisibilityPickerSelected> { dispatch(Msg.VisibilitySelected(it.visibility)) }
 

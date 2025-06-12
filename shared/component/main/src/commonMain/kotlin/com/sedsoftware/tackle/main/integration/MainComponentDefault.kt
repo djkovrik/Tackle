@@ -103,7 +103,7 @@ class MainComponentDefault internal constructor(
 
     override val childStack: Value<ChildStack<*, Child>> = stack
 
-    override fun onTabClicked(tab: TackleNavigationTab) {
+    override fun onTabClick(tab: TackleNavigationTab) {
         when (tab) {
             TackleNavigationTab.HOME -> navigation.bringToFront(Config.HomeTab)
             TackleNavigationTab.EXPLORE -> navigation.bringToFront(Config.ExploreTab)

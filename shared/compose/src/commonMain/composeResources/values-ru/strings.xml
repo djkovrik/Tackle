@@ -112,8 +112,21 @@
     <string name="status_sensitive_image_content_description">Переключить видимость деликатного контента</string>
     <string name="status_info_created">Создан</string>
     <string name="status_info_edited">Отредактирован</string>
+    <string name="status_translating">Перевод</string>
+    <string name="status_translated">Переведено с помощью</string>
     <string name="status_poll_active_till">Опрос активен до:</string>
     <string name="status_poll_completed">Опрос завершен</string>
     <string name="status_poll_multi_choice">Доступен множественный выбор</string>
     <string name="status_poll_voters">Проголосовавших:</string>
+    <string name="status_poll_button">Голосовать</string>
+    <!-- Status context menu -->
+    <string name="status_menu_translate">Перевести</string>
+    <string name="status_menu_show_original">Показать оригинал</string>
+    <string name="status_menu_delete">Удалить</string>
+    <string name="status_menu_pin">Закрепить</string>
+    <string name="status_menu_unpin">Открепить</string>
+    <string name="status_menu_bookmark">В закладки</string>
+    <string name="status_menu_unbookmark">Убрать закладку</string>
+    <string name="status_menu_mute">Не уведомлять</string>
+    <string name="status_menu_unmute">Снова уведомлять</string>
 </resources>

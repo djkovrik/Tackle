@@ -1,6 +1,5 @@
 package com.sedsoftware.tackle.compose.ui.editor.child.details.content
 
-import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectDragGestures
@@ -37,6 +36,7 @@ import com.sedsoftware.tackle.compose.widget.TackleImage
 import com.sedsoftware.tackle.editor.details.model.AttachmentParams
 import com.sedsoftware.tackle.utils.extension.focusToOffset
 import com.sedsoftware.tackle.utils.extension.offsetToFocus
+import org.jetbrains.compose.ui.tooling.preview.Preview
 import kotlin.math.roundToInt
 
 @Composable

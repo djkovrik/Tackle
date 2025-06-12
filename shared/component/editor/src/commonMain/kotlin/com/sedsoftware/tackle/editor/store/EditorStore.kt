@@ -12,17 +12,17 @@ import com.sedsoftware.tackle.editor.store.EditorStore.State
 
 interface EditorStore : Store<Intent, State, Label> {
 
-    sealed class Intent {
-        data object FetchCachedInstanceInfo : Intent()
-        data class OnTextInput(val text: String, val selection: Pair<Int, Int>) : Intent()
-        data class OnEmojiSelect(val emoji: CustomEmoji) : Intent()
-        data class OnInputHintSelect(val hint: EditorInputHintItem) : Intent()
-        data class OnRequestDatePicker(val show: Boolean) : Intent()
-        data class OnScheduleDate(val millis: Long) : Intent()
-        data class OnRequestTimePicker(val show: Boolean) : Intent()
-        data class OnScheduleTime(val hour: Int, val minute: Int, val formatIn24hr: Boolean) : Intent()
-        data object OnScheduledDateTimeReset : Intent()
-        data class SendStatus(val bundle: NewStatusBundle) : Intent()
+    sealed interface Intent {
+        data object FetchCachedInstanceInfo : Intent
+        data class OnTextInput(val text: String, val selection: Pair<Int, Int>) : Intent
+        data class OnEmojiSelected(val emoji: CustomEmoji) : Intent
+        data class OnInputHintSelected(val hint: EditorInputHintItem) : Intent
+        data class OnDatePickerRequested(val show: Boolean) : Intent
+        data class OnDateScheduled(val millis: Long) : Intent
+        data class OnTimePickerRequested(val show: Boolean) : Intent
+        data class OnTimeScheduled(val hour: Int, val minute: Int, val formatIn24hr: Boolean) : Intent
+        data object OnScheduledDateTimeReset : Intent
+        data class SendStatus(val bundle: NewStatusBundle) : Intent
     }
 
     data class State(

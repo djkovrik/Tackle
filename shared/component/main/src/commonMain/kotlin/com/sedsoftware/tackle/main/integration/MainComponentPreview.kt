@@ -18,5 +18,5 @@ class MainComponentPreview(
             )
         )
 
-    override fun onTabClicked(tab: TackleNavigationTab) = Unit
+    override fun onTabClick(tab: TackleNavigationTab) = Unit
 }

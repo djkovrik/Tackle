@@ -40,7 +40,7 @@ internal class EditorAttachmentDetailsStoreProvider(
                 params = attachmentImageParams,
             ),
             autoInit = autoInit,
-            bootstrapper = coroutineBootstrapper {
+            bootstrapper = coroutineBootstrapper(mainContext) {
                 dispatch(Action.LoadAttachmentData)
             },
             executorFactory = coroutineExecutorFactory(mainContext) {

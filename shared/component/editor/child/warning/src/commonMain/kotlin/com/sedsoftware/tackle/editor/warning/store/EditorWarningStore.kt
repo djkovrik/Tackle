@@ -6,9 +6,9 @@ import com.sedsoftware.tackle.editor.warning.store.EditorWarningStore.State
 
 internal interface EditorWarningStore : Store<Intent, State, Nothing> {
 
-    sealed class Intent {
-        data class OnTextInput(val text: String) : Intent()
-        data object ToggleComponentVisibility : Intent()
+    sealed interface Intent {
+        data class OnTextInput(val text: String) : Intent
+        data object ToggleComponentVisibility : Intent
     }
 
     data class State(

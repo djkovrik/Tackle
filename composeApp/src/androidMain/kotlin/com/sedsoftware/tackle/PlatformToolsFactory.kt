@@ -7,6 +7,7 @@ import com.sedsoftware.tackle.domain.api.TacklePlatformTools
 import com.sedsoftware.tackle.domain.model.AppClientData
 import com.sedsoftware.tackle.domain.model.AppLocale
 import java.util.Locale
+import androidx.core.net.toUri
 
 @Suppress("FunctionName")
 fun PlatformToolsFactory(context: Context): TacklePlatformTools =
@@ -14,7 +15,7 @@ fun PlatformToolsFactory(context: Context): TacklePlatformTools =
         private val languageCodeLength = 2
 
         override fun openUrl(url: String?) {
-            val uri = url?.let { Uri.parse(it) } ?: return
+            val uri = url?.toUri() ?: return
             val intent = Intent().apply {
                 action = Intent.ACTION_VIEW
                 data = uri
@@ -53,6 +54,17 @@ fun PlatformToolsFactory(context: Context): TacklePlatformTools =
                 .map { AppLocale(languageName = it.displayLanguage.capitalizeDisplayName(locale), languageCode = it.language) }
         }
 
-        fun String.capitalizeDisplayName(locale: Locale): String =
+        override fun shareStatus(title: String, url: String) {
+            val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                type = "text/plain"
+                putExtra(Intent.EXTRA_TITLE, title)
+                putExtra(Intent.EXTRA_TEXT, url)
+            }
+                context.startActivity(Intent.createChooser(shareIntent, null).apply {
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            })
+        }
+
+        private fun String.capitalizeDisplayName(locale: Locale): String =
             this.replaceFirstChar { if (it.isLowerCase()) it.titlecase(locale) else it.toString() }
     }

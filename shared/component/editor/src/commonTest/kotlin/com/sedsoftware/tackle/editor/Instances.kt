@@ -16,6 +16,13 @@ import com.sedsoftware.tackle.utils.extension.toLocalDateTimeCustom
 
 internal object Instances {
 
+    val customEmojiList = listOf(
+        CustomEmoji("test1", "test1", "test1", true, "test1"),
+        CustomEmoji("test2", "test2", "test2", true, "test1"),
+        CustomEmoji("test3", "test3", "test3", true, "test1"),
+        CustomEmoji("abcde", "abcde", "abcde", true, "abcde"),
+    )
+
     val accountDetails = Account(
         id = "12345",
         username = "djkovrik",

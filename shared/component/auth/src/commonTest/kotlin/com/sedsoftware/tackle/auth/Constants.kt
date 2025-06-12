@@ -9,4 +9,7 @@ internal object Constants {
     const val CLIENT_ID = "client_id"
     const val CLIENT_SECRET = "client_secret"
     const val TOKEN = "token"
+    const val OWN_USERNAME = "djkovrik"
+    const val OWN_AVATAR = "djkovrik"
+    const val OWN_USER_ID = "own-user-id-test"
 }

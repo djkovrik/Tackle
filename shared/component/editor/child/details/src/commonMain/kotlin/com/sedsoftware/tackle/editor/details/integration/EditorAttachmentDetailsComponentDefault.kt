@@ -73,11 +73,11 @@ class EditorAttachmentDetailsComponentDefault(
         store.accept(EditorAttachmentDetailsStore.Intent.OnFocusInput(x, y))
     }
 
-    override fun onUpdateButtonClicked() {
+    override fun onUpdateButtonClick() {
         store.accept(EditorAttachmentDetailsStore.Intent.SendAttachmentUpdate)
     }
 
-    override fun onBackButtonClicked() {
+    override fun onBackButtonClick() {
         onDismiss.invoke()
     }
 }

@@ -1,9 +1,8 @@
 package com.sedsoftware.tackle.editor.header.stubs
 
 import com.sedsoftware.tackle.editor.header.EditorHeaderComponentGateways
-import com.sedsoftware.tackle.utils.test.BaseStub
 
-class EditorHeaderSettingsStub : BaseStub(), EditorHeaderComponentGateways.Settings {
+class EditorHeaderSettingsStub : EditorHeaderComponentGateways.Settings {
 
     var avatar: String = ""
     var nickname: String = ""
@@ -12,25 +11,23 @@ class EditorHeaderSettingsStub : BaseStub(), EditorHeaderComponentGateways.Setti
     var lastSelectedCode: String = ""
 
     override val ownAvatar: String
-        get() = asResponse(avatar)
+        get() = avatar
 
     override val ownNickname: String
-        get() = asResponse(nickname)
+        get() = nickname
 
     override val domainShort: String
-        get() = asResponse(domain)
+        get() = domain
 
     override var lastSelectedLanguageName: String
-        get() = asResponse(lastSelectedName)
+        get() = lastSelectedName
         set(value) {
             lastSelectedName = value
-            asResponse(Unit)
         }
 
     override var lastSelectedLanguageCode: String
-        get() = asResponse(lastSelectedCode)
+        get() = lastSelectedCode
         set(value) {
             lastSelectedCode = value
-            asResponse(Unit)
         }
 }

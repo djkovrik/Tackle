@@ -49,6 +49,12 @@ internal class TackleSettingsInternal(
             settings.setValue(PREF_KEY_USERNAME, value)
         }
 
+    override var ownId: String
+        get() = settings.getValue(PREF_KEY_OWN_ID, "")
+        set(value) {
+            settings.setValue(PREF_KEY_OWN_ID, value)
+        }
+
     override var emojiLastCachedTimestamp: String
         get() = settings.getValue(PREF_KEY_EMOJI_TIMESTAMP, "")
         set(value) {
@@ -96,6 +102,7 @@ internal class TackleSettingsInternal(
         const val PREF_KEY_TOKEN = "tn"
         const val PREF_KEY_AVATAR = "av"
         const val PREF_KEY_USERNAME = "un"
+        const val PREF_KEY_OWN_ID = "oi"
         const val PREF_KEY_EMOJI_TIMESTAMP = "et"
         const val PREF_KEY_LAST_SELECTED_LANGUAGE_NAME = "lsln"
         const val PREF_KEY_LAST_SELECTED_LANGUAGE_CODE = "lslc"

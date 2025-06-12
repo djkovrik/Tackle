@@ -8,6 +8,7 @@ interface TackleSettings {
     var token: String
     var ownAvatar: String
     var ownUsername: String
+    var ownId: String
     var emojiLastCachedTimestamp: String
     var lastSelectedLanguageName: String
     var lastSelectedLanguageCode: String

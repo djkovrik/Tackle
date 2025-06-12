@@ -3,7 +3,6 @@ package com.sedsoftware.tackle.compose.ui.editor
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
-import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -92,6 +91,7 @@ import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
 import tackle.shared.compose.generated.resources.Res
 import tackle.shared.compose.generated.resources.editor_input_hint
 import kotlin.time.Duration.Companion.hours
@@ -119,7 +119,7 @@ internal fun EditorContent(
     val attachmentDetailsSlot: ChildSlot<*, EditorAttachmentDetailsComponent> by component.attachmentDetailsDialog.subscribeAsState()
 
     val launcher: PickerResultLauncher = rememberFilePickerLauncher(mode = PickerMode.Multiple()) { files: List<PlatformFile>? ->
-        files?.let { component.attachments.onFilesSelected(it) }
+        files?.let { component.attachments.onFilesSelect(it) }
     }
 
     val bottomSheetState: SheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -187,10 +187,10 @@ internal fun EditorContent(
                 modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
                 containerColor = MaterialTheme.colorScheme.secondaryContainer,
                 contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
-                onLocalePickerRequest = { component.header.onLocalePickerRequested(true) },
-                onVisibilityPickerRequest = { component.header.onStatusVisibilityPickerRequested(true) },
-                onSendClick = { component.onSendButtonClicked() },
-                onBackClick = { component.onBackButtonClicked() },
+                onLocalePickerRequest = { component.header.onLocalePickerRequest(true) },
+                onVisibilityPickerRequest = { component.header.onStatusVisibilityPickerRequest(true) },
+                onSendClick = { component.onSendButtonClick() },
+                onBackClick = { component.onBackButtonClick() },
             )
 
             AnimatedVisibility(visible = editorModel.sending) {
@@ -268,7 +268,7 @@ internal fun EditorContent(
                     AnimatedVisibility(visible = attachmentsModel.attachmentsContentVisible) {
                         EditorAttachmentsContent(
                             model = attachmentsModel,
-                            onDelete = component.attachments::onFileDeleted,
+                            onDelete = component.attachments::onFileDelete,
                             onRetry = component.attachments::onFileRetry,
                             onEdit = component.attachments::onFileEdit,
                             modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
@@ -289,12 +289,12 @@ internal fun EditorContent(
                             checkboxColor = MaterialTheme.colorScheme.secondary,
                             onAddNewItem = component.poll::onAddPollOptionClick,
                             onDeleteItem = component.poll::onDeletePollOptionClick,
-                            onMultiselectEnabled = component.poll::onMultiselectEnabled,
-                            onHideTotalsEnabled = component.poll::onHideTotalsEnabled,
-                            onDurationSelected = component.poll::onDurationSelected,
+                            onMultiselectEnabled = component.poll::onMultiselectEnable,
+                            onHideTotalsEnabled = component.poll::onHideTotalsEnable,
+                            onDurationSelected = component.poll::onDurationSelect,
                             onTextInput = component.poll::onTextInput,
-                            onDurationPickerCall = { component.poll.onDurationPickerRequested(true) },
-                            onDurationPickerClose = { component.poll.onDurationPickerRequested(false) },
+                            onDurationPickerCall = { component.poll.onDurationPickerRequest(true) },
+                            onDurationPickerClose = { component.poll.onDurationPickerRequest(false) },
                         )
                     }
                 }
@@ -317,7 +317,7 @@ internal fun EditorContent(
                                     hint = item,
                                     containerColor = MaterialTheme.colorScheme.surfaceVariant,
                                     contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                                    onClick = { component.onInputHintSelected(item) },
+                                    onClick = { component.onInputHintSelect(item) },
                                 )
 
                             is EditorInputHintItem.Emoji ->
@@ -325,7 +325,7 @@ internal fun EditorContent(
                                     hint = item,
                                     containerColor = MaterialTheme.colorScheme.surfaceVariant,
                                     contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                                    onClick = { component.onInputHintSelected(item) },
+                                    onClick = { component.onInputHintSelect(item) },
                                 )
 
                             is EditorInputHintItem.HashTag ->
@@ -333,7 +333,7 @@ internal fun EditorContent(
                                     hint = item,
                                     containerColor = MaterialTheme.colorScheme.surfaceVariant,
                                     contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                                    onClick = { component.onInputHintSelected(item) },
+                                    onClick = { component.onInputHintSelect(item) },
                                 )
                         }
                     }
@@ -352,10 +352,10 @@ internal fun EditorContent(
                     onClick = { type: EditorToolbarItem.Type ->
                         when (type) {
                             EditorToolbarItem.Type.ATTACH -> launcher.launch()
-                            EditorToolbarItem.Type.EMOJIS -> component.onEmojisButtonClicked()
-                            EditorToolbarItem.Type.POLL -> component.onPollButtonClicked()
-                            EditorToolbarItem.Type.WARNING -> component.onWarningButtonClicked()
-                            EditorToolbarItem.Type.SCHEDULE -> component.onScheduleDatePickerRequested(true)
+                            EditorToolbarItem.Type.EMOJIS -> component.onEmojisButtonClick()
+                            EditorToolbarItem.Type.POLL -> component.onPollButtonClick()
+                            EditorToolbarItem.Type.WARNING -> component.onWarningButtonClick()
+                            EditorToolbarItem.Type.SCHEDULE -> component.onScheduleDatePickerRequest(true)
                         }
                     },
                     modifier = Modifier.padding(start = 4.dp),
@@ -380,11 +380,11 @@ internal fun EditorContent(
             model = headerModel,
             modifier = Modifier,
             onDismissRequest = {
-                component.header.onLocalePickerRequested(false)
+                component.header.onLocalePickerRequest(false)
             },
             onConfirmation = { locale: AppLocale ->
-                component.header.onLocaleSelected(locale)
-                component.header.onLocalePickerRequested(false)
+                component.header.onLocaleSelect(locale)
+                component.header.onLocalePickerRequest(false)
             },
         )
     }
@@ -394,11 +394,11 @@ internal fun EditorContent(
         VisibilitySelectorDialog(
             modifier = Modifier,
             onDismissRequest = {
-                component.header.onStatusVisibilityPickerRequested(false)
+                component.header.onStatusVisibilityPickerRequest(false)
             },
             onConfirmation = { visibility: StatusVisibility ->
-                component.header.onStatusVisibilitySelected(visibility)
-                component.header.onStatusVisibilityPickerRequested(false)
+                component.header.onStatusVisibilitySelect(visibility)
+                component.header.onStatusVisibilityPickerRequest(false)
             },
         )
     }
@@ -408,12 +408,12 @@ internal fun EditorContent(
         ScheduleDatePickerDialog(
             datePickerState = datePickerState,
             onDismissRequest = {
-                component.onScheduleDatePickerRequested(false)
+                component.onScheduleDatePickerRequest(false)
             },
             onConfirmation = {
-                component.onScheduleDateSelected(datePickerState.selectedDateMillis.orZero())
-                component.onScheduleDatePickerRequested(false)
-                component.onScheduleTimePickerRequested(true)
+                component.onScheduleDateSelect(datePickerState.selectedDateMillis.orZero())
+                component.onScheduleDatePickerRequest(false)
+                component.onScheduleTimePickerRequest(true)
             }
         )
     }
@@ -423,11 +423,11 @@ internal fun EditorContent(
         ScheduleTimePickerDialog(
             timePickerState = timePickerState,
             onDismissRequest = {
-                component.onScheduleTimePickerRequested(false)
+                component.onScheduleTimePickerRequest(false)
             },
             onConfirmation = {
-                component.onScheduleTimeSelected(timePickerState.hour, timePickerState.minute, timePickerState.is24hour)
-                component.onScheduleTimePickerRequested(false)
+                component.onScheduleTimeSelect(timePickerState.hour, timePickerState.minute, timePickerState.is24hour)
+                component.onScheduleTimePickerRequest(false)
             }
         )
     }
@@ -437,13 +437,13 @@ internal fun EditorContent(
     if (emojisModel.emojisContentVisible) {
         ModalBottomSheet(
             containerColor = MaterialTheme.colorScheme.background,
-            onDismissRequest = component::onEmojisButtonClicked,
+            onDismissRequest = component::onEmojisButtonClick,
             sheetState = bottomSheetState,
         ) {
             EditorEmojisContent(
                 emojis = emojisModel.emojis,
                 modifier = Modifier.height(height = 360.dp),
-                onClick = component.emojis::onEmojiClicked,
+                onClick = component.emojis::onEmojiClick,
             )
         }
     }

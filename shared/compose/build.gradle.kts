@@ -23,6 +23,7 @@ kotlin {
             implementation(project(":shared:component:root"))
             implementation(project(":shared:component:auth"))
             implementation(project(":shared:component:main"))
+            implementation(project(":shared:component:status"))
 
             implementation(project(":shared:component:editor"))
             implementation(project(":shared:component:editor:child:attachments"))
@@ -41,6 +42,7 @@ kotlin {
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material3)
+            implementation(compose.materialIconsExtended)
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
@@ -54,11 +56,12 @@ kotlin {
             implementation(libs.lib.imageLoader)
             implementation(libs.lib.blurhash)
         }
-        androidMain.dependencies {
-            implementation(libs.compose.ui.tooling.preview)
-        }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
         }
     }
+}
+
+dependencies {
+    debugImplementation(libs.compose.ui.tooling)
 }

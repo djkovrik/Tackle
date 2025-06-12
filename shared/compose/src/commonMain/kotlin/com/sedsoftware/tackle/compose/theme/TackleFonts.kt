@@ -17,6 +17,8 @@ import tackle.shared.compose.generated.resources.open_sans_light_italic
 import tackle.shared.compose.generated.resources.open_sans_medium
 import tackle.shared.compose.generated.resources.open_sans_medium_italic
 import tackle.shared.compose.generated.resources.open_sans_regular
+import tackle.shared.compose.generated.resources.open_sans_semibold
+import tackle.shared.compose.generated.resources.open_sans_semibold_italic
 
 internal object TackleFonts {
 
@@ -30,6 +32,8 @@ internal object TackleFonts {
         Font(Res.font.open_sans_italic, FontWeight.Normal, FontStyle.Italic),
         Font(Res.font.open_sans_light, FontWeight.Light, FontStyle.Normal),
         Font(Res.font.open_sans_light_italic, FontWeight.Light, FontStyle.Italic),
+        Font(Res.font.open_sans_semibold, FontWeight.SemiBold, FontStyle.Normal),
+        Font(Res.font.open_sans_semibold_italic, FontWeight.SemiBold, FontStyle.Italic),
     )
 
     @Composable
