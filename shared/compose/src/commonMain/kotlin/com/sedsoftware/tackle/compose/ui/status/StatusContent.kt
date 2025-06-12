@@ -149,6 +149,7 @@ private fun PreviewStatusTranslated() {
                 translation = Translation(
                     content = "Здесь какой-то переведенный текст.",
                     language = "ru",
+                    sourceLanguage = "en",
                     provider = "DeepL",
                 )
             )

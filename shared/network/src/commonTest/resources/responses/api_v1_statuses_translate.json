@@ -1,0 +1,24 @@
+{
+  "detected_source_language": "en",
+  "language": "ru",
+  "provider": "DeepL.com",
+  "spoiler_text": "Spoiler",
+  "content": "<p>Приглашаю вас принять участие в опросе \"Величайшее десятилетие популярной музыки\".</p><p>Матч №4<br>1980-е против 1990-х</p><p>Пожалуйста, проголосуйте ниже 👇 </p><p><a href=\"https://toot.wales/tags/Music\" class=\"mention hashtag\" rel=\"nofollow noopener\" target=\"_blank\"><span>#Music</span></a> <a href=\"https://toot.wales/tags/PopMusic\" class=\"mention hashtag\" rel=\"nofollow noopener\" target=\"_blank\"><span>#PopMusic</span></a> <a href=\"https://toot.wales/tags/RockMusic\" class=\"mention hashtag\" rel=\"nofollow noopener\" target=\"_blank\"><span>#RockMusic</span></a> <a href=\"https://toot.wales/tags/Songs\" class=\"mention hashtag\" rel=\"nofollow noopener\" target=\"_blank\"><span>#Songs</span></a> <a href=\"https://toot.wales/tags/Poll\" class=\"mention hashtag\" rel=\"nofollow noopener\" target=\"_blank\"><span>#Poll</span></a> <a href=\"https://toot.wales/tags/SoulMusic\" class=\"mention hashtag\" rel=\"nofollow noopener\" target=\"_blank\"><span>#SoulMusic</span></a> <a href=\"https://toot.wales/tags/RockNRoll\" class=\"mention hashtag\" rel=\"nofollow noopener\" target=\"_blank\"><span>#RockNRoll</span></a> <a href=\"https://toot.wales/tags/1960s\" class=\"mention hashtag\" rel=\"nofollow noopener\" target=\"_blank\"><span>#1960s</span></a> <a href=\"https://toot.wales/tags/1970s\" class=\"mention hashtag\" rel=\"nofollow noopener\" target=\"_blank\"><span>#1970s</span></a> <a href=\"https://toot.wales/tags/1980s\" class=\"mention hashtag\" rel=\"nofollow noopener\" target=\"_blank\"><span>#1980s</span></a> <a href=\"https://toot.wales/tags/1990s\" class=\"mention hashtag\" rel=\"nofollow noopener\" target=\"_blank\"><span>#1990s</span></a></p>",
+  "poll": {
+    "id": "1304454",
+    "options": [
+      {
+        "title": "Option 1"
+      },
+      {
+        "title": "Option 2"
+      }
+    ]
+  },
+  "media_attachments": [
+    {
+      "id": "114670814058537196",
+      "description": "Media description"
+    }
+  ]
+}

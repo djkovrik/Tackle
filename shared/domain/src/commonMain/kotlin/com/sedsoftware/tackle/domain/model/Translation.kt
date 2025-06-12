@@ -2,6 +2,7 @@ package com.sedsoftware.tackle.domain.model
 
 class Translation(
     val content: String,
+    val sourceLanguage: String,
     val language: String,
     val provider: String,
     val spoilerText: String = "",
