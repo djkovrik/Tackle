@@ -42,6 +42,7 @@ import org.jetbrains.compose.resources.stringResource
 import tackle.shared.compose.generated.resources.Res
 import tackle.shared.compose.generated.resources.common_time_now
 import tackle.shared.compose.generated.resources.status_bookmarked
+import tackle.shared.compose.generated.resources.status_boosted
 import tackle.shared.compose.generated.resources.status_favorite
 import tackle.shared.compose.generated.resources.status_info_created
 import tackle.shared.compose.generated.resources.status_info_edited
@@ -73,6 +74,29 @@ internal fun StatusContentWrapper(
             .padding(horizontal = 16.dp, vertical = 8.dp)
             .fillMaxWidth()
     ) {
+        if (model.rebloggedBy.isNotEmpty()) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(bottom = 4.dp),
+            ) {
+                Image(
+                    painter = painterResource(resource = Res.drawable.status_reblog),
+                    contentDescription = null,
+                    colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.tertiary),
+                    modifier = Modifier.size(size = 12.dp),
+                )
+
+                Text(
+                    text = "${model.rebloggedBy} ${stringResource(resource = Res.string.status_boosted)}",
+                    color = MaterialTheme.colorScheme.tertiary,
+                    style = MaterialTheme.typography.bodySmall,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.padding(horizontal = 4.dp),
+                )
+            }
+        }
+
         // Header
         Row(
             verticalAlignment = Alignment.CenterVertically,

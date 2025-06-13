@@ -31,6 +31,7 @@ class StatusComponentDefault(
     private val dispatchers: TackleDispatchers,
     private val output: (ComponentOutput) -> Unit,
     private val status: Status,
+    private val rebloggedBy: String,
     private val extendedInfo: Boolean,
     private val isOwn: Boolean,
 ) : StatusComponent, ComponentContext by componentContext {
@@ -43,6 +44,7 @@ class StatusComponentDefault(
                 mainContext = dispatchers.main,
                 ioContext = dispatchers.io,
                 status = status,
+                rebloggedBy = rebloggedBy,
                 extendedInfo = extendedInfo,
                 isOwn = isOwn,
             ).create()

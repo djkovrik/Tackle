@@ -245,6 +245,7 @@ class StatusComponentTest : ComponentTest<StatusComponent>() {
             output = { componentOutput.add(it) },
             status = testStatus,
             extendedInfo = false,
+            rebloggedBy = "",
             isOwn = true,
         )
 }
