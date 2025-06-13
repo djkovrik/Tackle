@@ -45,6 +45,7 @@ class StatusMapperTest : JsonBasedTest() {
             assertThat(favouritesCount).isEqualTo(0)
             assertThat(favourited).isFalse()
             assertThat(reblogged).isFalse()
+            assertThat(reblog).isNotNull()
             assertThat(muted).isFalse()
             assertThat(bookmarked).isFalse()
             assertThat(pinned).isFalse()

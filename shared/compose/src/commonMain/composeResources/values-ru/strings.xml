@@ -114,6 +114,7 @@
     <string name="status_info_edited">Отредактирован</string>
     <string name="status_translating">Перевод</string>
     <string name="status_translated">Переведено с помощью</string>
+    <string name="status_boosted">продвинул(а)</string>
     <string name="status_poll_active_till">Опрос активен до:</string>
     <string name="status_poll_completed">Опрос завершен</string>
     <string name="status_poll_multi_choice">Доступен множественный выбор</string>
