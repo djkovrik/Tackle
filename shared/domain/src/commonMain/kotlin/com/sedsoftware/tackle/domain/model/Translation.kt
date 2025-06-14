@@ -1,6 +1,6 @@
 package com.sedsoftware.tackle.domain.model
 
-class Translation(
+data class Translation(
     val content: String,
     val sourceLanguage: String,
     val language: String,
@@ -10,16 +10,16 @@ class Translation(
     val attachments: List<TranslatedAttachment> = emptyList(),
 )
 
-class TranslatedPoll(
+data class TranslatedPoll(
     val id: String = "",
     val options: List<TranslatedPollOption> = emptyList(),
 )
 
-class TranslatedPollOption(
+data class TranslatedPollOption(
     val title: String = "",
 )
 
-class TranslatedAttachment(
+data class TranslatedAttachment(
     val id: String = "",
     val description: String = "",
 )

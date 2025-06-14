@@ -1,6 +1,8 @@
 package com.sedsoftware.tackle.status
 
 import com.sedsoftware.tackle.domain.model.AppLocale
+import com.sedsoftware.tackle.domain.model.params.ParamsContent
+import com.sedsoftware.tackle.domain.model.params.ParamsPagination
 import com.sedsoftware.tackle.domain.model.Poll
 import com.sedsoftware.tackle.domain.model.Status
 import com.sedsoftware.tackle.domain.model.Translation
@@ -8,7 +10,7 @@ import com.sedsoftware.tackle.domain.model.Translation
 interface StatusComponentGateways {
     interface Api {
         suspend fun delete(statusId: String, deleteMedia: Boolean): Status
-        suspend fun translate(statusId: String, lang: String) : Translation
+        suspend fun translate(statusId: String, lang: String): Translation
         suspend fun vote(pollId: String, choices: List<Int>): Poll
         suspend fun favourite(statusId: String): Status
         suspend fun unfavourite(statusId: String): Status
@@ -20,6 +22,10 @@ interface StatusComponentGateways {
         suspend fun unpin(statusId: String): Status
         suspend fun mute(statusId: String): Status
         suspend fun unmute(statusId: String): Status
+        suspend fun homeTimeline(pagination: ParamsPagination): List<Status>
+        suspend fun publicTimeline(pagination: ParamsPagination, content: ParamsContent?): List<Status>
+        suspend fun hashTagTimeline(hashTag: String, pagination: ParamsPagination, content: ParamsContent?): List<Status>
+        suspend fun listTimeline(listId: String, pagination: ParamsPagination): List<Status>
     }
 
     interface Tools {

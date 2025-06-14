@@ -1,9 +1,8 @@
-package com.sedsoftware.tackle.status
+package com.sedsoftware.tackle.statuslist
 
 import com.sedsoftware.tackle.domain.model.Poll
 import com.sedsoftware.tackle.domain.model.PollOption
 import com.sedsoftware.tackle.domain.model.Status
-import com.sedsoftware.tackle.domain.model.Translation
 import com.sedsoftware.tackle.domain.model.type.ShortDateUnit
 import com.sedsoftware.tackle.domain.model.type.StatusVisibility.PUBLIC
 import kotlinx.datetime.LocalDateTime
@@ -63,33 +62,5 @@ internal object Responses {
         pinned = false,
         filtered = emptyList(),
         card = null,
-    )
-
-    val translation: Translation = Translation(
-        content = "Content",
-        spoilerText = "Spoiler text",
-        poll = null,
-        attachments = emptyList(),
-        sourceLanguage = "en",
-        language = "ru",
-        provider = "DeepL",
-    )
-
-    val poll: Poll = Poll(
-        id = "123",
-        expiresAt = LocalDateTime.parse("2025-01-02T23:44:57.120"),
-        expiresAtStr = "02.01.2025 23:44",
-        expired = false,
-        multiple = true,
-        votesCount = 100,
-        votersCount = 100,
-        options = listOf(
-            PollOption(title = "Option 1", 60),
-            PollOption(title = "Option 2", 40),
-        ),
-        emojis = emptyList(),
-        voted = false,
-        hideTotals = false,
-        ownVotes = emptyList(),
     )
 }

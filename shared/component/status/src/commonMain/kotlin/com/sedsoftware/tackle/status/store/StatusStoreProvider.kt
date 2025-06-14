@@ -31,7 +31,7 @@ internal class StatusStoreProvider(
     @StoreCreate
     fun create(autoInit: Boolean = true): StatusStore =
         object : StatusStore, Store<Intent, State, Label> by storeFactory.create<Intent, Action, Msg, State, Label>(
-            name = "StatusStore",
+            name = "StatusStore_${status.id}",
             initialState = State(status = status, extendedInfo = extendedInfo, isOwn = isOwn, rebloggedBy = rebloggedBy),
             autoInit = autoInit,
             bootstrapper = coroutineBootstrapper(mainContext) {
