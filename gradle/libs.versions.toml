@@ -102,6 +102,7 @@ oidc-ktor = { module = "io.github.kalinjul.kotlin.multiplatform:oidc-ktor", vers
 test-kotlin = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 test-kotlin-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
 test-assertk = { module = "com.willowtreeapps.assertk:assertk", version.ref = "assertk" }
+mokkery-coroutines = { module = "dev.mokkery:mokkery-coroutines", version.ref = "mokkery" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
