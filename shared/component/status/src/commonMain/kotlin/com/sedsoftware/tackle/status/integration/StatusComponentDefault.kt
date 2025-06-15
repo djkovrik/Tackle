@@ -3,7 +3,10 @@ package com.sedsoftware.tackle.status.integration
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.decompose.value.operator.map
+import com.arkivanov.essenty.lifecycle.LifecycleRegistry
 import com.arkivanov.essenty.lifecycle.doOnDestroy
+import com.arkivanov.essenty.lifecycle.resume
+import com.arkivanov.essenty.lifecycle.stop
 import com.arkivanov.mvikotlin.core.instancekeeper.getStore
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.labels
@@ -25,6 +28,7 @@ import kotlinx.coroutines.launch
 
 class StatusComponentDefault(
     private val componentContext: ComponentContext,
+    private val componentLifecycle: LifecycleRegistry,
     private val storeFactory: StoreFactory,
     private val api: StatusComponentGateways.Api,
     private val tools: StatusComponentGateways.Tools,
@@ -56,7 +60,7 @@ class StatusComponentDefault(
         scope.launch {
             store.labels.collect { label ->
                 when (label) {
-                    is Label.StatusDeleted -> output(ComponentOutput.Status.Deleted(label.statusId))
+                    is Label.StatusDeleted -> output(ComponentOutput.SingleStatus.Deleted(label.statusId))
                     is Label.ErrorCaught -> output(ComponentOutput.Common.ErrorCaught(label.exception))
                 }
             }
@@ -113,14 +117,26 @@ class StatusComponentDefault(
 
     override fun onReplyClick() {
         val currentStatus: Status = model.value.status
-        output(ComponentOutput.Status.ReplyCalled(currentStatus.id))
+        output(ComponentOutput.SingleStatus.ReplyCalled(currentStatus.id))
     }
 
     override fun onHashTagClick(hashTag: String) {
-        output(ComponentOutput.Status.HashTagClicked(hashTag))
+        output(ComponentOutput.SingleStatus.HashTagClicked(hashTag))
     }
 
     override fun onMentionClick(mention: String) {
-        output(ComponentOutput.Status.MentionClicked(mention))
+        output(ComponentOutput.SingleStatus.MentionClicked(mention))
+    }
+
+    override fun getId(): String {
+        return status.id
+    }
+
+    override fun stopComponent() {
+        componentLifecycle.stop()
+    }
+
+    override fun resumeComponent() {
+        componentLifecycle.resume()
     }
 }

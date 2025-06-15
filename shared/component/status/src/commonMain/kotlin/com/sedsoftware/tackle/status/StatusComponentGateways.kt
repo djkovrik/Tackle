@@ -8,6 +8,7 @@ import com.sedsoftware.tackle.domain.model.Status
 import com.sedsoftware.tackle.domain.model.Translation
 
 interface StatusComponentGateways {
+    @Suppress("TooManyFunctions")
     interface Api {
         suspend fun delete(statusId: String, deleteMedia: Boolean): Status
         suspend fun translate(statusId: String, lang: String): Translation
@@ -26,6 +27,10 @@ interface StatusComponentGateways {
         suspend fun publicTimeline(pagination: ParamsPagination, content: ParamsContent?): List<Status>
         suspend fun hashTagTimeline(hashTag: String, pagination: ParamsPagination, content: ParamsContent?): List<Status>
         suspend fun listTimeline(listId: String, pagination: ParamsPagination): List<Status>
+    }
+
+    interface Settings {
+        val ownUserId: String
     }
 
     interface Tools {
