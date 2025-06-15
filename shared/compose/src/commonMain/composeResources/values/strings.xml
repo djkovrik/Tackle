@@ -117,6 +117,7 @@
     <string name="status_info_edited">Edited</string>
     <string name="status_translating">Translating</string>
     <string name="status_translated">Translated with</string>
+    <string name="status_boosted">boosted</string>
     <string name="status_poll_active_till">Poll active till:</string>
     <string name="status_poll_completed">Poll completed</string>
     <string name="status_poll_multi_choice">Multiple choice available</string>

@@ -20,15 +20,19 @@ interface StatusComponent {
     fun onReplyClick()
     fun onHashTagClick(hashTag: String)
     fun onMentionClick(mention: String)
+    fun getId(): String
+    fun stopComponent()
+    fun resumeComponent()
 
     data class Model(
         val status: Status,
+        val rebloggedBy: String,
+        val extendedInfo: Boolean,
+        val isOwn: Boolean,
         val menuVisible: Boolean,
         val menuActions: List<StatusContextAction>,
         val translation: Translation?,
         val translationInProgress: Boolean,
         val translationDisplayed: Boolean,
-        val extendedInfo: Boolean,
-        val isOwn: Boolean,
     )
 }

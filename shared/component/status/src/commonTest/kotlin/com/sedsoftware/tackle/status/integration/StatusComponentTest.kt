@@ -6,6 +6,8 @@ import assertk.assertions.isFalse
 import assertk.assertions.isNotNull
 import assertk.assertions.isTrue
 import com.arkivanov.decompose.DefaultComponentContext
+import com.arkivanov.essenty.lifecycle.Lifecycle
+import com.arkivanov.essenty.lifecycle.LifecycleRegistry
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import com.sedsoftware.tackle.domain.ComponentOutput
 import com.sedsoftware.tackle.domain.model.AppLocale
@@ -54,6 +56,13 @@ class StatusComponentTest : ComponentTest<StatusComponent>() {
         every { shareUrl(any(), any()) } returns Unit
     }
 
+    private val lifecycleRegistry: LifecycleRegistry = mock {
+        every { state } returns Lifecycle.State.STARTED
+        every { onResume() } returns Unit
+        every { onStop() } returns Unit
+        every { subscribe(any()) } returns Unit
+    }
+
     private val activeModel: StatusComponent.Model
         get() = component.model.value
 
@@ -83,7 +92,7 @@ class StatusComponentTest : ComponentTest<StatusComponent>() {
         component.onMenuActionClick(StatusContextAction.DELETE)
         // then
         verifySuspend(exactly(1)) { api.delete(testStatus.id, true) }
-        val output = componentOutput.firstOrNull { it is ComponentOutput.Status.Deleted } as ComponentOutput.Status.Deleted
+        val output = componentOutput.firstOrNull { it is ComponentOutput.SingleStatus.Deleted } as ComponentOutput.SingleStatus.Deleted
         assertThat(output.statusId).isEqualTo(testStatus.id)
         // when
         component.onMenuActionClick(StatusContextAction.PIN)
@@ -209,7 +218,7 @@ class StatusComponentTest : ComponentTest<StatusComponent>() {
         // when
         component.onReplyClick()
         // then
-        val output = componentOutput.firstOrNull { it is ComponentOutput.Status.ReplyCalled } as ComponentOutput.Status.ReplyCalled
+        val output = componentOutput.firstOrNull { it is ComponentOutput.SingleStatus.ReplyCalled } as ComponentOutput.SingleStatus.ReplyCalled
         assertThat(output.statusId).isEqualTo(testStatus.id)
     }
 
@@ -220,7 +229,7 @@ class StatusComponentTest : ComponentTest<StatusComponent>() {
         // when
         component.onHashTagClick(hashtag)
         // then
-        val output = componentOutput.firstOrNull { it is ComponentOutput.Status.HashTagClicked } as ComponentOutput.Status.HashTagClicked
+        val output = componentOutput.firstOrNull { it is ComponentOutput.SingleStatus.HashTagClicked } as ComponentOutput.SingleStatus.HashTagClicked
         assertThat(output.hashTag).isEqualTo(hashtag)
     }
 
@@ -231,13 +240,43 @@ class StatusComponentTest : ComponentTest<StatusComponent>() {
         // when
         component.onMentionClick(mention)
         // then
-        val output = componentOutput.firstOrNull { it is ComponentOutput.Status.MentionClicked } as ComponentOutput.Status.MentionClicked
+        val output = componentOutput.firstOrNull { it is ComponentOutput.SingleStatus.MentionClicked } as ComponentOutput.SingleStatus.MentionClicked
         assertThat(output.mention).isEqualTo(mention)
+    }
+
+    @Test
+    fun `getId should return status id`() = runTest {
+        // given
+        // when
+        val id = component.getId()
+        // then
+        assertThat(id).isEqualTo(testStatus.id)
+    }
+
+    @Test
+    fun `stopComponent should pass stop event to lifecycle`() = runTest {
+        // given
+        every { lifecycleRegistry.state } returns Lifecycle.State.STARTED
+        // when
+        component.stopComponent()
+        // then
+        verify { lifecycleRegistry.onStop() }
+    }
+
+    @Test
+    fun `resumeComponent should pass stop event to lifecycle`() = runTest {
+        // given
+        every { lifecycleRegistry.state } returns Lifecycle.State.STARTED
+        // when
+        component.resumeComponent()
+        // then
+        verify { lifecycleRegistry.onResume() }
     }
 
     override fun createComponent(): StatusComponent =
         StatusComponentDefault(
-            componentContext = DefaultComponentContext(lifecycle),
+            componentContext = DefaultComponentContext(lifecycleRegistry),
+            componentLifecycle = lifecycleRegistry,
             storeFactory = DefaultStoreFactory(),
             api = api,
             tools = tools,
@@ -245,6 +284,7 @@ class StatusComponentTest : ComponentTest<StatusComponent>() {
             output = { componentOutput.add(it) },
             status = testStatus,
             extendedInfo = false,
+            rebloggedBy = "",
             isOwn = true,
         )
 }

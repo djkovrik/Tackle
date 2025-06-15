@@ -70,6 +70,7 @@ internal object Responses {
         spoilerText = "Spoiler text",
         poll = null,
         attachments = emptyList(),
+        sourceLanguage = "en",
         language = "ru",
         provider = "DeepL",
     )

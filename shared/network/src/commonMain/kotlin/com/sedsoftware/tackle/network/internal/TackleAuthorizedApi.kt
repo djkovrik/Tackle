@@ -16,6 +16,7 @@ import com.sedsoftware.tackle.network.mapper.MediaAttachmentMapper
 import com.sedsoftware.tackle.network.mapper.PollMapper
 import com.sedsoftware.tackle.network.mapper.ScheduledStatusMapper
 import com.sedsoftware.tackle.network.mapper.SearchMapper
+import com.sedsoftware.tackle.network.mapper.StatusListMapper
 import com.sedsoftware.tackle.network.mapper.StatusMapper
 import com.sedsoftware.tackle.network.mapper.TranslationMapper
 import com.sedsoftware.tackle.network.request.CreateStatusRequest
@@ -377,7 +378,114 @@ internal class TackleAuthorizedApi(
             )
         }
 
-    companion object {
+    override suspend fun getHomeTimeline(
+        maxId: String?,
+        sinceId: String?,
+        minId: String?,
+        limit: Int?,
+    ): List<Status> =
+        doRequest<List<StatusResponse>, List<Status>>(
+            requestUrl = "$instanceUrl/api/v1/timelines/home",
+            requestMethod = HttpMethod.Get,
+            authenticated = true,
+            responseMapper = StatusListMapper::map,
+        ) {
+            url {
+                with(parameters) {
+                    maxId?.let { append("max_id", it) }
+                    sinceId?.let { append("since_id", it) }
+                    minId?.let { append("min_id", it) }
+                    limit?.let { append("limit", "$it") }
+                }
+            }
+        }
+
+    override suspend fun getPublicTimeline(
+        local: Boolean?,
+        remote: Boolean?,
+        onlyMedia: Boolean?,
+        maxId: String?,
+        sinceId: String?,
+        minId: String?,
+        limit: Int?,
+    ): List<Status> =
+        doRequest<List<StatusResponse>, List<Status>>(
+            requestUrl = "$instanceUrl/api/v1/timelines/public",
+            requestMethod = HttpMethod.Get,
+            authenticated = true,
+            responseMapper = StatusListMapper::map,
+        ) {
+            url {
+                with(parameters) {
+                    local?.let { append("local", "$it") }
+                    remote?.let { append("remote", "$it") }
+                    onlyMedia?.let { append("only_media", "$it") }
+                    maxId?.let { append("max_id", it) }
+                    sinceId?.let { append("since_id", it) }
+                    minId?.let { append("min_id", it) }
+                    limit?.let { append("limit", "$it") }
+                }
+            }
+        }
+
+    override suspend fun getHashTagTimeline(
+        hashTag: String,
+        local: Boolean?,
+        remote: Boolean?,
+        onlyMedia: Boolean?,
+        maxId: String?,
+        sinceId: String?,
+        minId: String?,
+        limit: Int?,
+    ): List<Status> =
+        doRequest<List<StatusResponse>, List<Status>>(
+            requestUrl = "$instanceUrl/api/v1/timelines/tag",
+            requestMethod = HttpMethod.Get,
+            authenticated = true,
+            responseMapper = StatusListMapper::map,
+        ) {
+            url {
+                val hashtag = hashTag.trimStart('#')
+                appendPathSegments(hashtag)
+
+                with(parameters) {
+                    local?.let { append("local", "$it") }
+                    remote?.let { append("remote", "$it") }
+                    onlyMedia?.let { append("only_media", "$it") }
+                    maxId?.let { append("max_id", it) }
+                    sinceId?.let { append("since_id", it) }
+                    minId?.let { append("min_id", it) }
+                    limit?.let { append("limit", "$it") }
+                }
+            }
+        }
+
+    override suspend fun getListTimeline(
+        listId: String,
+        maxId: String?,
+        sinceId: String?,
+        minId: String?,
+        limit: Int?,
+    ): List<Status> =
+        doRequest<List<StatusResponse>, List<Status>>(
+            requestUrl = "$instanceUrl/api/v1/timelines/list",
+            requestMethod = HttpMethod.Get,
+            authenticated = true,
+            responseMapper = StatusListMapper::map,
+        ) {
+            url {
+                appendPathSegments(listId)
+
+                with(parameters) {
+                    maxId?.let { append("max_id", it) }
+                    sinceId?.let { append("since_id", it) }
+                    minId?.let { append("min_id", it) }
+                    limit?.let { append("limit", "$it") }
+                }
+            }
+        }
+
+    private companion object {
         const val PROGRESS_STEP = 0.05f
     }
 }

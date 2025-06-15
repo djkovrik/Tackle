@@ -19,6 +19,7 @@ internal object TranslationMapper {
                 )
             },
             attachments = from.attachments.map { TranslatedAttachment(it.id, it.description) },
+            sourceLanguage = from.sourceLanguage,
             language = from.language,
             provider = from.provider,
         )

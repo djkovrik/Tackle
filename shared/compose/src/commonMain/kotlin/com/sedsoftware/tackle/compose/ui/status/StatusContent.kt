@@ -114,6 +114,19 @@ private fun PreviewStatusNormal() {
 
 @Preview
 @Composable
+private fun PreviewStatusReblogged() {
+    TackleScreenPreview(darkTheme = TOGGLE_DARK_THEME) {
+        StatusContent(
+            component = StatusComponentPreview(
+                status = StatusPreviewStubs.status,
+                rebloggedBy = "Someone else",
+            )
+        )
+    }
+}
+
+@Preview
+@Composable
 private fun PreviewStatusExtendedInfo() {
     TackleScreenPreview(darkTheme = TOGGLE_DARK_THEME) {
         StatusContent(
@@ -149,6 +162,7 @@ private fun PreviewStatusTranslated() {
                 translation = Translation(
                     content = "Здесь какой-то переведенный текст.",
                     language = "ru",
+                    sourceLanguage = "en",
                     provider = "DeepL",
                 )
             )

@@ -9,7 +9,8 @@ internal class TranslationResponse(
     @SerialName("spoiler_text") val spoilerText: String = "",
     @SerialName("poll") val poll: TranslatedPollResponse? = null,
     @SerialName("media_attachments") val attachments: List<TranslatedAttachmentResponse> = emptyList(),
-    @SerialName("detected_source_language") val language: String = "",
+    @SerialName("detected_source_language") val sourceLanguage: String = "",
+    @SerialName("language") val language: String = "",
     @SerialName("provider") val provider: String = "",
 )
 

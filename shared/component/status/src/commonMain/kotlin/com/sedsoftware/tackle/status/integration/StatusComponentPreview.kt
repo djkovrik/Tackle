@@ -10,26 +10,28 @@ import com.sedsoftware.tackle.status.model.StatusContextAction
 
 class StatusComponentPreview(
     val status: Status,
+    val rebloggedBy: String = "",
+    val extendedInfo: Boolean = false,
+    val isOwn: Boolean = false,
     val menuVisible: Boolean = false,
     val menuActions: List<StatusContextAction> = emptyList(),
     val translation: Translation? = null,
     val translationInProgress: Boolean = false,
     val translationDisplayed: Boolean = false,
-    val extendedInfo: Boolean = false,
-    val isOwn: Boolean = false,
 ) : StatusComponent {
 
     override val model: Value<Model> =
         MutableValue(
             Model(
                 status = status,
+                rebloggedBy = rebloggedBy,
+                extendedInfo = extendedInfo,
+                isOwn = isOwn,
                 menuVisible = menuVisible,
                 menuActions = menuActions,
                 translation = translation,
                 translationInProgress = translationInProgress,
                 translationDisplayed = translationDisplayed,
-                extendedInfo = extendedInfo,
-                isOwn = isOwn,
             )
         )
 
@@ -44,4 +46,7 @@ class StatusComponentPreview(
     override fun onReplyClick() = Unit
     override fun onHashTagClick(hashTag: String) = Unit
     override fun onMentionClick(mention: String) = Unit
+    override fun getId(): String = status.id
+    override fun stopComponent() = Unit
+    override fun resumeComponent() = Unit
 }

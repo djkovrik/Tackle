@@ -217,4 +217,88 @@ interface AuthorizedApi {
      * @see <a href="https://docs.joinmastodon.org/methods/polls/#vote">Vote on a poll</a>
      */
     suspend fun votePoll(id: String, choices: List<Int>): Poll
+
+    /**
+     * View statuses from followed users and hashtags
+     *
+     * @param maxId All results returned will be lesser than this ID. In effect, sets an upper bound on results.
+     * @param sinceId All results returned will be greater than this ID. In effect, sets a lower bound on results.
+     * @param minId Returns results immediately newer than this ID. In effect, sets a cursor at this ID and paginates.
+     * @param limit Maximum number of results to return. Defaults to 20 statuses. Max 40 statuses.
+     *
+     * @see <a href="https://docs.joinmastodon.org/methods/timelines/#home">View home timeline</a>
+     */
+    suspend fun getHomeTimeline(
+        maxId: String?,
+        sinceId: String?,
+        minId: String?,
+        limit: Int?
+    ): List<Status>
+
+    /**
+     * View public statuses
+     *
+     * @param local Show only local statuses? Defaults to false.
+     * @param remote Show only remote statuses? Defaults to false.
+     * @param onlyMedia Show only statuses with media attached? Defaults to false.
+     * @param maxId All results returned will be lesser than this ID. In effect, sets an upper bound on results.
+     * @param sinceId All results returned will be greater than this ID. In effect, sets a lower bound on results.
+     * @param minId Returns results immediately newer than this ID. In effect, sets a cursor at this ID and paginates.
+     * @param limit Maximum number of results to return. Defaults to 20 statuses. Max 40 statuses.
+     *
+     * @see <a href="https://docs.joinmastodon.org/methods/timelines/#public">View public timeline</a>
+     */
+    suspend fun getPublicTimeline(
+        local: Boolean?,
+        remote: Boolean?,
+        onlyMedia: Boolean?,
+        maxId: String?,
+        sinceId: String?,
+        minId: String?,
+        limit: Int?,
+    ): List<Status>
+
+    /**
+     * View public statuses containing the given hashtag
+     *
+     * @param hashTag The name of the hashtag (not including the # symbol).
+     * @param local Show only local statuses? Defaults to false.
+     * @param remote Show only remote statuses? Defaults to false.
+     * @param onlyMedia Show only statuses with media attached? Defaults to false.
+     * @param maxId All results returned will be lesser than this ID. In effect, sets an upper bound on results.
+     * @param sinceId All results returned will be greater than this ID. In effect, sets a lower bound on results.
+     * @param minId Returns results immediately newer than this ID. In effect, sets a cursor at this ID and paginates.
+     * @param limit Maximum number of results to return. Defaults to 20 statuses. Max 40 statuses.
+     *
+     * @see <a href="https://docs.joinmastodon.org/methods/timelines/#tag">View hashtag timeline</a>
+     */
+    suspend fun getHashTagTimeline(
+        hashTag: String,
+        local: Boolean?,
+        remote: Boolean?,
+        onlyMedia: Boolean?,
+        maxId: String?,
+        sinceId: String?,
+        minId: String?,
+        limit: Int?,
+    ): List<Status>
+
+    /**
+     * View statuses in the given list timeline
+     *
+     * @param listId Local ID of the List in the database.
+     * @param maxId All results returned will be lesser than this ID. In effect, sets an upper bound on results.
+     * @param sinceId All results returned will be greater than this ID. In effect, sets a lower bound on results.
+     * @param minId Returns results immediately newer than this ID. In effect, sets a cursor at this ID and paginates.
+     * @param limit Maximum number of results to return. Defaults to 20 statuses. Max 40 statuses.
+     *
+     * @see <a href="https://docs.joinmastodon.org/methods/timelines/#list">View list timeline</a>
+     */
+    suspend fun getListTimeline(
+        listId: String,
+        maxId: String?,
+        sinceId: String?,
+        minId: String?,
+        limit: Int?
+    ): List<Status>
 }
