@@ -19,6 +19,9 @@ kotlin {
                 implementation(project(":shared:component:tab:notifications"))
                 implementation(project(":shared:component:tab:profile"))
 
+                implementation(project(":shared:component:status"))
+                implementation(project(":shared:component:statuslist"))
+
                 implementation(libs.ark.decompose.core)
                 implementation(libs.ark.decompose.extensions)
                 implementation(libs.ark.mvikotlin.core)

@@ -1,4 +1,4 @@
-package com.sedsoftware.tackle.root.integration.auth
+package com.sedsoftware.tackle.root.gateway.auth
 
 import com.sedsoftware.tackle.auth.AuthComponentGateways
 import com.sedsoftware.tackle.domain.api.TackleSettings

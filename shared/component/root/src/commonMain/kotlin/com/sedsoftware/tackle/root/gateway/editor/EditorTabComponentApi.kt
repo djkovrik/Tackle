@@ -1,4 +1,4 @@
-package com.sedsoftware.tackle.root.integration.editor
+package com.sedsoftware.tackle.root.gateway.editor
 
 import com.sedsoftware.tackle.domain.api.AuthorizedApi
 import com.sedsoftware.tackle.domain.api.UnauthorizedApi
