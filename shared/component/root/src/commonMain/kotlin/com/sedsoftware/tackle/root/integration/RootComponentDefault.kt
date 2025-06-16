@@ -78,10 +78,8 @@ class RootComponentDefault internal constructor(
             MainComponentDefault(
                 componentContext = childContext,
                 storeFactory = storeFactory,
-                unauthorizedApi = unauthorizedApi,
                 authorizedApi = authorizedApi,
                 settings = settings,
-                database = database,
                 platformTools = platformTools,
                 dispatchers = dispatchers,
                 mainComponentOutput = output,
@@ -141,6 +139,8 @@ class RootComponentDefault internal constructor(
         when (output) {
             is ComponentOutput.Auth.AuthFlowCompleted -> navigation.replaceCurrent(Config.Main)
             is ComponentOutput.HomeTab.EditorRequested -> navigation.pushNew(Config.Editor)
+            // TODO Replace with scheduled statuses
+            is ComponentOutput.HomeTab.ScheduledStatusesRequested -> navigation.pushNew(Config.Editor)
             is ComponentOutput.StatusEditor.BackButtonClicked -> navigation.pop()
             is ComponentOutput.StatusEditor.StatusPublished -> navigation.pop()
             is ComponentOutput.StatusEditor.ScheduledStatusPublished -> navigation.pop()

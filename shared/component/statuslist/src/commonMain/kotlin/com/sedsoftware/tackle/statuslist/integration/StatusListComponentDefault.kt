@@ -26,7 +26,9 @@ import com.sedsoftware.tackle.statuslist.store.StatusListStoreProvider
 import com.sedsoftware.tackle.utils.extension.asValue
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class StatusListComponentDefault(
@@ -68,7 +70,9 @@ class StatusListComponentDefault(
 
         scope.launch {
             store.states
+                .map { it.items }
                 .distinctUntilChanged()
+                .catch { output(ComponentOutput.Common.ErrorCaught(it)) }
                 .collect(::refreshComponentsList)
         }
 
@@ -85,12 +89,12 @@ class StatusListComponentDefault(
         store.accept(StatusListStore.Intent.OnLoadMoreRequested)
     }
 
-    private fun refreshComponentsList(state: StatusListStore.State) {
-        val currentComponents = components.value
-        val lastComponentStatusId: String = currentComponents.lastOrNull()?.model?.value?.status?.id.orEmpty()
-        val lastComponentStatusPosition: Int = state.items.indexOfLast { it.id == lastComponentStatusId } + 1
-        val newComponents = state.items.drop(lastComponentStatusPosition).map(::buildComponent)
-        val resultingList = currentComponents + newComponents
+    private fun refreshComponentsList(items: List<Status>) {
+        val currentComponents: List<StatusComponent> = components.value
+        val lastComponentStatusId: String = currentComponents.lastOrNull()?.getId().orEmpty()
+        val lastComponentStatusPosition: Int = items.indexOfLast { it.id == lastComponentStatusId }
+        val newComponents: List<StatusComponent> = items.drop(lastComponentStatusPosition + 1).map(::buildComponent)
+        val resultingList: List<StatusComponent> = currentComponents + newComponents
         components.value = resultingList
     }
 

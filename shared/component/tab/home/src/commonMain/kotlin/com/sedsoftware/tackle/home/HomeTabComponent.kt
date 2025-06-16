@@ -1,14 +1,10 @@
 package com.sedsoftware.tackle.home
 
-import com.arkivanov.decompose.value.Value
+import com.sedsoftware.tackle.statuslist.StatusListComponent
 
 interface HomeTabComponent {
-    val model: Value<Model>
+    val homeTimeline: StatusListComponent
 
     fun onNewPostClick()
     fun onScheduledPostsClick()
-
-    data class Model(
-        val text: String,
-    )
 }

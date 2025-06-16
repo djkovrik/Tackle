@@ -11,6 +11,7 @@ sealed class ComponentOutput {
 
     sealed class HomeTab : ComponentOutput() {
         data object EditorRequested : HomeTab()
+        data object ScheduledStatusesRequested : HomeTab()
     }
 
     sealed class StatusEditor : ComponentOutput() {

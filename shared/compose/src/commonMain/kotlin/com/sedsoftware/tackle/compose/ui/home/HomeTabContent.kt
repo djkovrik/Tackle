@@ -1,22 +1,21 @@
 package com.sedsoftware.tackle.compose.ui.home
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.consumeWindowInsets
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.sedsoftware.tackle.compose.TackleScreenDefaults
 import com.sedsoftware.tackle.compose.TackleScreenTemplate
 import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
+import com.sedsoftware.tackle.compose.ui.status.StatusPreviewStubs
+import com.sedsoftware.tackle.compose.ui.statuslist.StatusListContent
 import com.sedsoftware.tackle.compose.widget.TackleAppBarButton
 import com.sedsoftware.tackle.home.HomeTabComponent
 import com.sedsoftware.tackle.home.integration.HomeTabComponentPreview
@@ -59,13 +58,10 @@ internal fun HomeTabContent(
         },
         modifier = modifier.consumeWindowInsets(insets = WindowInsets.navigationBars),
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-            modifier = Modifier.fillMaxSize()
-        ) {
-
-        }
+        StatusListContent(
+            component = component.homeTimeline,
+            modifier = modifier.padding(top = 16.dp),
+        )
     }
 }
 
@@ -74,7 +70,13 @@ internal fun HomeTabContent(
 private fun HomeTabContentPreviewLight() {
     TackleScreenPreview {
         HomeTabContent(
-            component = HomeTabComponentPreview()
+            component = HomeTabComponentPreview(
+                statuses = listOf(
+                    StatusPreviewStubs.status.copy(id = "1"),
+                    StatusPreviewStubs.statusWithLongTexts.copy(id = "2"),
+                    StatusPreviewStubs.statusWithPollNotVoted.copy(id = "3"),
+                )
+            )
         )
     }
 }
@@ -84,7 +86,15 @@ private fun HomeTabContentPreviewLight() {
 private fun HomeTabContentPreviewDark() {
     TackleScreenPreview(darkTheme = true) {
         HomeTabContent(
-            component = HomeTabComponentPreview()
+            component = HomeTabComponentPreview(
+                statuses = listOf(
+                    StatusPreviewStubs.status.copy(id = "1"),
+                    StatusPreviewStubs.statusWithLongTexts.copy(id = "2"),
+                    StatusPreviewStubs.statusWithPollNotVoted.copy(id = "3"),
+                    StatusPreviewStubs.statusWithPreviewCardImage.copy(id = "4"),
+                    StatusPreviewStubs.statusWithFileAttachments.copy(id = "5"),
+                )
+            )
         )
     }
 }

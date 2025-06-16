@@ -6,10 +6,8 @@ import com.arkivanov.decompose.DefaultComponentContext
 import com.arkivanov.decompose.router.stack.active
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import com.sedsoftware.tackle.domain.api.AuthorizedApi
-import com.sedsoftware.tackle.domain.api.TackleDatabase
 import com.sedsoftware.tackle.domain.api.TacklePlatformTools
 import com.sedsoftware.tackle.domain.api.TackleSettings
-import com.sedsoftware.tackle.domain.api.UnauthorizedApi
 import com.sedsoftware.tackle.main.MainComponent
 import com.sedsoftware.tackle.main.model.TackleNavigationTab
 import com.sedsoftware.tackle.utils.test.ComponentTest
@@ -20,9 +18,7 @@ import kotlin.test.Test
 
 class MainComponentTest : ComponentTest<MainComponent>() {
 
-    private val unauthorizedApi: UnauthorizedApi = mock<UnauthorizedApi>()
     private val authorizedApi: AuthorizedApi = mock<AuthorizedApi>()
-    private val database: TackleDatabase = mock<TackleDatabase>()
     private val settings: TackleSettings = mock<TackleSettings>()
     private val platformTools: TacklePlatformTools = mock<TacklePlatformTools>()
 
@@ -93,9 +89,7 @@ class MainComponentTest : ComponentTest<MainComponent>() {
         MainComponentDefault(
             componentContext = DefaultComponentContext(lifecycle),
             storeFactory = DefaultStoreFactory(),
-            unauthorizedApi = unauthorizedApi,
             authorizedApi = authorizedApi,
-            database = database,
             settings = settings,
             platformTools = platformTools,
             dispatchers = testDispatchers,
