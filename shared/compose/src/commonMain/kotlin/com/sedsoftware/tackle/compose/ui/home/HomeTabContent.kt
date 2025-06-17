@@ -73,8 +73,8 @@ private fun HomeTabContentPreviewLight() {
             component = HomeTabComponentPreview(
                 statuses = listOf(
                     StatusPreviewStubs.status.copy(id = "1"),
-                    StatusPreviewStubs.statusWithLongTexts.copy(id = "2"),
-                    StatusPreviewStubs.statusWithPollNotVoted.copy(id = "3"),
+                    StatusPreviewStubs.statusWithLongTexts.copy(id = "2", reblogged = true),
+                    StatusPreviewStubs.statusWithPollVotedExpired.copy(id = "3"),
                 )
             )
         )
@@ -88,11 +88,9 @@ private fun HomeTabContentPreviewDark() {
         HomeTabContent(
             component = HomeTabComponentPreview(
                 statuses = listOf(
-                    StatusPreviewStubs.status.copy(id = "1"),
+                    StatusPreviewStubs.status.copy(id = "1", favourited = true),
                     StatusPreviewStubs.statusWithLongTexts.copy(id = "2"),
                     StatusPreviewStubs.statusWithPollNotVoted.copy(id = "3"),
-                    StatusPreviewStubs.statusWithPreviewCardImage.copy(id = "4"),
-                    StatusPreviewStubs.statusWithFileAttachments.copy(id = "5"),
                 )
             )
         )

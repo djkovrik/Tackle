@@ -225,7 +225,7 @@ internal fun StatusContentWrapper(
             // More button
             TackleStatusButton(
                 iconRes = Res.drawable.status_more,
-                color = contentColor,
+                normalColor = contentColor,
                 counter = 0,
                 onClick = { onMenuRequest.invoke(true) },
             )
@@ -326,28 +326,30 @@ internal fun StatusContentWrapper(
             TackleStatusButton(
                 iconRes = Res.drawable.status_reply,
                 counter = model.status.repliesCount,
-                color = contentColor,
+                normalColor = contentColor,
                 onClick = onReplyClick,
             )
 
             TackleStatusButton(
                 iconRes = Res.drawable.status_reblog,
                 counter = model.status.reblogsCount,
-                color = contentColor,
+                toggled = model.status.reblogged,
+                normalColor = contentColor,
                 onClick = onReblogClick,
             )
 
             TackleStatusButton(
                 iconRes = Res.drawable.status_favorite,
                 counter = model.status.favouritesCount,
-                color = contentColor,
+                normalColor = contentColor,
+                toggled = model.status.favourited,
                 onClick = onFavouriteClick,
             )
 
             TackleStatusButton(
                 iconRes = Res.drawable.status_share,
                 counter = 0,
-                color = contentColor,
+                normalColor = contentColor,
                 onClick = onShareClick,
             )
         }
