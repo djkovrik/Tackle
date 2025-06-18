@@ -112,8 +112,11 @@ class StatusListComponentDefault(
             dispatchers = dispatchers,
             output = output,
             status = resultingStatus,
-            rebloggedBy = status.reblog?.account?.displayName
-                ?: status.reblog?.account?.username.orEmpty(),
+            rebloggedBy = when {
+                status.reblog != null && status.account.displayName.isNotEmpty() -> status.account.displayName
+                status.reblog != null -> status.account.username
+                else -> ""
+            },
             extendedInfo = false,
             isOwn = resultingStatus.id == ownId,
         )
