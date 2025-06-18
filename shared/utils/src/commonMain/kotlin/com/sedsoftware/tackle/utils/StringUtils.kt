@@ -11,6 +11,19 @@ object StringUtils {
         KsoupHtmlHandler
             .Builder()
             .onText { text -> parsedString += text }
+            .onOpenTag { name: String, attributes: Map<String, String>, isImplied: Boolean ->
+                if (name == LINE_BREAK) {
+                    parsedString += '\n'
+                }
+                if (name == PARAGRAPH) {
+                    parsedString += '\n'
+                }
+            }
+            .onCloseTag { name: String, isImplied: Boolean ->
+                if (name == PARAGRAPH) {
+                    parsedString += '\n'
+                }
+            }
             .build()
 
     private val ksoupHtmlParser: KsoupHtmlParser =
@@ -23,6 +36,9 @@ object StringUtils {
         ksoupHtmlParser.reset()
         ksoupHtmlParser.write(html)
         ksoupHtmlParser.end()
-        return parsedString
+        return parsedString.trim('\n')
     }
+
+    private const val LINE_BREAK = "br"
+    private const val PARAGRAPH = "p"
 }

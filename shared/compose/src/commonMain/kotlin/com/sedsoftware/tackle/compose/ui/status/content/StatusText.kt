@@ -2,12 +2,14 @@ package com.sedsoftware.tackle.compose.ui.status.content
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.unit.dp
 import com.sedsoftware.tackle.compose.custom.LoadingDotsText
 import com.sedsoftware.tackle.compose.widget.TackleStatusRichText
 import com.sedsoftware.tackle.status.StatusComponent
@@ -31,18 +33,28 @@ internal fun StatusText(
 ) {
     if (model.translation != null && model.translationDisplayed) {
         Column {
-            Text(
-                text = model.translation?.content.orEmpty(),
-                color = textColor,
-                style = style,
+            TackleStatusRichText(
+                content = model.translation?.content.orEmpty(),
+                emojis = model.status.emojis,
                 modifier = modifier,
+                style = style,
+                textColor = textColor,
+                highlightColor = highlightColor,
+                onClick = { link: String ->
+                    when {
+                        link.startsWith("#") -> onHashTagClick.invoke(link)
+                        link.startsWith("@") -> onMentionClick.invoke(link)
+                        link.isValidUrl() -> onUrlClick.invoke(link)
+                    }
+                },
+                inlinedContent = inlinedContent,
             )
 
             Text(
                 text = "${stringResource(resource = Res.string.status_translated)} ${model.translation?.provider.orEmpty()}",
                 color = MaterialTheme.colorScheme.secondary,
                 style = MaterialTheme.typography.bodySmall,
-                modifier = modifier,
+                modifier = modifier.padding(top = 4.dp),
             )
         }
     } else {
@@ -71,7 +83,7 @@ internal fun StatusText(
                     text = stringResource(resource = Res.string.status_translating),
                     color = MaterialTheme.colorScheme.secondary,
                     style = MaterialTheme.typography.bodySmall,
-                    modifier = modifier,
+                    modifier = modifier.padding(top = 4.dp),
                 )
             }
         }

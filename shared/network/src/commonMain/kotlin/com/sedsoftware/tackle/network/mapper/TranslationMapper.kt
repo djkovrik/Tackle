@@ -5,12 +5,14 @@ import com.sedsoftware.tackle.domain.model.TranslatedPoll
 import com.sedsoftware.tackle.domain.model.TranslatedPollOption
 import com.sedsoftware.tackle.domain.model.Translation
 import com.sedsoftware.tackle.network.response.TranslationResponse
+import com.sedsoftware.tackle.utils.StringUtils
 
 internal object TranslationMapper {
 
-    fun map(from: TranslationResponse): Translation =
-        Translation(
-            content = from.content,
+    fun map(from: TranslationResponse): Translation {
+        val translationPlainText: String = StringUtils.decodeHtml(from.content)
+        return Translation(
+            content = translationPlainText,
             spoilerText = from.spoilerText,
             poll = from.poll?.let {
                 TranslatedPoll(
@@ -23,4 +25,5 @@ internal object TranslationMapper {
             language = from.language,
             provider = from.provider,
         )
+    }
 }
