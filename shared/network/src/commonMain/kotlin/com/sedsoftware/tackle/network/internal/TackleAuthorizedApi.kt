@@ -298,7 +298,7 @@ internal class TackleAuthorizedApi(
 
     override suspend fun boostStatus(id: String): Status =
         doRequest<StatusResponse, Status>(
-            requestUrl = "$instanceUrl/api/v1/statuses/:$id/reblog",
+            requestUrl = "$instanceUrl/api/v1/statuses/$id/reblog",
             requestMethod = HttpMethod.Post,
             authenticated = true,
             responseMapper = StatusMapper::map,
