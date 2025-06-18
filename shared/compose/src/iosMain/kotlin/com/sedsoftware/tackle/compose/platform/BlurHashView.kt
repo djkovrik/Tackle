@@ -11,23 +11,28 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.interop.UIKitViewController
 import com.sedsoftware.tackle.compose.ComposeGlobals
 import com.vanniktech.blurhash.BlurHash
+import kotlinx.cinterop.ExperimentalForeignApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
+import kotlinx.coroutines.withContext
 import platform.UIKit.UIImage
 
 @Composable
+@OptIn(ExperimentalForeignApi::class)
 actual fun BlurHashView(blurhash: String, width: Int, height: Int, modifier: Modifier) {
 
     var uiImage: UIImage? by remember { mutableStateOf(null) }
 
     LaunchedEffect(blurhash) {
-
-        val decoded: UIImage? = BlurHash.decode(
-            blurHash = blurhash,
-            width = (width / IMAGE_SIDE_DIVIDER).toDouble(),
-            height = (height / IMAGE_SIDE_DIVIDER).toDouble(),
-            punch = 1.0f,
-            useCache = true,
-        )
-
+        val decoded: UIImage? = withContext(Dispatchers.IO) {
+            BlurHash.decode(
+                blurHash = blurhash,
+                width = (width / IMAGE_SIDE_DIVIDER).toDouble(),
+                height = (height / IMAGE_SIDE_DIVIDER).toDouble(),
+                punch = 1.0f,
+                useCache = true,
+            )
+        }
         uiImage = decoded
     }
 

@@ -14,6 +14,8 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import com.vanniktech.blurhash.BlurHash
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 @Composable
 actual fun BlurHashView(blurhash: String, width: Int, height: Int, modifier: Modifier) {
@@ -21,12 +23,13 @@ actual fun BlurHashView(blurhash: String, width: Int, height: Int, modifier: Mod
     var bitmap: ImageBitmap? by remember { mutableStateOf(null) }
 
     LaunchedEffect(blurhash) {
-        val decoded: Bitmap? = BlurHash.decode(
-            blurHash = blurhash,
-            width = width / IMAGE_SIDE_DIVIDER,
-            height = height / IMAGE_SIDE_DIVIDER,
-        )
-
+        val decoded: Bitmap? = withContext(Dispatchers.IO) {
+            BlurHash.decode(
+                blurHash = blurhash,
+                width = width / IMAGE_SIDE_DIVIDER,
+                height = height / IMAGE_SIDE_DIVIDER,
+            )
+        }
         bitmap = decoded?.asImageBitmap()
     }
 

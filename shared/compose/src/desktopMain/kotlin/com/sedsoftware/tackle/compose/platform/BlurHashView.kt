@@ -13,6 +13,8 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.toComposeImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import com.vanniktech.blurhash.BlurHash
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.awt.image.BufferedImage
 import java.io.ByteArrayOutputStream
 import javax.imageio.ImageIO
@@ -24,17 +26,21 @@ actual fun BlurHashView(blurhash: String, width: Int, height: Int, modifier: Mod
     var bitmap: ImageBitmap? by remember { mutableStateOf(null) }
 
     LaunchedEffect(blurhash) {
-        val decoded: BufferedImage? = BlurHash.decode(
-            blurHash = blurhash,
-            width = width / IMAGE_SIDE_DIVIDER,
-            height = height / IMAGE_SIDE_DIVIDER,
-        )
+        val decoded: BufferedImage? = withContext(Dispatchers.IO) {
+            BlurHash.decode(
+                blurHash = blurhash,
+                width = width / IMAGE_SIDE_DIVIDER,
+                height = height / IMAGE_SIDE_DIVIDER,
+            )
+        }
 
-        val stream = ByteArrayOutputStream()
-        ImageIO.write(decoded, "png", stream)
+        withContext(Dispatchers.IO) {
+            val stream = ByteArrayOutputStream()
+            ImageIO.write(decoded, "png", stream)
 
-        val byteArray = stream.toByteArray()
-        bitmap = SkiaImage.makeFromEncoded(byteArray).toComposeImageBitmap()
+            val byteArray = stream.toByteArray()
+            bitmap = SkiaImage.makeFromEncoded(byteArray).toComposeImageBitmap()
+        }
     }
 
     bitmap?.let {
