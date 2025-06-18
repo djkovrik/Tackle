@@ -31,12 +31,14 @@ internal class StatusListStoreProvider(
             initialState = State(),
             autoInit = autoInit,
             bootstrapper = coroutineBootstrapper(mainContext) {
-                dispatch(Action.LoadNextTimelinePage(forceRefresh = true, maxId = null))
+                dispatch(Action.LoadNextTimelinePage(forceRefresh = true))
             },
             executorFactory = coroutineExecutorFactory(mainContext) {
                 onAction<Action.LoadNextTimelinePage> {
                     launch {
-                        val lastLoadedItemId = state().lastLoadedItemId
+                        val lastLoadedItemId = if (!it.forceRefresh) state().lastLoadedItemId else null
+
+                        dispatch(Msg.TimelinePageLoadingStarted(it.forceRefresh))
 
                         unwrap(
                             result = withContext(ioContext) { manager.loadStatusList(DEFAULT_PAGE_SIZE, lastLoadedItemId) },
@@ -56,20 +58,20 @@ internal class StatusListStoreProvider(
                 }
 
                 onIntent<Intent.OnPullToRefreshCalled> {
-                    forward(Action.LoadNextTimelinePage(forceRefresh = true, maxId = null))
+                    forward(Action.LoadNextTimelinePage(forceRefresh = true))
                 }
 
                 onIntent<Intent.OnLoadMoreRequested> {
                     if (state().hasMoreItems) {
-                        forward(Action.LoadNextTimelinePage(forceRefresh = false, maxId = state().lastLoadedItemId))
+                        forward(Action.LoadNextTimelinePage(forceRefresh = false))
                     }
                 }
             },
             reducer = { msg ->
                 when (msg) {
                     is Msg.TimelinePageLoadingStarted -> copy(
-                        initialProgressVisible = items.isEmpty(),
-                        loadMoreProgressVisible = items.isNotEmpty(),
+                        initialProgressVisible = items.isEmpty() || msg.forcedRefresh,
+                        loadMoreProgressVisible = items.isNotEmpty() && !msg.forcedRefresh,
                     )
 
                     is Msg.NewTimelinePageLoaded -> copy(
@@ -97,11 +99,11 @@ internal class StatusListStoreProvider(
         ) {}
 
     private sealed interface Action {
-        data class LoadNextTimelinePage(val forceRefresh: Boolean, val maxId: String?) : Action
+        data class LoadNextTimelinePage(val forceRefresh: Boolean) : Action
     }
 
     private sealed interface Msg {
-        data object TimelinePageLoadingStarted : Msg
+        data class TimelinePageLoadingStarted(val forcedRefresh: Boolean) : Msg
         data class NewTimelinePageLoaded(val items: List<Status>) : Msg
         data class NextTimelinePageLoaded(val items: List<Status>) : Msg
         data object TimelinePageLoadingFailed : Msg

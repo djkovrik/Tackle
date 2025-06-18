@@ -106,20 +106,15 @@ internal fun TackleImage(
                     is ImageAction.Success -> {
                         TackleImageState.SUCCESS
                     }
-
-                    else -> {
-                        TackleImageState.LOADING
-                    }
                 }
             }
+
+            val imageRatio: Float = if (params?.ratio != null && params.ratio > 0f) params.ratio else 1f
 
             Crossfade(
                 targetState = state,
                 animationSpec = animationSpec,
-                modifier = modifier.alsoIf(
-                    condition = params?.ratio != null,
-                    other = Modifier.aspectRatio(ratio = params?.ratio ?: 1f)
-                ),
+                modifier = modifier.aspectRatio(ratio = imageRatio),
             ) { imageState: TackleImageState ->
                 Box(
                     contentAlignment = contentAlignment,
