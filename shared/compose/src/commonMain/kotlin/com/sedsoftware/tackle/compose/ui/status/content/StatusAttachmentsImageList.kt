@@ -37,7 +37,7 @@ internal fun StatusAttachmentsImageList(
 
     Column(modifier = modifier) {
         TackleImage(
-            data = displayedAttachment.url,
+            data = displayedAttachment.previewUrl,
             contentDescription = displayedAttachment.description,
             params = TackleImageParams(
                 blurhash = displayedAttachment.blurhash,

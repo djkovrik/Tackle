@@ -65,6 +65,8 @@ internal class StatusStoreProvider(
 
                 onIntent<Intent.OnTranslateClicked> {
                     launch {
+                        dispatch(Msg.MenuVisibilityChanged(false))
+
                         val statusId = state().status.id
                         if (state().translation != null) {
                             dispatch(Msg.ShowTranslationRequested)
@@ -87,7 +89,9 @@ internal class StatusStoreProvider(
                 }
 
                 onIntent<Intent.OnShowOriginalClicked> {
+                    dispatch(Msg.MenuVisibilityChanged(false))
                     dispatch(Msg.ShowOriginalRequested)
+                    forward(Action.RefreshContextMenu)
                 }
 
                 onIntent<Intent.OnFavouriteClicked> {
@@ -96,6 +100,7 @@ internal class StatusStoreProvider(
                         val oldValue = state().status.favourited
                         val newValue = !oldValue
 
+                        dispatch(Msg.MenuVisibilityChanged(false))
                         dispatch(Msg.StatusFavourited(newValue))
 
                         unwrap(
@@ -136,6 +141,7 @@ internal class StatusStoreProvider(
                         val oldValue = state().status.bookmarked
                         val newValue = !oldValue
 
+                        dispatch(Msg.MenuVisibilityChanged(false))
                         dispatch(Msg.StatusBookmarked(newValue))
 
                         unwrap(

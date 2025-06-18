@@ -7,6 +7,7 @@ import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -223,31 +224,33 @@ internal fun StatusContentWrapper(
             )
 
             // More button
-            TackleStatusButton(
-                iconRes = Res.drawable.status_more,
-                normalColor = contentColor,
-                counter = 0,
-                onClick = { onMenuRequest.invoke(true) },
-            )
-            DropdownMenu(
-                expanded = model.menuVisible,
-                shape = MaterialTheme.shapes.small,
-                onDismissRequest = { onMenuRequest.invoke(false) },
-            ) {
-                model.menuActions.forEach { menuAction: StatusContextAction ->
-                    DropdownMenuItem(
-                        text = {
-                            Text(
-                                text = stringResource(resource = menuAction.getTitle()),
-                                color = MaterialTheme.colorScheme.secondary,
-                                style = MaterialTheme.typography.bodySmall,
-                                modifier = Modifier,
-                            )
-                        },
-                        onClick = {
-                            onMenuActionClick.invoke(menuAction)
-                        }
-                    )
+            Box {
+                TackleStatusButton(
+                    iconRes = Res.drawable.status_more,
+                    normalColor = contentColor,
+                    counter = 0,
+                    onClick = { onMenuRequest.invoke(true) },
+                )
+                DropdownMenu(
+                    expanded = model.menuVisible,
+                    shape = MaterialTheme.shapes.small,
+                    onDismissRequest = { onMenuRequest.invoke(false) },
+                ) {
+                    model.menuActions.forEach { menuAction: StatusContextAction ->
+                        DropdownMenuItem(
+                            text = {
+                                Text(
+                                    text = stringResource(resource = menuAction.getTitle()),
+                                    color = MaterialTheme.colorScheme.secondary,
+                                    style = MaterialTheme.typography.bodySmall,
+                                    modifier = Modifier,
+                                )
+                            },
+                            onClick = {
+                                onMenuActionClick.invoke(menuAction)
+                            }
+                        )
+                    }
                 }
             }
         }
