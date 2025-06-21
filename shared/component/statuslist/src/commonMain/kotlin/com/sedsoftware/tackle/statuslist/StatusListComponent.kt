@@ -17,5 +17,6 @@ interface StatusListComponent {
     data class Model(
         val initialProgressVisible: Boolean,
         val loadMoreProgressVisible: Boolean,
+        val emptyPlaceholderVisible: Boolean,
     )
 }

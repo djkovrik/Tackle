@@ -68,6 +68,7 @@ class StatusListComponentTest : ComponentTest<StatusListComponent>() {
         // then
         assertThat(activeModel.initialProgressVisible).isFalse()
         assertThat(activeModel.loadMoreProgressVisible).isFalse()
+        assertThat(activeModel.emptyPlaceholderVisible).isFalse()
         assertThat(activeComponents.size).isEqualTo(StatusListStoreProvider.DEFAULT_PAGE_SIZE)
         verifySuspend(exactly(1)) { api.homeTimeline(any()) }
     }

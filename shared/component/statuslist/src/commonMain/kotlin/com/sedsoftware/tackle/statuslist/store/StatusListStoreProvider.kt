@@ -77,6 +77,7 @@ internal class StatusListStoreProvider(
                     is Msg.NewTimelinePageLoaded -> copy(
                         initialProgressVisible = false,
                         loadMoreProgressVisible = false,
+                        emptyPlaceholderVisible = msg.items.isEmpty(),
                         items = msg.items,
                         hasMoreItems = msg.items.size == DEFAULT_PAGE_SIZE,
                         lastLoadedItemId = msg.items.lastOrNull()?.id.orEmpty(),

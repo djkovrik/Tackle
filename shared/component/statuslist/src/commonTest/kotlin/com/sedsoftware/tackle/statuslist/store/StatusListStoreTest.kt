@@ -69,6 +69,17 @@ class StatusListStoreTest : StoreTest<StatusListStore.Intent, StatusListStore.St
         assertThat(labels.count { it is StatusListStore.Label.ErrorCaught }).isEqualTo(1)
     }
 
+    @Test
+    fun `empty timeline should show no items placeholder`() = runTest {
+        // given
+        everySuspend { api.homeTimeline(any()) } returns emptyList()
+        // when
+        store.init()
+        // then
+        assertThat(store.state.initialProgressVisible).isFalse()
+        assertThat(store.state.emptyPlaceholderVisible).isTrue()
+    }
+
 
     @Test
     fun `OnPullToRefreshCalled should refresh items list`() = runTest {

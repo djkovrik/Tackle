@@ -17,6 +17,7 @@ interface StatusListStore : Store<Intent, State, Label> {
         val items: List<Status> = emptyList(),
         val initialProgressVisible: Boolean = true,
         val loadMoreProgressVisible: Boolean = false,
+        val emptyPlaceholderVisible: Boolean = false,
         val hasMoreItems: Boolean = false,
         val lastLoadedItemId: String = "",
     )

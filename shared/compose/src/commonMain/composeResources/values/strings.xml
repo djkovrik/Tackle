@@ -133,4 +133,6 @@
     <string name="status_menu_unbookmark">Unbookmark</string>
     <string name="status_menu_mute">Mute</string>
     <string name="status_menu_unmute">Unmute</string>
+    <!-- Status list -->
+    <string name="status_home_timeline_empty">Nothing here yet.\nFollow someone to fill your home timeline.</string>
 </resources>

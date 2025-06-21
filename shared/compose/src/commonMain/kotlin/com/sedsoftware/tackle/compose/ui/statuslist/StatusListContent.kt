@@ -1,6 +1,9 @@
 package com.sedsoftware.tackle.compose.ui.statuslist
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -9,6 +12,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults.Indicator
 import androidx.compose.material3.pulltorefresh.PullToRefreshState
@@ -18,6 +22,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
@@ -28,7 +33,10 @@ import com.sedsoftware.tackle.compose.ui.statuslist.observer.LazyListItemsVisibi
 import com.sedsoftware.tackle.status.StatusComponent
 import com.sedsoftware.tackle.statuslist.StatusListComponent
 import com.sedsoftware.tackle.statuslist.integration.StatusListComponentPreview
+import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import tackle.shared.compose.generated.resources.Res
+import tackle.shared.compose.generated.resources.status_home_timeline_empty
 
 @Composable
 internal fun StatusListContent(
@@ -55,6 +63,25 @@ internal fun StatusListContent(
             )
         },
     ) {
+        AnimatedVisibility(
+            visible = model.emptyPlaceholderVisible,
+            enter = fadeIn(),
+            exit = fadeOut(),
+        ) {
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier.fillMaxSize(),
+            ) {
+                Text(
+                    text = stringResource(resource = Res.string.status_home_timeline_empty),
+                    color = MaterialTheme.colorScheme.secondary,
+                    style = MaterialTheme.typography.bodyLarge,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(all = 32.dp),
+                )
+            }
+        }
+
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
             state = lazyListState,
@@ -99,6 +126,18 @@ private fun StatusListContentInitialLoadingPreview() {
         StatusListContent(
             component = StatusListComponentPreview(
                 initialProgressVisible = true,
+            )
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun StatusListContentEmptyPreview() {
+    TackleScreenPreview {
+        StatusListContent(
+            component = StatusListComponentPreview(
+                emptyPlaceholderVisible = true,
             )
         )
     }

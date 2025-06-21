@@ -11,11 +11,16 @@ class StatusListComponentPreview(
     statuses: List<Status> = emptyList(),
     initialProgressVisible: Boolean = false,
     loadMoreProgressVisible: Boolean = false,
+    emptyPlaceholderVisible: Boolean = false,
 ) : StatusListComponent {
 
     override val model: Value<StatusListComponent.Model> =
         MutableValue(
-            initialValue = StatusListComponent.Model(initialProgressVisible, loadMoreProgressVisible)
+            initialValue = StatusListComponent.Model(
+                initialProgressVisible = initialProgressVisible,
+                loadMoreProgressVisible = loadMoreProgressVisible,
+                emptyPlaceholderVisible = emptyPlaceholderVisible
+            )
         )
 
     override val components: MutableValue<List<StatusComponent>> =
