@@ -88,7 +88,8 @@ lib-settings-core = { module = "com.russhwolf:multiplatform-settings", version.r
 lib-settings-test = { module = "com.russhwolf:multiplatform-settings-test", version.ref = "multiplatformSettings" }
 lib-okio = { module = "com.squareup.okio:okio", version.ref = "okio" }
 lib-blurhash = { module = "com.vanniktech:blurhash", version.ref = "blurhash" }
-lib-ksoup = { group = "com.mohamedrejeb.ksoup", name = "ksoup-html", version.ref = "ksoup" }
+lib-ksoup-html = { group = "com.mohamedrejeb.ksoup", name = "ksoup-html", version.ref = "ksoup" }
+lib-ksoup-entities = { group = "com.mohamedrejeb.ksoup", name = "ksoup-entities", version.ref = "ksoup" }
 
 lib-sqlDelight-coroutines = { module = "app.cash.sqldelight:coroutines-extensions", version.ref = "sqlDelight" }
 lib-sqlDelight-driver-android = { module = "app.cash.sqldelight:android-driver", version.ref = "sqlDelight" }

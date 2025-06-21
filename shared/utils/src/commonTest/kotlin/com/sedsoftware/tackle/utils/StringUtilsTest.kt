@@ -44,4 +44,16 @@ class StringUtilsTest {
         // then
         assertThat(result).isEqualTo(expected)
     }
+
+    @Test
+    fun `decodeHtml should handle special characters`() = runTest {
+        // given
+        val content = "\u003cp\u003eWe\u0026#39;ve heard your feedback on the Terms of Service updates for mastodon.social and mastodon.online, " +
+                " and we\u0026#39;re pausing the implementation date (previously announced to users via email as 1st July 2025)"
+        // when
+        val result = StringUtils.decodeHtml(content)
+        // then
+        assertThat(result.isNotEmpty())
+    }
+
 }

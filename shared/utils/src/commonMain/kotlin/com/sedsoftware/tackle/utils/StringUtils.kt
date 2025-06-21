@@ -1,6 +1,8 @@
 package com.sedsoftware.tackle.utils
 
+import com.mohamedrejeb.ksoup.entities.KsoupEntities
 import com.mohamedrejeb.ksoup.html.parser.KsoupHtmlHandler
+import com.mohamedrejeb.ksoup.html.parser.KsoupHtmlOptions
 import com.mohamedrejeb.ksoup.html.parser.KsoupHtmlParser
 
 object StringUtils {
@@ -29,6 +31,9 @@ object StringUtils {
     private val ksoupHtmlParser: KsoupHtmlParser =
         KsoupHtmlParser(
             handler = ksoupHtmlHandler,
+            options = KsoupHtmlOptions(
+
+            )
         )
 
     fun decodeHtml(html: String): String {
@@ -36,7 +41,8 @@ object StringUtils {
         ksoupHtmlParser.reset()
         ksoupHtmlParser.write(html)
         ksoupHtmlParser.end()
-        return parsedString.trim('\n')
+        val resultingString = parsedString.trim('\n')
+        return KsoupEntities.decodeHtml(resultingString)
     }
 
     private const val LINE_BREAK = "br"
