@@ -129,6 +129,10 @@ class StatusComponentDefault(
         output(ComponentOutput.SingleStatus.MentionClicked(mention))
     }
 
+    override fun refreshStatus(status: Status) {
+        store.accept(StatusStore.Intent.RefreshStatus(status))
+    }
+
     override fun getId(): String {
         return status.id
     }

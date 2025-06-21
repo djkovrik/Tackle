@@ -34,6 +34,9 @@ import kotlin.test.Test
 internal class StatusStoreTest : StoreTest<StatusStore.Intent, StatusStore.State, StatusStore.Label>() {
 
     private val testStatus: Status = Responses.status
+    private val updatedStatus: Status = testStatus.copy(id = "updated")
+    private val rebloggedStatus: Status = testStatus.copy(id = "reblog")
+    private val updatedStatusWithReblog: Status = updatedStatus.copy(id = "updated", reblog = rebloggedStatus)
 
     private val api: StatusComponentGateways.Api = mock {
         everySuspend { delete(any(), any()) } returns testStatus
@@ -392,6 +395,28 @@ internal class StatusStoreTest : StoreTest<StatusStore.Intent, StatusStore.State
         assertThat(labels.count { it is StatusStore.Label.ErrorCaught }).isEqualTo(1)
     }
 
+    @Test
+    fun `RefreshStatus should refresh state statuses`() = runTest {
+        // given
+        store.init()
+        // when
+        store.accept(StatusStore.Intent.RefreshStatus(updatedStatus))
+        // then
+        assertThat(store.state.baseStatus).isEqualTo(updatedStatus)
+        assertThat(store.state.displayedStatus).isEqualTo(updatedStatus)
+    }
+
+
+    @Test
+    fun `RefreshStatus with reblog should refresh state statuses`() = runTest {
+        // given
+        store.init()
+        // when
+        store.accept(StatusStore.Intent.RefreshStatus(updatedStatusWithReblog))
+        // then
+        assertThat(store.state.baseStatus).isEqualTo(updatedStatusWithReblog)
+        assertThat(store.state.displayedStatus).isEqualTo(rebloggedStatus)
+    }
 
     override fun createStore(): Store<StatusStore.Intent, StatusStore.State, StatusStore.Label> =
         StatusStoreProvider(

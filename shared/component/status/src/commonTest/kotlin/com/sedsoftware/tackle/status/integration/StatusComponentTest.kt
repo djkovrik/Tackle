@@ -273,6 +273,17 @@ class StatusComponentTest : ComponentTest<StatusComponent>() {
         verify { lifecycleRegistry.onResume() }
     }
 
+    @Test
+    fun `refreshStatus should refresh model status`() = runTest {
+        // given
+        val updatedStatus: Status = testStatus.copy(id = "updated")
+        // when
+        component.refreshStatus(updatedStatus)
+        // then
+        assertThat(activeModel.status).isEqualTo(updatedStatus)
+    }
+
+
     override fun createComponent(): StatusComponent =
         StatusComponentDefault(
             componentContext = DefaultComponentContext(lifecycleRegistry),

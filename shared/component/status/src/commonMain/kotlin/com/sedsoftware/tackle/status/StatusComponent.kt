@@ -20,6 +20,7 @@ interface StatusComponent {
     fun onReplyClick()
     fun onHashTagClick(hashTag: String)
     fun onMentionClick(mention: String)
+    fun refreshStatus(status: Status)
     fun getId(): String
     fun stopComponent()
     fun resumeComponent()

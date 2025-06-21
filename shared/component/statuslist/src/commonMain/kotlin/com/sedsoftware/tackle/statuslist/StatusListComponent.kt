@@ -1,7 +1,6 @@
 package com.sedsoftware.tackle.statuslist
 
 import com.arkivanov.decompose.ExperimentalDecomposeApi
-import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
 import com.sedsoftware.tackle.status.StatusComponent
 
@@ -9,7 +8,7 @@ import com.sedsoftware.tackle.status.StatusComponent
 interface StatusListComponent {
 
     val model: Value<Model>
-    val components: MutableValue<List<StatusComponent>>
+    val components: Value<List<StatusComponent>>
 
     fun onPullToRefresh()
     fun onLoadMoreRequest()

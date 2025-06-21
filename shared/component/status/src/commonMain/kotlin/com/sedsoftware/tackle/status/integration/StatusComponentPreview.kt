@@ -46,6 +46,7 @@ class StatusComponentPreview(
     override fun onReplyClick() = Unit
     override fun onHashTagClick(hashTag: String) = Unit
     override fun onMentionClick(mention: String) = Unit
+    override fun refreshStatus(status: Status) = Unit
     override fun getId(): String = status.id
     override fun stopComponent() = Unit
     override fun resumeComponent() = Unit

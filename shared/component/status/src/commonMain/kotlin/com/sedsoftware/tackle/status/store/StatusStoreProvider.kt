@@ -256,6 +256,10 @@ internal class StatusStoreProvider(
                         )
                     }
                 }
+
+                onIntent<Intent.RefreshStatus> {
+                    dispatch(Msg.StatusRefreshed(it.status))
+                }
             },
             reducer = { msg ->
                 when (msg) {
@@ -327,6 +331,11 @@ internal class StatusStoreProvider(
                             ),
                         ),
                     )
+
+                    is Msg.StatusRefreshed -> copy(
+                        baseStatus = msg.status,
+                        displayedStatus = msg.status.reblog.takeIf { it != null } ?: msg.status,
+                    )
                 }
             }
         ) {}
@@ -350,5 +359,6 @@ internal class StatusStoreProvider(
         data class StatusMuted(val muted: Boolean) : Msg
         data class PollOptionsUpdated(val options: List<Int>) : Msg
         data object PollVoted : Msg
+        data class StatusRefreshed(val status: Status) : Msg
     }
 }
