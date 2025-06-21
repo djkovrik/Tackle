@@ -1,7 +1,6 @@
 package com.sedsoftware.tackle.compose.widget
 
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -28,7 +27,6 @@ import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import tackle.shared.compose.generated.resources.Res
-import tackle.shared.compose.generated.resources.status_bookmark
 import tackle.shared.compose.generated.resources.status_favorite
 import tackle.shared.compose.generated.resources.status_reblog
 import tackle.shared.compose.generated.resources.status_reply
