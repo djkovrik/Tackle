@@ -9,17 +9,18 @@ import com.arkivanov.decompose.value.Value
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.sedsoftware.tackle.domain.ComponentOutput
 import com.sedsoftware.tackle.domain.api.AuthorizedApi
-import com.sedsoftware.tackle.domain.api.TackleDatabase
 import com.sedsoftware.tackle.domain.api.TackleDispatchers
 import com.sedsoftware.tackle.domain.api.TacklePlatformTools
 import com.sedsoftware.tackle.domain.api.TackleSettings
-import com.sedsoftware.tackle.domain.api.UnauthorizedApi
 import com.sedsoftware.tackle.explore.ExploreTabComponent
 import com.sedsoftware.tackle.explore.integration.ExploreTabComponentDefault
 import com.sedsoftware.tackle.home.HomeTabComponent
 import com.sedsoftware.tackle.home.integration.HomeTabComponentDefault
 import com.sedsoftware.tackle.main.MainComponent
 import com.sedsoftware.tackle.main.MainComponent.Child
+import com.sedsoftware.tackle.main.gateway.StatusComponentApi
+import com.sedsoftware.tackle.main.gateway.StatusComponentSettings
+import com.sedsoftware.tackle.main.gateway.StatusComponentTools
 import com.sedsoftware.tackle.main.model.TackleNavigationTab
 import com.sedsoftware.tackle.notifications.NotificationsTabComponent
 import com.sedsoftware.tackle.notifications.integration.NotificationsTabComponentDefault
@@ -39,13 +40,10 @@ class MainComponentDefault internal constructor(
     private val profileTabComponent: (ComponentContext, (ComponentOutput) -> Unit) -> ProfileTabComponent,
 ) : MainComponent, ComponentContext by componentContext {
 
-    @Suppress("UnusedPrivateProperty")
     constructor(
         componentContext: ComponentContext,
         storeFactory: StoreFactory,
-        unauthorizedApi: UnauthorizedApi,
         authorizedApi: AuthorizedApi,
-        database: TackleDatabase,
         settings: TackleSettings,
         platformTools: TacklePlatformTools,
         dispatchers: TackleDispatchers,
@@ -57,6 +55,10 @@ class MainComponentDefault internal constructor(
             HomeTabComponentDefault(
                 componentContext = childContext,
                 storeFactory = storeFactory,
+                api = StatusComponentApi(authorizedApi),
+                settings = StatusComponentSettings(settings),
+                tools = StatusComponentTools(platformTools),
+                dispatchers = dispatchers,
                 output = componentOutput,
             )
         },

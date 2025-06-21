@@ -1,16 +1,15 @@
 package com.sedsoftware.tackle.home.integration
 
-import com.arkivanov.decompose.value.MutableValue
-import com.arkivanov.decompose.value.Value
+import com.sedsoftware.tackle.domain.model.Status
 import com.sedsoftware.tackle.home.HomeTabComponent
-import com.sedsoftware.tackle.home.HomeTabComponent.Model
+import com.sedsoftware.tackle.statuslist.StatusListComponent
+import com.sedsoftware.tackle.statuslist.integration.StatusListComponentPreview
 
-class HomeTabComponentPreview : HomeTabComponent {
+class HomeTabComponentPreview(statuses: List<Status>, ) : HomeTabComponent {
+
+    override val homeTimeline: StatusListComponent =
+        StatusListComponentPreview(statuses)
 
     override fun onNewPostClick() = Unit
     override fun onScheduledPostsClick() = Unit
-
-    override val model: Value<Model> = MutableValue(
-        Model(text = "Home tab component")
-    )
 }

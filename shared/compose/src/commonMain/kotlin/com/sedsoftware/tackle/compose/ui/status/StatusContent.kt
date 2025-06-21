@@ -56,7 +56,7 @@ internal fun StatusContent(
         onShareClick = component::onShareClick,
     ) {
 
-        if (model.status.content.isNotEmpty()) {
+        if (model.status.content.isNotEmpty() || !model.translation?.content.isNullOrEmpty()) {
             StatusText(
                 model = model,
                 modifier = modifier,

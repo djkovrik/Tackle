@@ -160,12 +160,12 @@ internal class StatusStoreTest : StoreTest<StatusStore.Intent, StatusStore.State
         store.accept(StatusStore.Intent.OnFavouriteClicked)
         // then
         verifySuspend(exactly(1)) { api.favourite(testStatus.id) }
-        assertThat(store.state.status.favourited).isTrue()
+        assertThat(store.state.displayedStatus.favourited).isTrue()
         // when
         store.accept(StatusStore.Intent.OnFavouriteClicked)
         // then
         verifySuspend(exactly(1)) { api.unfavourite(testStatus.id) }
-        assertThat(store.state.status.favourited).isFalse()
+        assertThat(store.state.displayedStatus.favourited).isFalse()
     }
 
     @Test
@@ -187,12 +187,12 @@ internal class StatusStoreTest : StoreTest<StatusStore.Intent, StatusStore.State
         store.accept(StatusStore.Intent.OnReblogClicked)
         // then
         verifySuspend(exactly(1)) { api.boost(testStatus.id) }
-        assertThat(store.state.status.reblogged).isTrue()
+        assertThat(store.state.displayedStatus.reblogged).isTrue()
         // when
         store.accept(StatusStore.Intent.OnReblogClicked)
         // then
         verifySuspend(exactly(1)) { api.unboost(testStatus.id) }
-        assertThat(store.state.status.reblogged).isFalse()
+        assertThat(store.state.displayedStatus.reblogged).isFalse()
     }
 
     @Test
@@ -214,12 +214,12 @@ internal class StatusStoreTest : StoreTest<StatusStore.Intent, StatusStore.State
         store.accept(StatusStore.Intent.OnBookmarkClicked)
         // then
         verifySuspend(exactly(1)) { api.bookmark(testStatus.id) }
-        assertThat(store.state.status.bookmarked).isTrue()
+        assertThat(store.state.displayedStatus.bookmarked).isTrue()
         // when
         store.accept(StatusStore.Intent.OnBookmarkClicked)
         // then
         verifySuspend(exactly(1)) { api.unbookmark(testStatus.id) }
-        assertThat(store.state.status.bookmarked).isFalse()
+        assertThat(store.state.displayedStatus.bookmarked).isFalse()
     }
 
     @Test
@@ -241,12 +241,12 @@ internal class StatusStoreTest : StoreTest<StatusStore.Intent, StatusStore.State
         store.accept(StatusStore.Intent.OnPinClicked)
         // then
         verifySuspend(exactly(1)) { api.pin(testStatus.id) }
-        assertThat(store.state.status.pinned).isTrue()
+        assertThat(store.state.displayedStatus.pinned).isTrue()
         // when
         store.accept(StatusStore.Intent.OnPinClicked)
         // then
         verifySuspend(exactly(1)) { api.unpin(testStatus.id) }
-        assertThat(store.state.status.pinned).isFalse()
+        assertThat(store.state.displayedStatus.pinned).isFalse()
     }
 
     @Test
@@ -268,12 +268,12 @@ internal class StatusStoreTest : StoreTest<StatusStore.Intent, StatusStore.State
         store.accept(StatusStore.Intent.OnMuteClicked)
         // then
         verifySuspend(exactly(1)) { api.mute(testStatus.id) }
-        assertThat(store.state.status.muted).isTrue()
+        assertThat(store.state.displayedStatus.muted).isTrue()
         // when
         store.accept(StatusStore.Intent.OnMuteClicked)
         // then
         verifySuspend(exactly(1)) { api.unmute(testStatus.id) }
-        assertThat(store.state.status.muted).isFalse()
+        assertThat(store.state.displayedStatus.muted).isFalse()
     }
 
     @Test
@@ -329,19 +329,19 @@ internal class StatusStoreTest : StoreTest<StatusStore.Intent, StatusStore.State
         store.accept(StatusStore.Intent.OnPollOptionSelected(1, true))
         store.accept(StatusStore.Intent.OnPollOptionSelected(0, true))
         // then
-        assertThat(store.state.status.poll?.ownVotes).isEqualTo(listOf(0, 1))
+        assertThat(store.state.displayedStatus.poll?.ownVotes).isEqualTo(listOf(0, 1))
         // when
         store.accept(StatusStore.Intent.OnPollOptionSelected(1, true))
         // then
-        assertThat(store.state.status.poll?.ownVotes).isEqualTo(listOf(0))
+        assertThat(store.state.displayedStatus.poll?.ownVotes).isEqualTo(listOf(0))
         // when
         store.accept(StatusStore.Intent.OnPollOptionSelected(0, true))
         // then
-        assertThat(store.state.status.poll?.ownVotes).isNullOrEmpty()
+        assertThat(store.state.displayedStatus.poll?.ownVotes).isNullOrEmpty()
         // when
         store.accept(StatusStore.Intent.OnPollOptionSelected(1, false))
         store.accept(StatusStore.Intent.OnPollOptionSelected(0, false))
-        assertThat(store.state.status.poll?.ownVotes).isEqualTo(listOf(0))
+        assertThat(store.state.displayedStatus.poll?.ownVotes).isEqualTo(listOf(0))
     }
 
     @Test
@@ -353,7 +353,7 @@ internal class StatusStoreTest : StoreTest<StatusStore.Intent, StatusStore.State
         // when
         store.accept(StatusStore.Intent.OnVoteClicked)
         // then
-        assertThat(store.state.status.poll?.voted).isEqualTo(true)
+        assertThat(store.state.displayedStatus.poll?.voted).isEqualTo(true)
     }
 
     @Test
@@ -399,7 +399,8 @@ internal class StatusStoreTest : StoreTest<StatusStore.Intent, StatusStore.State
             manager = manager,
             mainContext = Dispatchers.Unconfined,
             ioContext = Dispatchers.Unconfined,
-            status = testStatus,
+            baseStatus = testStatus,
+            displayedStatus = testStatus,
             rebloggedBy = "",
             extendedInfo = false,
             isOwn = true,

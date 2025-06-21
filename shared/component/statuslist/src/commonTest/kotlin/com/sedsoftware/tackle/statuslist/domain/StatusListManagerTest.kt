@@ -40,7 +40,7 @@ class StatusListManagerTest {
     @Test
     fun `loadStatusList for public timeline calls for api`() = runTest {
         // given
-        val timeline = Timeline.Public
+        val timeline = Timeline.Public(true)
         val manager = StatusListManager(timeline, api)
         val pageSize = 20
         val maxId = "maxId"

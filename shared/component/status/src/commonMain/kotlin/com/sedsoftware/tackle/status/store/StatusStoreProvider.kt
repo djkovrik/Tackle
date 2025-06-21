@@ -22,7 +22,8 @@ internal class StatusStoreProvider(
     private val manager: StatusManager,
     private val mainContext: CoroutineContext,
     private val ioContext: CoroutineContext,
-    private val status: Status,
+    private val baseStatus: Status,
+    private val displayedStatus: Status,
     private val rebloggedBy: String,
     private val extendedInfo: Boolean,
     private val isOwn: Boolean,
@@ -31,8 +32,14 @@ internal class StatusStoreProvider(
     @StoreCreate
     fun create(autoInit: Boolean = true): StatusStore =
         object : StatusStore, Store<Intent, State, Label> by storeFactory.create<Intent, Action, Msg, State, Label>(
-            name = "StatusStore_${status.id}",
-            initialState = State(status = status, extendedInfo = extendedInfo, isOwn = isOwn, rebloggedBy = rebloggedBy),
+            name = "StatusStore_${baseStatus.id}",
+            initialState = State(
+                baseStatus = baseStatus,
+                displayedStatus = displayedStatus,
+                extendedInfo = extendedInfo,
+                isOwn = isOwn,
+                rebloggedBy = rebloggedBy
+            ),
             autoInit = autoInit,
             bootstrapper = coroutineBootstrapper(mainContext) {
                 dispatch(Action.RefreshContextMenu)
@@ -40,7 +47,7 @@ internal class StatusStoreProvider(
             executorFactory = coroutineExecutorFactory(mainContext) {
                 onAction<Action.RefreshContextMenu> {
                     launch {
-                        val status = state().status
+                        val status = state().displayedStatus
                         val translated = state().translationDisplayed
 
                         unwrap(
@@ -53,7 +60,8 @@ internal class StatusStoreProvider(
 
                 onIntent<Intent.OnDeleteClicked> {
                     launch {
-                        val statusId = state().status.id
+                        val statusId = state().displayedStatus.id
+                        dispatch(Msg.MenuVisibilityChanged(false))
 
                         unwrap(
                             result = withContext(ioContext) { manager.delete(statusId = statusId, deleteMedia = true) },
@@ -65,7 +73,9 @@ internal class StatusStoreProvider(
 
                 onIntent<Intent.OnTranslateClicked> {
                     launch {
-                        val statusId = state().status.id
+                        dispatch(Msg.MenuVisibilityChanged(false))
+
+                        val statusId = state().displayedStatus.id
                         if (state().translation != null) {
                             dispatch(Msg.ShowTranslationRequested)
                         } else {
@@ -87,15 +97,18 @@ internal class StatusStoreProvider(
                 }
 
                 onIntent<Intent.OnShowOriginalClicked> {
+                    dispatch(Msg.MenuVisibilityChanged(false))
                     dispatch(Msg.ShowOriginalRequested)
+                    forward(Action.RefreshContextMenu)
                 }
 
                 onIntent<Intent.OnFavouriteClicked> {
                     launch {
-                        val statusId = state().status.id
-                        val oldValue = state().status.favourited
+                        val statusId = state().displayedStatus.id
+                        val oldValue = state().displayedStatus.favourited
                         val newValue = !oldValue
 
+                        dispatch(Msg.MenuVisibilityChanged(false))
                         dispatch(Msg.StatusFavourited(newValue))
 
                         unwrap(
@@ -112,8 +125,8 @@ internal class StatusStoreProvider(
 
                 onIntent<Intent.OnReblogClicked> {
                     launch {
-                        val statusId = state().status.id
-                        val oldValue = state().status.reblogged
+                        val statusId = state().displayedStatus.id
+                        val oldValue = state().displayedStatus.reblogged
                         val newValue = !oldValue
 
                         dispatch(Msg.StatusReblogged(newValue))
@@ -132,10 +145,11 @@ internal class StatusStoreProvider(
 
                 onIntent<Intent.OnBookmarkClicked> {
                     launch {
-                        val statusId = state().status.id
-                        val oldValue = state().status.bookmarked
+                        val statusId = state().displayedStatus.id
+                        val oldValue = state().displayedStatus.bookmarked
                         val newValue = !oldValue
 
+                        dispatch(Msg.MenuVisibilityChanged(false))
                         dispatch(Msg.StatusBookmarked(newValue))
 
                         unwrap(
@@ -152,8 +166,8 @@ internal class StatusStoreProvider(
 
                 onIntent<Intent.OnPinClicked> {
                     launch {
-                        val statusId = state().status.id
-                        val oldValue = state().status.pinned
+                        val statusId = state().displayedStatus.id
+                        val oldValue = state().displayedStatus.pinned
                         val newValue = !oldValue
 
                         dispatch(Msg.StatusPinned(newValue))
@@ -172,8 +186,8 @@ internal class StatusStoreProvider(
 
                 onIntent<Intent.OnMuteClicked> {
                     launch {
-                        val statusId = state().status.id
-                        val oldValue = state().status.muted
+                        val statusId = state().displayedStatus.id
+                        val oldValue = state().displayedStatus.muted
                         val newValue = !oldValue
 
                         dispatch(Msg.StatusMuted(newValue))
@@ -192,8 +206,8 @@ internal class StatusStoreProvider(
 
                 onIntent<Intent.OnShareClicked> {
                     launch {
-                        val title = status.account.displayName.takeIf { it.isNotEmpty() } ?: status.account.username
-                        val url = status.url
+                        val title = displayedStatus.account.displayName.takeIf { it.isNotEmpty() } ?: displayedStatus.account.username
+                        val url = displayedStatus.url
 
                         unwrap(
                             result = manager.share(title, url),
@@ -209,7 +223,7 @@ internal class StatusStoreProvider(
 
                 onIntent<Intent.OnPollOptionSelected> {
                     launch {
-                        val currentVotes: List<Int> = state().status.poll?.ownVotes.orEmpty()
+                        val currentVotes: List<Int> = state().displayedStatus.poll?.ownVotes.orEmpty()
                         val newVotes = when {
                             it.multiselect && currentVotes.contains(it.index) -> currentVotes.filterNot { element -> element == it.index }
                             it.multiselect && !currentVotes.contains(it.index) -> (currentVotes + listOf(it.index)).sorted()
@@ -222,8 +236,8 @@ internal class StatusStoreProvider(
 
                 onIntent<Intent.OnVoteClicked> {
                     launch {
-                        val currentVotes: List<Int> = state().status.poll?.ownVotes.orEmpty()
-                        state().status.poll?.id?.let { pollId: String ->
+                        val currentVotes: List<Int> = state().displayedStatus.poll?.ownVotes.orEmpty()
+                        state().displayedStatus.poll?.id?.let { pollId: String ->
                             unwrap(
                                 result = withContext(ioContext) { manager.vote(pollId, currentVotes) },
                                 onSuccess = { dispatch(Msg.PollVoted) },
@@ -279,36 +293,36 @@ internal class StatusStoreProvider(
                     )
 
                     is Msg.StatusFavourited -> copy(
-                        status = status.copy(favourited = msg.favourited),
+                        displayedStatus = displayedStatus.copy(favourited = msg.favourited),
                     )
 
                     is Msg.StatusReblogged -> copy(
-                        status = status.copy(reblogged = msg.reblogged),
+                        displayedStatus = displayedStatus.copy(reblogged = msg.reblogged),
                     )
 
                     is Msg.StatusBookmarked -> copy(
-                        status = status.copy(bookmarked = msg.bookmarked),
+                        displayedStatus = displayedStatus.copy(bookmarked = msg.bookmarked),
                     )
 
                     is Msg.StatusPinned -> copy(
-                        status = status.copy(pinned = msg.pinned),
+                        displayedStatus = displayedStatus.copy(pinned = msg.pinned),
                     )
 
                     is Msg.StatusMuted -> copy(
-                        status = status.copy(muted = msg.muted),
+                        displayedStatus = displayedStatus.copy(muted = msg.muted),
                     )
 
                     is Msg.PollOptionsUpdated -> copy(
-                        status = status.copy(
-                            poll = status.poll?.copy(
+                        displayedStatus = displayedStatus.copy(
+                            poll = displayedStatus.poll?.copy(
                                 ownVotes = msg.options,
                             ),
                         ),
                     )
 
                     is Msg.PollVoted -> copy(
-                        status = status.copy(
-                            poll = status.poll?.copy(
+                        displayedStatus = displayedStatus.copy(
+                            poll = displayedStatus.poll?.copy(
                                 voted = true,
                             ),
                         ),

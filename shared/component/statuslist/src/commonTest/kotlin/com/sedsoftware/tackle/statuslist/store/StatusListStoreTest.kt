@@ -1,12 +1,14 @@
 package com.sedsoftware.tackle.statuslist.store
 
 import assertk.assertThat
+import assertk.assertions.doesNotContain
 import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
 import assertk.assertions.isNotEmpty
 import assertk.assertions.isTrue
 import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
+import com.sedsoftware.tackle.domain.model.Status
 import com.sedsoftware.tackle.domain.model.type.Timeline
 import com.sedsoftware.tackle.status.StatusComponentGateways
 import com.sedsoftware.tackle.statuslist.Responses
@@ -69,6 +71,17 @@ class StatusListStoreTest : StoreTest<StatusListStore.Intent, StatusListStore.St
         assertThat(labels.count { it is StatusListStore.Label.ErrorCaught }).isEqualTo(1)
     }
 
+    @Test
+    fun `empty timeline should show no items placeholder`() = runTest {
+        // given
+        everySuspend { api.homeTimeline(any()) } returns emptyList()
+        // when
+        store.init()
+        // then
+        assertThat(store.state.initialProgressVisible).isFalse()
+        assertThat(store.state.emptyPlaceholderVisible).isTrue()
+    }
+
 
     @Test
     fun `OnPullToRefreshCalled should refresh items list`() = runTest {
@@ -127,6 +140,21 @@ class StatusListStoreTest : StoreTest<StatusListStore.Intent, StatusListStore.St
         // then
         assertThat(labels.count { it is StatusListStore.Label.ErrorCaught }).isEqualTo(1)
     }
+
+    @Test
+    fun `StatusDeleted should delete item from state`() = runTest {
+        // given
+        store.init()
+        assertThat(store.state.items.size).isEqualTo(StatusListStoreProvider.DEFAULT_PAGE_SIZE)
+        assertThat(store.state.hasMoreItems).isTrue()
+        val itemToDelete: Status = store.state.items[1]
+        assertThat(store.state.items.contains(itemToDelete))
+        // when
+        store.accept(StatusListStore.Intent.StatusDeleted(itemToDelete.id))
+        // then
+        assertThat(store.state.items).doesNotContain(itemToDelete)
+    }
+
 
     override fun createStore(): Store<StatusListStore.Intent, StatusListStore.State, StatusListStore.Label> =
         StatusListStoreProvider(

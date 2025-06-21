@@ -37,13 +37,13 @@ internal fun StatusAttachmentsImageList(
 
     Column(modifier = modifier) {
         TackleImage(
-            data = displayedAttachment.url,
+            data = displayedAttachment.previewUrl,
             contentDescription = displayedAttachment.description,
             params = TackleImageParams(
                 blurhash = displayedAttachment.blurhash,
-                width = displayedAttachment.meta?.width.orZero(),
-                height = displayedAttachment.meta?.height.orZero(),
-                ratio = displayedAttachment.meta?.aspect ?: 1f,
+                width = displayedAttachment.meta?.original?.width.orZero(),
+                height = displayedAttachment.meta?.original?.height.orZero(),
+                ratio = displayedAttachment.meta?.original?.aspect ?: 1f,
             ),
             modifier = Modifier.fillMaxWidth(),
         )
@@ -60,9 +60,9 @@ internal fun StatusAttachmentsImageList(
                         selected = index == selectedAttachmentIndex,
                         params = TackleImageParams(
                             blurhash = item.blurhash,
-                            width = item.meta?.width.orZero(),
-                            height = item.meta?.height.orZero(),
-                            ratio = item.meta?.aspect ?: 1f,
+                            width = item.meta?.small?.width.orZero(),
+                            height = item.meta?.small?.height.orZero(),
+                            ratio = item.meta?.small?.aspect ?: 1f,
                         ),
                         onSelect = { selectedAttachmentIndex = index },
                     )

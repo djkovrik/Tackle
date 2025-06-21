@@ -28,14 +28,14 @@ import com.sedsoftware.tackle.main.MainComponent
 import com.sedsoftware.tackle.main.integration.MainComponentDefault
 import com.sedsoftware.tackle.root.RootComponent
 import com.sedsoftware.tackle.root.RootComponent.Child
-import com.sedsoftware.tackle.root.integration.auth.AuthComponentApi
-import com.sedsoftware.tackle.root.integration.auth.AuthComponentDatabase
-import com.sedsoftware.tackle.root.integration.auth.AuthComponentSettings
-import com.sedsoftware.tackle.root.integration.auth.AuthComponentTools
-import com.sedsoftware.tackle.root.integration.editor.EditorTabComponentApi
-import com.sedsoftware.tackle.root.integration.editor.EditorTabComponentDatabase
-import com.sedsoftware.tackle.root.integration.editor.EditorTabComponentSettings
-import com.sedsoftware.tackle.root.integration.editor.EditorTabComponentTools
+import com.sedsoftware.tackle.root.gateway.auth.AuthComponentApi
+import com.sedsoftware.tackle.root.gateway.auth.AuthComponentDatabase
+import com.sedsoftware.tackle.root.gateway.auth.AuthComponentSettings
+import com.sedsoftware.tackle.root.gateway.auth.AuthComponentTools
+import com.sedsoftware.tackle.root.gateway.editor.EditorTabComponentApi
+import com.sedsoftware.tackle.root.gateway.editor.EditorTabComponentDatabase
+import com.sedsoftware.tackle.root.gateway.editor.EditorTabComponentSettings
+import com.sedsoftware.tackle.root.gateway.editor.EditorTabComponentTools
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.Flow
@@ -78,10 +78,8 @@ class RootComponentDefault internal constructor(
             MainComponentDefault(
                 componentContext = childContext,
                 storeFactory = storeFactory,
-                unauthorizedApi = unauthorizedApi,
                 authorizedApi = authorizedApi,
                 settings = settings,
-                database = database,
                 platformTools = platformTools,
                 dispatchers = dispatchers,
                 mainComponentOutput = output,
@@ -141,6 +139,8 @@ class RootComponentDefault internal constructor(
         when (output) {
             is ComponentOutput.Auth.AuthFlowCompleted -> navigation.replaceCurrent(Config.Main)
             is ComponentOutput.HomeTab.EditorRequested -> navigation.pushNew(Config.Editor)
+            // TODO Replace with scheduled statuses
+            is ComponentOutput.HomeTab.ScheduledStatusesRequested -> navigation.pushNew(Config.Editor)
             is ComponentOutput.StatusEditor.BackButtonClicked -> navigation.pop()
             is ComponentOutput.StatusEditor.StatusPublished -> navigation.pop()
             is ComponentOutput.StatusEditor.ScheduledStatusPublished -> navigation.pop()

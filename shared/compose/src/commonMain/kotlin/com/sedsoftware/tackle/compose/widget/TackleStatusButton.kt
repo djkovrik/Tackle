@@ -1,5 +1,8 @@
 package com.sedsoftware.tackle.compose.widget
 
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -7,10 +10,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -22,8 +27,8 @@ import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import tackle.shared.compose.generated.resources.Res
-import tackle.shared.compose.generated.resources.status_bookmark
 import tackle.shared.compose.generated.resources.status_favorite
+import tackle.shared.compose.generated.resources.status_reblog
 import tackle.shared.compose.generated.resources.status_reply
 
 @Composable
@@ -31,29 +36,52 @@ internal fun TackleStatusButton(
     iconRes: DrawableResource,
     counter: Int,
     modifier: Modifier = Modifier,
-    color: Color = MaterialTheme.colorScheme.onSurface,
+    toggled: Boolean = false,
+    normalColor: Color = MaterialTheme.colorScheme.onSurface,
+    selectedColor: Color = MaterialTheme.colorScheme.primary,
+    backgroundColor: Color = MaterialTheme.colorScheme.primaryContainer,
     onClick: () -> Unit = {},
 ) {
+    val animatedColor: Color by animateColorAsState(
+        if (toggled) selectedColor else normalColor,
+        label = "Color"
+    )
+
+    val animatedAlpha: Float by animateFloatAsState(
+        if (toggled) {
+            0.3f
+        } else {
+            0f
+        },
+        label = "Alpha"
+    )
+
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
         modifier = modifier
             .height(height = BUTTON_SIZE.dp)
-            .clip(shape = MaterialTheme.shapes.extraLarge)
+            .clip(shape = RoundedCornerShape(size = 32.dp))
             .clickableOnce(onClick = onClick)
+            .background(
+                color = backgroundColor.copy(
+                    alpha = animatedAlpha
+                ),
+                shape = RoundedCornerShape(size = 32.dp),
+            )
             .padding(horizontal = 8.dp)
     ) {
         Icon(
             painter = painterResource(resource = iconRes),
             contentDescription = null,
-            tint = color,
+            tint = animatedColor,
             modifier = Modifier.size(size = ICON_SIZE.dp)
         )
 
         if (counter > 0) {
             Text(
                 text = "$counter",
-                color = color,
+                color = animatedColor,
                 style = MaterialTheme.typography.bodyMedium,
                 maxLines = 1,
                 modifier = Modifier.padding(start = 8.dp)
@@ -88,16 +116,16 @@ private fun TackleStatusButtonPreviewContent() {
             iconRes = Res.drawable.status_reply,
             counter = 123,
         )
-        Spacer(modifier = Modifier.width(width = 8.dp))
+        Spacer(modifier = Modifier.width(width = 4.dp))
         TackleStatusButton(
-            iconRes = Res.drawable.status_bookmark,
+            iconRes = Res.drawable.status_reblog,
             counter = 2,
+            toggled = true,
         )
-        Spacer(modifier = Modifier.width(width = 8.dp))
+        Spacer(modifier = Modifier.width(width = 4.dp))
         TackleStatusButton(
             iconRes = Res.drawable.status_favorite,
-            counter = 0,
+            counter = 45,
         )
-        Spacer(modifier = Modifier.width(width = 8.dp))
     }
 }

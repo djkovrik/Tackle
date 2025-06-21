@@ -26,7 +26,9 @@ import com.sedsoftware.tackle.statuslist.store.StatusListStoreProvider
 import com.sedsoftware.tackle.utils.extension.asValue
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class StatusListComponentDefault(
@@ -68,7 +70,9 @@ class StatusListComponentDefault(
 
         scope.launch {
             store.states
+                .map { it.items }
                 .distinctUntilChanged()
+                .catch { output(ComponentOutput.Common.ErrorCaught(it)) }
                 .collect(::refreshComponentsList)
         }
 
@@ -85,18 +89,37 @@ class StatusListComponentDefault(
         store.accept(StatusListStore.Intent.OnLoadMoreRequested)
     }
 
-    private fun refreshComponentsList(state: StatusListStore.State) {
-        val currentComponents = components.value
-        val lastComponentStatusId: String = currentComponents.lastOrNull()?.model?.value?.status?.id.orEmpty()
-        val lastComponentStatusPosition: Int = state.items.indexOfLast { it.id == lastComponentStatusId } + 1
-        val newComponents = state.items.drop(lastComponentStatusPosition).map(::buildComponent)
-        val resultingList = currentComponents + newComponents
+    private fun refreshComponentsList(items: List<Status>) {
+        val componentsMap: Map<String, StatusComponent> = components.value.associate { it.getId() to it }
+        val activeComponentsIds: Set<String> = items.map { it.id }.toSet()
+
+        val resultingList: List<StatusComponent> = items.map { statusItem ->
+            if (componentsMap.containsKey(statusItem.id)) {
+                componentsMap[statusItem.id]!!
+            } else {
+                buildComponent(statusItem)
+            }
+        }
+
+        componentsMap.forEach { (key: String, component: StatusComponent) ->
+            if (!activeComponentsIds.contains(key)) {
+                component.stopComponent()
+            }
+        }
+
         components.value = resultingList
     }
 
-    internal fun buildComponent(status: Status): StatusComponent {
+    private fun onStatusComponentOutput(statusOutput: ComponentOutput) {
+        if (statusOutput is ComponentOutput.SingleStatus.Deleted) {
+            store.accept(StatusListStore.Intent.StatusDeleted(statusOutput.statusId))
+        } else {
+            output(statusOutput)
+        }
+    }
+
+    private fun buildComponent(status: Status): StatusComponent {
         val ownId: String = settings.ownUserId
-        val resultingStatus = status.reblog.takeIf { it != null } ?: status
         val componentLifecycle = LifecycleRegistry()
 
         return StatusComponentDefault(
@@ -106,12 +129,15 @@ class StatusListComponentDefault(
             api = api,
             tools = tools,
             dispatchers = dispatchers,
-            output = output,
-            status = resultingStatus,
-            rebloggedBy = status.reblog?.account?.displayName
-                ?: status.reblog?.account?.username.orEmpty(),
+            output = ::onStatusComponentOutput,
+            status = status,
+            rebloggedBy = when {
+                status.reblog != null && status.account.displayName.isNotEmpty() -> status.account.displayName
+                status.reblog != null -> status.account.username
+                else -> ""
+            },
             extendedInfo = false,
-            isOwn = resultingStatus.id == ownId,
+            isOwn = status.account.id == ownId,
         )
     }
 }

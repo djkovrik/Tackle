@@ -8,6 +8,9 @@ kotlin {
         commonMain {
             dependencies {
                 implementation(project(":shared:domain"))
+                implementation(project(":shared:utils"))
+                implementation(project(":shared:component:status"))
+                implementation(project(":shared:component:statuslist"))
 
                 implementation(libs.ark.decompose.core)
                 implementation(libs.ark.decompose.extensions)
