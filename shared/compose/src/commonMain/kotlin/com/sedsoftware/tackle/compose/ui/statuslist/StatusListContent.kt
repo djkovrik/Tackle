@@ -18,6 +18,7 @@ import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults.Indicator
 import androidx.compose.material3.pulltorefresh.PullToRefreshState
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,6 +34,7 @@ import com.sedsoftware.tackle.compose.ui.statuslist.observer.LazyListItemsVisibi
 import com.sedsoftware.tackle.status.StatusComponent
 import com.sedsoftware.tackle.statuslist.StatusListComponent
 import com.sedsoftware.tackle.statuslist.integration.StatusListComponentPreview
+import kotlinx.coroutines.delay
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import tackle.shared.compose.generated.resources.Res
@@ -47,6 +49,13 @@ internal fun StatusListContent(
     val components: List<StatusComponent> by component.components.subscribeAsState()
     val lazyListState: LazyListState = rememberLazyListState()
     val pullToRefreshState: PullToRefreshState = rememberPullToRefreshState()
+
+    LaunchedEffect(model.scrollRequests) {
+        if (model.scrollRequests != 0) {
+            delay(SCROLL_TO_TOP_DELAY)
+            lazyListState.animateScrollToItem(0)
+        }
+    }
 
     PullToRefreshBox(
         isRefreshing = model.initialProgressVisible,
@@ -118,6 +127,8 @@ internal fun StatusListContent(
         onLoadMoreCallback = component::onLoadMoreRequest,
     )
 }
+
+private const val SCROLL_TO_TOP_DELAY = 250L
 
 @Preview
 @Composable

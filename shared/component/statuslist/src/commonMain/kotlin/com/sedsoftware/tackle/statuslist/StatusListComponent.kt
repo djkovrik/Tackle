@@ -18,5 +18,6 @@ interface StatusListComponent {
         val initialProgressVisible: Boolean,
         val loadMoreProgressVisible: Boolean,
         val emptyPlaceholderVisible: Boolean,
+        val scrollRequests: Int,
     )
 }

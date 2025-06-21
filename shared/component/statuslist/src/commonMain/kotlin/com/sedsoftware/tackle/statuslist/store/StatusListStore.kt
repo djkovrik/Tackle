@@ -12,6 +12,7 @@ interface StatusListStore : Store<Intent, State, Label> {
         data object OnPullToRefreshCalled : Intent
         data object OnLoadMoreRequested : Intent
         data class StatusDeleted(val statusId: String) : Intent
+        data object ScrollToTopRequested : Intent
     }
 
     data class State(
@@ -21,6 +22,7 @@ interface StatusListStore : Store<Intent, State, Label> {
         val emptyPlaceholderVisible: Boolean = false,
         val hasMoreItems: Boolean = false,
         val lastLoadedItemId: String = "",
+        val scrollRequests: Int = 0,
     )
 
     sealed class Label {

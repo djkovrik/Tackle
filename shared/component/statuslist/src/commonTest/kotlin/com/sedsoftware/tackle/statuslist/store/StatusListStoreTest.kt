@@ -155,6 +155,17 @@ class StatusListStoreTest : StoreTest<StatusListStore.Intent, StatusListStore.St
         assertThat(store.state.items).doesNotContain(itemToDelete)
     }
 
+    @Test
+    fun `ScrollToTopRequested should increase scroll requests count`() = runTest {
+        // given
+        store.init()
+        assertThat(store.state.scrollRequests).isEqualTo(0)
+        // when
+        store.accept(StatusListStore.Intent.ScrollToTopRequested)
+        // then
+        assertThat(store.state.scrollRequests).isEqualTo(1)
+    }
+
 
     override fun createStore(): Store<StatusListStore.Intent, StatusListStore.State, StatusListStore.Label> =
         StatusListStoreProvider(

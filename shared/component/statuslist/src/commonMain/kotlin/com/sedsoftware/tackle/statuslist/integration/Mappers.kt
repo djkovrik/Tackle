@@ -8,5 +8,6 @@ internal val stateToModel: (State) -> Model = {
         initialProgressVisible = it.initialProgressVisible,
         loadMoreProgressVisible = it.loadMoreProgressVisible,
         emptyPlaceholderVisible = it.emptyPlaceholderVisible,
+        scrollRequests = it.scrollRequests,
     )
 }

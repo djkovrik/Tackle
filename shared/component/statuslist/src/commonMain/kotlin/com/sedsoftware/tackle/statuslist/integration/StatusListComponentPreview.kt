@@ -19,7 +19,8 @@ class StatusListComponentPreview(
             initialValue = StatusListComponent.Model(
                 initialProgressVisible = initialProgressVisible,
                 loadMoreProgressVisible = loadMoreProgressVisible,
-                emptyPlaceholderVisible = emptyPlaceholderVisible
+                emptyPlaceholderVisible = emptyPlaceholderVisible,
+                scrollRequests = 0,
             )
         )
 
