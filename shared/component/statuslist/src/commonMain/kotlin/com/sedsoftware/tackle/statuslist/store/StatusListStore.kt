@@ -11,6 +11,7 @@ interface StatusListStore : Store<Intent, State, Label> {
     sealed interface Intent {
         data object OnPullToRefreshCalled : Intent
         data object OnLoadMoreRequested : Intent
+        data class StatusDeleted(val statusId: String) : Intent
     }
 
     data class State(

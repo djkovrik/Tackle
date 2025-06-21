@@ -1,6 +1,8 @@
 package com.sedsoftware.tackle.statuslist.integration
 
 import assertk.assertThat
+import assertk.assertions.contains
+import assertk.assertions.doesNotContain
 import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
 import com.arkivanov.decompose.DefaultComponentContext
@@ -9,6 +11,7 @@ import com.sedsoftware.tackle.domain.model.AppLocale
 import com.sedsoftware.tackle.domain.model.type.Timeline
 import com.sedsoftware.tackle.status.StatusComponent
 import com.sedsoftware.tackle.status.StatusComponentGateways
+import com.sedsoftware.tackle.status.model.StatusContextAction
 import com.sedsoftware.tackle.statuslist.Responses
 import com.sedsoftware.tackle.statuslist.StatusListComponent
 import com.sedsoftware.tackle.statuslist.store.StatusListStoreProvider
@@ -30,9 +33,13 @@ class StatusListComponentTest : ComponentTest<StatusListComponent>() {
 
     private val testUserId: String = "testUserId"
     private val timeline: Timeline = Timeline.Home
+    private val itemIndexToDelete: Int = 1
 
     private val api: StatusComponentGateways.Api = mock {
-        everySuspend { homeTimeline(any()) } returns List(StatusListStoreProvider.DEFAULT_PAGE_SIZE) { Responses.status.copy(id = "$it") }
+        everySuspend { homeTimeline(any()) } returns
+                List(StatusListStoreProvider.DEFAULT_PAGE_SIZE) { Responses.status.copy(id = "$it") }
+        everySuspend { delete(any(), any()) } returns
+                List(StatusListStoreProvider.DEFAULT_PAGE_SIZE) { Responses.status.copy(id = "$it") }[itemIndexToDelete]
     }
 
     private val settings: StatusComponentGateways.Settings = mock {
@@ -95,6 +102,20 @@ class StatusListComponentTest : ComponentTest<StatusListComponent>() {
         verifySuspend(exactly(1)) { api.homeTimeline(any()) }
         assertThat(activeComponents.size).isEqualTo(StatusListStoreProvider.DEFAULT_PAGE_SIZE * 2)
     }
+
+    @Test
+    fun `status deletion should refresh active model`() = runTest {
+        // given
+        assertThat(activeComponents.size).isEqualTo(StatusListStoreProvider.DEFAULT_PAGE_SIZE)
+        val componentToDelete = activeComponents[itemIndexToDelete]
+        assertThat(activeComponents).contains(componentToDelete)
+        activeComponents.forEach { it.resumeComponent() }
+        // when
+        componentToDelete.onMenuActionClick(StatusContextAction.DELETE)
+        // then
+        assertThat(activeComponents).doesNotContain(componentToDelete)
+    }
+
 
     override fun createComponent(): StatusListComponent =
         StatusListComponentDefault(

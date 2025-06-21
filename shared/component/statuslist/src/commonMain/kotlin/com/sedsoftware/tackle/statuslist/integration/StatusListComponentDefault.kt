@@ -90,17 +90,36 @@ class StatusListComponentDefault(
     }
 
     private fun refreshComponentsList(items: List<Status>) {
-        val currentComponents: List<StatusComponent> = components.value
-        val lastComponentStatusId: String = currentComponents.lastOrNull()?.getId().orEmpty()
-        val lastComponentStatusPosition: Int = items.indexOfLast { it.id == lastComponentStatusId }
-        val newComponents: List<StatusComponent> = items.drop(lastComponentStatusPosition + 1).map(::buildComponent)
-        val resultingList: List<StatusComponent> = currentComponents + newComponents
+        val componentsMap: Map<String, StatusComponent> = components.value.associate { it.getId() to it }
+        val activeComponentsIds: Set<String> = items.map { it.id }.toSet()
+
+        val resultingList: List<StatusComponent> = items.map { statusItem ->
+            if (componentsMap.containsKey(statusItem.id)) {
+                componentsMap[statusItem.id]!!
+            } else {
+                buildComponent(statusItem)
+            }
+        }
+
+        componentsMap.forEach { (key: String, component: StatusComponent) ->
+            if (!activeComponentsIds.contains(key)) {
+                component.stopComponent()
+            }
+        }
+
         components.value = resultingList
     }
 
-    internal fun buildComponent(status: Status): StatusComponent {
+    private fun onStatusComponentOutput(statusOutput: ComponentOutput) {
+        if (statusOutput is ComponentOutput.SingleStatus.Deleted) {
+            store.accept(StatusListStore.Intent.StatusDeleted(statusOutput.statusId))
+        } else {
+            output(statusOutput)
+        }
+    }
+
+    private fun buildComponent(status: Status): StatusComponent {
         val ownId: String = settings.ownUserId
-        val resultingStatus = status.reblog.takeIf { it != null } ?: status
         val componentLifecycle = LifecycleRegistry()
 
         return StatusComponentDefault(
@@ -110,15 +129,15 @@ class StatusListComponentDefault(
             api = api,
             tools = tools,
             dispatchers = dispatchers,
-            output = output,
-            status = resultingStatus,
+            output = ::onStatusComponentOutput,
+            status = status,
             rebloggedBy = when {
                 status.reblog != null && status.account.displayName.isNotEmpty() -> status.account.displayName
                 status.reblog != null -> status.account.username
                 else -> ""
             },
             extendedInfo = false,
-            isOwn = resultingStatus.id == ownId,
+            isOwn = status.account.id == ownId,
         )
     }
 }

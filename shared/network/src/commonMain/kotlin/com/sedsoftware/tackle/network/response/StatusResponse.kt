@@ -9,7 +9,7 @@ internal class StatusResponse(
     @SerialName("uri") val uri: String,
     @SerialName("created_at") val createdAt: String,
     @SerialName("account") val account: AccountResponse,
-    @SerialName("content") val content: String,
+    @SerialName("content") val content: String = "",
     @SerialName("visibility") val visibility: String = "",
     @SerialName("sensitive") val sensitive: Boolean,
     @SerialName("spoiler_text") val spoilerText: String,
