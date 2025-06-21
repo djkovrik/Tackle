@@ -1,6 +1,7 @@
 package com.sedsoftware.tackle.statuslist.domain
 
 import com.sedsoftware.tackle.domain.model.Status
+import com.sedsoftware.tackle.domain.model.params.ParamsContent
 import com.sedsoftware.tackle.domain.model.params.ParamsPagination
 import com.sedsoftware.tackle.domain.model.type.Timeline
 import com.sedsoftware.tackle.status.StatusComponentGateways
@@ -25,7 +26,17 @@ internal class StatusListManager(
                         limit = pageSize,
                         maxId = maxId,
                     ),
-                    content = null,
+                    content = if (timeline.local) {
+                        ParamsContent(
+                            local = true,
+                            onlyMedia = false,
+                        )
+                    } else {
+                        ParamsContent(
+                            remote = true,
+                            onlyMedia = false,
+                        )
+                    },
                 )
 
                 is Timeline.HashTag -> api.hashTagTimeline(
