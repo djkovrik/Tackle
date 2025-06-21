@@ -4,12 +4,15 @@ import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.coroutineBootstrapper
 import com.arkivanov.mvikotlin.extensions.coroutines.coroutineExecutorFactory
+import com.sedsoftware.tackle.domain.StoreCreate
 import com.sedsoftware.tackle.domain.model.CustomEmoji
 import com.sedsoftware.tackle.domain.model.Instance
-import com.sedsoftware.tackle.domain.model.type.CreatedStatusType
+import com.sedsoftware.tackle.domain.model.ScheduledStatus
+import com.sedsoftware.tackle.domain.model.Status
 import com.sedsoftware.tackle.editor.domain.EditorManager
 import com.sedsoftware.tackle.editor.extension.getNewLength
 import com.sedsoftware.tackle.editor.extension.getNewPosition
+import com.sedsoftware.tackle.editor.extension.hasScheduledDate
 import com.sedsoftware.tackle.editor.extension.insertEmoji
 import com.sedsoftware.tackle.editor.extension.insertHint
 import com.sedsoftware.tackle.editor.model.EditorInputHintItem
@@ -17,7 +20,6 @@ import com.sedsoftware.tackle.editor.model.EditorInputHintRequest
 import com.sedsoftware.tackle.editor.store.EditorStore.Intent
 import com.sedsoftware.tackle.editor.store.EditorStore.Label
 import com.sedsoftware.tackle.editor.store.EditorStore.State
-import com.sedsoftware.tackle.domain.StoreCreate
 import com.sedsoftware.tackle.utils.extension.unwrap
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -182,20 +184,31 @@ internal class EditorStoreProvider(
                     launch {
                         dispatch(Msg.TryToSendStatus)
 
-                        unwrap(
-                            result = withContext(ioContext) { manager.sendStatus(it.bundle) },
-                            onSuccess = { statusType: CreatedStatusType ->
-                                dispatch(Msg.StatusSent)
-                                when (statusType) {
-                                    CreatedStatusType.NORMAL -> publish(Label.StatusSent)
-                                    CreatedStatusType.SCHEDULED -> publish(Label.ScheduledStatusSent)
+                        if (it.bundle.hasScheduledDate) {
+                            unwrap(
+                                result = withContext(ioContext) { manager.sendScheduledStatus(it.bundle) },
+                                onSuccess = { status: ScheduledStatus ->
+                                    dispatch(Msg.StatusSent)
+                                    publish(Label.ScheduledStatusSent(status))
+                                },
+                                onError = { throwable: Throwable ->
+                                    dispatch(Msg.StatusSendFailed)
+                                    publish(Label.ErrorCaught(throwable))
                                 }
-                            },
-                            onError = { throwable: Throwable ->
-                                dispatch(Msg.StatusSendFailed)
-                                publish(Label.ErrorCaught(throwable))
-                            }
-                        )
+                            )
+                        } else {
+                            unwrap(
+                                result = withContext(ioContext) { manager.sendStatus(it.bundle) },
+                                onSuccess = { status: Status ->
+                                    dispatch(Msg.StatusSent)
+                                    publish(Label.StatusSent(status))
+                                },
+                                onError = { throwable: Throwable ->
+                                    dispatch(Msg.StatusSendFailed)
+                                    publish(Label.ErrorCaught(throwable))
+                                }
+                            )
+                        }
                     }
                 }
             },
