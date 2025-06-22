@@ -81,7 +81,6 @@ class StatusListComponentDefault(
 
     override fun showCreatedStatus(status: Status) {
         store.accept(StatusListStore.Intent.StatusCreated(status))
-        store.accept(StatusListStore.Intent.ScrollToTopRequested)
     }
 
     private fun stateToModel(from: StatusListStore.State): Model =
@@ -89,7 +88,6 @@ class StatusListComponentDefault(
             initialProgressVisible = from.initialProgressVisible,
             loadMoreProgressVisible = from.loadMoreProgressVisible,
             emptyPlaceholderVisible = from.emptyPlaceholderVisible,
-            scrollRequests = from.scrollRequests,
         )
 
     private fun stateToComponents(from: StatusListStore.State): List<StatusComponent> =
@@ -133,7 +131,7 @@ class StatusListComponentDefault(
     }
 
     private fun deleteExistingComponent(statusId: String) {
-        internalComponentsMap[statusId]?.activateComponent()
+        internalComponentsMap[statusId]?.activateComponent(false)
         internalComponentsMap.remove(statusId)
     }
 }

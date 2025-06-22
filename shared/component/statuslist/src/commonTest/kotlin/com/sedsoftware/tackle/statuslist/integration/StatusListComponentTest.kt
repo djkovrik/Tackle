@@ -109,7 +109,7 @@ class StatusListComponentTest : ComponentTest<StatusListComponent>() {
         assertThat(activeComponents.size).isEqualTo(StatusListStoreProvider.DEFAULT_PAGE_SIZE)
         val componentToDelete = activeComponents[itemIndexToDelete]
         assertThat(activeComponents).contains(componentToDelete)
-        activeComponents.forEach { it.resumeComponent() }
+        activeComponents.forEach { it.activateComponent(true) }
         // when
         componentToDelete.onMenuActionClick(StatusContextAction.DELETE)
         // then

@@ -3,6 +3,7 @@ package com.sedsoftware.tackle.root.integration
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
+import com.arkivanov.decompose.router.stack.active
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.pushNew
@@ -137,14 +138,35 @@ class RootComponentDefault internal constructor(
 
     private fun onComponentOutput(output: ComponentOutput) {
         when (output) {
-            is ComponentOutput.Auth.AuthFlowCompleted -> navigation.replaceCurrent(Config.Main)
-            is ComponentOutput.HomeTab.EditorRequested -> navigation.pushNew(Config.Editor)
-            // TODO Replace with scheduled statuses
-            is ComponentOutput.HomeTab.ScheduledStatusesRequested -> navigation.pushNew(Config.Editor)
-            is ComponentOutput.StatusEditor.BackButtonClicked -> navigation.pop()
-            is ComponentOutput.StatusEditor.StatusPublished -> navigation.pop()
-            is ComponentOutput.StatusEditor.ScheduledStatusPublished -> navigation.pop()
-            is ComponentOutput.Common.ErrorCaught -> exceptionHandler.consume(output.throwable, scope)
+            is ComponentOutput.Auth.AuthFlowCompleted -> {
+                navigation.replaceCurrent(Config.Main)
+            }
+
+            is ComponentOutput.HomeTab.EditorRequested -> {
+                navigation.pushNew(Config.Editor)
+            }
+
+            is ComponentOutput.HomeTab.ScheduledStatusesRequested -> {
+                TODO("Open scheduled statuses")
+            }
+
+            is ComponentOutput.StatusEditor.BackButtonClicked -> {
+                navigation.pop()
+            }
+
+            is ComponentOutput.StatusEditor.StatusPublished -> {
+                navigation.pop()
+                (stack.active.instance as? Child.Main)?.component?.showCreatedStatus(output.status)
+            }
+
+            is ComponentOutput.StatusEditor.ScheduledStatusPublished -> {
+                navigation.pop()
+            }
+
+            is ComponentOutput.Common.ErrorCaught -> {
+                exceptionHandler.consume(output.throwable, scope)
+            }
+
             else -> Unit
         }
     }
@@ -159,6 +181,6 @@ class RootComponentDefault internal constructor(
         data object Main : Config
 
         @Serializable
-        data object Editor: Config
+        data object Editor : Config
     }
 }

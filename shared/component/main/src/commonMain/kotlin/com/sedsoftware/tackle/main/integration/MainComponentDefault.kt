@@ -3,6 +3,7 @@ package com.sedsoftware.tackle.main.integration
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
+import com.arkivanov.decompose.router.stack.active
 import com.arkivanov.decompose.router.stack.bringToFront
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.value.Value
@@ -12,6 +13,7 @@ import com.sedsoftware.tackle.domain.api.AuthorizedApi
 import com.sedsoftware.tackle.domain.api.TackleDispatchers
 import com.sedsoftware.tackle.domain.api.TacklePlatformTools
 import com.sedsoftware.tackle.domain.api.TackleSettings
+import com.sedsoftware.tackle.domain.model.Status
 import com.sedsoftware.tackle.explore.ExploreTabComponent
 import com.sedsoftware.tackle.explore.integration.ExploreTabComponentDefault
 import com.sedsoftware.tackle.home.HomeTabComponent
@@ -113,6 +115,10 @@ class MainComponentDefault internal constructor(
             TackleNavigationTab.NOTIFICATIONS -> navigation.bringToFront(Config.NotificationsTab)
             TackleNavigationTab.PROFILE -> navigation.bringToFront(Config.ProfileTab)
         }
+    }
+
+    override fun showCreatedStatus(status: Status) {
+        (stack.active.instance as? Child.HomeTab)?.component?.showCreatedStatus(status)
     }
 
     private fun createChild(config: Config, componentContext: ComponentContext): Child =

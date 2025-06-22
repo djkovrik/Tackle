@@ -20,7 +20,6 @@ class StatusListComponentPreview(
                 initialProgressVisible = initialProgressVisible,
                 loadMoreProgressVisible = loadMoreProgressVisible,
                 emptyPlaceholderVisible = emptyPlaceholderVisible,
-                scrollRequests = 0,
             )
         )
 
