@@ -56,11 +56,7 @@ internal fun LazyListItemsVisibilityObserver(
         if ((firstIndex >= 0) && (lastIndex >= 0)) {
             val range = firstIndex - backwardPreloadCount.coerceAtLeast(0)..lastIndex + forwardPreloadCount.coerceAtLeast(0)
             childComponents.forEachIndexed { index: Int, component: StatusComponent ->
-                if (index in range) {
-                    component.resumeComponent()
-                } else {
-                    component.stopComponent()
-                }
+                component.activateComponent(activate = index in range)
             }
         }
 

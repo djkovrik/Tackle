@@ -112,7 +112,7 @@ class EditorComponentDefault(
     private val headerModel: EditorHeaderComponent.Model get() = header.model.value
     private val pollModel: EditorPollComponent.Model get() = poll.model.value
     private val warningModel: EditorWarningComponent.Model get() = warning.model.value
-    private val editorModel: EditorComponent.Model get() = model.value
+    private val editorModel: Model get() = model.value
 
     private val store: EditorStore =
         instanceKeeper.getStore {
@@ -141,11 +141,11 @@ class EditorComponentDefault(
                     }
 
                     is Label.StatusSent -> {
-                        editorOutput(ComponentOutput.StatusEditor.StatusPublished)
+                        editorOutput(ComponentOutput.StatusEditor.StatusPublished(label.status))
                     }
 
                     is Label.ScheduledStatusSent -> {
-                        editorOutput(ComponentOutput.StatusEditor.ScheduledStatusPublished)
+                        editorOutput(ComponentOutput.StatusEditor.ScheduledStatusPublished(label.status))
                     }
 
                     is Label.ErrorCaught -> {

@@ -155,6 +155,16 @@ class StatusListStoreTest : StoreTest<StatusListStore.Intent, StatusListStore.St
         assertThat(store.state.items).doesNotContain(itemToDelete)
     }
 
+    @Test
+    fun `NewStatusCreated should prepend new status to beginning of the items list`() = runTest {
+        // given
+        store.init()
+        val newStatus = Responses.status.copy(id = "new status")
+        // when
+        store.accept(StatusListStore.Intent.StatusCreated(newStatus))
+        // then
+        assertThat(store.state.items.first()).isEqualTo(newStatus)
+    }
 
     override fun createStore(): Store<StatusListStore.Intent, StatusListStore.State, StatusListStore.Label> =
         StatusListStoreProvider(

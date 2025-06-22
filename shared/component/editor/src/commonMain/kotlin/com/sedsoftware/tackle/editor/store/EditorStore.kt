@@ -4,6 +4,8 @@ import com.arkivanov.mvikotlin.core.store.Store
 import com.sedsoftware.tackle.domain.model.CustomEmoji
 import com.sedsoftware.tackle.domain.model.Instance
 import com.sedsoftware.tackle.domain.model.NewStatusBundle
+import com.sedsoftware.tackle.domain.model.ScheduledStatus
+import com.sedsoftware.tackle.domain.model.Status
 import com.sedsoftware.tackle.editor.model.EditorInputHintItem
 import com.sedsoftware.tackle.editor.model.EditorInputHintRequest
 import com.sedsoftware.tackle.editor.store.EditorStore.Intent
@@ -47,7 +49,7 @@ interface EditorStore : Store<Intent, State, Label> {
         data class InstanceConfigLoaded(val config: Instance.Config) : Label()
         data class TextUpdated(val text: String) : Label()
         data class ErrorCaught(val throwable: Throwable) : Label()
-        data object StatusSent : Label()
-        data object ScheduledStatusSent : Label()
+        data class StatusSent(val status: Status) : Label()
+        data class ScheduledStatusSent(val status: ScheduledStatus) : Label()
     }
 }

@@ -2,6 +2,8 @@ package com.sedsoftware.tackle.domain
 
 import com.sedsoftware.tackle.domain.model.CustomEmoji
 import com.sedsoftware.tackle.domain.model.MediaAttachment
+import com.sedsoftware.tackle.domain.model.ScheduledStatus
+import com.sedsoftware.tackle.domain.model.Status
 
 sealed class ComponentOutput {
 
@@ -18,8 +20,8 @@ sealed class ComponentOutput {
         data class EmojiSelected(val emoji: CustomEmoji) : StatusEditor()
         data class PendingAttachmentsCountUpdated(val count: Int) : StatusEditor()
         data class LoadedAttachmentsCountUpdated(val count: Int) : StatusEditor()
-        data object StatusPublished : StatusEditor()
-        data object ScheduledStatusPublished : StatusEditor()
+        data class StatusPublished(val status: Status) : StatusEditor()
+        data class ScheduledStatusPublished(val status: ScheduledStatus) : StatusEditor()
         data object BackButtonClicked : StatusEditor()
         data class AttachmentDetailsRequested(val attachment: MediaAttachment) : StatusEditor()
         data object AttachmentDataUpdated : StatusEditor()

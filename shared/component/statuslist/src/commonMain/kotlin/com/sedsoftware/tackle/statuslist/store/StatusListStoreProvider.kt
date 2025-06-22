@@ -70,6 +70,10 @@ internal class StatusListStoreProvider(
                 onIntent<Intent.StatusDeleted> {
                     dispatch(Msg.StatusDeleted(it.statusId))
                 }
+
+                onIntent<Intent.StatusCreated> {
+                    dispatch(Msg.NewStatusCreated(it.status))
+                }
             },
             reducer = { msg ->
                 when (msg) {
@@ -103,6 +107,10 @@ internal class StatusListStoreProvider(
                     is Msg.StatusDeleted -> copy(
                         items = items.filterNot { it.id == msg.statusId },
                     )
+
+                    is Msg.NewStatusCreated -> copy(
+                        items = listOf(msg.status) + items,
+                    )
                 }
             }
         ) {}
@@ -117,9 +125,10 @@ internal class StatusListStoreProvider(
         data class NextTimelinePageLoaded(val items: List<Status>) : Msg
         data object TimelinePageLoadingFailed : Msg
         data class StatusDeleted(val statusId: String) : Msg
+        data class NewStatusCreated(val status: Status) : Msg
     }
 
     companion object {
-        const val DEFAULT_PAGE_SIZE = 7
+        const val DEFAULT_PAGE_SIZE = 25
     }
 }

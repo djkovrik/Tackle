@@ -4,9 +4,10 @@ import com.sedsoftware.tackle.domain.TackleException
 import com.sedsoftware.tackle.domain.model.CustomEmoji
 import com.sedsoftware.tackle.domain.model.Instance
 import com.sedsoftware.tackle.domain.model.NewStatusBundle
+import com.sedsoftware.tackle.domain.model.ScheduledStatus
 import com.sedsoftware.tackle.domain.model.Search
 import com.sedsoftware.tackle.domain.model.SearchRequestBundle
-import com.sedsoftware.tackle.domain.model.type.CreatedStatusType
+import com.sedsoftware.tackle.domain.model.Status
 import com.sedsoftware.tackle.editor.EditorComponentGateways
 import com.sedsoftware.tackle.editor.extension.hasScheduledDate
 import com.sedsoftware.tackle.editor.model.EditorInputHintItem
@@ -66,7 +67,12 @@ internal class EditorManager(
         response.hashtags.map { it.toEditorInputHintHashTag() }
     }
 
-    suspend fun sendStatus(bundle: NewStatusBundle): Result<CreatedStatusType> = runCatching {
+    suspend fun sendStatus(bundle: NewStatusBundle): Result<Status> = runCatching {
+        val response = api.sendStatus(bundle)
+        return@runCatching response
+    }
+
+    suspend fun sendScheduledStatus(bundle: NewStatusBundle): Result<ScheduledStatus> = runCatching {
         val timeZone: TimeZone = timeZoneProvider.invoke()
         val now: Instant = nowInstantProvider.invoke()
         val scheduled: Instant = if (bundle.hasScheduledDate) {
@@ -82,21 +88,12 @@ internal class EditorManager(
 
         println("Now $now, schedule $scheduled, duration $duration")
 
-        when {
-            bundle.hasScheduledDate && hasValidScheduleDate -> {
-                api.sendStatusScheduled(bundle)
-                CreatedStatusType.SCHEDULED
-            }
-
-            bundle.hasScheduledDate && !hasValidScheduleDate -> {
-                throw TackleException.ScheduleDateTooShort
-            }
-
-            else -> {
-                api.sendStatus(bundle)
-                CreatedStatusType.NORMAL
-            }
+        if (bundle.hasScheduledDate && !hasValidScheduleDate) {
+            throw TackleException.ScheduleDateTooShort
         }
+
+        val response = api.sendStatusScheduled(bundle)
+        return@runCatching response
     }
 
     fun checkForInputHint(inputText: String, inputPosition: Pair<Int, Int>): EditorInputHintRequest {

@@ -254,24 +254,35 @@ class StatusComponentTest : ComponentTest<StatusComponent>() {
     }
 
     @Test
-    fun `stopComponent should pass stop event to lifecycle`() = runTest {
+    fun `stopping component should pass stop event to lifecycle`() = runTest {
         // given
         every { lifecycleRegistry.state } returns Lifecycle.State.STARTED
         // when
-        component.stopComponent()
+        component.activateComponent(false)
         // then
         verify { lifecycleRegistry.onStop() }
     }
 
     @Test
-    fun `resumeComponent should pass stop event to lifecycle`() = runTest {
+    fun `activating component should pass stop event to lifecycle`() = runTest {
         // given
         every { lifecycleRegistry.state } returns Lifecycle.State.STARTED
         // when
-        component.resumeComponent()
+        component.activateComponent(true)
         // then
         verify { lifecycleRegistry.onResume() }
     }
+
+    @Test
+    fun `refreshStatus should refresh model status`() = runTest {
+        // given
+        val updatedStatus: Status = testStatus.copy(id = "updated")
+        // when
+        component.refreshStatus(updatedStatus)
+        // then
+        assertThat(activeModel.status).isEqualTo(updatedStatus)
+    }
+
 
     override fun createComponent(): StatusComponent =
         StatusComponentDefault(

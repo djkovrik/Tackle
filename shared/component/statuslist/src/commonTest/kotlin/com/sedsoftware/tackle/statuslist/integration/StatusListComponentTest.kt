@@ -109,11 +109,21 @@ class StatusListComponentTest : ComponentTest<StatusListComponent>() {
         assertThat(activeComponents.size).isEqualTo(StatusListStoreProvider.DEFAULT_PAGE_SIZE)
         val componentToDelete = activeComponents[itemIndexToDelete]
         assertThat(activeComponents).contains(componentToDelete)
-        activeComponents.forEach { it.resumeComponent() }
+        activeComponents.forEach { it.activateComponent(true) }
         // when
         componentToDelete.onMenuActionClick(StatusContextAction.DELETE)
         // then
         assertThat(activeComponents).doesNotContain(componentToDelete)
+    }
+
+    @Test
+    fun `displayCreatedStatus should prepend status to items list`() = runTest {
+        // given
+        val newStatus = Responses.status.copy(id = "new status")
+        // when
+        component.showCreatedStatus(newStatus)
+        // then
+        assertThat(activeComponents.first().getId()).isEqualTo(newStatus.id)
     }
 
 

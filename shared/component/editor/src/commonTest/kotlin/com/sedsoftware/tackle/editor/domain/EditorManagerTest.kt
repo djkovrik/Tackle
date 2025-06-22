@@ -7,7 +7,6 @@ import assertk.assertions.isNotEmpty
 import assertk.assertions.isTrue
 import com.sedsoftware.tackle.domain.TackleException
 import com.sedsoftware.tackle.domain.model.NewStatusBundle
-import com.sedsoftware.tackle.domain.model.type.CreatedStatusType
 import com.sedsoftware.tackle.editor.EditorComponentGateways
 import com.sedsoftware.tackle.editor.Instances
 import com.sedsoftware.tackle.editor.Responses
@@ -435,7 +434,7 @@ class EditorManagerTest {
         val response = manager.sendStatus(bundle)
         // then
         assertThat(response.isSuccess).isTrue()
-        assertThat(response.getOrThrow()).isEqualTo(CreatedStatusType.NORMAL)
+        assertThat(response.getOrThrow()).isEqualTo(Responses.statusNormal)
     }
 
     @Test
@@ -453,10 +452,10 @@ class EditorManagerTest {
             .build()
         // when
         nowProviderStub = now.toInstant(timeZone)
-        val response = manager.sendStatus(bundle)
+        val response = manager.sendScheduledStatus(bundle)
         // then
         assertThat(response.isSuccess).isTrue()
-        assertThat(response.getOrThrow()).isEqualTo(CreatedStatusType.SCHEDULED)
+        assertThat(response.getOrThrow()).isEqualTo(Responses.statusScheduled)
     }
 
     @Test
@@ -474,7 +473,7 @@ class EditorManagerTest {
             .build()
         // when
         nowProviderStub = now.toInstant(timeZone)
-        val response = manager.sendStatus(bundle)
+        val response = manager.sendScheduledStatus(bundle)
         // then
         assertThat(response.isSuccess).isFalse()
         assertThat(response.isFailure).isTrue()

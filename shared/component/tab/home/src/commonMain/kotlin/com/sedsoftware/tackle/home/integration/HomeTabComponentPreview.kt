@@ -12,4 +12,5 @@ class HomeTabComponentPreview(statuses: List<Status>, ) : HomeTabComponent {
 
     override fun onNewPostClick() = Unit
     override fun onScheduledPostsClick() = Unit
+    override fun showCreatedStatus(status: Status) = Unit
 }

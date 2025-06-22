@@ -434,7 +434,7 @@ internal class EditorStoreTest : StoreTest<EditorStore.Intent, EditorStore.State
     }
 
     @Test
-    fun `SendStatus should navigate to home screen on success`() = runTest {
+    fun `SendStatus should publish label on success`() = runTest {
         // given
         val bundle = NewStatusBundle.Builder().status("Test").build()
         // when
@@ -447,7 +447,7 @@ internal class EditorStoreTest : StoreTest<EditorStore.Intent, EditorStore.State
     }
 
     @Test
-    fun `SendStatus for scheduled should navigate to scheduled statuses on success`() = runTest {
+    fun `SendStatus for scheduled status should publish label on success`() = runTest {
         // given
         val now: LocalDateTime = LocalDateTime.parse("2024-08-12T12:34:56.120")
         nowProviderStub = now.toInstant(TimeZone.UTC)

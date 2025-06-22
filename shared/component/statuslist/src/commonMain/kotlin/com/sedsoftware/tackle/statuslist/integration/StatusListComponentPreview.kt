@@ -19,7 +19,7 @@ class StatusListComponentPreview(
             initialValue = StatusListComponent.Model(
                 initialProgressVisible = initialProgressVisible,
                 loadMoreProgressVisible = loadMoreProgressVisible,
-                emptyPlaceholderVisible = emptyPlaceholderVisible
+                emptyPlaceholderVisible = emptyPlaceholderVisible,
             )
         )
 
@@ -30,4 +30,5 @@ class StatusListComponentPreview(
 
     override fun onPullToRefresh() = Unit
     override fun onLoadMoreRequest() = Unit
+    override fun showCreatedStatus(status: Status) = Unit
 }

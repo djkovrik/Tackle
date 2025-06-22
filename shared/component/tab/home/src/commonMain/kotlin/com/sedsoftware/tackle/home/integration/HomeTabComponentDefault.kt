@@ -5,6 +5,7 @@ import com.arkivanov.decompose.childContext
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.sedsoftware.tackle.domain.ComponentOutput
 import com.sedsoftware.tackle.domain.api.TackleDispatchers
+import com.sedsoftware.tackle.domain.model.Status
 import com.sedsoftware.tackle.domain.model.type.Timeline
 import com.sedsoftware.tackle.home.HomeTabComponent
 import com.sedsoftware.tackle.status.StatusComponentGateways
@@ -39,5 +40,9 @@ class HomeTabComponentDefault(
 
     override fun onScheduledPostsClick() {
         output(ComponentOutput.HomeTab.ScheduledStatusesRequested)
+    }
+
+    override fun showCreatedStatus(status: Status) {
+        homeTimeline.showCreatedStatus(status)
     }
 }

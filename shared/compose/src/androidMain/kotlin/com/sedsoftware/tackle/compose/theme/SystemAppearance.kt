@@ -8,6 +8,7 @@ import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
 @Composable
+@Suppress("DEPRECATION")
 internal actual fun SystemAppearance(isDark: Boolean) {
     val view = LocalView.current
     val systemBarColor = Color.TRANSPARENT
