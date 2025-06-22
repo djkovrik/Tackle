@@ -156,6 +156,18 @@ class StatusListStoreTest : StoreTest<StatusListStore.Intent, StatusListStore.St
     }
 
     @Test
+    fun `NewStatusCreated should prepend new status to beginning of the items list`() = runTest {
+        // given
+        store.init()
+        val newStatus = Responses.status.copy(id = "new status")
+        // when
+        store.accept(StatusListStore.Intent.StatusCreated(newStatus))
+        // then
+        assertThat(store.state.items.first()).isEqualTo(newStatus)
+    }
+
+
+    @Test
     fun `ScrollToTopRequested should increase scroll requests count`() = runTest {
         // given
         store.init()

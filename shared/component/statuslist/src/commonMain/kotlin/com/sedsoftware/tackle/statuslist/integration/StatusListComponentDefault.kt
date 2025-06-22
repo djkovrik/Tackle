@@ -79,6 +79,11 @@ class StatusListComponentDefault(
         store.accept(StatusListStore.Intent.OnLoadMoreRequested)
     }
 
+    override fun showCreatedStatus(status: Status) {
+        store.accept(StatusListStore.Intent.StatusCreated(status))
+        store.accept(StatusListStore.Intent.ScrollToTopRequested)
+    }
+
     private fun stateToModel(from: StatusListStore.State): Model =
         Model(
             initialProgressVisible = from.initialProgressVisible,

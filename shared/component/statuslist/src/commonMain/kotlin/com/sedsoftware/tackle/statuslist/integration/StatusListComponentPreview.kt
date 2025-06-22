@@ -31,4 +31,5 @@ class StatusListComponentPreview(
 
     override fun onPullToRefresh() = Unit
     override fun onLoadMoreRequest() = Unit
+    override fun showCreatedStatus(status: Status) = Unit
 }

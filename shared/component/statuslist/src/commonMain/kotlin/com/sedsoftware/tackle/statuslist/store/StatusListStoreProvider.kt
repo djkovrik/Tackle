@@ -71,6 +71,10 @@ internal class StatusListStoreProvider(
                     dispatch(Msg.StatusDeleted(it.statusId))
                 }
 
+                onIntent<Intent.StatusCreated> {
+                    dispatch(Msg.NewStatusCreated(it.status))
+                }
+
                 onIntent<Intent.ScrollToTopRequested> {
                     dispatch(Msg.ScrollToTopRequested)
                 }
@@ -108,6 +112,10 @@ internal class StatusListStoreProvider(
                         items = items.filterNot { it.id == msg.statusId },
                     )
 
+                    is Msg.NewStatusCreated -> copy(
+                        items = listOf(msg.status) + items,
+                    )
+
                     is Msg.ScrollToTopRequested -> copy(
                         scrollRequests = scrollRequests + 1,
                     )
@@ -125,10 +133,11 @@ internal class StatusListStoreProvider(
         data class NextTimelinePageLoaded(val items: List<Status>) : Msg
         data object TimelinePageLoadingFailed : Msg
         data class StatusDeleted(val statusId: String) : Msg
+        data class NewStatusCreated(val status: Status) : Msg
         data object ScrollToTopRequested : Msg
     }
 
     companion object {
-        const val DEFAULT_PAGE_SIZE = 7
+        const val DEFAULT_PAGE_SIZE = 25
     }
 }

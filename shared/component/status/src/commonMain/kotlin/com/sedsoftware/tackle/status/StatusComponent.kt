@@ -1,3 +1,5 @@
+@file:Suppress("TooManyFunctions")
+
 package com.sedsoftware.tackle.status
 
 import com.arkivanov.decompose.value.Value

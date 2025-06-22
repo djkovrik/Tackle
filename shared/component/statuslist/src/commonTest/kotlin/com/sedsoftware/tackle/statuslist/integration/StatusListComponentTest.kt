@@ -116,6 +116,16 @@ class StatusListComponentTest : ComponentTest<StatusListComponent>() {
         assertThat(activeComponents).doesNotContain(componentToDelete)
     }
 
+    @Test
+    fun `displayCreatedStatus should prepend status to items list`() = runTest {
+        // given
+        val newStatus = Responses.status.copy(id = "new status")
+        // when
+        component.showCreatedStatus(newStatus)
+        // then
+        assertThat(activeComponents.first().getId()).isEqualTo(newStatus.id)
+    }
+
 
     override fun createComponent(): StatusListComponent =
         StatusListComponentDefault(
