@@ -137,11 +137,11 @@ class StatusComponentDefault(
         return status.id
     }
 
-    override fun stopComponent() {
-        componentLifecycle.stop()
-    }
-
-    override fun resumeComponent() {
-        componentLifecycle.resume()
+    override fun activateComponent(activate: Boolean) {
+        if (activate) {
+            componentLifecycle.resume()
+        } else {
+            componentLifecycle.stop()
+        }
     }
 }

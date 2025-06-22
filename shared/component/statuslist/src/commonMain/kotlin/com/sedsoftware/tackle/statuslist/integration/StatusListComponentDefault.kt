@@ -133,7 +133,7 @@ class StatusListComponentDefault(
     }
 
     private fun deleteExistingComponent(statusId: String) {
-        internalComponentsMap[statusId]?.stopComponent()
+        internalComponentsMap[statusId]?.activateComponent()
         internalComponentsMap.remove(statusId)
     }
 }

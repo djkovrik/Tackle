@@ -1,5 +1,3 @@
-@file:Suppress("TooManyFunctions")
-
 package com.sedsoftware.tackle.status
 
 import com.arkivanov.decompose.value.Value
@@ -24,8 +22,7 @@ interface StatusComponent {
     fun onMentionClick(mention: String)
     fun refreshStatus(status: Status)
     fun getId(): String
-    fun stopComponent()
-    fun resumeComponent()
+    fun activateComponent(activate: Boolean)
 
     data class Model(
         val status: Status,
