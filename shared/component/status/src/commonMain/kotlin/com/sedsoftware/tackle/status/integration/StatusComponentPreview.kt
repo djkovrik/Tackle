@@ -48,5 +48,4 @@ class StatusComponentPreview(
     override fun onMentionClick(mention: String) = Unit
     override fun refreshStatus(status: Status) = Unit
     override fun getId(): String = status.id
-    override fun activateComponent(activate: Boolean) = Unit
 }

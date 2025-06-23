@@ -56,7 +56,7 @@ class StatusListComponentTest : ComponentTest<StatusListComponent>() {
         get() = component.model.value
 
     private val activeComponents: List<StatusComponent>
-        get() = component.components.value
+        get() = component.items.value
 
     @BeforeTest
     fun beforeTest() {

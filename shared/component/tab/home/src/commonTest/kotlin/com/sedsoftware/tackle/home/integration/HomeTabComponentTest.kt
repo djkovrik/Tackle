@@ -132,7 +132,7 @@ class HomeTabComponentTest : ComponentTest<HomeTabComponent>() {
         // when
         component.showCreatedStatus(newStatus)
         // then
-        assertThat(component.homeTimeline.components.value.first().getId()).isEqualTo(newStatus.id)
+        assertThat(component.homeTimeline.items.value.first().getId()).isEqualTo(newStatus.id)
     }
 
 

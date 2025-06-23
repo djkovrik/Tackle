@@ -22,7 +22,6 @@ interface StatusComponent {
     fun onMentionClick(mention: String)
     fun refreshStatus(status: Status)
     fun getId(): String
-    fun activateComponent(activate: Boolean)
 
     data class Model(
         val status: Status,

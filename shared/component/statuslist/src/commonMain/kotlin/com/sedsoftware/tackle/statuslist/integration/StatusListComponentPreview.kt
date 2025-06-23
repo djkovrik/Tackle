@@ -1,5 +1,7 @@
 package com.sedsoftware.tackle.statuslist.integration
 
+import com.arkivanov.decompose.ExperimentalDecomposeApi
+import com.arkivanov.decompose.router.items.LazyChildItems
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
 import com.sedsoftware.tackle.domain.model.Status
@@ -7,6 +9,7 @@ import com.sedsoftware.tackle.status.StatusComponent
 import com.sedsoftware.tackle.status.integration.StatusComponentPreview
 import com.sedsoftware.tackle.statuslist.StatusListComponent
 
+@OptIn(ExperimentalDecomposeApi::class)
 class StatusListComponentPreview(
     statuses: List<Status> = emptyList(),
     initialProgressVisible: Boolean = false,
@@ -23,9 +26,11 @@ class StatusListComponentPreview(
             )
         )
 
-    override val components: MutableValue<List<StatusComponent>> =
-        MutableValue(
-            initialValue = statuses.map { StatusComponentPreview(status = it) }
+    override val items: LazyChildItems<Status, StatusComponent> =
+        SimpleLazyChildItems(
+            items = statuses
+                .map { status -> StatusComponentPreview(status = status) }
+                .associateBy { component -> component.status }
         )
 
     override fun onPullToRefresh() = Unit

@@ -28,7 +28,6 @@ import kotlinx.coroutines.launch
 
 class StatusComponentDefault(
     private val componentContext: ComponentContext,
-    private val componentLifecycle: LifecycleRegistry,
     private val storeFactory: StoreFactory,
     private val api: StatusComponentGateways.Api,
     private val tools: StatusComponentGateways.Tools,
@@ -135,13 +134,5 @@ class StatusComponentDefault(
 
     override fun getId(): String {
         return status.id
-    }
-
-    override fun activateComponent(activate: Boolean) {
-        if (activate) {
-            componentLifecycle.resume()
-        } else {
-            componentLifecycle.stop()
-        }
     }
 }
