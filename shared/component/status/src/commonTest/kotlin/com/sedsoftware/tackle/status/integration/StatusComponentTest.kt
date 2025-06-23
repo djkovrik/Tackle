@@ -6,8 +6,6 @@ import assertk.assertions.isFalse
 import assertk.assertions.isNotNull
 import assertk.assertions.isTrue
 import com.arkivanov.decompose.DefaultComponentContext
-import com.arkivanov.essenty.lifecycle.Lifecycle
-import com.arkivanov.essenty.lifecycle.LifecycleRegistry
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import com.sedsoftware.tackle.domain.ComponentOutput
 import com.sedsoftware.tackle.domain.model.AppLocale
@@ -15,6 +13,7 @@ import com.sedsoftware.tackle.domain.model.Status
 import com.sedsoftware.tackle.status.Responses
 import com.sedsoftware.tackle.status.StatusComponent
 import com.sedsoftware.tackle.status.StatusComponentGateways
+import com.sedsoftware.tackle.status.model.StatusAction
 import com.sedsoftware.tackle.status.model.StatusContextAction
 import com.sedsoftware.tackle.utils.test.ComponentTest
 import dev.mokkery.answering.returns
@@ -54,13 +53,6 @@ class StatusComponentTest : ComponentTest<StatusComponent>() {
         every { getCurrentLocale() } returns AppLocale("English", "en")
         every { openUrl(any()) } returns Unit
         every { shareUrl(any(), any()) } returns Unit
-    }
-
-    private val lifecycleRegistry: LifecycleRegistry = mock {
-        every { state } returns Lifecycle.State.STARTED
-        every { onResume() } returns Unit
-        every { onStop() } returns Unit
-        every { subscribe(any()) } returns Unit
     }
 
     private val activeModel: StatusComponent.Model
@@ -127,30 +119,30 @@ class StatusComponentTest : ComponentTest<StatusComponent>() {
     }
 
     @Test
-    fun `onFavouriteClick should favourite status`() = runTest {
+    fun `on favourite click should favourite status`() = runTest {
         // given
         // when
-        component.onFavouriteClick()
+        component.onStatusAction(StatusAction.FAVOURITE)
         // then
         assertThat(activeModel.status.favourited).isTrue()
         verifySuspend(exactly(1)) { api.favourite(testStatus.id) }
         // when
-        component.onFavouriteClick()
+        component.onStatusAction(StatusAction.FAVOURITE)
         // then
         assertThat(activeModel.status.favourited).isFalse()
         verifySuspend(exactly(1)) { api.unfavourite(testStatus.id) }
     }
 
     @Test
-    fun `onReblogClick should reblog status`() = runTest {
+    fun `on reblog click should reblog status`() = runTest {
         // given
         // when
-        component.onReblogClick()
+        component.onStatusAction(StatusAction.REBLOG)
         // then
         assertThat(activeModel.status.reblogged).isTrue()
         verifySuspend(exactly(1)) { api.boost(testStatus.id) }
         // when
-        component.onReblogClick()
+        component.onStatusAction(StatusAction.REBLOG)
         // then
         assertThat(activeModel.status.reblogged).isFalse()
         verifySuspend(exactly(1)) { api.unboost(testStatus.id) }
@@ -193,10 +185,10 @@ class StatusComponentTest : ComponentTest<StatusComponent>() {
     }
 
     @Test
-    fun `onShareClick should call for share`() = runTest {
+    fun `on share click should call for share`() = runTest {
         // given
         // when
-        component.onShareClick()
+        component.onStatusAction(StatusAction.SHARE)
         // then
         verify(exactly(1)) { tools.shareUrl(testStatus.account.displayName, testStatus.url) }
     }
@@ -213,10 +205,10 @@ class StatusComponentTest : ComponentTest<StatusComponent>() {
     }
 
     @Test
-    fun `onReplyClick should publish output for replying`() = runTest {
+    fun `on reply click should publish output for replying`() = runTest {
         // given
         // when
-        component.onReplyClick()
+        component.onStatusAction(StatusAction.REPLY)
         // then
         val output = componentOutput.firstOrNull { it is ComponentOutput.SingleStatus.ReplyCalled } as ComponentOutput.SingleStatus.ReplyCalled
         assertThat(output.statusId).isEqualTo(testStatus.id)
@@ -246,7 +238,7 @@ class StatusComponentTest : ComponentTest<StatusComponent>() {
 
     override fun createComponent(): StatusComponent =
         StatusComponentDefault(
-            componentContext = DefaultComponentContext(lifecycleRegistry),
+            componentContext = DefaultComponentContext(lifecycle),
             storeFactory = DefaultStoreFactory(),
             api = api,
             tools = tools,

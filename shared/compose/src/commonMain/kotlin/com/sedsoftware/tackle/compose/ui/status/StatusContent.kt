@@ -21,6 +21,7 @@ import com.sedsoftware.tackle.domain.model.PreviewCard
 import com.sedsoftware.tackle.domain.model.Translation
 import com.sedsoftware.tackle.status.StatusComponent
 import com.sedsoftware.tackle.status.integration.StatusComponentPreview
+import com.sedsoftware.tackle.status.model.StatusAction
 import com.seiko.imageloader.rememberImagePainter
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -48,12 +49,12 @@ internal fun StatusContent(
         model = model,
         modifier = modifier,
         showExtendedInfo = model.extendedInfo,
-        onFavouriteClick = component::onFavouriteClick,
-        onReblogClick = component::onReblogClick,
-        onMenuRequest = component::onMenuRequest,
-        onMenuActionClick = component::onMenuActionClick,
-        onReplyClick = component::onReplyClick,
-        onShareClick = component::onShareClick,
+        onFavouriteClick = { component.onStatusAction(StatusAction.FAVOURITE) },
+        onReblogClick = { component.onStatusAction(StatusAction.REBLOG) },
+        onMenuRequest = { component.onMenuRequest(it) },
+        onMenuActionClick = { component.onMenuActionClick(it) },
+        onReplyClick = { component.onStatusAction(StatusAction.REPLY) },
+        onShareClick = { component.onStatusAction(StatusAction.SHARE) },
     ) {
 
         if (model.status.content.isNotEmpty() || !model.translation?.content.isNullOrEmpty()) {

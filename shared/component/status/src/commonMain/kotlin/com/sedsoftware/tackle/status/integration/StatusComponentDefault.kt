@@ -14,6 +14,7 @@ import com.sedsoftware.tackle.status.StatusComponent
 import com.sedsoftware.tackle.status.StatusComponent.Model
 import com.sedsoftware.tackle.status.StatusComponentGateways
 import com.sedsoftware.tackle.status.domain.StatusManager
+import com.sedsoftware.tackle.status.model.StatusAction
 import com.sedsoftware.tackle.status.model.StatusContextAction
 import com.sedsoftware.tackle.status.store.StatusStore
 import com.sedsoftware.tackle.status.store.StatusStore.Label
@@ -69,6 +70,15 @@ class StatusComponentDefault(
 
     override val model: Value<Model> = store.asValue().map(stateToModel)
 
+    override fun onStatusAction(action: StatusAction) {
+        when (action) {
+            StatusAction.FAVOURITE -> store.accept(StatusStore.Intent.OnFavouriteClicked)
+            StatusAction.REBLOG -> store.accept(StatusStore.Intent.OnReblogClicked)
+            StatusAction.SHARE -> store.accept(StatusStore.Intent.OnShareClicked)
+            StatusAction.REPLY -> output(ComponentOutput.SingleStatus.ReplyCalled(model.value.status.id))
+        }
+    }
+
     override fun onMenuActionClick(action: StatusContextAction) {
         when (action) {
             StatusContextAction.TRANSLATE -> store.accept(StatusStore.Intent.OnTranslateClicked)
@@ -83,14 +93,6 @@ class StatusComponentDefault(
         }
     }
 
-    override fun onFavouriteClick() {
-        store.accept(StatusStore.Intent.OnFavouriteClicked)
-    }
-
-    override fun onReblogClick() {
-        store.accept(StatusStore.Intent.OnReblogClicked)
-    }
-
     override fun onMenuRequest(visible: Boolean) {
         store.accept(StatusStore.Intent.OnMenuVisibilityChanged(visible))
     }
@@ -103,17 +105,8 @@ class StatusComponentDefault(
         store.accept(StatusStore.Intent.OnVoteClicked)
     }
 
-    override fun onShareClick() {
-        store.accept(StatusStore.Intent.OnShareClicked)
-    }
-
     override fun onUrlClick(url: String) {
         store.accept(StatusStore.Intent.OnUrlClicked(url))
-    }
-
-    override fun onReplyClick() {
-        val currentStatus: Status = model.value.status
-        output(ComponentOutput.SingleStatus.ReplyCalled(currentStatus.id))
     }
 
     override fun onHashTagClick(hashTag: String) {
