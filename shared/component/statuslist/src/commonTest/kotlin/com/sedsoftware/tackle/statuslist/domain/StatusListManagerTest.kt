@@ -52,6 +52,21 @@ class StatusListManagerTest {
     }
 
     @Test
+    fun `loadStatusList for public remote timeline calls for api`() = runTest {
+        // given
+        val timeline = Timeline.Public(false)
+        val manager = StatusListManager(timeline, api)
+        val pageSize = 20
+        val maxId = "maxId"
+        // when
+        val result = manager.loadStatusList(pageSize, maxId)
+        // then
+        assertThat(result.isSuccess).isTrue()
+        verifySuspend(exactly(1)) { api.publicTimeline(any(), any()) }
+    }
+
+
+    @Test
     fun `loadStatusList for hashtag timeline calls for api`() = runTest {
         // given
         val tag = "tag"

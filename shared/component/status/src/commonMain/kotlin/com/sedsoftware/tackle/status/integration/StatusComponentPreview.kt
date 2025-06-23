@@ -6,6 +6,7 @@ import com.sedsoftware.tackle.domain.model.Status
 import com.sedsoftware.tackle.domain.model.Translation
 import com.sedsoftware.tackle.status.StatusComponent
 import com.sedsoftware.tackle.status.StatusComponent.Model
+import com.sedsoftware.tackle.status.model.StatusAction
 import com.sedsoftware.tackle.status.model.StatusContextAction
 
 class StatusComponentPreview(
@@ -35,18 +36,12 @@ class StatusComponentPreview(
             )
         )
 
+    override fun onStatusAction(action: StatusAction) = Unit
     override fun onMenuActionClick(action: StatusContextAction) = Unit
-    override fun onFavouriteClick() = Unit
-    override fun onReblogClick() = Unit
     override fun onMenuRequest(visible: Boolean) = Unit
     override fun onPollSelect(index: Int, multiselect: Boolean) = Unit
     override fun onVoteClick() = Unit
-    override fun onShareClick() = Unit
     override fun onUrlClick(url: String) = Unit
-    override fun onReplyClick() = Unit
     override fun onHashTagClick(hashTag: String) = Unit
     override fun onMentionClick(mention: String) = Unit
-    override fun refreshStatus(status: Status) = Unit
-    override fun getId(): String = status.id
-    override fun activateComponent(activate: Boolean) = Unit
 }

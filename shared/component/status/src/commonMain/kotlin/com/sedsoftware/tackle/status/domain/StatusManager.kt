@@ -4,6 +4,7 @@ import com.sedsoftware.tackle.domain.model.Status
 import com.sedsoftware.tackle.domain.model.Translation
 import com.sedsoftware.tackle.status.StatusComponentGateways
 import com.sedsoftware.tackle.status.model.StatusContextAction
+import com.sedsoftware.tackle.utils.extension.toNormalizedUrl
 
 internal class StatusManager(
     private val api: StatusComponentGateways.Api,
@@ -25,54 +26,54 @@ internal class StatusManager(
         return@runCatching response.id == pollId
     }
 
-    suspend fun favourite(statusId: String, favourite: Boolean): Result<Boolean> = runCatching {
-        val response = if (favourite) {
+    suspend fun favourite(statusId: String, favourite: Boolean): Result<Status> = runCatching {
+        val response: Status = if (favourite) {
             api.favourite(statusId)
         } else {
             api.unfavourite(statusId)
         }
 
-        return@runCatching response.favourited
+        return@runCatching response
     }
 
-    suspend fun boost(statusId: String, boost: Boolean): Result<Boolean> = runCatching {
+    suspend fun boost(statusId: String, boost: Boolean): Result<Status> = runCatching {
         val response = if (boost) {
             api.boost(statusId)
         } else {
             api.unboost(statusId)
         }
 
-        return@runCatching response.reblogged
+        return@runCatching response
     }
 
-    suspend fun bookmark(statusId: String, bookmark: Boolean): Result<Boolean> = runCatching {
+    suspend fun bookmark(statusId: String, bookmark: Boolean): Result<Status> = runCatching {
         val response = if (bookmark) {
             api.bookmark(statusId)
         } else {
             api.unbookmark(statusId)
         }
 
-        return@runCatching response.bookmarked
+        return@runCatching response
     }
 
-    suspend fun pin(statusId: String, pin: Boolean): Result<Boolean> = runCatching {
+    suspend fun pin(statusId: String, pin: Boolean): Result<Status> = runCatching {
         val response = if (pin) {
             api.pin(statusId)
         } else {
             api.unpin(statusId)
         }
 
-        return@runCatching response.pinned
+        return@runCatching response
     }
 
-    suspend fun mute(statusId: String, mute: Boolean): Result<Boolean> = runCatching {
+    suspend fun mute(statusId: String, mute: Boolean): Result<Status> = runCatching {
         val response = if (mute) {
             api.mute(statusId)
         } else {
             api.unmute(statusId)
         }
 
-        return@runCatching response.muted
+        return@runCatching response
     }
 
     fun share(title: String, url: String): Result<Unit> = runCatching {
@@ -80,7 +81,8 @@ internal class StatusManager(
     }
 
     fun openUrl(url: String): Result<Unit> = runCatching {
-        tools.openUrl(url)
+        val normalizedUrl = url.toNormalizedUrl()
+        tools.openUrl(normalizedUrl)
     }
 
     fun buildContextActions(status: Status, isOwn: Boolean, translated: Boolean): Result<List<StatusContextAction>> = runCatching {

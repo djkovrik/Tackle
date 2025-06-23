@@ -3,10 +3,7 @@ package com.sedsoftware.tackle.status.integration
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.decompose.value.operator.map
-import com.arkivanov.essenty.lifecycle.LifecycleRegistry
 import com.arkivanov.essenty.lifecycle.doOnDestroy
-import com.arkivanov.essenty.lifecycle.resume
-import com.arkivanov.essenty.lifecycle.stop
 import com.arkivanov.mvikotlin.core.instancekeeper.getStore
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.labels
@@ -17,6 +14,7 @@ import com.sedsoftware.tackle.status.StatusComponent
 import com.sedsoftware.tackle.status.StatusComponent.Model
 import com.sedsoftware.tackle.status.StatusComponentGateways
 import com.sedsoftware.tackle.status.domain.StatusManager
+import com.sedsoftware.tackle.status.model.StatusAction
 import com.sedsoftware.tackle.status.model.StatusContextAction
 import com.sedsoftware.tackle.status.store.StatusStore
 import com.sedsoftware.tackle.status.store.StatusStore.Label
@@ -28,7 +26,6 @@ import kotlinx.coroutines.launch
 
 class StatusComponentDefault(
     private val componentContext: ComponentContext,
-    private val componentLifecycle: LifecycleRegistry,
     private val storeFactory: StoreFactory,
     private val api: StatusComponentGateways.Api,
     private val tools: StatusComponentGateways.Tools,
@@ -47,8 +44,7 @@ class StatusComponentDefault(
                 manager = StatusManager(api, tools),
                 mainContext = dispatchers.main,
                 ioContext = dispatchers.io,
-                baseStatus = status,
-                displayedStatus = status.reblog.takeIf { it != null } ?: status,
+                status = status,
                 rebloggedBy = rebloggedBy,
                 extendedInfo = extendedInfo,
                 isOwn = isOwn,
@@ -74,6 +70,15 @@ class StatusComponentDefault(
 
     override val model: Value<Model> = store.asValue().map(stateToModel)
 
+    override fun onStatusAction(action: StatusAction) {
+        when (action) {
+            StatusAction.FAVOURITE -> store.accept(StatusStore.Intent.OnFavouriteClicked)
+            StatusAction.REBLOG -> store.accept(StatusStore.Intent.OnReblogClicked)
+            StatusAction.SHARE -> store.accept(StatusStore.Intent.OnShareClicked)
+            StatusAction.REPLY -> output(ComponentOutput.SingleStatus.ReplyCalled(model.value.status.id))
+        }
+    }
+
     override fun onMenuActionClick(action: StatusContextAction) {
         when (action) {
             StatusContextAction.TRANSLATE -> store.accept(StatusStore.Intent.OnTranslateClicked)
@@ -88,14 +93,6 @@ class StatusComponentDefault(
         }
     }
 
-    override fun onFavouriteClick() {
-        store.accept(StatusStore.Intent.OnFavouriteClicked)
-    }
-
-    override fun onReblogClick() {
-        store.accept(StatusStore.Intent.OnReblogClicked)
-    }
-
     override fun onMenuRequest(visible: Boolean) {
         store.accept(StatusStore.Intent.OnMenuVisibilityChanged(visible))
     }
@@ -108,17 +105,8 @@ class StatusComponentDefault(
         store.accept(StatusStore.Intent.OnVoteClicked)
     }
 
-    override fun onShareClick() {
-        store.accept(StatusStore.Intent.OnShareClicked)
-    }
-
     override fun onUrlClick(url: String) {
         store.accept(StatusStore.Intent.OnUrlClicked(url))
-    }
-
-    override fun onReplyClick() {
-        val currentStatus: Status = model.value.status
-        output(ComponentOutput.SingleStatus.ReplyCalled(currentStatus.id))
     }
 
     override fun onHashTagClick(hashTag: String) {
@@ -127,21 +115,5 @@ class StatusComponentDefault(
 
     override fun onMentionClick(mention: String) {
         output(ComponentOutput.SingleStatus.MentionClicked(mention))
-    }
-
-    override fun refreshStatus(status: Status) {
-        store.accept(StatusStore.Intent.RefreshStatus(status))
-    }
-
-    override fun getId(): String {
-        return status.id
-    }
-
-    override fun activateComponent(activate: Boolean) {
-        if (activate) {
-            componentLifecycle.resume()
-        } else {
-            componentLifecycle.stop()
-        }
     }
 }

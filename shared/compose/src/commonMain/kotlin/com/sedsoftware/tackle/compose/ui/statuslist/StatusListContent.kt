@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalDecomposeApi::class)
+
 package com.sedsoftware.tackle.compose.ui.statuslist
 
 import androidx.compose.animation.AnimatedVisibility
@@ -18,18 +20,24 @@ import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults.Indicator
 import androidx.compose.material3.pulltorefresh.PullToRefreshState
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.arkivanov.decompose.ExperimentalDecomposeApi
+import com.arkivanov.decompose.extensions.compose.lazyitems.ChildItemsLifecycleController
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
+import com.arkivanov.decompose.router.items.ChildItems
 import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
 import com.sedsoftware.tackle.compose.ui.status.StatusContent
 import com.sedsoftware.tackle.compose.ui.status.StatusPreviewStubs
 import com.sedsoftware.tackle.compose.ui.statuslist.content.StatusLoadMoreIndicator
-import com.sedsoftware.tackle.compose.ui.statuslist.observer.LazyListItemsVisibilityObserver
+import com.sedsoftware.tackle.domain.model.Status
 import com.sedsoftware.tackle.status.StatusComponent
 import com.sedsoftware.tackle.statuslist.StatusListComponent
 import com.sedsoftware.tackle.statuslist.integration.StatusListComponentPreview
@@ -44,9 +52,27 @@ internal fun StatusListContent(
     modifier: Modifier = Modifier,
 ) {
     val model: StatusListComponent.Model by component.model.subscribeAsState()
-    val components: List<StatusComponent> by component.components.subscribeAsState()
+    val childItems: ChildItems<Status, StatusComponent> by component.items.subscribeAsState()
     val lazyListState: LazyListState = rememberLazyListState()
     val pullToRefreshState: PullToRefreshState = rememberPullToRefreshState()
+
+    val isScrolledToBottom: Boolean by remember(lazyListState) {
+        derivedStateOf {
+            if (lazyListState.layoutInfo.totalItemsCount != 0) {
+                val layoutInfo = lazyListState.layoutInfo
+                val lastVisibleItem = layoutInfo.visibleItemsInfo.last()
+                lastVisibleItem.index + LOAD_MORE_THRESHOLD >= layoutInfo.totalItemsCount
+            } else {
+                false
+            }
+        }
+    }
+
+    LaunchedEffect(isScrolledToBottom) {
+        if (isScrolledToBottom) {
+            component.onLoadMoreRequest()
+        }
+    }
 
     PullToRefreshBox(
         isRefreshing = model.initialProgressVisible,
@@ -86,10 +112,12 @@ internal fun StatusListContent(
             modifier = Modifier.fillMaxSize(),
             state = lazyListState,
         ) {
-            itemsIndexed(items = components, key = { _, component -> component.getId() }) { index: Int, component: StatusComponent ->
-                StatusContent(component)
+            itemsIndexed(items = childItems.items, key = { _, status: Status -> status.id }) { index: Int, status: Status ->
+                StatusContent(
+                    component = component.items[status],
+                )
 
-                if (index < components.lastIndex) {
+                if (index < childItems.items.lastIndex) {
                     HorizontalDivider(
                         thickness = 1.dp,
                         color = MaterialTheme.colorScheme.outline,
@@ -109,15 +137,16 @@ internal fun StatusListContent(
         }
     }
 
-    LazyListItemsVisibilityObserver(
-        component = component,
+    ChildItemsLifecycleController(
+        items = component.items,
         lazyListState = lazyListState,
         forwardPreloadCount = 1,
         backwardPreloadCount = 1,
-        loadMoreCallbackThreshold = 1,
-        onLoadMoreCallback = component::onLoadMoreRequest,
+        itemIndexConverter = { it },
     )
 }
+
+private const val LOAD_MORE_THRESHOLD = 1
 
 @Preview
 @Composable

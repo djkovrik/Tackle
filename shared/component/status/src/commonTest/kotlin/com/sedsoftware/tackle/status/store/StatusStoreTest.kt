@@ -34,9 +34,6 @@ import kotlin.test.Test
 internal class StatusStoreTest : StoreTest<StatusStore.Intent, StatusStore.State, StatusStore.Label>() {
 
     private val testStatus: Status = Responses.status
-    private val updatedStatus: Status = testStatus.copy(id = "updated")
-    private val rebloggedStatus: Status = testStatus.copy(id = "reblog")
-    private val updatedStatusWithReblog: Status = updatedStatus.copy(id = "updated", reblog = rebloggedStatus)
 
     private val api: StatusComponentGateways.Api = mock {
         everySuspend { delete(any(), any()) } returns testStatus
@@ -163,12 +160,12 @@ internal class StatusStoreTest : StoreTest<StatusStore.Intent, StatusStore.State
         store.accept(StatusStore.Intent.OnFavouriteClicked)
         // then
         verifySuspend(exactly(1)) { api.favourite(testStatus.id) }
-        assertThat(store.state.displayedStatus.favourited).isTrue()
+        assertThat(store.state.status.favourited).isTrue()
         // when
         store.accept(StatusStore.Intent.OnFavouriteClicked)
         // then
         verifySuspend(exactly(1)) { api.unfavourite(testStatus.id) }
-        assertThat(store.state.displayedStatus.favourited).isFalse()
+        assertThat(store.state.status.favourited).isFalse()
     }
 
     @Test
@@ -190,12 +187,12 @@ internal class StatusStoreTest : StoreTest<StatusStore.Intent, StatusStore.State
         store.accept(StatusStore.Intent.OnReblogClicked)
         // then
         verifySuspend(exactly(1)) { api.boost(testStatus.id) }
-        assertThat(store.state.displayedStatus.reblogged).isTrue()
+        assertThat(store.state.status.reblogged).isTrue()
         // when
         store.accept(StatusStore.Intent.OnReblogClicked)
         // then
         verifySuspend(exactly(1)) { api.unboost(testStatus.id) }
-        assertThat(store.state.displayedStatus.reblogged).isFalse()
+        assertThat(store.state.status.reblogged).isFalse()
     }
 
     @Test
@@ -217,12 +214,12 @@ internal class StatusStoreTest : StoreTest<StatusStore.Intent, StatusStore.State
         store.accept(StatusStore.Intent.OnBookmarkClicked)
         // then
         verifySuspend(exactly(1)) { api.bookmark(testStatus.id) }
-        assertThat(store.state.displayedStatus.bookmarked).isTrue()
+        assertThat(store.state.status.bookmarked).isTrue()
         // when
         store.accept(StatusStore.Intent.OnBookmarkClicked)
         // then
         verifySuspend(exactly(1)) { api.unbookmark(testStatus.id) }
-        assertThat(store.state.displayedStatus.bookmarked).isFalse()
+        assertThat(store.state.status.bookmarked).isFalse()
     }
 
     @Test
@@ -244,12 +241,12 @@ internal class StatusStoreTest : StoreTest<StatusStore.Intent, StatusStore.State
         store.accept(StatusStore.Intent.OnPinClicked)
         // then
         verifySuspend(exactly(1)) { api.pin(testStatus.id) }
-        assertThat(store.state.displayedStatus.pinned).isTrue()
+        assertThat(store.state.status.pinned).isTrue()
         // when
         store.accept(StatusStore.Intent.OnPinClicked)
         // then
         verifySuspend(exactly(1)) { api.unpin(testStatus.id) }
-        assertThat(store.state.displayedStatus.pinned).isFalse()
+        assertThat(store.state.status.pinned).isFalse()
     }
 
     @Test
@@ -271,12 +268,12 @@ internal class StatusStoreTest : StoreTest<StatusStore.Intent, StatusStore.State
         store.accept(StatusStore.Intent.OnMuteClicked)
         // then
         verifySuspend(exactly(1)) { api.mute(testStatus.id) }
-        assertThat(store.state.displayedStatus.muted).isTrue()
+        assertThat(store.state.status.muted).isTrue()
         // when
         store.accept(StatusStore.Intent.OnMuteClicked)
         // then
         verifySuspend(exactly(1)) { api.unmute(testStatus.id) }
-        assertThat(store.state.displayedStatus.muted).isFalse()
+        assertThat(store.state.status.muted).isFalse()
     }
 
     @Test
@@ -332,19 +329,19 @@ internal class StatusStoreTest : StoreTest<StatusStore.Intent, StatusStore.State
         store.accept(StatusStore.Intent.OnPollOptionSelected(1, true))
         store.accept(StatusStore.Intent.OnPollOptionSelected(0, true))
         // then
-        assertThat(store.state.displayedStatus.poll?.ownVotes).isEqualTo(listOf(0, 1))
+        assertThat(store.state.status.poll?.ownVotes).isEqualTo(listOf(0, 1))
         // when
         store.accept(StatusStore.Intent.OnPollOptionSelected(1, true))
         // then
-        assertThat(store.state.displayedStatus.poll?.ownVotes).isEqualTo(listOf(0))
+        assertThat(store.state.status.poll?.ownVotes).isEqualTo(listOf(0))
         // when
         store.accept(StatusStore.Intent.OnPollOptionSelected(0, true))
         // then
-        assertThat(store.state.displayedStatus.poll?.ownVotes).isNullOrEmpty()
+        assertThat(store.state.status.poll?.ownVotes).isNullOrEmpty()
         // when
         store.accept(StatusStore.Intent.OnPollOptionSelected(1, false))
         store.accept(StatusStore.Intent.OnPollOptionSelected(0, false))
-        assertThat(store.state.displayedStatus.poll?.ownVotes).isEqualTo(listOf(0))
+        assertThat(store.state.status.poll?.ownVotes).isEqualTo(listOf(0))
     }
 
     @Test
@@ -356,7 +353,7 @@ internal class StatusStoreTest : StoreTest<StatusStore.Intent, StatusStore.State
         // when
         store.accept(StatusStore.Intent.OnVoteClicked)
         // then
-        assertThat(store.state.displayedStatus.poll?.voted).isEqualTo(true)
+        assertThat(store.state.status.poll?.voted).isEqualTo(true)
     }
 
     @Test
@@ -395,37 +392,13 @@ internal class StatusStoreTest : StoreTest<StatusStore.Intent, StatusStore.State
         assertThat(labels.count { it is StatusStore.Label.ErrorCaught }).isEqualTo(1)
     }
 
-    @Test
-    fun `RefreshStatus should refresh state statuses`() = runTest {
-        // given
-        store.init()
-        // when
-        store.accept(StatusStore.Intent.RefreshStatus(updatedStatus))
-        // then
-        assertThat(store.state.baseStatus).isEqualTo(updatedStatus)
-        assertThat(store.state.displayedStatus).isEqualTo(updatedStatus)
-    }
-
-
-    @Test
-    fun `RefreshStatus with reblog should refresh state statuses`() = runTest {
-        // given
-        store.init()
-        // when
-        store.accept(StatusStore.Intent.RefreshStatus(updatedStatusWithReblog))
-        // then
-        assertThat(store.state.baseStatus).isEqualTo(updatedStatusWithReblog)
-        assertThat(store.state.displayedStatus).isEqualTo(rebloggedStatus)
-    }
-
     override fun createStore(): Store<StatusStore.Intent, StatusStore.State, StatusStore.Label> =
         StatusStoreProvider(
             storeFactory = DefaultStoreFactory(),
             manager = manager,
             mainContext = Dispatchers.Unconfined,
             ioContext = Dispatchers.Unconfined,
-            baseStatus = testStatus,
-            displayedStatus = testStatus,
+            status = testStatus,
             rebloggedBy = "",
             extendedInfo = false,
             isOwn = true,

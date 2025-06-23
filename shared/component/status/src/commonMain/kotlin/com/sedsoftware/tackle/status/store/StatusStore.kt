@@ -24,12 +24,10 @@ internal interface StatusStore : Store<Intent, State, Label> {
         data class OnPollOptionSelected(val index: Int, val multiselect: Boolean) : Intent
         data object OnVoteClicked : Intent
         data class OnUrlClicked(val url: String) : Intent
-        data class RefreshStatus(val status: Status) : Intent
     }
 
     data class State(
-        val baseStatus: Status,
-        val displayedStatus: Status,
+        val status: Status,
         val rebloggedBy: String,
         val extendedInfo: Boolean,
         val isOwn: Boolean,
