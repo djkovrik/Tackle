@@ -84,13 +84,13 @@ class StatusManagerTest {
         // then
         verifySuspend { api.favourite(testStatusId) }
         assertThat(response.isSuccess).isTrue()
-        assertThat(response.getOrThrow()).isTrue()
+        assertThat(response.getOrThrow().favourited).isTrue()
         // when
         response = manager.favourite(testStatusId, false)
         // then
         verifySuspend { api.unfavourite(testStatusId) }
         assertThat(response.isSuccess).isTrue()
-        assertThat(response.getOrThrow()).isFalse()
+        assertThat(response.getOrThrow().favourited).isFalse()
     }
 
     @Test
@@ -102,13 +102,13 @@ class StatusManagerTest {
         // then
         verifySuspend { api.boost(testStatusId) }
         assertThat(response.isSuccess).isTrue()
-        assertThat(response.getOrThrow()).isTrue()
+        assertThat(response.getOrThrow().reblogged).isTrue()
         // when
         response = manager.boost(testStatusId, false)
         // then
         verifySuspend { api.unboost(testStatusId) }
         assertThat(response.isSuccess).isTrue()
-        assertThat(response.getOrThrow()).isFalse()
+        assertThat(response.getOrThrow().reblogged).isFalse()
     }
 
     @Test
@@ -120,13 +120,13 @@ class StatusManagerTest {
         // then
         verifySuspend { api.bookmark(testStatusId) }
         assertThat(response.isSuccess).isTrue()
-        assertThat(response.getOrThrow()).isTrue()
+        assertThat(response.getOrThrow().bookmarked).isTrue()
         // when
         response = manager.bookmark(testStatusId, false)
         // then
         verifySuspend { api.unbookmark(testStatusId) }
         assertThat(response.isSuccess).isTrue()
-        assertThat(response.getOrThrow()).isFalse()
+        assertThat(response.getOrThrow().bookmarked).isFalse()
     }
 
     @Test
@@ -138,13 +138,13 @@ class StatusManagerTest {
         // then
         verifySuspend { api.pin(testStatusId) }
         assertThat(response.isSuccess).isTrue()
-        assertThat(response.getOrThrow()).isTrue()
+        assertThat(response.getOrThrow().pinned).isTrue()
         // when
         response = manager.pin(testStatusId, false)
         // then
         verifySuspend { api.unpin(testStatusId) }
         assertThat(response.isSuccess).isTrue()
-        assertThat(response.getOrThrow()).isFalse()
+        assertThat(response.getOrThrow().pinned).isFalse()
     }
 
     @Test
@@ -156,13 +156,13 @@ class StatusManagerTest {
         // then
         verifySuspend { api.mute(testStatusId) }
         assertThat(response.isSuccess).isTrue()
-        assertThat(response.getOrThrow()).isTrue()
+        assertThat(response.getOrThrow().muted).isTrue()
         // when
         response = manager.mute(testStatusId, false)
         // then
         verifySuspend { api.unmute(testStatusId) }
         assertThat(response.isSuccess).isTrue()
-        assertThat(response.getOrThrow()).isFalse()
+        assertThat(response.getOrThrow().muted).isFalse()
     }
 
     @Test

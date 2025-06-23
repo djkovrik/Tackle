@@ -3,6 +3,7 @@ package com.sedsoftware.tackle.home.integration
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import com.arkivanov.decompose.DefaultComponentContext
+import com.arkivanov.decompose.ExperimentalDecomposeApi
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import com.sedsoftware.tackle.domain.ComponentOutput
 import com.sedsoftware.tackle.domain.model.Account
@@ -58,6 +59,7 @@ class HomeTabComponentTest : ComponentTest<HomeTabComponent>() {
     }
 
     @Test
+    @OptIn(ExperimentalDecomposeApi::class)
     fun `showCreatedStatus displays created status`() = runTest {
         // given
         every { settings.ownUserId } returns "userId"
@@ -132,7 +134,7 @@ class HomeTabComponentTest : ComponentTest<HomeTabComponent>() {
         // when
         component.showCreatedStatus(newStatus)
         // then
-        assertThat(component.homeTimeline.items.value.first().getId()).isEqualTo(newStatus.id)
+        assertThat(component.homeTimeline.items.value.items.first()).isEqualTo(newStatus)
     }
 
 

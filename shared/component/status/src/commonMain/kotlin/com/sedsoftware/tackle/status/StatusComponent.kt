@@ -20,8 +20,6 @@ interface StatusComponent {
     fun onReplyClick()
     fun onHashTagClick(hashTag: String)
     fun onMentionClick(mention: String)
-    fun refreshStatus(status: Status)
-    fun getId(): String
 
     data class Model(
         val status: Status,

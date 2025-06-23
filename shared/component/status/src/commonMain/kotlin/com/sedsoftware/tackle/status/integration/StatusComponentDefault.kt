@@ -3,10 +3,7 @@ package com.sedsoftware.tackle.status.integration
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.decompose.value.operator.map
-import com.arkivanov.essenty.lifecycle.LifecycleRegistry
 import com.arkivanov.essenty.lifecycle.doOnDestroy
-import com.arkivanov.essenty.lifecycle.resume
-import com.arkivanov.essenty.lifecycle.stop
 import com.arkivanov.mvikotlin.core.instancekeeper.getStore
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.labels
@@ -46,8 +43,7 @@ class StatusComponentDefault(
                 manager = StatusManager(api, tools),
                 mainContext = dispatchers.main,
                 ioContext = dispatchers.io,
-                baseStatus = status,
-                displayedStatus = status.reblog.takeIf { it != null } ?: status,
+                status = status,
                 rebloggedBy = rebloggedBy,
                 extendedInfo = extendedInfo,
                 isOwn = isOwn,
@@ -126,13 +122,5 @@ class StatusComponentDefault(
 
     override fun onMentionClick(mention: String) {
         output(ComponentOutput.SingleStatus.MentionClicked(mention))
-    }
-
-    override fun refreshStatus(status: Status) {
-        store.accept(StatusStore.Intent.RefreshStatus(status))
-    }
-
-    override fun getId(): String {
-        return status.id
     }
 }

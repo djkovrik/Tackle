@@ -5,7 +5,7 @@ import com.sedsoftware.tackle.status.store.StatusStore.State
 
 internal val stateToModel: (State) -> Model = {
     Model(
-        status = it.displayedStatus,
+        status = it.status,
         rebloggedBy = it.rebloggedBy,
         extendedInfo = it.extendedInfo,
         isOwn = it.isOwn,

@@ -113,7 +113,7 @@ class StatusListComponentDefault(
             emptyPlaceholderVisible = from.emptyPlaceholderVisible,
         )
 
-    private fun createChild(status: Status, ctx: ComponentContext): StatusComponent {
+    internal fun createChild(status: Status, ctx: ComponentContext): StatusComponent {
         val ownId: String = settings.ownUserId
         return StatusComponentDefault(
             componentContext = ctx,
@@ -133,7 +133,7 @@ class StatusListComponentDefault(
         )
     }
 
-    private fun onStatusComponentOutput(statusOutput: ComponentOutput) {
+    internal fun onStatusComponentOutput(statusOutput: ComponentOutput) {
         if (statusOutput is ComponentOutput.SingleStatus.Deleted) {
             store.accept(StatusListStore.Intent.StatusDeleted(statusOutput.statusId))
         } else {

@@ -61,7 +61,7 @@ internal fun StatusListContent(
             if (lazyListState.layoutInfo.totalItemsCount != 0) {
                 val layoutInfo = lazyListState.layoutInfo
                 val lastVisibleItem = layoutInfo.visibleItemsInfo.last()
-                lastVisibleItem.index + loadMoreCallbackThreshold >= layoutInfo.totalItemsCount
+                lastVisibleItem.index + LOAD_MORE_THRESHOLD >= layoutInfo.totalItemsCount
             } else {
                 false
             }
@@ -146,7 +146,7 @@ internal fun StatusListContent(
     )
 }
 
-private const val loadMoreCallbackThreshold = 1
+private const val LOAD_MORE_THRESHOLD = 1
 
 @Preview
 @Composable
