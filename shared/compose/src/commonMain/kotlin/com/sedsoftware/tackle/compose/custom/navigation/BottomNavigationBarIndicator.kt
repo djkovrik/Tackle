@@ -16,7 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
-import com.sedsoftware.tackle.main.model.TackleNavigationTab
+import com.sedsoftware.tackle.main.model.MainScreenTab
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -24,7 +24,7 @@ internal fun BottomNavigationBarIndicator(
     indicatorOffset: Dp,
     modifier: Modifier = Modifier,
     indicatorColor: Color = MaterialTheme.colorScheme.primary,
-    itemCount: Int = TackleNavigationTab.entries.size,
+    itemCount: Int = MainScreenTab.entries.size,
 ) {
     Box(
         modifier = modifier
@@ -57,7 +57,7 @@ private fun Indicator(
 private fun BottomNavigationBarIndicatorPreview() {
     TackleScreenPreview {
         BottomNavigationBar(
-            activeTab = TackleNavigationTab.HOME
+            activeTab = MainScreenTab.HOME
         )
     }
 }

@@ -13,9 +13,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.sedsoftware.tackle.compose.model.NavigationBarConfig
+import com.sedsoftware.tackle.compose.model.BottomNavigationBarConfig
 import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
-import com.sedsoftware.tackle.main.model.TackleNavigationTab
+import com.sedsoftware.tackle.main.model.MainScreenTab
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import tackle.shared.compose.generated.resources.Res
 import tackle.shared.compose.generated.resources.main_tab_explore
@@ -31,17 +31,17 @@ import tackle.shared.compose.generated.resources.tab_publications
 
 @Composable
 internal fun BottomNavigationBar(
-    activeTab: TackleNavigationTab,
+    activeTab: MainScreenTab,
     modifier: Modifier = Modifier,
-    config: NavigationBarConfig = NavigationBarConfig(
+    config: BottomNavigationBarConfig = BottomNavigationBarConfig(
         containerColor = MaterialTheme.colorScheme.background,
         iconColorNormal = MaterialTheme.colorScheme.secondary,
         iconColorSelected = MaterialTheme.colorScheme.primary,
         iconSizeNormal = 32.dp,
         iconSizeSelected = 36.dp,
     ),
-    itemsCount: Int = TackleNavigationTab.entries.size,
-    onTabClick: (TackleNavigationTab) -> Unit = {},
+    itemsCount: Int = MainScreenTab.entries.size,
+    onTabClick: (MainScreenTab) -> Unit = {},
 ) {
     BoxWithConstraints(modifier = modifier) {
         val maxWidth: Dp = this.maxWidth
@@ -62,7 +62,7 @@ internal fun BottomNavigationBar(
                 modifier = modifier,
             ) {
                 BottomNavigationBarItem(
-                    baseTab = TackleNavigationTab.HOME,
+                    baseTab = MainScreenTab.HOME,
                     activeTab = activeTab,
                     config = config,
                     iconRes = Res.drawable.tab_home,
@@ -71,7 +71,7 @@ internal fun BottomNavigationBar(
                 )
 
                 BottomNavigationBarItem(
-                    baseTab = TackleNavigationTab.EXPLORE,
+                    baseTab = MainScreenTab.EXPLORE,
                     activeTab = activeTab,
                     config = config,
                     iconRes = Res.drawable.tab_explore,
@@ -80,7 +80,7 @@ internal fun BottomNavigationBar(
                 )
 
                 BottomNavigationBarItem(
-                    baseTab = TackleNavigationTab.PUBLICATIONS,
+                    baseTab = MainScreenTab.PUBLICATIONS,
                     activeTab = activeTab,
                     config = config,
                     iconRes = Res.drawable.tab_publications,
@@ -89,7 +89,7 @@ internal fun BottomNavigationBar(
                 )
 
                 BottomNavigationBarItem(
-                    baseTab = TackleNavigationTab.NOTIFICATIONS,
+                    baseTab = MainScreenTab.NOTIFICATIONS,
                     activeTab = activeTab,
                     config = config,
                     iconRes = Res.drawable.tab_notifications,
@@ -98,7 +98,7 @@ internal fun BottomNavigationBar(
                 )
 
                 BottomNavigationBarItem(
-                    baseTab = TackleNavigationTab.PROFILE,
+                    baseTab = MainScreenTab.PROFILE,
                     activeTab = activeTab,
                     config = config,
                     iconRes = Res.drawable.tab_profile,
@@ -120,7 +120,7 @@ internal fun BottomNavigationBar(
 private fun BottomNavigationBarHomePreviewLight() {
     TackleScreenPreview {
         BottomNavigationBar(
-            activeTab = TackleNavigationTab.HOME
+            activeTab = MainScreenTab.HOME
         )
     }
 }
@@ -130,7 +130,7 @@ private fun BottomNavigationBarHomePreviewLight() {
 private fun BottomNavigationBarHomePreviewDark() {
     TackleScreenPreview(darkTheme = true) {
         BottomNavigationBar(
-            activeTab = TackleNavigationTab.HOME
+            activeTab = MainScreenTab.HOME
         )
     }
 }
@@ -140,7 +140,7 @@ private fun BottomNavigationBarHomePreviewDark() {
 private fun BottomNavigationBarExplorePreviewLight() {
     TackleScreenPreview {
         BottomNavigationBar(
-            activeTab = TackleNavigationTab.EXPLORE
+            activeTab = MainScreenTab.EXPLORE
         )
     }
 }
@@ -149,7 +149,7 @@ private fun BottomNavigationBarExplorePreviewLight() {
 @Preview
 private fun BottomNavigationBarExplorePreviewDark() {
     TackleScreenPreview(darkTheme = true) {
-        BottomNavigationBar(activeTab = TackleNavigationTab.EXPLORE)
+        BottomNavigationBar(activeTab = MainScreenTab.EXPLORE)
     }
 }
 
@@ -157,7 +157,7 @@ private fun BottomNavigationBarExplorePreviewDark() {
 @Preview
 private fun BottomNavigationBarPublicationsPreviewLight() {
     TackleScreenPreview {
-        BottomNavigationBar(activeTab = TackleNavigationTab.PUBLICATIONS)
+        BottomNavigationBar(activeTab = MainScreenTab.PUBLICATIONS)
     }
 }
 
@@ -165,7 +165,7 @@ private fun BottomNavigationBarPublicationsPreviewLight() {
 @Preview
 private fun BottomNavigationBarPublicationsPreviewDark() {
     TackleScreenPreview(darkTheme = true) {
-        BottomNavigationBar(activeTab = TackleNavigationTab.PUBLICATIONS)
+        BottomNavigationBar(activeTab = MainScreenTab.PUBLICATIONS)
     }
 }
 
@@ -173,7 +173,7 @@ private fun BottomNavigationBarPublicationsPreviewDark() {
 @Preview
 private fun BottomNavigationBarNotificationsPreviewLight() {
     TackleScreenPreview {
-        BottomNavigationBar(activeTab = TackleNavigationTab.NOTIFICATIONS)
+        BottomNavigationBar(activeTab = MainScreenTab.NOTIFICATIONS)
     }
 }
 
@@ -181,7 +181,7 @@ private fun BottomNavigationBarNotificationsPreviewLight() {
 @Preview
 private fun BottomNavigationBarNotificationsPreviewDark() {
     TackleScreenPreview(darkTheme = true) {
-        BottomNavigationBar(activeTab = TackleNavigationTab.NOTIFICATIONS)
+        BottomNavigationBar(activeTab = MainScreenTab.NOTIFICATIONS)
     }
 }
 
@@ -189,7 +189,7 @@ private fun BottomNavigationBarNotificationsPreviewDark() {
 @Preview
 private fun BottomNavigationBarProfilePreviewLight() {
     TackleScreenPreview {
-        BottomNavigationBar(activeTab = TackleNavigationTab.PROFILE)
+        BottomNavigationBar(activeTab = MainScreenTab.PROFILE)
     }
 }
 
@@ -197,6 +197,6 @@ private fun BottomNavigationBarProfilePreviewLight() {
 @Preview
 private fun BottomNavigationBarProfilePreviewDark() {
     TackleScreenPreview(darkTheme = true) {
-        BottomNavigationBar(activeTab = TackleNavigationTab.PROFILE)
+        BottomNavigationBar(activeTab = MainScreenTab.PROFILE)
     }
 }

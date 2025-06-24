@@ -5,7 +5,7 @@ import com.arkivanov.decompose.value.Value
 import com.sedsoftware.tackle.domain.model.Status
 import com.sedsoftware.tackle.explore.ExploreTabComponent
 import com.sedsoftware.tackle.home.HomeTabComponent
-import com.sedsoftware.tackle.main.model.TackleNavigationTab
+import com.sedsoftware.tackle.main.model.MainScreenTab
 import com.sedsoftware.tackle.notifications.NotificationsTabComponent
 import com.sedsoftware.tackle.profile.ProfileTabComponent
 import com.sedsoftware.tackle.publications.PublicationsTabComponent
@@ -14,7 +14,7 @@ interface MainComponent {
 
     val childStack: Value<ChildStack<*, Child>>
 
-    fun onTabClick(tab: TackleNavigationTab)
+    fun onTabClick(tab: MainScreenTab)
     fun showCreatedStatus(status: Status)
 
     sealed class Child {
