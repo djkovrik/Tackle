@@ -9,7 +9,7 @@ import com.sedsoftware.tackle.domain.api.AuthorizedApi
 import com.sedsoftware.tackle.domain.api.TacklePlatformTools
 import com.sedsoftware.tackle.domain.api.TackleSettings
 import com.sedsoftware.tackle.main.MainComponent
-import com.sedsoftware.tackle.main.model.TackleNavigationTab
+import com.sedsoftware.tackle.main.model.MainScreenTab
 import com.sedsoftware.tackle.utils.test.ComponentTest
 import dev.mokkery.mock
 import kotlin.test.AfterTest
@@ -44,7 +44,7 @@ class MainComponentTest : ComponentTest<MainComponent>() {
     fun `click to HOME tab should switch to TabHome`() {
         // given
         // when
-        component.onTabClick(TackleNavigationTab.HOME)
+        component.onTabClick(MainScreenTab.HOME)
         // then
         assertThat(component.childStack.active.instance).hasClass(MainComponent.Child.HomeTab::class)
     }
@@ -53,7 +53,7 @@ class MainComponentTest : ComponentTest<MainComponent>() {
     fun `click to EXPLORE tab should switch to TabExplore`() {
         // given
         // when
-        component.onTabClick(TackleNavigationTab.EXPLORE)
+        component.onTabClick(MainScreenTab.EXPLORE)
         // then
         assertThat(component.childStack.active.instance).hasClass(MainComponent.Child.ExploreTab::class)
     }
@@ -62,7 +62,7 @@ class MainComponentTest : ComponentTest<MainComponent>() {
     fun `click to PUBLICATIONS tab should switch to TabPublications`() {
         // given
         // when
-        component.onTabClick(TackleNavigationTab.PUBLICATIONS)
+        component.onTabClick(MainScreenTab.PUBLICATIONS)
         // then
         assertThat(component.childStack.active.instance).hasClass(MainComponent.Child.PublicationsTab::class)
     }
@@ -71,7 +71,7 @@ class MainComponentTest : ComponentTest<MainComponent>() {
     fun `click to NOTIFICATIONS tab should switch to TabNotifications`() {
         // given
         // when
-        component.onTabClick(TackleNavigationTab.NOTIFICATIONS)
+        component.onTabClick(MainScreenTab.NOTIFICATIONS)
         // then
         assertThat(component.childStack.active.instance).hasClass(MainComponent.Child.NotificationsTab::class)
     }
@@ -80,7 +80,7 @@ class MainComponentTest : ComponentTest<MainComponent>() {
     fun `click to PROFILE tab should switch to TabEditor`() {
         // given
         // when
-        component.onTabClick(TackleNavigationTab.PROFILE)
+        component.onTabClick(MainScreenTab.PROFILE)
         // then
         assertThat(component.childStack.active.instance).hasClass(MainComponent.Child.ProfileTab::class)
     }

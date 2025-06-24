@@ -23,7 +23,7 @@ import com.sedsoftware.tackle.main.MainComponent.Child
 import com.sedsoftware.tackle.main.gateway.StatusComponentApi
 import com.sedsoftware.tackle.main.gateway.StatusComponentSettings
 import com.sedsoftware.tackle.main.gateway.StatusComponentTools
-import com.sedsoftware.tackle.main.model.TackleNavigationTab
+import com.sedsoftware.tackle.main.model.MainScreenTab
 import com.sedsoftware.tackle.notifications.NotificationsTabComponent
 import com.sedsoftware.tackle.notifications.integration.NotificationsTabComponentDefault
 import com.sedsoftware.tackle.profile.ProfileTabComponent
@@ -75,6 +75,10 @@ class MainComponentDefault internal constructor(
             PublicationsTabComponentDefault(
                 componentContext = childContext,
                 storeFactory = storeFactory,
+                api = StatusComponentApi(authorizedApi),
+                settings = StatusComponentSettings(settings),
+                tools = StatusComponentTools(platformTools),
+                dispatchers = dispatchers,
                 output = componentOutput,
             )
         },
@@ -107,13 +111,13 @@ class MainComponentDefault internal constructor(
 
     override val childStack: Value<ChildStack<*, Child>> = stack
 
-    override fun onTabClick(tab: TackleNavigationTab) {
+    override fun onTabClick(tab: MainScreenTab) {
         when (tab) {
-            TackleNavigationTab.HOME -> navigation.bringToFront(Config.HomeTab)
-            TackleNavigationTab.EXPLORE -> navigation.bringToFront(Config.ExploreTab)
-            TackleNavigationTab.PUBLICATIONS -> navigation.bringToFront(Config.PublicationsTab)
-            TackleNavigationTab.NOTIFICATIONS -> navigation.bringToFront(Config.NotificationsTab)
-            TackleNavigationTab.PROFILE -> navigation.bringToFront(Config.ProfileTab)
+            MainScreenTab.HOME -> navigation.bringToFront(Config.HomeTab)
+            MainScreenTab.EXPLORE -> navigation.bringToFront(Config.ExploreTab)
+            MainScreenTab.PUBLICATIONS -> navigation.bringToFront(Config.PublicationsTab)
+            MainScreenTab.NOTIFICATIONS -> navigation.bringToFront(Config.NotificationsTab)
+            MainScreenTab.PROFILE -> navigation.bringToFront(Config.ProfileTab)
         }
     }
 

@@ -12,8 +12,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
-import com.sedsoftware.tackle.compose.model.NavigationBarConfig
-import com.sedsoftware.tackle.main.model.TackleNavigationTab
+import com.sedsoftware.tackle.compose.model.BottomNavigationBarConfig
+import com.sedsoftware.tackle.main.model.MainScreenTab
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.painterResource
@@ -21,13 +21,13 @@ import org.jetbrains.compose.resources.stringResource
 
 @Composable
 internal fun RowScope.BottomNavigationBarItem(
-    baseTab: TackleNavigationTab,
-    activeTab: TackleNavigationTab,
-    config: NavigationBarConfig,
+    baseTab: MainScreenTab,
+    activeTab: MainScreenTab,
+    config: BottomNavigationBarConfig,
     iconRes: DrawableResource,
     contentDescriptionRes: StringResource,
     modifier: Modifier = Modifier,
-    onTabClick: (TackleNavigationTab) -> Unit = {},
+    onTabClick: (MainScreenTab) -> Unit = {},
 ) {
     NavigationBarItem(
         icon = {

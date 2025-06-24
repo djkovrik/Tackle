@@ -132,4 +132,8 @@
     <string name="status_menu_unmute">Снова уведомлять</string>
     <!-- Status list -->
     <string name="status_home_timeline_empty">Здесь пока пусто.\nПодпишитесь на кого-нибудь, чтобы заполнить вашу ленту сообщений.</string>
+
+    <!-- Publications component -->
+    <string name="publications_tab_local">Локальные</string>
+    <string name="publications_tab_global">Глобальные</string>
 </resources>
