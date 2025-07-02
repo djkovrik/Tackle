@@ -22,6 +22,7 @@ interface StatusComponent {
     data class Model(
         val status: Status,
         val rebloggedBy: String,
+        val reblogAvailable: Boolean,
         val extendedInfo: Boolean,
         val isOwn: Boolean,
         val menuVisible: Boolean,

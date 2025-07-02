@@ -336,6 +336,7 @@ internal fun StatusContentWrapper(
             TackleStatusButton(
                 iconRes = Res.drawable.status_reblog,
                 counter = model.status.reblogsCount,
+                enabled = model.reblogAvailable,
                 toggled = model.status.reblogged,
                 normalColor = contentColor,
                 onClick = onReblogClick,
@@ -351,7 +352,7 @@ internal fun StatusContentWrapper(
 
             TackleStatusButton(
                 iconRes = Res.drawable.status_share,
-                counter = 0,
+                showCounter = false,
                 normalColor = contentColor,
                 onClick = onShareClick,
             )

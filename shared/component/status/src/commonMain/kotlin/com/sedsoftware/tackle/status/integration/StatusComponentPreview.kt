@@ -4,6 +4,8 @@ import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
 import com.sedsoftware.tackle.domain.model.Status
 import com.sedsoftware.tackle.domain.model.Translation
+import com.sedsoftware.tackle.domain.model.type.StatusVisibility.PUBLIC
+import com.sedsoftware.tackle.domain.model.type.StatusVisibility.UNLISTED
 import com.sedsoftware.tackle.status.StatusComponent
 import com.sedsoftware.tackle.status.StatusComponent.Model
 import com.sedsoftware.tackle.status.model.StatusAction
@@ -26,6 +28,7 @@ class StatusComponentPreview(
             Model(
                 status = status,
                 rebloggedBy = rebloggedBy,
+                reblogAvailable = status.visibility == PUBLIC || status.visibility == UNLISTED,
                 extendedInfo = extendedInfo,
                 isOwn = isOwn,
                 menuVisible = menuVisible,
