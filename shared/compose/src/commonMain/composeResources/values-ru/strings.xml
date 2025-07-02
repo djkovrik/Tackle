@@ -120,6 +120,8 @@
     <string name="status_poll_multi_choice">Доступен множественный выбор</string>
     <string name="status_poll_voters">Проголосовавших:</string>
     <string name="status_poll_button">Голосовать</string>
+    <string name="status_sensitive_show">Показать</string>
+    <string name="status_sensitive_hide">Скрыть</string>
     <!-- Status context menu -->
     <string name="status_menu_translate">Перевести</string>
     <string name="status_menu_show_original">Показать оригинал</string>

@@ -123,6 +123,8 @@
     <string name="status_poll_multi_choice">Multiple choice available</string>
     <string name="status_poll_voters">Voters:</string>
     <string name="status_poll_button">Vote</string>
+    <string name="status_sensitive_show">Show</string>
+    <string name="status_sensitive_hide">Hide</string>
     <!-- Status context menu -->
     <string name="status_menu_translate">Translate</string>
     <string name="status_menu_show_original">Show original</string>

@@ -1,17 +1,20 @@
 package com.sedsoftware.tackle.compose.ui.status
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -20,7 +23,10 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -30,11 +36,14 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.sedsoftware.tackle.compose.extension.alsoIf
+import com.sedsoftware.tackle.compose.extension.clickableOnce
 import com.sedsoftware.tackle.compose.extension.getIcon
 import com.sedsoftware.tackle.compose.extension.getSimplifiedDate
 import com.sedsoftware.tackle.compose.extension.getTitle
 import com.sedsoftware.tackle.compose.widget.TackleImage
 import com.sedsoftware.tackle.compose.widget.TackleStatusButton
+import com.sedsoftware.tackle.compose.widget.TackleWarningContainer
 import com.sedsoftware.tackle.status.StatusComponent
 import com.sedsoftware.tackle.status.model.StatusContextAction
 import org.jetbrains.compose.resources.StringResource
@@ -52,6 +61,8 @@ import tackle.shared.compose.generated.resources.status_muted
 import tackle.shared.compose.generated.resources.status_pinned
 import tackle.shared.compose.generated.resources.status_reblog
 import tackle.shared.compose.generated.resources.status_reply
+import tackle.shared.compose.generated.resources.status_sensitive_hide
+import tackle.shared.compose.generated.resources.status_sensitive_show
 import tackle.shared.compose.generated.resources.status_share
 
 @Composable
@@ -69,6 +80,7 @@ internal fun StatusContentWrapper(
     content: @Composable () -> Unit = {},
 ) {
     val simplifiedDate: Pair<Int, StringResource> = remember { model.status.createdAtShort.getSimplifiedDate() }
+    var expanded: Boolean by remember { mutableStateOf(model.status.spoilerText.isEmpty()) }
 
     Column(
         modifier = modifier
@@ -228,7 +240,7 @@ internal fun StatusContentWrapper(
                 TackleStatusButton(
                     iconRes = Res.drawable.status_more,
                     normalColor = contentColor,
-                    counter = 0,
+                    showCounter = false,
                     onClick = { onMenuRequest.invoke(true) },
                 )
                 DropdownMenu(
@@ -255,7 +267,50 @@ internal fun StatusContentWrapper(
             }
         }
 
-        content()
+        // Spoiler warning
+        if (model.status.spoilerText.isNotEmpty()) {
+            TackleWarningContainer(
+                indicatorWidth = 6.dp,
+                indicatorColor = MaterialTheme.colorScheme.secondary,
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 8.dp)
+            ) {
+                Column(
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .background(color = MaterialTheme.colorScheme.secondaryContainer)
+                        .clickableOnce { expanded = !expanded }
+                        .padding(all = 8.dp)
+                ) {
+                    Text(
+                        text = model.status.spoilerText,
+                        style = MaterialTheme.typography.bodyMedium,
+                    )
+
+                    Text(
+                        text = stringResource(
+                            resource = if (expanded) {
+                                Res.string.status_sensitive_hide
+                            } else {
+                                Res.string.status_sensitive_show
+                            }
+                        ),
+                        style = MaterialTheme.typography.bodySmall,
+                    )
+                }
+            }
+
+            Box(
+                modifier = modifier
+                    .animateContentSize()
+                    .alsoIf(!expanded, Modifier.height(height = 0.dp))
+            ) {
+                content()
+            }
+        } else {
+            content()
+        }
 
         // Extended info footer
         if (showExtendedInfo) {
