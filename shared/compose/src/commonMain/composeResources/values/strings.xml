@@ -111,8 +111,7 @@
     <string name="home_new_post">New post</string>
 
     <!-- Status -->
-    <string name="status_warning_image">Author flagged this image as sensitive content</string>
-    <string name="status_sensitive_image_content_description">Toggle sensitive image visibility</string>
+    <string name="status_sensitive_image">Sensitive content</string>
     <string name="status_info_created">Created</string>
     <string name="status_info_edited">Edited</string>
     <string name="status_translating">Translating</string>
@@ -125,6 +124,7 @@
     <string name="status_poll_button">Vote</string>
     <string name="status_sensitive_show">Show</string>
     <string name="status_sensitive_hide">Hide</string>
+    <string name="status_image_alt">ALT</string>
     <!-- Status context menu -->
     <string name="status_menu_translate">Translate</string>
     <string name="status_menu_show_original">Show original</string>

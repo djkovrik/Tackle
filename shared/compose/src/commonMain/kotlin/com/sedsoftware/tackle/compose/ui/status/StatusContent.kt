@@ -82,6 +82,7 @@ internal fun StatusContent(
             // TODO Attachment management
             StatusAttachments(
                 attachments = model.status.mediaAttachments,
+                hasSensitiveContent = model.status.sensitive,
                 onDownloadClick = {},
                 onCancelClick = {},
                 onDoneClick = {},

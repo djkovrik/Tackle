@@ -34,7 +34,7 @@ internal fun TopNavigationBar(
     selectedTabIndex: Int,
     tabs: List<TopNavigationTab>,
     modifier: Modifier = Modifier,
-    tabShape: Shape = RoundedCornerShape(size = 20.dp),
+    tabShape: Shape = MaterialTheme.shapes.medium,
     containerColor: Color = MaterialTheme.colorScheme.background,
     contentColor: Color = MaterialTheme.colorScheme.onBackground,
     indicatorColor: Color = MaterialTheme.colorScheme.primaryContainer,

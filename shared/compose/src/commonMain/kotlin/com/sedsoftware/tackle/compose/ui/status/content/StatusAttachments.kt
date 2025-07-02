@@ -8,6 +8,7 @@ import com.sedsoftware.tackle.domain.model.type.MediaAttachmentType
 @Composable
 internal fun StatusAttachments(
     attachments: List<MediaAttachment>,
+    hasSensitiveContent: Boolean,
     onDownloadClick: () -> Unit,
     onCancelClick: () -> Unit,
     onDoneClick: () -> Unit,
@@ -28,6 +29,7 @@ internal fun StatusAttachments(
     } else {
         StatusAttachmentsImageList(
             attachments = attachments,
+            hasSensitiveContent = hasSensitiveContent,
             modifier = modifier,
         )
     }

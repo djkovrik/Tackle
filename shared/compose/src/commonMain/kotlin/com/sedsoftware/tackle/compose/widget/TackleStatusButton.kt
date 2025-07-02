@@ -75,14 +75,14 @@ internal fun TackleStatusButton(
         horizontalArrangement = Arrangement.Center,
         modifier = modifier
             .height(height = BUTTON_SIZE.dp)
-            .clip(shape = RoundedCornerShape(size = 32.dp))
+            .clip(shape = MaterialTheme.shapes.extraLarge)
             .alsoIf(condition = enabled, other = Modifier.clickableOnce(onClick = onClick))
             .alpha(alpha = animatedAlphaEnabled)
             .background(
                 color = backgroundColor.copy(
                     alpha = animatedAlphaBackground
                 ),
-                shape = RoundedCornerShape(size = 32.dp),
+                shape = MaterialTheme.shapes.extraLarge,
             )
             .padding(horizontal = 8.dp)
     ) {
