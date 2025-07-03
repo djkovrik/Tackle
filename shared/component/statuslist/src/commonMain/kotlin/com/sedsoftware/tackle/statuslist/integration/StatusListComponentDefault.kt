@@ -124,12 +124,7 @@ class StatusListComponentDefault(
             tools = tools,
             dispatchers = dispatchers,
             output = ::onStatusComponentOutput,
-            status = status.reblog.takeIf { it != null } ?: status,
-            rebloggedBy = when {
-                status.reblog != null && status.account.displayName.isNotEmpty() -> status.account.displayName
-                status.reblog != null -> status.account.username
-                else -> ""
-            },
+            status = status,
             extendedInfo = false,
             isOwn = status.account.id == ownId,
         )
