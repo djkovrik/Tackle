@@ -38,7 +38,7 @@ internal class StatusStoreTest : StoreTest<StatusStore.Intent, StatusStore.State
     private val api: StatusComponentGateways.Api = mock {
         everySuspend { delete(any(), any()) } returns testStatus
         everySuspend { translate(any(), any()) } returns Responses.translation
-        everySuspend { vote(any(), any()) } returns Responses.poll
+        everySuspend { vote(any(), any()) } returns Responses.poll.copy(voted = true)
         everySuspend { favourite(any()) } returns testStatus.copy(favourited = true)
         everySuspend { unfavourite(any()) } returns testStatus.copy(favourited = false)
         everySuspend { boost(any()) } returns testStatus.copy(reblogged = true)

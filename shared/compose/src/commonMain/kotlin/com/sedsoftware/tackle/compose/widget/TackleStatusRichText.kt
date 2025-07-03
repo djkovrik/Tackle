@@ -67,8 +67,8 @@ fun TackleStatusRichText(
         overflow = overflow,
         maxLines = maxLines,
         onClick = { position ->
-            val annotatedStringRange = annotatedStringData.second.first { it.start < position && position < it.end }
-            if (annotatedStringRange.tag == "link") {
+            val annotatedStringRange = annotatedStringData.second.firstOrNull { it.start < position && position < it.end }
+            if (annotatedStringRange?.tag == "link") {
                 onClick.invoke(annotatedStringRange.item)
             }
         }

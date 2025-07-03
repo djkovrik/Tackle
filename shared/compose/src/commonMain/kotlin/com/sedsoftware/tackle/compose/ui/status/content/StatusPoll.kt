@@ -1,8 +1,11 @@
 package com.sedsoftware.tackle.compose.ui.status.content
 
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -15,10 +18,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -28,6 +33,7 @@ import com.sedsoftware.tackle.compose.widget.TackleStatusRichText
 import com.sedsoftware.tackle.domain.model.CustomEmoji
 import com.sedsoftware.tackle.domain.model.Poll
 import com.sedsoftware.tackle.domain.model.Translation
+import com.seiko.imageloader.rememberImagePainter
 import org.jetbrains.compose.resources.stringResource
 import tackle.shared.compose.generated.resources.Res
 import tackle.shared.compose.generated.resources.status_poll_active_till
@@ -72,9 +78,14 @@ internal fun StatusPoll(
                 emojis = poll.emojis,
                 expired = poll.expired,
                 voted = poll.voted,
+                multiselect = poll.multiple,
                 hideTotals = poll.hideTotals,
                 chosen = poll.ownVotes.contains(index),
-                onClick = { onSelect.invoke(index, poll.multiple) },
+                onClick = {
+                    if (!poll.expired && !poll.voted) {
+                        onSelect.invoke(index, poll.multiple)
+                    }
+                },
             )
         }
 
@@ -85,7 +96,7 @@ internal fun StatusPoll(
             modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 8.dp)
         )
 
-        if (!poll.expired) {
+        if (!poll.expired && !poll.voted) {
             TackleButton(
                 text = stringResource(resource = Res.string.status_poll_button),
                 onClick = onVote,
@@ -99,6 +110,7 @@ internal fun StatusPoll(
 }
 
 private const val POLL_MIN_FRACTION = 0.15f
+private const val POLL_ANIMATION_DURATION = 500
 
 @Composable
 private fun StatusPollOption(
@@ -108,6 +120,7 @@ private fun StatusPollOption(
     emojis: List<CustomEmoji>,
     expired: Boolean,
     voted: Boolean,
+    multiselect: Boolean,
     hideTotals: Boolean,
     chosen: Boolean,
     modifier: Modifier = Modifier,
@@ -116,19 +129,32 @@ private fun StatusPollOption(
     Box(
         modifier = Modifier.height(intrinsicSize = IntrinsicSize.Min)
     ) {
-        val fraction = (votesCount.toFloat() / votesTotal.toFloat()).takeIf { it > POLL_MIN_FRACTION }
+        val optionFraction = (votesCount.toFloat() / votesTotal.toFloat()).takeIf { it > POLL_MIN_FRACTION }
             ?: POLL_MIN_FRACTION
+
+        val currentFraction: Float by animateFloatAsState(
+            targetValue = if (voted && votesCount != 0L) optionFraction else 0f,
+            animationSpec = tween(durationMillis = POLL_ANIMATION_DURATION, easing = FastOutSlowInEasing),
+        )
 
         Box(
             modifier = modifier
-                .fillMaxWidth(fraction = fraction)
+                .fillMaxWidth(fraction = currentFraction)
                 .fillMaxHeight()
                 .padding(horizontal = 8.dp, vertical = 4.dp)
                 .background(
                     color = MaterialTheme.colorScheme.tertiaryContainer,
-                    shape = MaterialTheme.shapes.extraLarge
+                    shape = if (multiselect) {
+                        MaterialTheme.shapes.extraSmall
+                    } else {
+                        MaterialTheme.shapes.extraLarge
+                    }
                 )
-                .clip(shape = MaterialTheme.shapes.extraLarge)
+                .clip(shape = if (multiselect) {
+                    MaterialTheme.shapes.extraSmall
+                } else {
+                    MaterialTheme.shapes.extraLarge
+                })
         )
 
         Row(
@@ -138,14 +164,24 @@ private fun StatusPollOption(
                 .border(
                     width = 1.dp,
                     color = MaterialTheme.colorScheme.tertiary.copy(alpha = 0.25f),
-                    shape = MaterialTheme.shapes.extraLarge,
+                    shape = if (multiselect) {
+                        MaterialTheme.shapes.extraSmall
+                    } else {
+                        MaterialTheme.shapes.extraLarge
+                    },
                 )
-                .clickable(onClick = onClick)
-                .clip(shape = MaterialTheme.shapes.extraLarge),
+                .clip(
+                    shape = if (multiselect) {
+                    MaterialTheme.shapes.extraSmall
+                } else {
+                    MaterialTheme.shapes.extraLarge
+                }),
         ) {
             TackleCheckbox(
                 checked = chosen,
+                voted = voted,
                 expired = expired,
+                multiselect = multiselect,
                 size = 24.dp,
                 borderWidth = 1.dp,
                 backgroundColorUnchecked = Color.Transparent,
@@ -153,7 +189,8 @@ private fun StatusPollOption(
                 borderColorUnchecked = MaterialTheme.colorScheme.tertiary.copy(alpha = 0.75f),
                 borderColorChecked = MaterialTheme.colorScheme.tertiary,
                 checkmarkColor = MaterialTheme.colorScheme.surface,
-                modifier = Modifier.padding(all = 12.dp)
+                modifier = Modifier.padding(all = 12.dp),
+                onClick = onClick,
             )
 
             TackleStatusRichText(
@@ -166,10 +203,16 @@ private fun StatusPollOption(
                     .weight(weight = 1f, fill = true),
                 inlinedContent = {
                     Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(color = Color.Red)
-                    )
+                        contentAlignment = Alignment.Center,
+                        modifier = modifier.fillMaxSize(),
+                    ) {
+                        Image(
+                            painter = rememberImagePainter(url = it),
+                            contentDescription = null,
+                            contentScale = ContentScale.Fit,
+                            modifier = modifier.fillMaxSize(),
+                        )
+                    }
                 }
             )
 

@@ -6,6 +6,7 @@ import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutorScope
 import com.arkivanov.mvikotlin.extensions.coroutines.coroutineBootstrapper
 import com.arkivanov.mvikotlin.extensions.coroutines.coroutineExecutorFactory
 import com.sedsoftware.tackle.domain.StoreCreate
+import com.sedsoftware.tackle.domain.model.Poll
 import com.sedsoftware.tackle.domain.model.Status
 import com.sedsoftware.tackle.domain.model.Translation
 import com.sedsoftware.tackle.status.domain.StatusManager
@@ -239,7 +240,8 @@ internal class StatusStoreProvider(
                         targetStatus.poll?.id?.let { pollId: String ->
                             unwrap(
                                 result = withContext(ioContext) { manager.vote(pollId, currentVotes) },
-                                onSuccess = { dispatch(Msg.PollVoted) },
+                                onSuccess = { poll: Poll ->
+                                    dispatch(Msg.PollVoted(poll)) },
                                 onError = { publish(Label.ErrorCaught(it)) },
                             )
                         }
@@ -355,13 +357,13 @@ internal class StatusStoreProvider(
 
                     is Msg.PollVoted -> copy(
                         baseStatus = baseStatus.copy(
-                            poll = baseStatus.poll?.copy(
-                                voted = true,
-                            ),
+                            poll = if (baseStatus.poll != null) {
+                                msg.updatedPoll
+                            } else {
+                                null
+                            },
                             reblog = baseStatus.reblog?.copy(
-                                poll = baseStatus.reblog?.poll?.copy(
-                                    voted = true,
-                                ),
+                                poll = msg.updatedPoll,
                             )
                         ),
                     )
@@ -387,7 +389,7 @@ internal class StatusStoreProvider(
         data class StatusPinned(val pinned: Boolean) : Msg
         data class StatusMuted(val muted: Boolean) : Msg
         data class PollOptionsUpdated(val options: List<Int>) : Msg
-        data object PollVoted : Msg
+        data class PollVoted(val updatedPoll: Poll) : Msg
     }
 
     private val CoroutineExecutorScope<State, Msg, Action, Label>.targetStatus: Status
