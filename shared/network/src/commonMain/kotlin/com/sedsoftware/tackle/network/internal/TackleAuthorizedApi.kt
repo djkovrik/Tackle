@@ -21,6 +21,7 @@ import com.sedsoftware.tackle.network.mapper.StatusMapper
 import com.sedsoftware.tackle.network.mapper.TranslationMapper
 import com.sedsoftware.tackle.network.request.CreateStatusRequest
 import com.sedsoftware.tackle.network.request.CreateStatusRequestPoll
+import com.sedsoftware.tackle.network.request.PollVoteRequest
 import com.sedsoftware.tackle.network.response.AccountResponse
 import com.sedsoftware.tackle.network.response.MediaAttachmentResponse
 import com.sedsoftware.tackle.network.response.PollResponse
@@ -42,7 +43,6 @@ import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.format
-import kotlinx.serialization.encodeToString
 
 internal class TackleAuthorizedApi(
     domainProvider: () -> String,
@@ -368,14 +368,7 @@ internal class TackleAuthorizedApi(
             responseMapper = PollMapper::map,
         ) {
             contentType(ContentType.Application.Json)
-
-            setBody(
-                MultiPartFormDataContent(
-                    formData {
-                        append("choices", json.encodeToString(choices))
-                    }
-                )
-            )
+            setBody(PollVoteRequest(choices))
         }
 
     override suspend fun getHomeTimeline(

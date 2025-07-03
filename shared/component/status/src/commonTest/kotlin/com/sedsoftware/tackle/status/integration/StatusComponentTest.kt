@@ -179,8 +179,9 @@ class StatusComponentTest : ComponentTest<StatusComponent>() {
         component.onPollSelect(1, false)
         // when
         component.onVoteClick()
+
         // then
-        assertThat(activeModel.status.poll?.ownVotes).isEqualTo(listOf(1))
+        assertThat(activeModel.status.poll).isEqualTo(Responses.poll)
         verifySuspend(exactly(1)) { api.vote(activeModel.status.poll?.id.orEmpty(), listOf(1)) }
     }
 
@@ -246,7 +247,6 @@ class StatusComponentTest : ComponentTest<StatusComponent>() {
             output = { componentOutput.add(it) },
             status = testStatus,
             extendedInfo = false,
-            rebloggedBy = "",
             isOwn = true,
         )
 }

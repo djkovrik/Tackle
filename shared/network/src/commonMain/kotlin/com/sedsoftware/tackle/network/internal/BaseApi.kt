@@ -29,7 +29,7 @@ internal abstract class BaseApi(
     protected val instanceUrl: String
         get() = domainProvider.invoke()
 
-    protected val json: Json = Json {
+    private val json: Json = Json {
         coerceInputValues = true
         ignoreUnknownKeys = true
         useAlternativeNames = false

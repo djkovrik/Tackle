@@ -76,7 +76,9 @@ class StatusListComponentDefault(
                 .map { it.items }
                 .distinctUntilChanged()
                 .catch { output(ComponentOutput.Common.ErrorCaught(it)) }
-                .collect { newItems -> navigation.setItems { newItems } }
+                .collect { newItems ->
+                    navigation.setItems { newItems }
+                }
         }
 
         lifecycle.doOnDestroy {
@@ -123,11 +125,6 @@ class StatusListComponentDefault(
             dispatchers = dispatchers,
             output = ::onStatusComponentOutput,
             status = status,
-            rebloggedBy = when {
-                status.reblog != null && status.account.displayName.isNotEmpty() -> status.account.displayName
-                status.reblog != null -> status.account.username
-                else -> ""
-            },
             extendedInfo = false,
             isOwn = status.account.id == ownId,
         )

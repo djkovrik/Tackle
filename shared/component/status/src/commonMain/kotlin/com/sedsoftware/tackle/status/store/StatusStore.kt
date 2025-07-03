@@ -27,8 +27,7 @@ internal interface StatusStore : Store<Intent, State, Label> {
     }
 
     data class State(
-        val status: Status,
-        val rebloggedBy: String,
+        val baseStatus: Status,
         val extendedInfo: Boolean,
         val isOwn: Boolean,
         val menuVisible: Boolean = false,

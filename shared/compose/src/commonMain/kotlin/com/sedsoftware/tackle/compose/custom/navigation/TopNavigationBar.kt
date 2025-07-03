@@ -5,7 +5,6 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabPosition
@@ -34,7 +33,7 @@ internal fun TopNavigationBar(
     selectedTabIndex: Int,
     tabs: List<TopNavigationTab>,
     modifier: Modifier = Modifier,
-    tabShape: Shape = RoundedCornerShape(size = 20.dp),
+    tabShape: Shape = MaterialTheme.shapes.medium,
     containerColor: Color = MaterialTheme.colorScheme.background,
     contentColor: Color = MaterialTheme.colorScheme.onBackground,
     indicatorColor: Color = MaterialTheme.colorScheme.primaryContainer,

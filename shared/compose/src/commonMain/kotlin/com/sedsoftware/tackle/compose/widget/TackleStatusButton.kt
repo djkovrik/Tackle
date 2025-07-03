@@ -6,11 +6,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -18,9 +18,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.sedsoftware.tackle.compose.extension.alsoIf
 import com.sedsoftware.tackle.compose.extension.clickableOnce
 import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
 import org.jetbrains.compose.resources.DrawableResource
@@ -34,8 +36,10 @@ import tackle.shared.compose.generated.resources.status_reply
 @Composable
 internal fun TackleStatusButton(
     iconRes: DrawableResource,
-    counter: Int,
     modifier: Modifier = Modifier,
+    counter: Int = 0,
+    showCounter: Boolean = true,
+    enabled: Boolean = true,
     toggled: Boolean = false,
     normalColor: Color = MaterialTheme.colorScheme.onSurface,
     selectedColor: Color = MaterialTheme.colorScheme.primary,
@@ -47,13 +51,22 @@ internal fun TackleStatusButton(
         label = "Color"
     )
 
-    val animatedAlpha: Float by animateFloatAsState(
+    val animatedAlphaBackground: Float by animateFloatAsState(
         if (toggled) {
             0.3f
         } else {
             0f
         },
-        label = "Alpha"
+        label = "Alpha background"
+    )
+
+    val animatedAlphaEnabled: Float by animateFloatAsState(
+        if (enabled) {
+            1.0f
+        } else {
+            0.5f
+        },
+        label = "Alpha enabled"
     )
 
     Row(
@@ -61,13 +74,14 @@ internal fun TackleStatusButton(
         horizontalArrangement = Arrangement.Center,
         modifier = modifier
             .height(height = BUTTON_SIZE.dp)
-            .clip(shape = RoundedCornerShape(size = 32.dp))
-            .clickableOnce(onClick = onClick)
+            .clip(shape = MaterialTheme.shapes.extraLarge)
+            .alsoIf(condition = enabled, other = Modifier.clickableOnce(onClick = onClick))
+            .alpha(alpha = animatedAlphaEnabled)
             .background(
                 color = backgroundColor.copy(
-                    alpha = animatedAlpha
+                    alpha = animatedAlphaBackground
                 ),
-                shape = RoundedCornerShape(size = 32.dp),
+                shape = MaterialTheme.shapes.extraLarge,
             )
             .padding(horizontal = 8.dp)
     ) {
@@ -78,13 +92,15 @@ internal fun TackleStatusButton(
             modifier = Modifier.size(size = ICON_SIZE.dp)
         )
 
-        if (counter > 0) {
+        if (showCounter) {
             Text(
-                text = "$counter",
+                text = if (counter > 0) "$counter" else "",
                 color = animatedColor,
                 style = MaterialTheme.typography.bodyMedium,
                 maxLines = 1,
-                modifier = Modifier.padding(start = 8.dp)
+                modifier = Modifier
+                    .defaultMinSize(minWidth = 32.dp)
+                    .padding(start = 8.dp)
             )
         }
     }

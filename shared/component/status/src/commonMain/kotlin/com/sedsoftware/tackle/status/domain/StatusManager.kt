@@ -1,5 +1,6 @@
 package com.sedsoftware.tackle.status.domain
 
+import com.sedsoftware.tackle.domain.model.Poll
 import com.sedsoftware.tackle.domain.model.Status
 import com.sedsoftware.tackle.domain.model.Translation
 import com.sedsoftware.tackle.status.StatusComponentGateways
@@ -21,9 +22,9 @@ internal class StatusManager(
         return@runCatching response
     }
 
-    suspend fun vote(pollId: String, choices: List<Int>): Result<Boolean> = runCatching {
+    suspend fun vote(pollId: String, choices: List<Int>): Result<Poll> = runCatching {
         val response = api.vote(pollId, choices)
-        return@runCatching response.id == pollId
+        return@runCatching response
     }
 
     suspend fun favourite(statusId: String, favourite: Boolean): Result<Status> = runCatching {

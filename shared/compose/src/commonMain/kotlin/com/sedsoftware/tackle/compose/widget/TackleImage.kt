@@ -55,7 +55,8 @@ internal fun TackleImage(
     colorFilter: ColorFilter? = null,
     filterQuality: FilterQuality = DefaultFilterQuality,
     params: TackleImageParams? = null,
-    onLoading: (@Composable BoxScope.() -> Unit)? = {
+    sensitive: Boolean = false,
+    onLoading: (@Composable BoxScope.() -> Unit) = {
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -66,7 +67,7 @@ internal fun TackleImage(
                 ),
         )
     },
-    onFailure: (@Composable BoxScope.(Throwable) -> Unit)? = {
+    onFailure: (@Composable BoxScope.(Throwable) -> Unit) = {
         Box(
             modifier = errorModifier then Modifier
                 .fillMaxSize()
@@ -93,18 +94,27 @@ internal fun TackleImage(
             val error: MutableState<Throwable?> = remember { mutableStateOf(null) }
 
             val state by derivedStateOf {
-                when (val action = imageAction) {
-                    is ImageAction.Failure -> {
+                val action = imageAction
+                when {
+                    action is ImageAction.Failure -> {
                         error.value = action.error
                         TackleImageState.FAILURE
                     }
 
-                    is ImageAction.Loading -> {
-                        TackleImageState.LOADING
+                    action is ImageAction.Loading && !params?.blurhash.isNullOrEmpty() -> {
+                        TackleImageState.LOADING_BLURHASH
                     }
 
-                    is ImageAction.Success -> {
+                    action is ImageAction.Success && sensitive && !params?.blurhash.isNullOrEmpty() -> {
+                        TackleImageState.SUCCESS_SENSITIVE
+                    }
+
+                    action is ImageAction.Success && !sensitive -> {
                         TackleImageState.SUCCESS
+                    }
+
+                    else -> {
+                        TackleImageState.LOADING
                     }
                 }
             }
@@ -121,34 +131,34 @@ internal fun TackleImage(
                     modifier = Modifier.fillMaxSize(),
                 ) {
                     when (imageState) {
-                        TackleImageState.SUCCESS -> Image(
-                            painter = rememberImageActionPainter(
-                                action = imageAction,
-                                filterQuality = filterQuality,
-                            ),
-                            contentDescription = contentDescription,
-                            modifier = Modifier.fillMaxSize(),
-                            alignment = alignment,
-                            contentScale = contentScale,
-                            alpha = alpha,
-                            colorFilter = colorFilter,
-                        )
+                        TackleImageState.SUCCESS ->
+                            Image(
+                                painter = rememberImageActionPainter(
+                                    action = imageAction,
+                                    filterQuality = filterQuality,
+                                ),
+                                contentDescription = contentDescription,
+                                modifier = Modifier.fillMaxSize(),
+                                alignment = alignment,
+                                contentScale = contentScale,
+                                alpha = alpha,
+                                colorFilter = colorFilter,
+                            )
 
-                        TackleImageState.LOADING -> when {
-                            params != null && params.blurhash.isNotEmpty() -> BlurHashView(
-                                blurhash = params.blurhash,
+                        TackleImageState.LOADING ->
+                            onLoading()
+
+                        TackleImageState.SUCCESS_SENSITIVE,
+                        TackleImageState.LOADING_BLURHASH,
+                            ->
+                            BlurHashView(
+                                blurhash = params!!.blurhash,
                                 width = params.width,
                                 height = params.height,
                             )
 
-                            onLoading != null -> onLoading()
-                        }
-
-                        TackleImageState.FAILURE -> {
-                            if (onFailure != null) {
-                                onFailure(error.value ?: return@Crossfade)
-                            }
-                        }
+                        TackleImageState.FAILURE ->
+                            onFailure(error.value ?: return@Crossfade)
                     }
                 }
             }

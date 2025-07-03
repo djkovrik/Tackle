@@ -108,8 +108,7 @@
     <string name="home_new_post">Новый пост</string>
 
     <!-- Status -->
-    <string name="status_warning_image">Автор пометил данное изображение как деликатный контент</string>
-    <string name="status_sensitive_image_content_description">Переключить видимость деликатного контента</string>
+    <string name="status_sensitive_image">Деликатный контент</string>
     <string name="status_info_created">Создан</string>
     <string name="status_info_edited">Отредактирован</string>
     <string name="status_translating">Перевод</string>
@@ -120,6 +119,9 @@
     <string name="status_poll_multi_choice">Доступен множественный выбор</string>
     <string name="status_poll_voters">Проголосовавших:</string>
     <string name="status_poll_button">Голосовать</string>
+    <string name="status_sensitive_show">Показать</string>
+    <string name="status_sensitive_hide">Скрыть</string>
+    <string name="status_image_alt">ALT</string>
     <!-- Status context menu -->
     <string name="status_menu_translate">Перевести</string>
     <string name="status_menu_show_original">Показать оригинал</string>
