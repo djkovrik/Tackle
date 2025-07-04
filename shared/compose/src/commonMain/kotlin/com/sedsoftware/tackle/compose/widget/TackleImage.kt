@@ -153,8 +153,7 @@ internal fun TackleImage(
                             ->
                             BlurHashView(
                                 blurhash = params!!.blurhash,
-                                width = params.width,
-                                height = params.height,
+                                ratio = params.ratio,
                             )
 
                         TackleImageState.FAILURE ->

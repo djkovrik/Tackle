@@ -37,7 +37,7 @@ oidc = "0.12.1"
 imageLoader = "1.10.0"
 fileKit = "0.8.8"
 okio = "3.10.2"
-blurhash = "0.3.0"
+blurhash = "0.0-4-ALPHA"
 ksoup = "0.5.0"
 
 # Testing
@@ -87,7 +87,7 @@ lib-fileKit-compose = { module = "io.github.vinceglb:filekit-compose", version.r
 lib-settings-core = { module = "com.russhwolf:multiplatform-settings", version.ref = "multiplatformSettings" }
 lib-settings-test = { module = "com.russhwolf:multiplatform-settings-test", version.ref = "multiplatformSettings" }
 lib-okio = { module = "com.squareup.okio:okio", version.ref = "okio" }
-lib-blurhash = { module = "com.vanniktech:blurhash", version.ref = "blurhash" }
+lib-blurhash = { module = "io.github.brys0:blurhash", version.ref = "blurhash" }
 lib-ksoup-html = { group = "com.mohamedrejeb.ksoup", name = "ksoup-html", version.ref = "ksoup" }
 lib-ksoup-entities = { group = "com.mohamedrejeb.ksoup", name = "ksoup-entities", version.ref = "ksoup" }
 
