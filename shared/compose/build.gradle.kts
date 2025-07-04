@@ -63,6 +63,14 @@ kotlin {
     }
 }
 
+composeCompiler {
+    reportsDestination = layout.buildDirectory.dir("compose_compiler")
+
+    stabilityConfigurationFiles.addAll(
+        project.layout.projectDirectory.file("compose_compiler_config.conf"),
+    )
+}
+
 dependencies {
     debugImplementation(libs.compose.ui.tooling)
 }
