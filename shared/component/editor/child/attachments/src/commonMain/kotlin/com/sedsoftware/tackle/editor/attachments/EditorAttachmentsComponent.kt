@@ -5,7 +5,7 @@ import com.sedsoftware.tackle.domain.model.Instance
 import com.sedsoftware.tackle.domain.model.MediaAttachment
 import com.sedsoftware.tackle.domain.model.PlatformFileWrapper
 import com.sedsoftware.tackle.editor.attachments.model.AttachedFile
-import io.github.vinceglb.filekit.core.PlatformFile
+import io.github.vinceglb.filekit.PlatformFile
 
 interface EditorAttachmentsComponent {
 
