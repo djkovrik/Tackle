@@ -50,6 +50,9 @@ import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
 import com.sedsoftware.tackle.domain.model.PlatformFileWrapper
 import com.sedsoftware.tackle.editor.attachments.model.AttachedFile
 import com.sedsoftware.tackle.utils.extension.isImage
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
+import kotlinx.coroutines.withContext
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -110,7 +113,9 @@ internal fun AttachedFileContent(
 
     LaunchedEffect(attachment.id) {
         if (attachment.file.isImage) {
-            imageData = attachment.file.readBytes.invoke()
+            withContext(Dispatchers.IO) {
+                imageData = attachment.file.readBytes.invoke()
+            }
         }
     }
 
