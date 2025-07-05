@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
+import com.github.panpf.sketch.rememberAsyncImagePainter
 import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
 import com.sedsoftware.tackle.compose.ui.status.content.StatusAttachments
 import com.sedsoftware.tackle.compose.ui.status.content.StatusPoll
@@ -22,7 +23,6 @@ import com.sedsoftware.tackle.domain.model.Translation
 import com.sedsoftware.tackle.status.StatusComponent
 import com.sedsoftware.tackle.status.integration.StatusComponentPreview
 import com.sedsoftware.tackle.status.model.StatusAction
-import com.seiko.imageloader.rememberImagePainter
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -35,7 +35,7 @@ internal fun StatusContent(
             modifier = modifier.fillMaxSize(),
         ) {
             Image(
-                painter = rememberImagePainter(url = it),
+                painter = rememberAsyncImagePainter(uri = it),
                 contentDescription = null,
                 contentScale = ContentScale.Fit,
                 modifier = modifier.fillMaxSize(),

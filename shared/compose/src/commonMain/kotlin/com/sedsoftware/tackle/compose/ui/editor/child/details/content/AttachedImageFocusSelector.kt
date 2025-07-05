@@ -71,7 +71,7 @@ internal fun AttachedImageFocusSelector(
         offsetY = initialOffset.second
 
         TackleImage(
-            data = url,
+            imageUrl = url,
             contentDescription = null,
             params = TackleImageParams(
                 blurhash = imageParams.blurhash,

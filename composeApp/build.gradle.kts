@@ -50,7 +50,6 @@ kotlin {
             implementation(libs.ark.essenty)
 
             implementation(libs.oidc.appsupport)
-            implementation(libs.lib.imageLoader)
         }
         androidMain.dependencies {
             implementation(libs.compose.ui.tooling.preview)

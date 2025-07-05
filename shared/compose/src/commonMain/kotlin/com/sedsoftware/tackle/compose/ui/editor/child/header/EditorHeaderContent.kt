@@ -97,7 +97,7 @@ internal fun EditorHeaderContent(
                 modifier = Modifier.padding(top = 16.dp)
             ) {
                 TackleImage(
-                    data = model.avatar,
+                    imageUrl = model.avatar,
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier

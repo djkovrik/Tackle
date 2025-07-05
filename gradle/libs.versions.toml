@@ -34,8 +34,9 @@ napier = "2.7.1"
 ktor = "3.0.3"
 sqlDelight = "2.0.2"
 oidc = "0.12.1"
-imageLoader = "1.10.0"
-fileKit = "0.8.8"
+sketch = "4.2.0"
+zoomImage = "1.4.0-beta02"
+fileKit = "0.10.0-beta04"
 okio = "3.10.2"
 blurhash = "0.0-4-ALPHA"
 ksoup = "0.5.0"
@@ -81,9 +82,13 @@ ark-decompose-extensions = { module = "com.arkivanov.decompose:extensions-compos
 ark-essenty = { module = "com.arkivanov.essenty:lifecycle", version.ref = "essenty" }
 
 lib-napier = { module = "io.github.aakira:napier", version.ref = "napier" }
-lib-imageLoader = { module = "io.github.qdsfdhvh:image-loader", version.ref = "imageLoader" }
+lib-zoomImage = { module = "io.github.panpf.zoomimage:zoomimage-compose-sketch4", version.ref = "zoomImage" }
+lib-sketch-compose = { module = "io.github.panpf.sketch4:sketch-compose", version.ref = "sketch" }
+lib-sketch-compose-extensions = { module = "io.github.panpf.sketch4:sketch-extensions-compose", version.ref = "sketch" }
+lib-sketch-ktor3= { module = "io.github.panpf.sketch4:sketch-http-ktor3", version.ref = "sketch" }
+lib-sketch-gif = { module = "io.github.panpf.sketch4:sketch-animated-gif", version.ref = "sketch" }
 lib-fileKit-core = { module = "io.github.vinceglb:filekit-core", version.ref = "fileKit" }
-lib-fileKit-compose = { module = "io.github.vinceglb:filekit-compose", version.ref = "fileKit" }
+lib-fileKit-compose = { module = "io.github.vinceglb:filekit-dialogs-compose", version.ref = "fileKit" }
 lib-settings-core = { module = "com.russhwolf:multiplatform-settings", version.ref = "multiplatformSettings" }
 lib-settings-test = { module = "com.russhwolf:multiplatform-settings-test", version.ref = "multiplatformSettings" }
 lib-okio = { module = "com.squareup.okio:okio", version.ref = "okio" }
@@ -97,8 +102,6 @@ lib-sqlDelight-driver-sqlite = { module = "app.cash.sqldelight:sqlite-driver", v
 lib-sqlDelight-driver-native = { module = "app.cash.sqldelight:native-driver", version.ref = "sqlDelight" }
 
 oidc-appsupport = { module = "io.github.kalinjul.kotlin.multiplatform:oidc-appsupport", version.ref = "oidc" }
-oidc-okhttp4 = { module = "io.github.kalinjul.kotlin.multiplatform:oidc-okhttp4", version.ref = "oidc" }
-oidc-ktor = { module = "io.github.kalinjul.kotlin.multiplatform:oidc-ktor", version.ref = "oidc" }
 
 test-kotlin = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 test-kotlin-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }

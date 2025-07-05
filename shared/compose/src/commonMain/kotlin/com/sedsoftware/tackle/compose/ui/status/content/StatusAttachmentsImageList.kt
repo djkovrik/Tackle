@@ -58,7 +58,7 @@ internal fun StatusAttachmentsImageList(
     Column(modifier = modifier) {
         Box {
             TackleImage(
-                data = displayedAttachment.previewUrl,
+                imageUrl = displayedAttachment.previewUrl,
                 contentDescription = displayedAttachment.description,
                 params = TackleImageParams(
                     blurhash = displayedAttachment.blurhash,
@@ -158,7 +158,7 @@ private fun StatusAttachmentGalleryItem(
             .clickable(onClick = onSelect)
     ) {
         TackleImage(
-            data = url,
+            imageUrl = url,
             contentDescription = null,
             params = params,
             sensitive = sensitive,

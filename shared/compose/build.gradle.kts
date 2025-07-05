@@ -53,9 +53,14 @@ kotlin {
             implementation(libs.ark.decompose.core)
             implementation(libs.ark.decompose.extensions)
 
+            implementation(libs.lib.fileKit.core)
             implementation(libs.lib.fileKit.compose)
-            implementation(libs.lib.imageLoader)
             implementation(libs.lib.blurhash)
+            implementation(libs.lib.zoomImage)
+            implementation(libs.lib.sketch.compose)
+            implementation(libs.lib.sketch.compose.extensions)
+            implementation(libs.lib.sketch.ktor3)
+            implementation(libs.lib.sketch.gif)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)

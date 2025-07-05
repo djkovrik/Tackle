@@ -49,7 +49,7 @@ internal fun StatusPreviewCard(
 
             if (card.image.isNotEmpty()) {
                 TackleImage(
-                    data = card.image,
+                    imageUrl = card.image,
                     contentDescription = null,
                     params = TackleImageParams(
                         blurhash = card.blurhash,

@@ -119,7 +119,7 @@ internal fun StatusContentWrapper(
         ) {
             // Avatar
             TackleImage(
-                data = model.status.account.avatar,
+                imageUrl = model.status.account.avatar,
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier

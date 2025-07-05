@@ -39,12 +39,13 @@ internal fun AttachedFileImageThumbnail(
     modifier: Modifier = Modifier,
 ) {
     if (imageData.isNotEmpty()) {
-        TackleImage(
-            data = imageData,
-            contentScale = ContentScale.Crop,
-            contentDescription = null,
-            modifier = modifier,
-        )
+// TODO Preview local file
+//        TackleImage(
+//            imageUrl = imageData,
+//            contentScale = ContentScale.Crop,
+//            contentDescription = null,
+//            modifier = modifier,
+//        )
     } else {
         AttachedFilePlaceholder(
             resource = Res.drawable.editor_file_image,
@@ -60,7 +61,7 @@ internal fun AttachedFileVideoThumbnail(
 ) {
     if (url.isNotEmpty()) {
         TackleImage(
-            data = url,
+            imageUrl = url,
             contentDescription = null,
             contentScale = ContentScale.Crop,
             modifier = modifier.fillMaxSize(),
