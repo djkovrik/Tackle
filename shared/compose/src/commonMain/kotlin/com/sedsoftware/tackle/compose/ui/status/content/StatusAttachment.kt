@@ -19,7 +19,7 @@ internal fun StatusAttachment(
     attachments: List<MediaAttachment>,
     hasSensitiveContent: Boolean,
     onContentClick: () -> Unit,
-    onContentAltClick: () -> Unit,
+    onContentAltClick: (String) -> Unit,
     onDownloadClick: () -> Unit,
     onCancelClick: () -> Unit,
     modifier: Modifier = Modifier,

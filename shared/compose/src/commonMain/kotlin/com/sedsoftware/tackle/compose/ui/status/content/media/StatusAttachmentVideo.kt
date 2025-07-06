@@ -35,7 +35,7 @@ internal fun StatusAttachmentVideo(
     hasSensitiveContent: Boolean,
     hideSensitiveContent: Boolean,
     onVideoClick: () -> Unit,
-    onVideoAltClick: () -> Unit,
+    onVideoAltClick: (String) -> Unit,
     onSensitiveClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -61,7 +61,7 @@ internal fun StatusAttachmentVideo(
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .padding(all = 8.dp)
-                    .clickable(onClick = onVideoAltClick),
+                    .clickable { onVideoAltClick.invoke(attachment.description) }
             )
         }
 

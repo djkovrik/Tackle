@@ -122,6 +122,7 @@
     <string name="status_sensitive_show">Показать</string>
     <string name="status_sensitive_hide">Скрыть</string>
     <string name="status_image_alt">ALT</string>
+    <string name="status_image_alt_header">Альтернативный текст</string>
     <string name="status_image_gif">GIF</string>
     <!-- Status context menu -->
     <string name="status_menu_translate">Перевести</string>

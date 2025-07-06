@@ -28,7 +28,7 @@ internal fun StatusAttachmentImage(
     hasSensitiveContent: Boolean,
     hideSensitiveContent: Boolean,
     onImageClick: () -> Unit,
-    onImageAltClick: () -> Unit,
+    onImageAltClick: (String) -> Unit,
     onSensitiveClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -55,7 +55,7 @@ internal fun StatusAttachmentImage(
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .padding(all = 8.dp)
-                    .clickable(onClick = onImageAltClick),
+                    .clickable { onImageAltClick.invoke(attachment.description) },
             )
         }
 

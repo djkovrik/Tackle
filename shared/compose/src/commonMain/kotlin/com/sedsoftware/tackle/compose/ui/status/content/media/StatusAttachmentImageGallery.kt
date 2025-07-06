@@ -41,7 +41,7 @@ internal fun StatusAttachmentImageGallery(
     hasSensitiveContent: Boolean,
     hideSensitiveContent: Boolean,
     onImageClick: () -> Unit,
-    onImageAltClick: () -> Unit,
+    onImageAltClick: (String) -> Unit,
     onSensitiveClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {

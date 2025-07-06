@@ -1,6 +1,11 @@
 package com.sedsoftware.tackle.status.integration
 
 import com.arkivanov.decompose.ComponentContext
+import com.arkivanov.decompose.router.slot.ChildSlot
+import com.arkivanov.decompose.router.slot.SlotNavigation
+import com.arkivanov.decompose.router.slot.activate
+import com.arkivanov.decompose.router.slot.childSlot
+import com.arkivanov.decompose.router.slot.dismiss
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.decompose.value.operator.map
 import com.arkivanov.essenty.lifecycle.doOnDestroy
@@ -13,6 +18,8 @@ import com.sedsoftware.tackle.domain.model.Status
 import com.sedsoftware.tackle.status.StatusComponent
 import com.sedsoftware.tackle.status.StatusComponent.Model
 import com.sedsoftware.tackle.status.StatusComponentGateways
+import com.sedsoftware.tackle.status.alternatetext.AlternateTextComponent
+import com.sedsoftware.tackle.status.alternatetext.integration.AlternateTextComponentDefault
 import com.sedsoftware.tackle.status.domain.StatusManager
 import com.sedsoftware.tackle.status.model.StatusAction
 import com.sedsoftware.tackle.status.model.StatusContextAction
@@ -23,6 +30,7 @@ import com.sedsoftware.tackle.utils.extension.asValue
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import kotlinx.serialization.Serializable
 
 class StatusComponentDefault(
     private val componentContext: ComponentContext,
@@ -67,6 +75,21 @@ class StatusComponentDefault(
     }
 
     override val model: Value<Model> = store.asValue().map(stateToModel)
+
+    private val alternateTextNavigation: SlotNavigation<AlternateTextConfig> = SlotNavigation<AlternateTextConfig>()
+
+    override val alternateTextDialog: Value<ChildSlot<*, AlternateTextComponent>> =
+        childSlot(
+            source = alternateTextNavigation,
+            serializer = AlternateTextConfig.serializer(),
+            handleBackButton = true,
+        ) { config, childComponentContext ->
+            AlternateTextComponentDefault(
+                componentContext = childComponentContext,
+                text = config.text,
+                onDismissed = alternateTextNavigation::dismiss,
+            )
+        }
 
     override fun onStatusAction(action: StatusAction) {
         when (action) {
@@ -114,4 +137,13 @@ class StatusComponentDefault(
     override fun onMentionClick(mention: String) {
         output(ComponentOutput.SingleStatus.MentionClicked(mention))
     }
+
+    override fun onAlternateTextRequest(text: String) {
+        alternateTextNavigation.activate(AlternateTextConfig(text = text))
+    }
+
+    @Serializable
+    private data class AlternateTextConfig(
+        val text: String,
+    )
 }

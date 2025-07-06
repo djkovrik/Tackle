@@ -1,5 +1,6 @@
 package com.sedsoftware.tackle.status.integration
 
+import com.arkivanov.decompose.router.slot.ChildSlot
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
 import com.sedsoftware.tackle.domain.model.Status
@@ -8,6 +9,7 @@ import com.sedsoftware.tackle.domain.model.type.StatusVisibility.PUBLIC
 import com.sedsoftware.tackle.domain.model.type.StatusVisibility.UNLISTED
 import com.sedsoftware.tackle.status.StatusComponent
 import com.sedsoftware.tackle.status.StatusComponent.Model
+import com.sedsoftware.tackle.status.alternatetext.AlternateTextComponent
 import com.sedsoftware.tackle.status.model.StatusAction
 import com.sedsoftware.tackle.status.model.StatusContextAction
 
@@ -39,6 +41,9 @@ class StatusComponentPreview(
             )
         )
 
+    override val alternateTextDialog: Value<ChildSlot<Unit, AlternateTextComponent>> =
+        MutableValue(ChildSlot())
+
     override fun onStatusAction(action: StatusAction) = Unit
     override fun onMenuActionClick(action: StatusContextAction) = Unit
     override fun onMenuRequest(visible: Boolean) = Unit
@@ -47,4 +52,5 @@ class StatusComponentPreview(
     override fun onUrlClick(url: String) = Unit
     override fun onHashTagClick(hashTag: String) = Unit
     override fun onMentionClick(mention: String) = Unit
+    override fun onAlternateTextRequest(text: String) = Unit
 }

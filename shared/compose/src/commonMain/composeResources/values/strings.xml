@@ -125,6 +125,7 @@
     <string name="status_sensitive_show">Show</string>
     <string name="status_sensitive_hide">Hide</string>
     <string name="status_image_alt">ALT</string>
+    <string name="status_image_alt_header">Alternate text</string>
     <string name="status_image_gif">GIF</string>
     <!-- Status context menu -->
     <string name="status_menu_translate">Translate</string>

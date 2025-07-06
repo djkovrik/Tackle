@@ -11,6 +11,7 @@ kotlin {
                 implementation(project(":shared:network"))
                 implementation(project(":shared:settings"))
                 implementation(project(":shared:utils"))
+                implementation(project(":shared:component:status:child:alternatetext"))
 
                 implementation(libs.ark.decompose.core)
                 implementation(libs.ark.decompose.extensions)

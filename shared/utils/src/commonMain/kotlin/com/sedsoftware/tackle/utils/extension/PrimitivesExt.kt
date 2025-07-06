@@ -68,7 +68,7 @@ fun Float.toVideoDuration(): String {
     }
 }
 
-fun Int.toDurationFormat(): String = if (this > 10) "${this.toInt()}" else "0${this.toInt()}"
+fun Int.toDurationFormat(defaultDivider: Int = 10): String = if (this > defaultDivider) "${this.toInt()}" else "0${this.toInt()}"
 
 fun Long?.toHumanReadableSize(useBinary: Boolean = false): String {
     if (this == null) return ""
