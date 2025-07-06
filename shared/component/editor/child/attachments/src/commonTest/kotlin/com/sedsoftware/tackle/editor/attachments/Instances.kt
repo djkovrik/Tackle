@@ -14,13 +14,24 @@ internal object Instances {
             imageSizeLimit = 123456L,
             videoSizeLimit = 123456L,
             supportedMimeTypes = listOf(
+                "audio/mp3",
                 "video/mp4",
                 "image/jpeg",
                 "image/png",
+                "application/vnd.ms-excel"
             )
         )
     )
 
+    val audio: PlatformFileWrapper = PlatformFileWrapper(
+        name = "normal.mp3",
+        extension = "mp3",
+        path = "",
+        mimeType = "audio/mp3",
+        size = 12345L,
+        sizeLabel = "",
+        readBytes = { ByteArray(0) },
+    )
 
     val imageNormal: PlatformFileWrapper = PlatformFileWrapper(
         name = "normal.jpg",
@@ -78,6 +89,16 @@ internal object Instances {
         path = "",
         mimeType = "image/vnd.adobe.photoshop",
         size = 12345L,
+        sizeLabel = "",
+        readBytes = { ByteArray(0) },
+    )
+
+    val fileMisc: PlatformFileWrapper = PlatformFileWrapper(
+        name = "misc.xls",
+        extension = "xls",
+        path = "",
+        mimeType = "application/vnd.ms-excel",
+        size = 1234567890L,
         sizeLabel = "",
         readBytes = { ByteArray(0) },
     )

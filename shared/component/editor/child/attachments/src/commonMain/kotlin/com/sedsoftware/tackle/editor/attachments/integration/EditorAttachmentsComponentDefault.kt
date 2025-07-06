@@ -74,11 +74,15 @@ class EditorAttachmentsComponentDefault(
 
     override fun onFilesSelect(files: List<PlatformFile>) {
         val wrapped: List<PlatformFileWrapper> = files.map { wrap(it.name, it.extension, it.path, it::size, it::readBytes) }
-        store.accept(EditorAttachmentsStore.Intent.OnFilesSelected(wrapped))
+        if (wrapped.isNotEmpty()) {
+            store.accept(EditorAttachmentsStore.Intent.OnFilesSelected(wrapped))
+        }
     }
 
     override fun onWrappedFilesSelect(files: List<PlatformFileWrapper>) {
-        store.accept(EditorAttachmentsStore.Intent.OnFilesSelected(files))
+        if (files.isNotEmpty()) {
+            store.accept(EditorAttachmentsStore.Intent.OnFilesSelected(files))
+        }
     }
 
     override fun onFileDelete(id: String) {
