@@ -13,13 +13,15 @@ import com.sedsoftware.tackle.utils.extension.isImage
 import com.sedsoftware.tackle.utils.extension.isUnauthorized
 import com.sedsoftware.tackle.utils.extension.isValidUrl
 import com.sedsoftware.tackle.utils.extension.isVideo
-import com.sedsoftware.tackle.utils.extension.toNormalizedUrl
 import com.sedsoftware.tackle.utils.extension.offsetToFocus
 import com.sedsoftware.tackle.utils.extension.orFalse
 import com.sedsoftware.tackle.utils.extension.orZero
+import com.sedsoftware.tackle.utils.extension.toDurationFormat
+import com.sedsoftware.tackle.utils.extension.toVideoDuration
 import com.sedsoftware.tackle.utils.extension.toHumanReadableSize
 import com.sedsoftware.tackle.utils.extension.toLocalDateCustom
 import com.sedsoftware.tackle.utils.extension.toLocalDateTimeCustom
+import com.sedsoftware.tackle.utils.extension.toNormalizedUrl
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.TimeZone
 import kotlin.test.Test
@@ -286,5 +288,46 @@ class ExtensionsTest {
         assertThat("http://x".isValidUrl()).isEqualTo(false)
         assertThat("a b c".isValidUrl()).isEqualTo(false)
         assertThat("test..ru".isValidUrl()).isEqualTo(false)
+    }
+
+    @Test
+    fun `toDurationFormat returns formatted string`() = runTest {
+        // given
+        val x1 = 8
+        val x2 = 53
+        // when
+        val result1 = x1.toDurationFormat()
+        val result2 = x2.toDurationFormat()
+        // then
+        assertThat(result1).isEqualTo("08")
+        assertThat(result2).isEqualTo("53")
+    }
+
+    @Test
+    fun `toHumanReadableDuration should return formatted string`() = runTest {
+        // given
+        val x1 = 58.33f // 58 seconds
+        val x2 = 62.01f // 1 min 2 seconds
+        val x3 = 141.54f // 2 min 21 seconds
+        val x4 = 778.54f // 12 min 58 seconds
+        val x5 = 3601.02f // 1 hour 0 min 1 second
+        val x6 = 3662.15f // 1 hour 1 min 2 second
+        val x7 = 6323.0004f // 1 hour 45 min 23 sec
+        // when
+        val result1 = x1.toVideoDuration()
+        val result2 = x2.toVideoDuration()
+        val result3 = x3.toVideoDuration()
+        val result4 = x4.toVideoDuration()
+        val result5 = x5.toVideoDuration()
+        val result6 = x6.toVideoDuration()
+        val result7 = x7.toVideoDuration()
+        // then
+        assertThat(result1).isEqualTo("58")
+        assertThat(result2).isEqualTo("01:02")
+        assertThat(result3).isEqualTo("02:21")
+        assertThat(result4).isEqualTo("12:58")
+        assertThat(result5).isEqualTo("01:00:01")
+        assertThat(result6).isEqualTo("01:01:02")
+        assertThat(result7).isEqualTo("01:45:23")
     }
 }

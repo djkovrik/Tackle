@@ -13,7 +13,7 @@ import androidx.compose.ui.layout.ContentScale
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.github.panpf.sketch.rememberAsyncImagePainter
 import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
-import com.sedsoftware.tackle.compose.ui.status.content.StatusAttachments
+import com.sedsoftware.tackle.compose.ui.status.content.StatusAttachment
 import com.sedsoftware.tackle.compose.ui.status.content.StatusPoll
 import com.sedsoftware.tackle.compose.ui.status.content.StatusPreviewCard
 import com.sedsoftware.tackle.compose.ui.status.content.StatusText
@@ -80,12 +80,13 @@ internal fun StatusContent(
 
         if (model.status.mediaAttachments.isNotEmpty()) {
             // TODO Attachment management
-            StatusAttachments(
+            StatusAttachment(
                 attachments = model.status.mediaAttachments,
                 hasSensitiveContent = model.status.sensitive,
+                onContentClick = {},
+                onContentAltClick = {},
                 onDownloadClick = {},
                 onCancelClick = {},
-                onDoneClick = {},
                 modifier = modifier,
             )
         }

@@ -75,8 +75,6 @@ internal fun AttachedImageFocusSelector(
             contentDescription = null,
             params = TackleImageParams(
                 blurhash = imageParams.blurhash,
-                width = imageParams.width,
-                height = imageParams.height,
                 ratio = imageParams.ratio,
             ),
             modifier = modifier

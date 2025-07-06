@@ -53,8 +53,6 @@ internal fun StatusPreviewCard(
                     contentDescription = null,
                     params = TackleImageParams(
                         blurhash = card.blurhash,
-                        width = card.width,
-                        height = card.height,
                         ratio = if (card.height != 0) {
                             card.width / card.height.toFloat()
                         } else {

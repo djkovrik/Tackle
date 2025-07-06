@@ -37,6 +37,7 @@ oidc = "0.12.1"
 sketch = "4.2.0"
 zoomImage = "1.4.0-beta02"
 fileKit = "0.10.0-beta04"
+mediaPlayerKMP = "2.0.9"
 okio = "3.10.2"
 blurhash = "0.0-4-ALPHA"
 ksoup = "0.5.0"
@@ -89,6 +90,7 @@ lib-sketch-ktor3= { module = "io.github.panpf.sketch4:sketch-http-ktor3", versio
 lib-sketch-gif = { module = "io.github.panpf.sketch4:sketch-animated-gif", version.ref = "sketch" }
 lib-fileKit-core = { module = "io.github.vinceglb:filekit-core", version.ref = "fileKit" }
 lib-fileKit-compose = { module = "io.github.vinceglb:filekit-dialogs-compose", version.ref = "fileKit" }
+lib-mediaPlayer = { module = "io.github.khubaibkhan4:mediaplayer-kmp", version.ref = "mediaPlayerKMP" }
 lib-settings-core = { module = "com.russhwolf:multiplatform-settings", version.ref = "multiplatformSettings" }
 lib-settings-test = { module = "com.russhwolf:multiplatform-settings-test", version.ref = "multiplatformSettings" }
 lib-okio = { module = "com.squareup.okio:okio", version.ref = "okio" }

@@ -61,6 +61,7 @@ kotlin {
             implementation(libs.lib.sketch.compose.extensions)
             implementation(libs.lib.sketch.ktor3)
             implementation(libs.lib.sketch.gif)
+            implementation(libs.lib.mediaPlayer)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
