@@ -7,6 +7,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -19,6 +20,7 @@ internal fun StatusContentLabel(
             text = text,
             color = MaterialTheme.colorScheme.inverseOnSurface,
             style = MaterialTheme.typography.bodySmall,
+            textAlign = TextAlign.Center,
             modifier = Modifier
                 .background(
                     color = MaterialTheme.colorScheme.inverseSurface.copy(

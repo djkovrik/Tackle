@@ -108,7 +108,7 @@
     <string name="home_new_post">Новый пост</string>
 
     <!-- Status -->
-    <string name="status_sensitive_image">Деликатный контент</string>
+    <string name="status_sensitive_content">Деликатный\nконтент</string>
     <string name="status_info_created">Создан</string>
     <string name="status_info_edited">Отредактирован</string>
     <string name="status_translating">Перевод</string>

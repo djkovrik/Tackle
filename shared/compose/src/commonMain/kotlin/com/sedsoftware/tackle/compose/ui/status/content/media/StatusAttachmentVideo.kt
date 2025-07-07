@@ -26,6 +26,7 @@ import tackle.shared.compose.generated.resources.Res
 import tackle.shared.compose.generated.resources.status_image_alt
 import tackle.shared.compose.generated.resources.status_image_gif
 import tackle.shared.compose.generated.resources.status_play
+import tackle.shared.compose.generated.resources.status_sensitive_content
 import tackle.shared.compose.generated.resources.status_sensitive_hide
 import tackle.shared.compose.generated.resources.status_sensitive_show
 
@@ -47,7 +48,7 @@ internal fun StatusAttachmentVideo(
                 blurhash = attachment.blurhash,
                 ratio = attachment.meta?.small?.aspect
                     ?: attachment.meta?.original?.aspect
-                    ?: 0f,
+                    ?: 1f,
             ),
             sensitive = hideSensitiveContent,
             modifier = modifier
@@ -102,23 +103,32 @@ internal fun StatusAttachmentVideo(
             }
         }
 
-        IconButton(
-            onClick = onVideoClick,
-            modifier = modifier
-                .clip(shape = CircleShape)
-                .background(color = MaterialTheme.colorScheme.inverseSurface.copy(
-                    alpha = 0.8f
-                ))
-                .align(Alignment.Center),
-        ) {
-            Icon(
-                painter = painterResource(resource = Res.drawable.status_play),
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.inverseOnSurface.copy(
-                    alpha = 0.8f
-                ),
-                modifier = Modifier.padding(all = 6.dp),
+        if (hideSensitiveContent) {
+            StatusContentLabel(
+                text = stringResource(resource = Res.string.status_sensitive_content),
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .padding(all = 8.dp),
             )
+        } else {
+            IconButton(
+                onClick = onVideoClick,
+                modifier = modifier
+                    .clip(shape = CircleShape)
+                    .background(color = MaterialTheme.colorScheme.inverseSurface.copy(
+                        alpha = 0.8f
+                    ))
+                    .align(Alignment.Center),
+            ) {
+                Icon(
+                    painter = painterResource(resource = Res.drawable.status_play),
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.inverseOnSurface.copy(
+                        alpha = 0.8f
+                    ),
+                    modifier = Modifier.padding(all = 6.dp),
+                )
+            }
         }
     }
 }

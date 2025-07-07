@@ -111,7 +111,7 @@
     <string name="home_new_post">New post</string>
 
     <!-- Status -->
-    <string name="status_sensitive_image">Sensitive content</string>
+    <string name="status_sensitive_content">Sensitive\ncontent</string>
     <string name="status_info_created">Created</string>
     <string name="status_info_edited">Edited</string>
     <string name="status_translating">Translating</string>

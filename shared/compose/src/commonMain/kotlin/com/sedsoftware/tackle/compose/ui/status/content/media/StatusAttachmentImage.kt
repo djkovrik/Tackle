@@ -18,8 +18,8 @@ import com.sedsoftware.tackle.domain.model.MediaAttachment
 import org.jetbrains.compose.resources.stringResource
 import tackle.shared.compose.generated.resources.Res
 import tackle.shared.compose.generated.resources.status_image_alt
+import tackle.shared.compose.generated.resources.status_sensitive_content
 import tackle.shared.compose.generated.resources.status_sensitive_hide
-import tackle.shared.compose.generated.resources.status_sensitive_image
 import tackle.shared.compose.generated.resources.status_sensitive_show
 
 @Composable
@@ -40,7 +40,7 @@ internal fun StatusAttachmentImage(
                 blurhash = attachment.blurhash,
                 ratio = attachment.meta?.small?.aspect
                     ?: attachment.meta?.original?.aspect
-                    ?: 0f,
+                    ?: 1f,
             ),
             sensitive = hideSensitiveContent,
             modifier = modifier
@@ -75,9 +75,9 @@ internal fun StatusAttachmentImage(
             )
         }
 
-        if (hasSensitiveContent) {
+        if (hideSensitiveContent) {
             StatusContentLabel(
-                text = stringResource(resource = Res.string.status_sensitive_image),
+                text = stringResource(resource = Res.string.status_sensitive_content),
                 modifier = Modifier
                     .align(Alignment.Center)
                     .padding(all = 8.dp),
