@@ -74,6 +74,7 @@ internal fun AttachedFileVideoThumbnail(
     if (url.isNotEmpty()) {
         TackleImage(
             imageUrl = url,
+            imageParams = null,
             contentDescription = null,
             contentScale = ContentScale.Crop,
             modifier = modifier.fillMaxSize(),

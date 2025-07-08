@@ -98,6 +98,7 @@ internal fun EditorHeaderContent(
             ) {
                 TackleImage(
                     imageUrl = model.avatar,
+                    imageParams = null,
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier

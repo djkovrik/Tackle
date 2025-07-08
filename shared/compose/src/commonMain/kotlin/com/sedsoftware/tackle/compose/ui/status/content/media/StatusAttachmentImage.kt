@@ -35,14 +35,13 @@ internal fun StatusAttachmentImage(
     Box {
         TackleImage(
             imageUrl = attachment.previewUrl,
-            contentDescription = attachment.description,
-            params = TackleImageParams(
+            imageParams = TackleImageParams(
                 blurhash = attachment.blurhash,
                 ratio = attachment.meta?.small?.aspect
                     ?: attachment.meta?.original?.aspect
                     ?: 1f,
             ),
-            sensitive = hideSensitiveContent,
+            contentDescription = attachment.description,
             modifier = modifier
                 .clip(shape = MaterialTheme.shapes.extraSmall)
                 .clickableOnce(onClick = onImageClick)

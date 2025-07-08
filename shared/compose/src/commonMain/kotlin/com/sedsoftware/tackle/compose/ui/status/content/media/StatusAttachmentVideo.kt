@@ -43,14 +43,13 @@ internal fun StatusAttachmentVideo(
     Box {
         TackleImage(
             imageUrl = attachment.previewUrl,
-            contentDescription = attachment.description,
-            params = TackleImageParams(
+            imageParams = TackleImageParams(
                 blurhash = attachment.blurhash,
                 ratio = attachment.meta?.small?.aspect
                     ?: attachment.meta?.original?.aspect
                     ?: 1f,
             ),
-            sensitive = hideSensitiveContent,
+            contentDescription = attachment.description,
             modifier = modifier
                 .clip(shape = MaterialTheme.shapes.extraSmall)
                 .fillMaxWidth(),
@@ -115,9 +114,11 @@ internal fun StatusAttachmentVideo(
                 onClick = onVideoClick,
                 modifier = modifier
                     .clip(shape = CircleShape)
-                    .background(color = MaterialTheme.colorScheme.inverseSurface.copy(
-                        alpha = 0.8f
-                    ))
+                    .background(
+                        color = MaterialTheme.colorScheme.inverseSurface.copy(
+                            alpha = 0.8f
+                        )
+                    )
                     .align(Alignment.Center),
             ) {
                 Icon(

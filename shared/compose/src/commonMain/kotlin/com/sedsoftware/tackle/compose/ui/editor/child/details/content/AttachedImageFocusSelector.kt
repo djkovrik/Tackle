@@ -72,11 +72,11 @@ internal fun AttachedImageFocusSelector(
 
         TackleImage(
             imageUrl = url,
-            contentDescription = null,
-            params = TackleImageParams(
+            imageParams = TackleImageParams(
                 blurhash = imageParams.blurhash,
                 ratio = imageParams.ratio,
             ),
+            contentDescription = null,
             modifier = modifier
                 .fillMaxSize()
                 .clip(shape = MaterialTheme.shapes.extraSmall),

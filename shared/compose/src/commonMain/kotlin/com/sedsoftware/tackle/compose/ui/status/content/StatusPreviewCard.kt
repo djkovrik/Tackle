@@ -50,8 +50,7 @@ internal fun StatusPreviewCard(
             if (card.image.isNotEmpty()) {
                 TackleImage(
                     imageUrl = card.image,
-                    contentDescription = null,
-                    params = TackleImageParams(
+                    imageParams = TackleImageParams(
                         blurhash = card.blurhash,
                         ratio = if (card.height != 0) {
                             card.width / card.height.toFloat()
@@ -59,6 +58,7 @@ internal fun StatusPreviewCard(
                             1f
                         },
                     ),
+                    contentDescription = null,
                     modifier = Modifier.clip(shape = MaterialTheme.shapes.small),
                 )
             }

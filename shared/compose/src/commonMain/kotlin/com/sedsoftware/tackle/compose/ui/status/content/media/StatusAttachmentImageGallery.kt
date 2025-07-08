@@ -112,9 +112,8 @@ private fun StatusAttachmentGalleryItem(
     ) {
         TackleImage(
             imageUrl = url,
+            imageParams = params,
             contentDescription = null,
-            params = params,
-            sensitive = sensitive,
             modifier = Modifier
                 .height(height = 64.dp)
                 .aspectRatio(ratio = params?.ratio ?: 1f)

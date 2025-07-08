@@ -40,6 +40,7 @@ internal fun InputHintAccount(
         ) {
             TackleImage(
                 imageUrl = hint.avatar,
+                imageParams = null,
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -76,6 +77,7 @@ internal fun InputHintEmoji(
         ) {
             TackleImage(
                 imageUrl = hint.url,
+                imageParams = null,
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
