@@ -9,7 +9,9 @@ import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.labels
 import com.sedsoftware.tackle.domain.ComponentOutput
 import com.sedsoftware.tackle.domain.api.TackleDispatchers
+import com.sedsoftware.tackle.domain.model.MediaAttachment
 import com.sedsoftware.tackle.domain.model.Status
+import com.sedsoftware.tackle.domain.model.type.MediaAttachmentType
 import com.sedsoftware.tackle.main.StatusComponent
 import com.sedsoftware.tackle.main.StatusComponent.Model
 import com.sedsoftware.tackle.main.StatusComponentGateways
@@ -117,5 +119,38 @@ class StatusComponentDefault(
 
     override fun onAlternateTextRequest(text: String) {
         output(ComponentOutput.SingleStatus.AlternateTextClicked(text))
+    }
+
+    override fun onAttachmentClick(attachment: MediaAttachment) {
+        when (attachment.type) {
+            MediaAttachmentType.IMAGE -> {
+                output(
+                    ComponentOutput.SingleStatus.ViewImage(
+                        attachments = model.value.status.mediaAttachments,
+                        selectedIndex = model.value.status.mediaAttachments.indexOfFirst { it.id == attachment.id },
+                    )
+                )
+            }
+
+            MediaAttachmentType.GIF -> {
+                output(
+                    ComponentOutput.SingleStatus.ViewImage(
+                        attachments = listOf(attachment),
+                        selectedIndex = 0,
+                    )
+                )
+            }
+
+            MediaAttachmentType.GIFV,
+            MediaAttachmentType.VIDEO -> {
+                output(
+                    ComponentOutput.SingleStatus.ViewVideo(
+                        attachment = attachment,
+                    )
+                )
+            }
+
+            else -> Unit
+        }
     }
 }

@@ -2,6 +2,7 @@ package com.sedsoftware.tackle.main.integration
 
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
+import com.sedsoftware.tackle.domain.model.MediaAttachment
 import com.sedsoftware.tackle.domain.model.Status
 import com.sedsoftware.tackle.domain.model.Translation
 import com.sedsoftware.tackle.domain.model.type.StatusVisibility.PUBLIC
@@ -48,4 +49,5 @@ class StatusComponentPreview(
     override fun onHashTagClick(hashTag: String) = Unit
     override fun onMentionClick(mention: String) = Unit
     override fun onAlternateTextRequest(text: String) = Unit
+    override fun onAttachmentClick(attachment: MediaAttachment) = Unit
 }

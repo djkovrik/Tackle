@@ -83,7 +83,7 @@ internal fun StatusContent(
             StatusAttachment(
                 attachments = model.status.mediaAttachments,
                 hasSensitiveContent = model.status.sensitive,
-                onContentClick = {},
+                onContentClick = component::onAttachmentClick,
                 onContentAltClick = component::onAlternateTextRequest,
                 onDownloadClick = {},
                 onCancelClick = {},

@@ -31,6 +31,8 @@ import com.sedsoftware.tackle.compose.ui.alternatetext.AlternateTextContent
 import com.sedsoftware.tackle.compose.ui.auth.AuthContent
 import com.sedsoftware.tackle.compose.ui.editor.EditorContent
 import com.sedsoftware.tackle.compose.ui.main.MainContent
+import com.sedsoftware.tackle.compose.ui.media.ViewImageContent
+import com.sedsoftware.tackle.compose.ui.media.ViewVideoContent
 import com.sedsoftware.tackle.compose.widget.TackleSnackbar
 import com.sedsoftware.tackle.main.alternatetext.AlternateTextComponent
 import com.sedsoftware.tackle.root.RootComponent
@@ -65,6 +67,8 @@ fun RootContent(
                     is Child.Auth -> AuthContent(component = child.component)
                     is Child.Main -> MainContent(component = child.component)
                     is Child.Editor -> EditorContent(component = child.component)
+                    is Child.ViewImage -> ViewImageContent(component = child.component)
+                    is Child.ViewVideo -> ViewVideoContent(component = child.component)
                 }
             }
 

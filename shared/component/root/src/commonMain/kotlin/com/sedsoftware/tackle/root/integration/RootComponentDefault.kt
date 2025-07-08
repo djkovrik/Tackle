@@ -28,12 +28,17 @@ import com.sedsoftware.tackle.domain.api.TackleDispatchers
 import com.sedsoftware.tackle.domain.api.TacklePlatformTools
 import com.sedsoftware.tackle.domain.api.TackleSettings
 import com.sedsoftware.tackle.domain.api.UnauthorizedApi
+import com.sedsoftware.tackle.domain.model.MediaAttachment
 import com.sedsoftware.tackle.editor.EditorComponent
 import com.sedsoftware.tackle.editor.integration.EditorComponentDefault
 import com.sedsoftware.tackle.main.MainComponent
 import com.sedsoftware.tackle.main.alternatetext.AlternateTextComponent
 import com.sedsoftware.tackle.main.alternatetext.integration.AlternateTextComponentDefault
 import com.sedsoftware.tackle.main.integration.MainComponentDefault
+import com.sedsoftware.tackle.main.viewimage.ViewImageComponent
+import com.sedsoftware.tackle.main.viewimage.integration.ViewImageComponentDefault
+import com.sedsoftware.tackle.main.viewvideo.ViewVideoComponent
+import com.sedsoftware.tackle.main.viewvideo.integration.ViewVideoComponentDefault
 import com.sedsoftware.tackle.root.RootComponent
 import com.sedsoftware.tackle.root.RootComponent.Child
 import com.sedsoftware.tackle.root.gateway.auth.AuthComponentApi
@@ -55,6 +60,8 @@ class RootComponentDefault internal constructor(
     private val authComponent: (ComponentContext, (ComponentOutput) -> Unit) -> AuthComponent,
     private val mainComponent: (ComponentContext, (ComponentOutput) -> Unit) -> MainComponent,
     private val editorComponent: (ComponentContext, (ComponentOutput) -> Unit) -> EditorComponent,
+    private val viewImageComponent: (ComponentContext, List<MediaAttachment>, Int, () -> Unit) -> ViewImageComponent,
+    private val viewVideoComponent: (ComponentContext, MediaAttachment, () -> Unit) -> ViewVideoComponent,
 ) : RootComponent, ComponentContext by componentContext {
 
     constructor(
@@ -105,6 +112,21 @@ class RootComponentDefault internal constructor(
                 editorOutput = componentOutput,
             )
         },
+        viewImageComponent = { childContext, attachments, index, onBackClicked ->
+            ViewImageComponentDefault(
+                componentContext = childContext,
+                attachments = attachments,
+                selectedIndex = index,
+                onBackClicked = onBackClicked
+            )
+        },
+        viewVideoComponent = { childContext, attachment, onBackClicked ->
+            ViewVideoComponentDefault(
+                componentContext = childContext,
+                attachment = attachment,
+                onBackClicked = onBackClicked,
+            )
+        }
     )
 
     private val scope: CoroutineScope = CoroutineScope(dispatchers.main)
@@ -154,9 +176,20 @@ class RootComponentDefault internal constructor(
 
     private fun createChild(config: Config, componentContext: ComponentContext): Child =
         when (config) {
-            is Config.Auth -> Child.Auth(authComponent(componentContext, ::onComponentOutput))
-            is Config.Main -> Child.Main(mainComponent(componentContext, ::onComponentOutput))
-            is Config.Editor -> Child.Editor(editorComponent(componentContext, ::onComponentOutput))
+            is Config.Auth ->
+                Child.Auth(authComponent(componentContext, ::onComponentOutput))
+
+            is Config.Main ->
+                Child.Main(mainComponent(componentContext, ::onComponentOutput))
+
+            is Config.Editor ->
+                Child.Editor(editorComponent(componentContext, ::onComponentOutput))
+
+            is Config.ViewImage ->
+                Child.ViewImage(viewImageComponent(componentContext, config.attachments, config.index, childStackNavigation::pop))
+
+            is Config.ViewVideo ->
+                Child.ViewVideo(viewVideoComponent(componentContext, config.attachment, childStackNavigation::pop))
         }
 
     private fun onComponentOutput(output: ComponentOutput) {
@@ -194,6 +227,14 @@ class RootComponentDefault internal constructor(
                 alternateTextSlotNavigation.activate(AlternateTextConfig(text = output.text))
             }
 
+            is ComponentOutput.SingleStatus.ViewImage -> {
+                childStackNavigation.pushNew(Config.ViewImage(output.attachments, output.selectedIndex))
+            }
+
+            is ComponentOutput.SingleStatus.ViewVideo -> {
+                childStackNavigation.pushNew(Config.ViewVideo(output.attachment))
+            }
+
             else -> Unit
         }
     }
@@ -209,6 +250,12 @@ class RootComponentDefault internal constructor(
 
         @Serializable
         data object Editor : Config
+
+        @Serializable
+        data class ViewImage(val attachments: List<MediaAttachment>, val index: Int) : Config
+
+        @Serializable
+        data class ViewVideo(val attachment: MediaAttachment) : Config
     }
 
     @Serializable

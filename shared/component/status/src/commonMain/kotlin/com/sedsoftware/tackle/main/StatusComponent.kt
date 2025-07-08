@@ -1,6 +1,7 @@
 package com.sedsoftware.tackle.main
 
 import com.arkivanov.decompose.value.Value
+import com.sedsoftware.tackle.domain.model.MediaAttachment
 import com.sedsoftware.tackle.domain.model.Status
 import com.sedsoftware.tackle.domain.model.Translation
 import com.sedsoftware.tackle.main.model.StatusAction
@@ -19,6 +20,7 @@ interface StatusComponent {
     fun onHashTagClick(hashTag: String)
     fun onMentionClick(mention: String)
     fun onAlternateTextRequest(text: String)
+    fun onAttachmentClick(attachment: MediaAttachment)
 
     data class Model(
         val status: Status,

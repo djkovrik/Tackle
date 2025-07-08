@@ -26,7 +26,7 @@ import tackle.shared.compose.generated.resources.editor_attachment_unknown
 @Composable
 internal fun StatusAttachmentUnknownFiles(
     attachments: List<MediaAttachment>,
-    onFileClick: () -> Unit,
+    onFileClick: (MediaAttachment) -> Unit,
     onDownloadClick: () -> Unit,
     onCancelClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -60,7 +60,7 @@ internal fun StatusAttachmentUnknownFiles(
                         containerColor = MaterialTheme.colorScheme.surface,
                         onDownloadClick = onDownloadClick,
                         onCancelClick = onCancelClick,
-                        onDoneClick = onFileClick,
+                        onDoneClick = { onFileClick.invoke(item) },
                     )
                 }
                 Text(
