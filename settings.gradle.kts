@@ -26,6 +26,8 @@ include(
     ":shared:component:auth",
     ":shared:component:main",
     ":shared:component:main:child:alternatetext",
+    ":shared:component:main:child:viewimage",
+    ":shared:component:main:child:viewvideo",
     ":shared:component:editor",
     ":shared:component:editor:child:attachments",
     ":shared:component:editor:child:details",

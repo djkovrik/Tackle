@@ -12,7 +12,8 @@ class AlternateTextComponentDefault(
     private val onDismissed: () -> Unit,
 ) : AlternateTextComponent, ComponentContext by componentContext {
 
-    override val model: Value<Model> = MutableValue(Model(text = text))
+    override val model: Value<Model> =
+        MutableValue(Model(text = text))
 
     override fun onDismiss() {
         onDismissed()
