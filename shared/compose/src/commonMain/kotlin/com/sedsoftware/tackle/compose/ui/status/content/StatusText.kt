@@ -12,7 +12,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.sedsoftware.tackle.compose.custom.LoadingDotsText
 import com.sedsoftware.tackle.compose.widget.TackleStatusRichText
-import com.sedsoftware.tackle.status.StatusComponent
+import com.sedsoftware.tackle.main.StatusComponent
 import com.sedsoftware.tackle.utils.extension.isValidUrl
 import org.jetbrains.compose.resources.stringResource
 import tackle.shared.compose.generated.resources.Res

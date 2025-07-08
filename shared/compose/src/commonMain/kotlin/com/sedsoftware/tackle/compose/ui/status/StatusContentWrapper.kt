@@ -44,8 +44,8 @@ import com.sedsoftware.tackle.compose.extension.getTitle
 import com.sedsoftware.tackle.compose.widget.TackleImage
 import com.sedsoftware.tackle.compose.widget.TackleStatusButton
 import com.sedsoftware.tackle.compose.widget.TackleWarningContainer
-import com.sedsoftware.tackle.status.StatusComponent
-import com.sedsoftware.tackle.status.model.StatusContextAction
+import com.sedsoftware.tackle.main.StatusComponent
+import com.sedsoftware.tackle.main.model.StatusContextAction
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource

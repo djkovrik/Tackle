@@ -8,7 +8,7 @@ import com.sedsoftware.tackle.domain.api.TackleDispatchers
 import com.sedsoftware.tackle.domain.model.Status
 import com.sedsoftware.tackle.domain.model.type.Timeline
 import com.sedsoftware.tackle.home.HomeTabComponent
-import com.sedsoftware.tackle.status.StatusComponentGateways
+import com.sedsoftware.tackle.main.StatusComponentGateways
 import com.sedsoftware.tackle.statuslist.StatusListComponent
 import com.sedsoftware.tackle.statuslist.integration.StatusListComponentDefault
 

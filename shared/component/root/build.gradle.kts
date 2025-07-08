@@ -14,6 +14,7 @@ kotlin {
 
                 implementation(project(":shared:component:auth"))
                 implementation(project(":shared:component:main"))
+                implementation(project(":shared:component:main:child:alternatetext"))
                 implementation(project(":shared:component:editor"))
 
                 implementation(libs.ark.decompose.core)

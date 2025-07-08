@@ -1,6 +1,6 @@
 package com.sedsoftware.tackle.compose.extension
 
-import com.sedsoftware.tackle.status.model.StatusContextAction
+import com.sedsoftware.tackle.main.model.StatusContextAction
 import org.jetbrains.compose.resources.StringResource
 import tackle.shared.compose.generated.resources.Res
 import tackle.shared.compose.generated.resources.status_menu_bookmark

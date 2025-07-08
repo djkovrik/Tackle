@@ -4,22 +4,15 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.SheetState
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
-import com.arkivanov.decompose.router.slot.ChildSlot
 import com.github.panpf.sketch.rememberAsyncImagePainter
 import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
-import com.sedsoftware.tackle.compose.ui.status.content.StatusAlternateText
 import com.sedsoftware.tackle.compose.ui.status.content.StatusAttachment
 import com.sedsoftware.tackle.compose.ui.status.content.StatusPoll
 import com.sedsoftware.tackle.compose.ui.status.content.StatusPreviewCard
@@ -27,10 +20,9 @@ import com.sedsoftware.tackle.compose.ui.status.content.StatusText
 import com.sedsoftware.tackle.domain.model.Poll
 import com.sedsoftware.tackle.domain.model.PreviewCard
 import com.sedsoftware.tackle.domain.model.Translation
-import com.sedsoftware.tackle.status.StatusComponent
-import com.sedsoftware.tackle.status.alternatetext.AlternateTextComponent
-import com.sedsoftware.tackle.status.integration.StatusComponentPreview
-import com.sedsoftware.tackle.status.model.StatusAction
+import com.sedsoftware.tackle.main.StatusComponent
+import com.sedsoftware.tackle.main.integration.StatusComponentPreview
+import com.sedsoftware.tackle.main.model.StatusAction
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -52,8 +44,6 @@ internal fun StatusContent(
     },
 ) {
     val model: StatusComponent.Model by component.model.subscribeAsState()
-    val alternateTextDialog: ChildSlot<*, AlternateTextComponent> by component.alternateTextDialog.subscribeAsState()
-    val bottomSheetState: SheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
     StatusContentWrapper(
         model = model,
@@ -107,23 +97,6 @@ internal fun StatusContent(
                 onUrlClick = component::onUrlClick,
                 modifier = modifier,
             )
-        }
-    }
-
-
-    alternateTextDialog.child?.instance?.also { component: AlternateTextComponent ->
-        val alternateTextModel: AlternateTextComponent.Model by component.model.subscribeAsState()
-
-        ModalBottomSheet(
-            containerColor = MaterialTheme.colorScheme.background,
-            onDismissRequest = component::onDismiss,
-            sheetState = bottomSheetState,
-        ) {
-            StatusAlternateText(text = alternateTextModel.text)
-        }
-
-        LaunchedEffect(Unit) {
-            bottomSheetState.show()
         }
     }
 }

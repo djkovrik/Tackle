@@ -10,7 +10,7 @@ import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import com.sedsoftware.tackle.domain.model.Status
 import com.sedsoftware.tackle.domain.model.type.Timeline
-import com.sedsoftware.tackle.status.StatusComponentGateways
+import com.sedsoftware.tackle.main.StatusComponentGateways
 import com.sedsoftware.tackle.statuslist.Responses
 import com.sedsoftware.tackle.statuslist.domain.StatusListManager
 import com.sedsoftware.tackle.utils.test.StoreTest

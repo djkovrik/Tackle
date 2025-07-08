@@ -18,9 +18,9 @@ import com.sedsoftware.tackle.domain.ComponentOutput
 import com.sedsoftware.tackle.domain.api.TackleDispatchers
 import com.sedsoftware.tackle.domain.model.Status
 import com.sedsoftware.tackle.domain.model.type.Timeline
-import com.sedsoftware.tackle.status.StatusComponent
-import com.sedsoftware.tackle.status.StatusComponentGateways
-import com.sedsoftware.tackle.status.integration.StatusComponentDefault
+import com.sedsoftware.tackle.main.StatusComponent
+import com.sedsoftware.tackle.main.StatusComponentGateways
+import com.sedsoftware.tackle.main.integration.StatusComponentDefault
 import com.sedsoftware.tackle.statuslist.StatusListComponent
 import com.sedsoftware.tackle.statuslist.StatusListComponent.Model
 import com.sedsoftware.tackle.statuslist.domain.StatusListManager

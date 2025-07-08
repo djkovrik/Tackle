@@ -1,6 +1,11 @@
 package com.sedsoftware.tackle.root.integration
 
 import com.arkivanov.decompose.ComponentContext
+import com.arkivanov.decompose.router.slot.ChildSlot
+import com.arkivanov.decompose.router.slot.SlotNavigation
+import com.arkivanov.decompose.router.slot.activate
+import com.arkivanov.decompose.router.slot.childSlot
+import com.arkivanov.decompose.router.slot.dismiss
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.active
@@ -26,6 +31,8 @@ import com.sedsoftware.tackle.domain.api.UnauthorizedApi
 import com.sedsoftware.tackle.editor.EditorComponent
 import com.sedsoftware.tackle.editor.integration.EditorComponentDefault
 import com.sedsoftware.tackle.main.MainComponent
+import com.sedsoftware.tackle.main.alternatetext.AlternateTextComponent
+import com.sedsoftware.tackle.main.alternatetext.integration.AlternateTextComponentDefault
 import com.sedsoftware.tackle.main.integration.MainComponentDefault
 import com.sedsoftware.tackle.root.RootComponent
 import com.sedsoftware.tackle.root.RootComponent.Child
@@ -108,11 +115,15 @@ class RootComponentDefault internal constructor(
         }
     }
 
-    private val navigation: StackNavigation<Config> = StackNavigation()
+    private val childStackNavigation: StackNavigation<Config> =
+        StackNavigation()
+
+    private val alternateTextSlotNavigation: SlotNavigation<AlternateTextConfig> =
+        SlotNavigation<AlternateTextConfig>()
 
     private val stack: Value<ChildStack<Config, Child>> =
         childStack(
-            source = navigation,
+            source = childStackNavigation,
             serializer = Config.serializer(),
             initialConfiguration = Config.Auth,
             handleBackButton = true,
@@ -121,9 +132,21 @@ class RootComponentDefault internal constructor(
 
     override val childStack: Value<ChildStack<*, Child>> = stack
 
+    override val alternateTextDialog: Value<ChildSlot<*, AlternateTextComponent>> =
+        childSlot(
+            source = alternateTextSlotNavigation,
+            serializer = AlternateTextConfig.serializer(),
+            handleBackButton = true,
+        ) { config, childComponentContext ->
+            AlternateTextComponentDefault(
+                componentContext = childComponentContext,
+                text = config.text,
+                onDismissed = alternateTextSlotNavigation::dismiss,
+            )
+        }
     private val exceptionHandler: TackleExceptionHandler =
         TackleExceptionHandler(
-            logoutAction = { navigation.replaceCurrent(Config.Auth) }
+            logoutAction = { childStackNavigation.replaceCurrent(Config.Auth) }
         )
 
     override val errorMessages: Flow<TackleException>
@@ -139,11 +162,11 @@ class RootComponentDefault internal constructor(
     private fun onComponentOutput(output: ComponentOutput) {
         when (output) {
             is ComponentOutput.Auth.AuthFlowCompleted -> {
-                navigation.replaceCurrent(Config.Main)
+                childStackNavigation.replaceCurrent(Config.Main)
             }
 
             is ComponentOutput.HomeTab.EditorRequested -> {
-                navigation.pushNew(Config.Editor)
+                childStackNavigation.pushNew(Config.Editor)
             }
 
             is ComponentOutput.HomeTab.ScheduledStatusesRequested -> {
@@ -151,20 +174,24 @@ class RootComponentDefault internal constructor(
             }
 
             is ComponentOutput.StatusEditor.BackButtonClicked -> {
-                navigation.pop()
+                childStackNavigation.pop()
             }
 
             is ComponentOutput.StatusEditor.StatusPublished -> {
-                navigation.pop()
+                childStackNavigation.pop()
                 (stack.active.instance as? Child.Main)?.component?.showCreatedStatus(output.status)
             }
 
             is ComponentOutput.StatusEditor.ScheduledStatusPublished -> {
-                navigation.pop()
+                childStackNavigation.pop()
             }
 
             is ComponentOutput.Common.ErrorCaught -> {
                 exceptionHandler.consume(output.throwable, scope)
+            }
+
+            is ComponentOutput.SingleStatus.AlternateTextClicked -> {
+                alternateTextSlotNavigation.activate(AlternateTextConfig(text = output.text))
             }
 
             else -> Unit
@@ -183,4 +210,9 @@ class RootComponentDefault internal constructor(
         @Serializable
         data object Editor : Config
     }
+
+    @Serializable
+    private data class AlternateTextConfig(
+        val text: String,
+    )
 }

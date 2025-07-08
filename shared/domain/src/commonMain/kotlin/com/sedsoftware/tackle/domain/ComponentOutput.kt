@@ -32,6 +32,7 @@ sealed class ComponentOutput {
         data class ReplyCalled(val statusId: String) : SingleStatus()
         data class HashTagClicked(val hashTag: String) : SingleStatus()
         data class MentionClicked(val mention: String) : SingleStatus()
+        data class AlternateTextClicked(val text: String) : SingleStatus()
     }
 
     sealed class Common : ComponentOutput() {

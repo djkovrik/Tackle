@@ -11,7 +11,7 @@ import com.sedsoftware.tackle.domain.model.Status
 import com.sedsoftware.tackle.domain.model.type.ShortDateUnit
 import com.sedsoftware.tackle.domain.model.type.StatusVisibility.PUBLIC
 import com.sedsoftware.tackle.home.HomeTabComponent
-import com.sedsoftware.tackle.status.StatusComponentGateways
+import com.sedsoftware.tackle.main.StatusComponentGateways
 import com.sedsoftware.tackle.utils.extension.toLocalDateCustom
 import com.sedsoftware.tackle.utils.extension.toLocalDateTimeCustom
 import com.sedsoftware.tackle.utils.test.ComponentTest
