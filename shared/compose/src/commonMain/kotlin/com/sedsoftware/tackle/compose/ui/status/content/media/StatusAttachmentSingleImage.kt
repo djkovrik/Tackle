@@ -1,11 +1,13 @@
 package com.sedsoftware.tackle.compose.ui.status.content.media
 
-import androidx.compose.foundation.clickable
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -14,6 +16,7 @@ import com.sedsoftware.tackle.compose.extension.clickableOnce
 import com.sedsoftware.tackle.compose.model.TackleImageParams
 import com.sedsoftware.tackle.compose.ui.status.StatusContentLabel
 import com.sedsoftware.tackle.compose.widget.TackleImage
+import com.sedsoftware.tackle.compose.widget.TackleImageLoading
 import com.sedsoftware.tackle.domain.model.MediaAttachment
 import org.jetbrains.compose.resources.stringResource
 import tackle.shared.compose.generated.resources.Res
@@ -23,8 +26,8 @@ import tackle.shared.compose.generated.resources.status_sensitive_hide
 import tackle.shared.compose.generated.resources.status_sensitive_show
 
 @Composable
-internal fun StatusAttachmentImage(
-    attachment: MediaAttachment,
+internal fun StatusAttachmentSingleImage(
+    displayedAttachment: MediaAttachment,
     hasSensitiveContent: Boolean,
     hideSensitiveContent: Boolean,
     onImageClick: () -> Unit,
@@ -32,29 +35,43 @@ internal fun StatusAttachmentImage(
     onSensitiveClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Box {
-        TackleImage(
-            imageUrl = attachment.previewUrl,
-            imageParams = TackleImageParams(
-                blurhash = attachment.blurhash,
-                ratio = attachment.meta?.small?.aspect
-                    ?: attachment.meta?.original?.aspect
-                    ?: 1f,
-            ),
-            contentDescription = attachment.description,
-            modifier = modifier
-                .clip(shape = MaterialTheme.shapes.extraSmall)
-                .clickableOnce(onClick = onImageClick)
-                .fillMaxWidth(),
+    val displayedAttachmentParams: TackleImageParams = remember {
+        TackleImageParams(
+            blurhash = displayedAttachment.blurhash,
+            ratio = displayedAttachment.meta?.small?.aspect
+                ?: displayedAttachment.meta?.original?.aspect
+                ?: 1f,
         )
+    }
 
-        if (attachment.description.isNotEmpty()) {
+    Box(modifier = modifier.clip(shape = MaterialTheme.shapes.extraSmall)) {
+        Crossfade(targetState = !hideSensitiveContent) { showImage: Boolean ->
+            if (showImage) {
+                TackleImage(
+                    imageUrl = displayedAttachment.previewUrl,
+                    imageParams = displayedAttachmentParams,
+                    contentDescription = displayedAttachment.description,
+                    modifier = modifier
+                        .clickableOnce(onClick = onImageClick)
+                        .fillMaxWidth(),
+                )
+            } else {
+                TackleImageLoading(
+                    blurhash = displayedAttachmentParams.blurhash,
+                    modifier = modifier
+                        .aspectRatio(ratio = displayedAttachmentParams.ratio)
+                        .fillMaxWidth(),
+                )
+            }
+        }
+
+        if (displayedAttachment.description.isNotEmpty()) {
             StatusContentLabel(
                 text = stringResource(resource = Res.string.status_image_alt),
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .padding(all = 8.dp)
-                    .clickable { onImageAltClick.invoke(attachment.description) },
+                    .clickableOnce { onImageAltClick.invoke(displayedAttachment.description) },
             )
         }
 
@@ -70,7 +87,7 @@ internal fun StatusAttachmentImage(
                 modifier = Modifier
                     .align(Alignment.TopEnd)
                     .padding(all = 8.dp)
-                    .clickable(onClick = onSensitiveClick),
+                    .clickableOnce(onClick = onSensitiveClick),
             )
         }
 

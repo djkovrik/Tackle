@@ -7,7 +7,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.sedsoftware.tackle.compose.ui.status.content.media.StatusAttachmentAudio
-import com.sedsoftware.tackle.compose.ui.status.content.media.StatusAttachmentImage
+import com.sedsoftware.tackle.compose.ui.status.content.media.StatusAttachmentSingleImage
 import com.sedsoftware.tackle.compose.ui.status.content.media.StatusAttachmentImageGallery
 import com.sedsoftware.tackle.compose.ui.status.content.media.StatusAttachmentUnknownFiles
 import com.sedsoftware.tackle.compose.ui.status.content.media.StatusAttachmentVideo
@@ -26,30 +26,33 @@ internal fun StatusAttachment(
 ) {
     require(attachments.isNotEmpty()) { "Attachments list should not be empty" }
 
-    val baseType: MediaAttachmentType = attachments.first().type
+    val attachmentsType: MediaAttachmentType = remember { attachments.first().type }
     var hideSensitiveContent: Boolean by remember { mutableStateOf(hasSensitiveContent || false) }
+    var displayedAttachment: MediaAttachment by remember { mutableStateOf(attachments.first()) }
 
     when {
-        baseType == MediaAttachmentType.AUDIO ->
+        attachmentsType == MediaAttachmentType.AUDIO ->
             StatusAttachmentAudio(
-                attachment = attachments.first(),
+                displayedAttachment = displayedAttachment,
                 modifier = modifier,
             )
 
-        baseType == MediaAttachmentType.IMAGE && attachments.size == 1 ->
-            StatusAttachmentImage(
-                attachment = attachments.first(),
-                hasSensitiveContent = hasSensitiveContent,
-                hideSensitiveContent = hideSensitiveContent,
-                onImageClick = onContentClick,
-                onImageAltClick = onContentAltClick,
-                onSensitiveClick = { hideSensitiveContent = !hideSensitiveContent },
-                modifier = modifier,
-            )
-
-        baseType == MediaAttachmentType.IMAGE ->
+        attachmentsType == MediaAttachmentType.IMAGE && attachments.size != 1 ->
             StatusAttachmentImageGallery(
                 attachments = attachments,
+                displayedAttachment = displayedAttachment,
+                hasSensitiveContent = hasSensitiveContent,
+                hideSensitiveContent = hideSensitiveContent,
+                onImageClick = onContentClick,
+                onImageAltClick = onContentAltClick,
+                onSensitiveClick = { hideSensitiveContent = !hideSensitiveContent },
+                onGalleryItemSelect = { displayedAttachment = attachments[it] },
+                modifier = modifier,
+            )
+
+        attachmentsType == MediaAttachmentType.IMAGE && attachments.size == 1 ->
+            StatusAttachmentSingleImage(
+                displayedAttachment = displayedAttachment,
                 hasSensitiveContent = hasSensitiveContent,
                 hideSensitiveContent = hideSensitiveContent,
                 onImageClick = onContentClick,
@@ -58,11 +61,11 @@ internal fun StatusAttachment(
                 modifier = modifier,
             )
 
-        baseType == MediaAttachmentType.GIF ||
-                baseType == MediaAttachmentType.GIFV ||
-                baseType == MediaAttachmentType.VIDEO ->
+        attachmentsType == MediaAttachmentType.GIF ||
+                attachmentsType == MediaAttachmentType.GIFV ||
+                attachmentsType == MediaAttachmentType.VIDEO ->
             StatusAttachmentVideo(
-                attachment = attachments.first(),
+                displayedAttachment = displayedAttachment,
                 hasSensitiveContent = hasSensitiveContent,
                 hideSensitiveContent = hideSensitiveContent,
                 onVideoClick = onContentClick,
@@ -71,7 +74,7 @@ internal fun StatusAttachment(
                 modifier = modifier,
             )
 
-        baseType == MediaAttachmentType.UNKNOWN ->
+        attachmentsType == MediaAttachmentType.UNKNOWN ->
             StatusAttachmentUnknownFiles(
                 attachments = attachments,
                 onFileClick = onContentClick,

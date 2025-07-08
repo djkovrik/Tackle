@@ -15,7 +15,7 @@ import com.sedsoftware.tackle.domain.model.MediaAttachment
 
 @Composable
 internal fun StatusAttachmentAudio(
-    attachment: MediaAttachment,
+    displayedAttachment: MediaAttachment,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -32,7 +32,7 @@ internal fun StatusAttachmentAudio(
     ) {
         MediaPlayer(
             modifier = modifier.fillMaxWidth(),
-            url = attachment.url,
+            url = displayedAttachment.url,
             startTime = MaterialTheme.colorScheme.onSurface,
             endTime =  MaterialTheme.colorScheme.onSurface,
             volumeIconColor = MaterialTheme.colorScheme.primary,

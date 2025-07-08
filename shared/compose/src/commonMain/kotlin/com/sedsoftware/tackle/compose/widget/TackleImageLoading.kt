@@ -10,8 +10,8 @@ import com.sedsoftware.tackle.compose.custom.ShimmerEffectBrush
 
 @Composable
 internal fun TackleImageLoading(
+    blurhash: String,
     modifier: Modifier = Modifier,
-    blurhash: String = "",
 ) {
     if (blurhash.isNotEmpty()) {
         BlurHashImage(
