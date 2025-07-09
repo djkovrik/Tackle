@@ -79,7 +79,7 @@ ark-mvikotlin-core = { module = "com.arkivanov.mvikotlin:mvikotlin", version.ref
 ark-mvikotlin-main = { module = "com.arkivanov.mvikotlin:mvikotlin-main", version.ref = "mviKotlin" }
 ark-mvikotlin-extensions = { module = "com.arkivanov.mvikotlin:mvikotlin-extensions-coroutines", version.ref = "mviKotlin" }
 ark-decompose-core = { module = "com.arkivanov.decompose:decompose", version.ref = "decompose" }
-ark-decompose-extensions = { module = "com.arkivanov.decompose:extensions-compose", version.ref = "decompose" }
+ark-decompose-extensions = { module = "com.arkivanov.decompose:extensions-compose-experimental", version.ref = "decompose" }
 ark-essenty = { module = "com.arkivanov.essenty:lifecycle", version.ref = "essenty" }
 
 lib-napier = { module = "io.github.aakira:napier", version.ref = "napier" }

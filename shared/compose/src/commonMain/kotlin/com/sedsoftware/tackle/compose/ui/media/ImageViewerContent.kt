@@ -10,7 +10,7 @@ import com.sedsoftware.tackle.compose.extension.clickableOnce
 import com.sedsoftware.tackle.main.viewimage.ViewImageComponent
 
 @Composable
-internal fun ViewImageContent(
+internal fun ImageViewerContent(
     component: ViewImageComponent,
     modifier: Modifier = Modifier,
 ) {
