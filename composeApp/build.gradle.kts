@@ -1,3 +1,4 @@
+import org.gradle.kotlin.dsl.implementation
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
@@ -43,6 +44,8 @@ kotlin {
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
+            implementation(libs.lib.sketch.compose)
+            implementation(libs.lib.sketch.ktor3)
 
             implementation(libs.ark.decompose.core)
             implementation(libs.ark.decompose.extensions)
@@ -50,14 +53,20 @@ kotlin {
             implementation(libs.ark.essenty)
 
             implementation(libs.oidc.appsupport)
+            implementation(libs.ktor.core)
         }
         androidMain.dependencies {
             implementation(libs.compose.ui.tooling.preview)
             implementation(libs.androidx.activity.compose)
+            implementation(libs.ktor.client.android)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutines.swing)
+            implementation(libs.ktor.client.desktop)
+        }
+        iosMain.dependencies {
+            implementation(libs.ktor.client.ios)
         }
     }
 }
