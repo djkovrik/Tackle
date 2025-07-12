@@ -1,5 +1,7 @@
 package com.sedsoftware.tackle.compose.ui
 
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,20 +15,26 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.arkivanov.decompose.extensions.compose.stack.Children
-import com.arkivanov.decompose.extensions.compose.stack.animation.fade
-import com.arkivanov.decompose.extensions.compose.stack.animation.plus
-import com.arkivanov.decompose.extensions.compose.stack.animation.scale
-import com.arkivanov.decompose.extensions.compose.stack.animation.stackAnimation
+import com.arkivanov.decompose.ExperimentalDecomposeApi
+import com.arkivanov.decompose.extensions.compose.experimental.stack.ChildStack
+import com.arkivanov.decompose.extensions.compose.experimental.stack.animation.PredictiveBackParams
+import com.arkivanov.decompose.extensions.compose.experimental.stack.animation.fade
+import com.arkivanov.decompose.extensions.compose.experimental.stack.animation.plus
+import com.arkivanov.decompose.extensions.compose.experimental.stack.animation.scale
+import com.arkivanov.decompose.extensions.compose.experimental.stack.animation.stackAnimation
+import com.arkivanov.decompose.extensions.compose.stack.animation.predictiveback.materialPredictiveBackAnimatable
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.arkivanov.decompose.router.slot.ChildSlot
 import com.sedsoftware.tackle.compose.core.exceptionToString
+import com.sedsoftware.tackle.compose.ui.SharedTransitionScopes.LocalNavAnimatedVisibilityScope
+import com.sedsoftware.tackle.compose.ui.SharedTransitionScopes.LocalSharedTransitionScope
 import com.sedsoftware.tackle.compose.ui.alternatetext.AlternateTextContent
 import com.sedsoftware.tackle.compose.ui.auth.AuthContent
 import com.sedsoftware.tackle.compose.ui.editor.EditorContent
@@ -39,6 +47,7 @@ import com.sedsoftware.tackle.root.RootComponent
 import com.sedsoftware.tackle.root.RootComponent.Child
 
 @Composable
+@OptIn(ExperimentalSharedTransitionApi::class, ExperimentalDecomposeApi::class)
 fun RootContent(
     component: RootComponent,
     modifier: Modifier = Modifier,
@@ -58,17 +67,32 @@ fun RootContent(
         }
 
         Box(modifier = modifier.fillMaxSize()) {
-            Children(
-                stack = component.childStack,
-                animation = stackAnimation(animator = fade() + scale()),
-                modifier = modifier.fillMaxSize(),
-            ) {
-                when (val child = it.instance) {
-                    is Child.Auth -> AuthContent(component = child.component)
-                    is Child.Main -> MainContent(component = child.component)
-                    is Child.Editor -> EditorContent(component = child.component)
-                    is Child.ViewImage -> ImageViewerContent(component = child.component)
-                    is Child.ViewVideo -> VideoViewerContent(component = child.component)
+            SharedTransitionLayout(modifier = modifier) {
+                CompositionLocalProvider(LocalSharedTransitionScope provides this) {
+                    ChildStack(
+                        stack = component.childStack,
+                        animation = stackAnimation(
+                            animator = fade() + scale(),
+                            predictiveBackParams = {
+                                PredictiveBackParams(
+                                    backHandler = component.backHandler,
+                                    onBack = component::onBack,
+                                    animatable = ::materialPredictiveBackAnimatable,
+                                )
+                            }
+                        ),
+                        modifier = modifier.fillMaxSize(),
+                    ) {
+                        CompositionLocalProvider(LocalNavAnimatedVisibilityScope provides this) {
+                            when (val child = it.instance) {
+                                is Child.Auth -> AuthContent(component = child.component)
+                                is Child.Main -> MainContent(component = child.component)
+                                is Child.Editor -> EditorContent(component = child.component)
+                                is Child.ViewImage -> ImageViewerContent(component = child.component)
+                                is Child.ViewVideo -> VideoViewerContent(component = child.component)
+                            }
+                        }
+                    }
                 }
             }
 

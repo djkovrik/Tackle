@@ -174,6 +174,10 @@ class RootComponentDefault internal constructor(
     override val errorMessages: Flow<TackleException>
         get() = exceptionHandler.messaging
 
+    override fun onBack() {
+        childStackNavigation.pop()
+    }
+
     private fun createChild(config: Config, componentContext: ComponentContext): Child =
         when (config) {
             is Config.Auth ->

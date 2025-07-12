@@ -3,6 +3,7 @@ package com.sedsoftware.tackle.root
 import com.arkivanov.decompose.router.slot.ChildSlot
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.value.Value
+import com.arkivanov.essenty.backhandler.BackHandlerOwner
 import com.sedsoftware.tackle.auth.AuthComponent
 import com.sedsoftware.tackle.domain.TackleException
 import com.sedsoftware.tackle.editor.EditorComponent
@@ -12,13 +13,15 @@ import com.sedsoftware.tackle.main.viewimage.ViewImageComponent
 import com.sedsoftware.tackle.main.viewvideo.ViewVideoComponent
 import kotlinx.coroutines.flow.Flow
 
-interface RootComponent {
+interface RootComponent : BackHandlerOwner {
 
     val childStack: Value<ChildStack<*, Child>>
 
     val alternateTextDialog: Value<ChildSlot<*, AlternateTextComponent>>
 
     val errorMessages: Flow<TackleException>
+
+    fun onBack()
 
     sealed class Child {
         data class Auth(val component: AuthComponent) : Child()
