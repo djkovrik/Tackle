@@ -1,21 +1,15 @@
 package com.sedsoftware.tackle.compose.widget
 
-import androidx.compose.animation.core.InfiniteTransition
 import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.infiniteRepeatable
-import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ProgressIndicatorDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -23,12 +17,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.sedsoftware.tackle.compose.custom.RotatingProgress
 import com.sedsoftware.tackle.utils.extension.roundToDecimals
 import org.jetbrains.compose.resources.painterResource
 import tackle.shared.compose.generated.resources.Res
@@ -37,10 +30,10 @@ import tackle.shared.compose.generated.resources.attachment_done
 import tackle.shared.compose.generated.resources.attachment_download
 
 @Composable
-internal fun TackleProgressIndicator(
+internal fun TackleFileProgress(
     progress: Float,
-    size: Dp,
     modifier: Modifier = Modifier,
+    progressSize: Dp = 32.dp,
     indicatorColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
     containerColor: Color = MaterialTheme.colorScheme.surfaceVariant,
     onDownloadClick: () -> Unit = {},
@@ -76,18 +69,17 @@ internal fun TackleProgressIndicator(
     Box(
         contentAlignment = Alignment.Center,
         modifier = modifier
-            .size(size = size)
+            .size(size = progressSize)
             .clip(shape = CircleShape)
-            .background(color = containerColor),
+            .background(color = containerColor)
+            .alpha(alpha = progressAlpha),
     ) {
         RotatingProgress(
             progress = progressValue,
-            visible = progressVisible,
+            active = progressVisible,
             color = indicatorColor,
-            strokeWidth = 2.dp,
-            modifier = Modifier
-                .alpha(alpha = progressAlpha)
-                .size(size = size * 0.85f),
+            strokeWidth = progressSize * 0.06f,
+            modifier = Modifier.size(size = progressSize * 0.85f),
         )
 
         Icon(
@@ -95,7 +87,7 @@ internal fun TackleProgressIndicator(
             contentDescription = null,
             tint = indicatorColor,
             modifier = Modifier
-                .size(size = size * 0.5f)
+                .size(size = progressSize * 0.5f)
                 .scale(scale = downloadScale)
                 .clickable(onClick = onDownloadClick),
         )
@@ -105,7 +97,7 @@ internal fun TackleProgressIndicator(
             contentDescription = null,
             tint = indicatorColor,
             modifier = Modifier
-                .size(size = size * 0.5f)
+                .size(size = progressSize * 0.5f)
                 .scale(scale = cancelScale)
                 .clickable(onClick = onCancelClick),
         )
@@ -115,46 +107,9 @@ internal fun TackleProgressIndicator(
             contentDescription = null,
             tint = indicatorColor,
             modifier = Modifier
-                .size(size = size * 0.5f)
+                .size(size = progressSize * 0.5f)
                 .scale(scale = doneScale)
                 .clickable(onClick = onDoneClick),
         )
     }
 }
-
-@Composable
-private fun RotatingProgress(
-    progress: Float,
-    visible: Boolean,
-    modifier: Modifier = Modifier,
-    color: Color = ProgressIndicatorDefaults.circularColor,
-    strokeWidth: Dp = ProgressIndicatorDefaults.CircularStrokeWidth,
-    trackColor: Color = ProgressIndicatorDefaults.circularIndeterminateTrackColor,
-    strokeCap: StrokeCap = ProgressIndicatorDefaults.CircularDeterminateStrokeCap,
-) {
-    val infiniteTransition: InfiniteTransition = rememberInfiniteTransition()
-
-    val angle: Float by infiniteTransition.animateFloat(
-        initialValue = 0f,
-        targetValue = 360f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(DURATION_MS, easing = LinearEasing)
-        )
-    )
-
-    val animatedProgress: Float by animateFloatAsState(
-        targetValue = progress,
-        animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec,
-    )
-
-    CircularProgressIndicator(
-        progress = { animatedProgress },
-        modifier = modifier.rotate(degrees = if (visible) angle else 0f),
-        color = color,
-        strokeWidth = strokeWidth,
-        trackColor = trackColor,
-        strokeCap = strokeCap,
-    )
-}
-
-private const val DURATION_MS = 2_000

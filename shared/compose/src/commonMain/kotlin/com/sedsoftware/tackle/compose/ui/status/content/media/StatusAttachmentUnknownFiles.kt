@@ -17,7 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import com.sedsoftware.tackle.compose.widget.TackleProgressIndicator
+import com.sedsoftware.tackle.compose.widget.TackleFileProgress
 import com.sedsoftware.tackle.domain.model.MediaAttachment
 import org.jetbrains.compose.resources.stringResource
 import tackle.shared.compose.generated.resources.Res
@@ -53,9 +53,8 @@ internal fun StatusAttachmentUnknownFiles(
                         )
                         .size(size = 32.dp)
                 ) {
-                    TackleProgressIndicator(
+                    TackleFileProgress(
                         progress = 0f,
-                        size = 32.dp,
                         indicatorColor = MaterialTheme.colorScheme.onSurface,
                         containerColor = MaterialTheme.colorScheme.surface,
                         onDownloadClick = onDownloadClick,

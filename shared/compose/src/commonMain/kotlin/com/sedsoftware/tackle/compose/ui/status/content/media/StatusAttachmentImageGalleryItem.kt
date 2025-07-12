@@ -19,10 +19,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import com.brys.compose.blurhash.BlurHashImage
 import com.sedsoftware.tackle.compose.extension.clickableOnce
 import com.sedsoftware.tackle.compose.model.TackleImageParams
 import com.sedsoftware.tackle.compose.widget.TackleImage
-import com.sedsoftware.tackle.compose.widget.TackleImageLoading
 import com.sedsoftware.tackle.domain.model.MediaAttachment
 import org.jetbrains.compose.resources.painterResource
 import tackle.shared.compose.generated.resources.Res
@@ -66,13 +66,16 @@ internal fun StatusAttachmentImageGalleryItem(
                     imageUrl = galleryItem.url,
                     imageParams = galleryItemParams,
                     contentDescription = null,
+                    showProgress = true,
+                    progressSize = 24.dp,
                     modifier = Modifier
                         .height(height = 64.dp)
                         .aspectRatio(ratio = galleryItemParams.ratio)
                 )
             } else {
-                TackleImageLoading(
-                    blurhash = galleryItemParams.blurhash,
+                BlurHashImage(
+                    hash = galleryItemParams.blurhash,
+                    contentDescription = "",
                     modifier = modifier
                         .height(height = 64.dp)
                         .aspectRatio(ratio = galleryItemParams.ratio),
