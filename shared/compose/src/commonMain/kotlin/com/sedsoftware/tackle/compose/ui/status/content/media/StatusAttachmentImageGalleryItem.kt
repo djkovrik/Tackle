@@ -10,6 +10,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -46,7 +47,6 @@ internal fun StatusAttachmentImageGalleryItem(
     }
 
     Box(
-        contentAlignment = Alignment.Center,
         modifier = modifier
             .clip(shape = MaterialTheme.shapes.extraSmall)
             .border(
@@ -87,12 +87,15 @@ internal fun StatusAttachmentImageGalleryItem(
             visible = selected,
             enter = scaleIn() + fadeIn(),
             exit = scaleOut() + fadeOut(),
+            modifier = Modifier
+                .padding(top = 6.dp, end = 8.dp)
+                .align(Alignment.TopEnd)
         ) {
             Icon(
                 painter = painterResource(resource = Res.drawable.attachment_done),
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.surface,
-                modifier = Modifier.size(size = 24.dp)
+                modifier = Modifier.size(size = 18.dp)
             )
         }
     }

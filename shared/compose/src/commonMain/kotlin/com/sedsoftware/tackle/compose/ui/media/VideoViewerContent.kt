@@ -1,6 +1,10 @@
 package com.sedsoftware.tackle.compose.ui.media
 
 import VideoPlayer
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,19 +25,28 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
+import com.sedsoftware.tackle.compose.ui.SharedTransitionScopes.LocalNavAnimatedVisibilityScope
+import com.sedsoftware.tackle.compose.ui.SharedTransitionScopes.LocalSharedTransitionScope
 import com.sedsoftware.tackle.compose.widget.TackleIconButton
 import com.sedsoftware.tackle.main.viewvideo.ViewVideoComponent
 import tackle.shared.compose.generated.resources.Res
 import tackle.shared.compose.generated.resources.editor_close
 
 @Composable
+@OptIn(ExperimentalSharedTransitionApi::class)
 internal fun VideoViewerContent(
     component: ViewVideoComponent,
     modifier: Modifier = Modifier,
 ) {
     val model: ViewVideoComponent.Model by component.model.subscribeAsState()
+
+    val sharedTransitionScope = LocalSharedTransitionScope.current
+        ?: throw IllegalStateException("No SharedElementScope found")
+    val animatedVisibilityScope = LocalNavAnimatedVisibilityScope.current
+        ?: throw IllegalStateException("No AnimatedVisibility found")
 
     Scaffold(
         topBar = {
@@ -65,17 +78,28 @@ internal fun VideoViewerContent(
         Box(
             modifier = modifier
                 .padding(paddingValues = paddingValues)
+                .clip(shape = MaterialTheme.shapes.extraSmall)
                 .fillMaxSize()
         ) {
-            VideoPlayer(
-                url = model.attachment.url,
-                showControls = true,
-                autoPlay = false,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .aspectRatio(ratio = model.attachment.meta?.small?.aspect ?: 1f)
-                    .align(alignment = Alignment.Center),
-            )
+            with(sharedTransitionScope) {
+                VideoPlayer(
+                    url = model.attachment.url,
+                    showControls = false,
+                    autoPlay = true,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .aspectRatio(ratio = model.attachment.meta?.small?.aspect ?: 1f)
+                        .align(alignment = Alignment.Center)
+                        .clip(shape = MaterialTheme.shapes.extraSmall)
+                        .sharedBounds(
+                            rememberSharedContentState(key = model.attachment.id),
+                            animatedVisibilityScope = animatedVisibilityScope,
+                            enter = fadeIn(),
+                            exit = fadeOut(),
+                            resizeMode = SharedTransitionScope.ResizeMode.ScaleToBounds()
+                        ),
+                )
+            }
 
             Column(
                 modifier = modifier

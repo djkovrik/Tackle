@@ -1,6 +1,6 @@
 package com.sedsoftware.tackle.compose.custom
 
-import androidx.compose.animation.core.EaseInOutBounce
+import androidx.compose.animation.core.EaseInOut
 import androidx.compose.animation.core.InfiniteTransition
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.animateFloatAsState
@@ -33,7 +33,7 @@ internal fun RotatingProgress(
         initialValue = 0f,
         targetValue = 360f,
         animationSpec = infiniteRepeatable(
-            animation = tween(DURATION_MS, easing = EaseInOutBounce)
+            animation = tween(DURATION_MS, easing = EaseInOut)
         )
     )
 
