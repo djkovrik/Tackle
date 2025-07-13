@@ -25,9 +25,7 @@ import com.github.panpf.sketch.AsyncImagePainter
 import com.github.panpf.sketch.AsyncImageState
 import com.github.panpf.sketch.PainterState
 import com.github.panpf.sketch.SubcomposeAsyncImage
-import com.github.panpf.sketch.SubcomposeAsyncImageScope
 import com.github.panpf.sketch.rememberAsyncImageState
-import com.github.panpf.sketch.request.ImageRequest
 import com.sedsoftware.tackle.compose.custom.ShimmerEffectBrush
 import com.sedsoftware.tackle.compose.model.TackleImageParams
 import com.sedsoftware.tackle.utils.extension.orZero
@@ -64,7 +62,7 @@ internal fun TackleImage(
     contentDescription: String?,
     modifier: Modifier = Modifier,
     showProgress: Boolean = false,
-    progressSize: Dp = 0.dp,
+    progressSize: Dp = 32.dp,
     alignment: Alignment = Alignment.Center,
     contentScale: ContentScale = ContentScale.Fit,
     alpha: Float = DefaultAlpha,
