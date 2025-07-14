@@ -237,6 +237,17 @@ class StatusComponentTest : ComponentTest<StatusComponent>() {
         assertThat(output.mention).isEqualTo(mention)
     }
 
+    @Test
+    fun `onSensitiveContentToggle should toggle sensitive flag`() = runTest {
+        // given
+        assertThat(activeModel.hideSensitiveContent).isFalse()
+        // when
+        component.onSensitiveContentToggle()
+        // then
+        assertThat(activeModel.hideSensitiveContent).isTrue()
+    }
+
+
     override fun createComponent(): StatusComponent =
         StatusComponentDefault(
             componentContext = DefaultComponentContext(lifecycle),

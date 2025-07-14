@@ -392,6 +392,19 @@ internal class StatusStoreTest : StoreTest<StatusStore.Intent, StatusStore.State
         assertThat(labels.count { it is StatusStore.Label.ErrorCaught }).isEqualTo(1)
     }
 
+    @Test
+    fun `OnSensitiveContentToggled should toggle sensitive flag`() = runTest {
+        // given
+        // when
+        store.init()
+        // then
+        assertThat(store.state.hideSensitiveContent).isFalse()
+        // when
+        store.accept(StatusStore.Intent.OnSensitiveContentToggled)
+        assertThat(store.state.hideSensitiveContent).isTrue()
+    }
+
+
     override fun createStore(): Store<StatusStore.Intent, StatusStore.State, StatusStore.Label> =
         StatusStoreProvider(
             storeFactory = DefaultStoreFactory(),

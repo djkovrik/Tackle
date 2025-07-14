@@ -21,6 +21,7 @@ interface StatusComponent {
     fun onMentionClick(mention: String)
     fun onAlternateTextRequest(text: String)
     fun onAttachmentClick(attachment: MediaAttachment)
+    fun onSensitiveContentToggle()
 
     data class Model(
         val status: Status,
@@ -33,5 +34,6 @@ interface StatusComponent {
         val translation: Translation?,
         val translationInProgress: Boolean,
         val translationDisplayed: Boolean,
+        val hideSensitiveContent: Boolean,
     )
 }

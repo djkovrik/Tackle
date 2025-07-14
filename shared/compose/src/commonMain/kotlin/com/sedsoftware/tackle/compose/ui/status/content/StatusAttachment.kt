@@ -18,8 +18,10 @@ import com.sedsoftware.tackle.domain.model.type.MediaAttachmentType
 internal fun StatusAttachment(
     attachments: List<MediaAttachment>,
     hasSensitiveContent: Boolean,
+    hideSensitiveContent: Boolean,
     onContentClick: (MediaAttachment) -> Unit,
     onContentAltClick: (String) -> Unit,
+    onSensitiveClick: () -> Unit,
     onDownloadClick: () -> Unit,
     onCancelClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -27,7 +29,6 @@ internal fun StatusAttachment(
     require(attachments.isNotEmpty()) { "Attachments list should not be empty" }
 
     val attachmentsType: MediaAttachmentType = remember { attachments.first().type }
-    var hideSensitiveContent: Boolean by remember { mutableStateOf(hasSensitiveContent || false) }
     var displayedAttachment: MediaAttachment by remember { mutableStateOf(attachments.first()) }
 
     when {
@@ -45,7 +46,7 @@ internal fun StatusAttachment(
                 hideSensitiveContent = hideSensitiveContent,
                 onImageClick = { onContentClick.invoke(displayedAttachment) },
                 onImageAltClick = onContentAltClick,
-                onSensitiveClick = { hideSensitiveContent = !hideSensitiveContent },
+                onSensitiveClick = onSensitiveClick,
                 onGalleryItemSelect = { displayedAttachment = attachments[it] },
                 modifier = modifier,
             )
@@ -57,7 +58,7 @@ internal fun StatusAttachment(
                 hideSensitiveContent = hideSensitiveContent,
                 onImageClick = { onContentClick.invoke(displayedAttachment) },
                 onImageAltClick = onContentAltClick,
-                onSensitiveClick = { hideSensitiveContent = !hideSensitiveContent },
+                onSensitiveClick = onSensitiveClick,
                 modifier = modifier,
             )
 
@@ -70,7 +71,7 @@ internal fun StatusAttachment(
                 hideSensitiveContent = hideSensitiveContent,
                 onVideoClick  = { onContentClick.invoke(displayedAttachment) },
                 onVideoAltClick = onContentAltClick,
-                onSensitiveClick = { hideSensitiveContent = !hideSensitiveContent },
+                onSensitiveClick = onSensitiveClick,
                 modifier = modifier,
             )
 

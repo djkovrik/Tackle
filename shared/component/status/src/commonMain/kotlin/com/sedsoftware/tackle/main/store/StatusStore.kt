@@ -24,6 +24,7 @@ internal interface StatusStore : Store<Intent, State, Label> {
         data class OnPollOptionSelected(val index: Int, val multiselect: Boolean) : Intent
         data object OnVoteClicked : Intent
         data class OnUrlClicked(val url: String) : Intent
+        data object OnSensitiveContentToggled : Intent
     }
 
     data class State(
@@ -35,6 +36,7 @@ internal interface StatusStore : Store<Intent, State, Label> {
         val translation: Translation? = null,
         val translationInProgress: Boolean = false,
         val translationDisplayed: Boolean = false,
+        val hideSensitiveContent: Boolean = false,
     )
 
     sealed class Label {

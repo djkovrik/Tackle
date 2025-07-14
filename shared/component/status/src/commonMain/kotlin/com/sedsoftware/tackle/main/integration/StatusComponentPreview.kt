@@ -22,6 +22,7 @@ class StatusComponentPreview(
     val translation: Translation? = null,
     val translationInProgress: Boolean = false,
     val translationDisplayed: Boolean = false,
+    val hideSensitiveContent: Boolean = false,
 ) : StatusComponent {
 
     override val model: Value<Model> =
@@ -37,6 +38,7 @@ class StatusComponentPreview(
                 translation = translation,
                 translationInProgress = translationInProgress,
                 translationDisplayed = translationDisplayed,
+                hideSensitiveContent = hideSensitiveContent,
             )
         )
 
@@ -50,4 +52,5 @@ class StatusComponentPreview(
     override fun onMentionClick(mention: String) = Unit
     override fun onAlternateTextRequest(text: String) = Unit
     override fun onAttachmentClick(attachment: MediaAttachment) = Unit
+    override fun onSensitiveContentToggle() = Unit
 }

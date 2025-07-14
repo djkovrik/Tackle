@@ -36,6 +36,7 @@ internal class StatusStoreProvider(
                 baseStatus = status,
                 extendedInfo = extendedInfo,
                 isOwn = isOwn,
+                hideSensitiveContent = status.sensitive,
             ),
             autoInit = autoInit,
             bootstrapper = coroutineBootstrapper(mainContext) {
@@ -257,6 +258,10 @@ internal class StatusStoreProvider(
                         )
                     }
                 }
+
+                onIntent<Intent.OnSensitiveContentToggled> {
+                    dispatch(Msg.SensitiveContentToggled)
+                }
             },
             reducer = { msg ->
                 when (msg) {
@@ -367,6 +372,10 @@ internal class StatusStoreProvider(
                             )
                         ),
                     )
+
+                    is Msg.SensitiveContentToggled -> copy(
+                        hideSensitiveContent = !hideSensitiveContent,
+                    )
                 }
             }
         ) {}
@@ -390,6 +399,7 @@ internal class StatusStoreProvider(
         data class StatusMuted(val muted: Boolean) : Msg
         data class PollOptionsUpdated(val options: List<Int>) : Msg
         data class PollVoted(val updatedPoll: Poll) : Msg
+        data object SensitiveContentToggled : Msg
     }
 
     private val CoroutineExecutorScope<State, Msg, Action, Label>.targetStatus: Status

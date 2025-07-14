@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.brys.compose.blurhash.BlurHashImage
+import com.sedsoftware.tackle.compose.extension.clickableOnce
 import com.sedsoftware.tackle.compose.model.TackleImageParams
 import com.sedsoftware.tackle.compose.ui.SharedTransitionScopes.LocalNavAnimatedVisibilityScope
 import com.sedsoftware.tackle.compose.ui.SharedTransitionScopes.LocalSharedTransitionScope
@@ -115,7 +116,7 @@ internal fun StatusAttachmentVideo(
                     modifier = Modifier
                         .align(Alignment.TopEnd)
                         .padding(all = 8.dp)
-                        .clickable(onClick = onSensitiveClick),
+                        .clickableOnce(onClick = onSensitiveClick),
                 )
             }
 

@@ -153,4 +153,8 @@ class StatusComponentDefault(
             else -> Unit
         }
     }
+
+    override fun onSensitiveContentToggle() {
+        store.accept(StatusStore.Intent.OnSensitiveContentToggled)
+    }
 }
