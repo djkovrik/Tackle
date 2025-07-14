@@ -7,6 +7,8 @@ import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
@@ -32,14 +34,20 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
+import com.brys.compose.blurhash.BlurHashImage
+import com.github.panpf.sketch.AsyncImageState
+import com.github.panpf.sketch.rememberAsyncImageState
+import com.github.panpf.sketch.request.LoadState
+import com.github.panpf.zoomimage.SketchZoomAsyncImage
 import com.sedsoftware.tackle.compose.model.TackleImageParams
 import com.sedsoftware.tackle.compose.widget.TackleIconButton
-import com.sedsoftware.tackle.compose.widget.TackleImage
+import com.sedsoftware.tackle.compose.widget.TackleImageProgress
 import com.sedsoftware.tackle.domain.model.MediaAttachment
 import com.sedsoftware.tackle.main.viewimage.ViewImageComponent
+import com.sedsoftware.tackle.utils.extension.orZero
 import tackle.shared.compose.generated.resources.Res
 import tackle.shared.compose.generated.resources.editor_close
 
@@ -50,9 +58,7 @@ internal fun ImageViewerContent(
     modifier: Modifier = Modifier,
 ) {
     val model: ViewImageComponent.Model by component.model.subscribeAsState()
-
     var displayedAttachment: MediaAttachment by remember { mutableStateOf(model.attachments[model.selectedIndex]) }
-
     val lazyListState: LazyListState = rememberLazyListState()
     val visibleItemIndex: Int by lazyListState.visibleItemIndex()
 
@@ -102,28 +108,60 @@ internal fun ImageViewerContent(
             LazyRow(
                 state = lazyListState,
                 flingBehavior = rememberSnapFlingBehavior(lazyListState = lazyListState),
-                modifier = modifier.align(alignment = Alignment.Center),
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = modifier.fillMaxSize(),
             ) {
                 itemsIndexed(items = model.attachments) { index: Int, attachment ->
                     val displayedAttachmentParams: TackleImageParams = remember {
                         TackleImageParams(
-                            blurhash = attachment.blurhash,
-                            ratio = attachment.meta?.small?.aspect
-                                ?: attachment.meta?.original?.aspect
+                            blurhash = displayedAttachment.blurhash,
+                            ratio = displayedAttachment.meta?.small?.aspect
+                                ?: displayedAttachment.meta?.original?.aspect
                                 ?: 1f,
                         )
                     }
 
-                    TackleImage(
-                        imageUrl = attachment.previewUrl,
-                        imageParams = displayedAttachmentParams,
-                        contentDescription = attachment.description,
-                        showProgress = true,
-                        progressSize = 32.dp,
+                    Box(
+                        contentAlignment = Alignment.Center,
                         modifier = modifier
-                            .clip(shape = MaterialTheme.shapes.extraSmall)
                             .fillParentMaxWidth()
-                    )
+                            .fillMaxHeight()
+                    ) {
+                        val imageState: AsyncImageState = rememberAsyncImageState()
+                        val progress: Float = imageState.progress?.decimalProgress.orZero()
+
+                        SketchZoomAsyncImage(
+                            uri = attachment.url,
+                            contentDescription = null,
+                            state = imageState,
+                            contentScale = ContentScale.FillWidth,
+                            modifier = modifier.fillMaxSize()
+                        )
+
+                        if (imageState.loadState is LoadState.Started) {
+                            BlurHashImage(
+                                hash = displayedAttachmentParams.blurhash,
+                                contentDescription = "",
+                                modifier = modifier
+                                    .aspectRatio(ratio = displayedAttachmentParams.ratio)
+                                    .fillMaxWidth()
+                            )
+
+                            if (progress != 0f) {
+                                TackleImageProgress(
+                                    progress = progress,
+                                    progressSize = 32.dp,
+                                    modifier = Modifier.align(Alignment.Center),
+                                    indicatorColor = MaterialTheme.colorScheme.inverseOnSurface.copy(
+                                        alpha = 0.75f
+                                    ),
+                                    containerColor = MaterialTheme.colorScheme.inverseSurface.copy(
+                                        alpha = 0.5f
+                                    ),
+                                )
+                            }
+                        }
+                    }
                 }
             }
 
