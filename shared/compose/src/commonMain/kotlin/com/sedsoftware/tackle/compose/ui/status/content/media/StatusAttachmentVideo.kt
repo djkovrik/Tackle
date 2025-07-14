@@ -65,14 +65,14 @@ internal fun StatusAttachmentVideo(
 
     with(sharedTransitionScope) {
         Box(modifier = modifier
-            .clip(shape = MaterialTheme.shapes.extraSmall)
             .sharedBounds(
                 rememberSharedContentState(key = displayedAttachment.id),
                 animatedVisibilityScope = animatedVisibilityScope,
                 enter = fadeIn(),
                 exit = fadeOut(),
-                resizeMode = SharedTransitionScope.ResizeMode.ScaleToBounds()
+                resizeMode = SharedTransitionScope.ResizeMode.ScaleToBounds(),
             )
+            .clip(shape = MaterialTheme.shapes.extraSmall)
         ) {
             Crossfade(targetState = !hideSensitiveContent) { showImage: Boolean ->
                 if (showImage) {

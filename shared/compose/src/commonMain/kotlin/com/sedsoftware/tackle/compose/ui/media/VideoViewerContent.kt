@@ -90,14 +90,15 @@ internal fun VideoViewerContent(
                         .fillMaxWidth()
                         .aspectRatio(ratio = model.attachment.meta?.small?.aspect ?: 1f)
                         .align(alignment = Alignment.Center)
-                        .clip(shape = MaterialTheme.shapes.extraSmall)
                         .sharedBounds(
                             rememberSharedContentState(key = model.attachment.id),
                             animatedVisibilityScope = animatedVisibilityScope,
                             enter = fadeIn(),
                             exit = fadeOut(),
-                            resizeMode = SharedTransitionScope.ResizeMode.ScaleToBounds()
-                        ),
+                            resizeMode = SharedTransitionScope.ResizeMode.ScaleToBounds(),
+                            renderInOverlayDuringTransition = true,
+                        )
+                        .clip(shape = MaterialTheme.shapes.extraSmall),
                 )
             }
 
