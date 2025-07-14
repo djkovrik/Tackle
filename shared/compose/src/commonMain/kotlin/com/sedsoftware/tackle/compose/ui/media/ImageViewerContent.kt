@@ -1,7 +1,11 @@
 package com.sedsoftware.tackle.compose.ui.media
 
+import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.Box
@@ -43,6 +47,8 @@ import com.github.panpf.sketch.rememberAsyncImageState
 import com.github.panpf.sketch.request.LoadState
 import com.github.panpf.zoomimage.SketchZoomAsyncImage
 import com.sedsoftware.tackle.compose.model.TackleImageParams
+import com.sedsoftware.tackle.compose.ui.SharedTransitionScopes.LocalNavAnimatedVisibilityScope
+import com.sedsoftware.tackle.compose.ui.SharedTransitionScopes.LocalSharedTransitionScope
 import com.sedsoftware.tackle.compose.widget.TackleIconButton
 import com.sedsoftware.tackle.compose.widget.TackleImageProgress
 import com.sedsoftware.tackle.domain.model.MediaAttachment
@@ -72,6 +78,12 @@ internal fun ImageViewerContent(
         }
     }
 
+    val sharedTransitionScope: SharedTransitionScope =
+        LocalSharedTransitionScope.current ?: error("No SharedElementScope found")
+
+    val animatedVisibilityScope: AnimatedVisibilityScope =
+        LocalNavAnimatedVisibilityScope.current ?: error("No AnimatedVisibility found")
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -99,87 +111,95 @@ internal fun ImageViewerContent(
         contentColor = MaterialTheme.colorScheme.onSurface,
         modifier = modifier,
     ) { paddingValues: PaddingValues ->
-
-        Box(
-            modifier = modifier
-                .padding(paddingValues = paddingValues)
-                .fillMaxSize()
-        ) {
-            LazyRow(
-                state = lazyListState,
-                flingBehavior = rememberSnapFlingBehavior(lazyListState = lazyListState),
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = modifier.fillMaxSize(),
+        with(sharedTransitionScope) {
+            Box(
+                modifier = modifier
+                    .padding(paddingValues = paddingValues)
+                    .fillMaxSize()
             ) {
-                itemsIndexed(items = model.attachments) { index: Int, attachment ->
-                    val displayedAttachmentParams: TackleImageParams = remember {
-                        TackleImageParams(
-                            blurhash = displayedAttachment.blurhash,
-                            ratio = displayedAttachment.meta?.small?.aspect
-                                ?: displayedAttachment.meta?.original?.aspect
-                                ?: 1f,
-                        )
-                    }
+                LazyRow(
+                    state = lazyListState,
+                    flingBehavior = rememberSnapFlingBehavior(lazyListState = lazyListState),
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = modifier.fillMaxSize(),
+                ) {
+                    itemsIndexed(items = model.attachments) { index: Int, attachment ->
+                        val displayedAttachmentParams: TackleImageParams = remember {
+                            TackleImageParams(
+                                blurhash = displayedAttachment.blurhash,
+                                ratio = displayedAttachment.meta?.small?.aspect
+                                    ?: displayedAttachment.meta?.original?.aspect
+                                    ?: 1f,
+                            )
+                        }
 
-                    Box(
-                        contentAlignment = Alignment.Center,
-                        modifier = modifier
-                            .fillParentMaxWidth()
-                            .fillMaxHeight()
-                    ) {
-                        val imageState: AsyncImageState = rememberAsyncImageState()
-                        val progress: Float = imageState.progress?.decimalProgress.orZero()
+                        Box(
+                            contentAlignment = Alignment.Center,
+                            modifier = modifier
+                                .fillParentMaxWidth()
+                                .fillMaxHeight()
+                                .sharedBounds(
+                                    rememberSharedContentState(key = displayedAttachment.id),
+                                    animatedVisibilityScope = animatedVisibilityScope,
+                                    enter = fadeIn(),
+                                    exit = fadeOut(),
+                                    resizeMode = SharedTransitionScope.ResizeMode.ScaleToBounds(),
+                                )
+                        ) {
+                            val imageState: AsyncImageState = rememberAsyncImageState()
+                            val progress: Float = imageState.progress?.decimalProgress.orZero()
 
-                        SketchZoomAsyncImage(
-                            uri = attachment.url,
-                            contentDescription = null,
-                            state = imageState,
-                            contentScale = ContentScale.FillWidth,
-                            modifier = modifier.fillMaxSize()
-                        )
-
-                        if (imageState.loadState is LoadState.Started) {
-                            BlurHashImage(
-                                hash = displayedAttachmentParams.blurhash,
-                                contentDescription = "",
-                                modifier = modifier
-                                    .aspectRatio(ratio = displayedAttachmentParams.ratio)
-                                    .fillMaxWidth()
+                            SketchZoomAsyncImage(
+                                uri = attachment.url,
+                                contentDescription = null,
+                                state = imageState,
+                                contentScale = ContentScale.FillWidth,
+                                modifier = modifier.fillMaxSize()
                             )
 
-                            if (progress != 0f) {
-                                TackleImageProgress(
-                                    progress = progress,
-                                    progressSize = 32.dp,
-                                    modifier = Modifier.align(Alignment.Center),
-                                    indicatorColor = MaterialTheme.colorScheme.inverseOnSurface.copy(
-                                        alpha = 0.75f
-                                    ),
-                                    containerColor = MaterialTheme.colorScheme.inverseSurface.copy(
-                                        alpha = 0.5f
-                                    ),
+                            if (imageState.loadState is LoadState.Started) {
+                                BlurHashImage(
+                                    hash = displayedAttachmentParams.blurhash,
+                                    contentDescription = "",
+                                    modifier = modifier
+                                        .aspectRatio(ratio = displayedAttachmentParams.ratio)
+                                        .fillMaxWidth()
                                 )
+
+                                if (progress != 0f) {
+                                    TackleImageProgress(
+                                        progress = progress,
+                                        progressSize = 32.dp,
+                                        modifier = Modifier.align(Alignment.Center),
+                                        indicatorColor = MaterialTheme.colorScheme.inverseOnSurface.copy(
+                                            alpha = 0.75f
+                                        ),
+                                        containerColor = MaterialTheme.colorScheme.inverseSurface.copy(
+                                            alpha = 0.5f
+                                        ),
+                                    )
+                                }
                             }
                         }
                     }
                 }
-            }
 
-            Column(
-                modifier = modifier
-                    .fillMaxWidth()
-                    .heightIn(min = 64.dp, max = 160.dp)
-                    .verticalScroll(state = rememberScrollState())
-                    .align(alignment = Alignment.BottomCenter)
-                    .animateContentSize()
-                    .background(color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
-            ) {
-                Text(
-                    text = displayedAttachment.description,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    style = MaterialTheme.typography.bodyLarge,
-                    modifier = Modifier.padding(all = 16.dp)
-                )
+                Column(
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .heightIn(min = 64.dp, max = 160.dp)
+                        .verticalScroll(state = rememberScrollState())
+                        .align(alignment = Alignment.BottomCenter)
+                        .animateContentSize()
+                        .background(color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
+                ) {
+                    Text(
+                        text = displayedAttachment.description,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        style = MaterialTheme.typography.bodyLarge,
+                        modifier = Modifier.padding(all = 16.dp)
+                    )
+                }
             }
         }
     }

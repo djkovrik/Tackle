@@ -1,6 +1,7 @@
 package com.sedsoftware.tackle.compose.ui.media
 
 import VideoPlayer
+import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.fadeIn
@@ -43,11 +44,11 @@ internal fun VideoViewerContent(
 ) {
     val model: ViewVideoComponent.Model by component.model.subscribeAsState()
 
-    val sharedTransitionScope = LocalSharedTransitionScope.current
-        ?: throw IllegalStateException("No SharedElementScope found")
+    val sharedTransitionScope: SharedTransitionScope =
+        LocalSharedTransitionScope.current ?: error("No SharedElementScope found")
 
-    val animatedVisibilityScope = LocalNavAnimatedVisibilityScope.current
-        ?: throw IllegalStateException("No AnimatedVisibility found")
+    val animatedVisibilityScope: AnimatedVisibilityScope =
+        LocalNavAnimatedVisibilityScope.current ?: error("No AnimatedVisibility found")
 
     Scaffold(
         topBar = {

@@ -1,5 +1,6 @@
 package com.sedsoftware.tackle.compose.ui.status.content.media
 
+import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
@@ -59,21 +60,23 @@ internal fun StatusAttachmentVideo(
         )
     }
 
-    val sharedTransitionScope = LocalSharedTransitionScope.current
-        ?: throw IllegalStateException("No SharedElementScope found")
-    val animatedVisibilityScope = LocalNavAnimatedVisibilityScope.current
-        ?: throw IllegalStateException("No AnimatedVisibility found")
+    val sharedTransitionScope: SharedTransitionScope =
+        LocalSharedTransitionScope.current ?: error("No SharedElementScope found")
+
+    val animatedVisibilityScope: AnimatedVisibilityScope =
+        LocalNavAnimatedVisibilityScope.current ?: error("No AnimatedVisibility found")
 
     with(sharedTransitionScope) {
-        Box(modifier = modifier
-            .sharedBounds(
-                rememberSharedContentState(key = displayedAttachment.id),
-                animatedVisibilityScope = animatedVisibilityScope,
-                enter = fadeIn(),
-                exit = fadeOut(),
-                resizeMode = SharedTransitionScope.ResizeMode.ScaleToBounds(),
-            )
-            .clip(shape = MaterialTheme.shapes.extraSmall)
+        Box(
+            modifier = modifier
+                .sharedBounds(
+                    rememberSharedContentState(key = displayedAttachment.id),
+                    animatedVisibilityScope = animatedVisibilityScope,
+                    enter = fadeIn(),
+                    exit = fadeOut(),
+                    resizeMode = SharedTransitionScope.ResizeMode.ScaleToBounds(),
+                )
+                .clip(shape = MaterialTheme.shapes.extraSmall)
         ) {
             Crossfade(targetState = !hideSensitiveContent) { showImage: Boolean ->
                 if (showImage) {
