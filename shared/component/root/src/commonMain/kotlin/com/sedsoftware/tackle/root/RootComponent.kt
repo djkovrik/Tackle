@@ -9,8 +9,7 @@ import com.sedsoftware.tackle.domain.TackleException
 import com.sedsoftware.tackle.editor.EditorComponent
 import com.sedsoftware.tackle.main.MainComponent
 import com.sedsoftware.tackle.main.alternatetext.AlternateTextComponent
-import com.sedsoftware.tackle.main.viewimage.ViewImageComponent
-import com.sedsoftware.tackle.main.viewvideo.ViewVideoComponent
+import com.sedsoftware.tackle.main.viewmedia.ViewMediaComponent
 import kotlinx.coroutines.flow.Flow
 
 interface RootComponent : BackHandlerOwner {
@@ -27,7 +26,7 @@ interface RootComponent : BackHandlerOwner {
         data class Auth(val component: AuthComponent) : Child()
         data class Main(val component: MainComponent) : Child()
         data class Editor(val component: EditorComponent) : Child()
-        data class ViewImage(val component: ViewImageComponent) : Child()
-        data class ViewVideo(val component: ViewVideoComponent) : Child()
+        data class ViewImage(val component: ViewMediaComponent) : Child()
+        data class ViewVideo(val component: ViewMediaComponent) : Child()
     }
 }

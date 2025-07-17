@@ -52,7 +52,7 @@ import com.sedsoftware.tackle.compose.ui.SharedTransitionScopes.LocalSharedTrans
 import com.sedsoftware.tackle.compose.widget.TackleIconButton
 import com.sedsoftware.tackle.compose.widget.TackleImageProgress
 import com.sedsoftware.tackle.domain.model.MediaAttachment
-import com.sedsoftware.tackle.main.viewimage.ViewImageComponent
+import com.sedsoftware.tackle.main.viewmedia.ViewMediaComponent
 import com.sedsoftware.tackle.utils.extension.orZero
 import tackle.shared.compose.generated.resources.Res
 import tackle.shared.compose.generated.resources.editor_close
@@ -60,10 +60,10 @@ import tackle.shared.compose.generated.resources.editor_close
 @Composable
 @OptIn(ExperimentalSharedTransitionApi::class)
 internal fun ImageViewerContent(
-    component: ViewImageComponent,
+    component: ViewMediaComponent,
     modifier: Modifier = Modifier,
 ) {
-    val model: ViewImageComponent.Model by component.model.subscribeAsState()
+    val model: ViewMediaComponent.Model by component.model.subscribeAsState()
     var displayedAttachment: MediaAttachment by remember { mutableStateOf(model.attachments[model.selectedIndex]) }
     val lazyListState: LazyListState = rememberLazyListState()
     val visibleItemIndex: Int by lazyListState.visibleItemIndex()

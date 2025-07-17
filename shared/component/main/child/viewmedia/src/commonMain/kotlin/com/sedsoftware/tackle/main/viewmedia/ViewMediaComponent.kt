@@ -1,9 +1,9 @@
-package com.sedsoftware.tackle.main.viewimage
+package com.sedsoftware.tackle.main.viewmedia
 
 import com.arkivanov.decompose.value.Value
 import com.sedsoftware.tackle.domain.model.MediaAttachment
 
-interface ViewImageComponent {
+interface ViewMediaComponent {
     val model: Value<Model>
 
     fun onBack()

@@ -24,8 +24,7 @@ kotlin {
             implementation(project(":shared:component:auth"))
             implementation(project(":shared:component:main"))
             implementation(project(":shared:component:main:child:alternatetext"))
-            implementation(project(":shared:component:main:child:viewimage"))
-            implementation(project(":shared:component:main:child:viewvideo"))
+            implementation(project(":shared:component:main:child:viewmedia"))
             implementation(project(":shared:component:status"))
             implementation(project(":shared:component:statuslist"))
 

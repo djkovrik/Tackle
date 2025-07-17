@@ -24,6 +24,8 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,17 +34,19 @@ import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.sedsoftware.tackle.compose.ui.SharedTransitionScopes.LocalNavAnimatedVisibilityScope
 import com.sedsoftware.tackle.compose.ui.SharedTransitionScopes.LocalSharedTransitionScope
 import com.sedsoftware.tackle.compose.widget.TackleIconButton
-import com.sedsoftware.tackle.main.viewvideo.ViewVideoComponent
+import com.sedsoftware.tackle.domain.model.MediaAttachment
+import com.sedsoftware.tackle.main.viewmedia.ViewMediaComponent
 import tackle.shared.compose.generated.resources.Res
 import tackle.shared.compose.generated.resources.editor_close
 
 @Composable
 @OptIn(ExperimentalSharedTransitionApi::class)
 internal fun VideoViewerContent(
-    component: ViewVideoComponent,
+    component: ViewMediaComponent,
     modifier: Modifier = Modifier,
 ) {
-    val model: ViewVideoComponent.Model by component.model.subscribeAsState()
+    val model: ViewMediaComponent.Model by component.model.subscribeAsState()
+    val displayedAttachment: MediaAttachment by remember { mutableStateOf(model.attachments[model.selectedIndex]) }
 
     val sharedTransitionScope: SharedTransitionScope =
         LocalSharedTransitionScope.current ?: error("No SharedElementScope found")
@@ -85,15 +89,15 @@ internal fun VideoViewerContent(
         ) {
             with(sharedTransitionScope) {
                 VideoPlayer(
-                    url = model.attachment.url,
+                    url = displayedAttachment.url,
                     showControls = false,
                     autoPlay = true,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .aspectRatio(ratio = model.attachment.meta?.small?.aspect ?: 1f)
+                        .aspectRatio(ratio = displayedAttachment.meta?.small?.aspect ?: 1f)
                         .align(alignment = Alignment.Center)
                         .sharedBounds(
-                            rememberSharedContentState(key = model.attachment.id),
+                            rememberSharedContentState(key = displayedAttachment.id),
                             animatedVisibilityScope = animatedVisibilityScope,
                             enter = fadeIn(),
                             exit = fadeOut(),
@@ -113,7 +117,7 @@ internal fun VideoViewerContent(
                     .background(color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
             ) {
                 Text(
-                    text = model.attachment.description,
+                    text = displayedAttachment.description,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     style = MaterialTheme.typography.bodyLarge,
                     modifier = Modifier.padding(all = 16.dp)
