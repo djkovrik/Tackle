@@ -121,7 +121,15 @@ internal fun ImageViewerContent(
                     state = lazyListState,
                     flingBehavior = rememberSnapFlingBehavior(lazyListState = lazyListState),
                     verticalAlignment = Alignment.CenterVertically,
-                    modifier = modifier.fillMaxSize(),
+                    modifier = modifier
+                        .sharedBounds(
+                            rememberSharedContentState(key = displayedAttachment.id),
+                            animatedVisibilityScope = animatedVisibilityScope,
+                            enter = fadeIn(),
+                            exit = fadeOut(),
+                            resizeMode = SharedTransitionScope.ResizeMode.ScaleToBounds(),
+                        )
+                        .fillMaxSize(),
                 ) {
                     itemsIndexed(items = model.attachments) { index: Int, attachment ->
                         val displayedAttachmentParams: TackleImageParams = remember {
@@ -138,13 +146,6 @@ internal fun ImageViewerContent(
                             modifier = modifier
                                 .fillParentMaxWidth()
                                 .fillMaxHeight()
-                                .sharedBounds(
-                                    rememberSharedContentState(key = displayedAttachment.id),
-                                    animatedVisibilityScope = animatedVisibilityScope,
-                                    enter = fadeIn(),
-                                    exit = fadeOut(),
-                                    resizeMode = SharedTransitionScope.ResizeMode.ScaleToBounds(),
-                                )
                         ) {
                             val imageState: AsyncImageState = rememberAsyncImageState()
                             val progress: Float = imageState.progress?.decimalProgress.orZero()
