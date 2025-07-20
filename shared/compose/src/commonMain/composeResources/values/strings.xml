@@ -127,6 +127,7 @@
     <string name="status_image_alt">ALT</string>
     <string name="status_image_alt_header">Alternate text</string>
     <string name="status_image_gif">GIF</string>
+    <string name="status_preview_card_author">Author</string>
     <!-- Status context menu -->
     <string name="status_menu_translate">Translate</string>
     <string name="status_menu_show_original">Show original</string>

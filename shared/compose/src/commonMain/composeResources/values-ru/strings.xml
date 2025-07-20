@@ -124,6 +124,7 @@
     <string name="status_image_alt">ALT</string>
     <string name="status_image_alt_header">Альтернативный текст</string>
     <string name="status_image_gif">GIF</string>
+    <string name="status_preview_card_author">Автор</string>
     <!-- Status context menu -->
     <string name="status_menu_translate">Перевести</string>
     <string name="status_menu_show_original">Показать оригинал</string>

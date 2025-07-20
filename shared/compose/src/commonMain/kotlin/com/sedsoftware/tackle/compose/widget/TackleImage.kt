@@ -27,6 +27,7 @@ import com.github.panpf.sketch.PainterState
 import com.github.panpf.sketch.SubcomposeAsyncImage
 import com.github.panpf.sketch.rememberAsyncImageState
 import com.sedsoftware.tackle.compose.custom.ShimmerEffectBrush
+import com.sedsoftware.tackle.compose.extension.alsoIf
 import com.sedsoftware.tackle.compose.model.TackleImageParams
 import com.sedsoftware.tackle.utils.extension.orZero
 import org.jetbrains.compose.resources.painterResource
@@ -78,7 +79,7 @@ internal fun TackleImage(
         uri = imageUrl,
         state = state,
         contentDescription = contentDescription,
-        modifier = modifier.aspectRatio(ratio = imageRatio),
+        modifier = modifier.alsoIf(imageRatio != 1f, Modifier.aspectRatio(ratio = imageRatio)),
         content = {
             when (state.painterState) {
                 is PainterState.Loading -> {
@@ -88,15 +89,15 @@ internal fun TackleImage(
                                 hash = blurhash,
                                 contentDescription = "",
                                 modifier = modifier
-                                    .aspectRatio(ratio = imageRatio)
                                     .fillMaxWidth()
+                                    .alsoIf(imageRatio != 1f, Modifier.aspectRatio(ratio = imageRatio)),
                             )
                         } else {
                             Box(
                                 modifier = modifier
-                                    .aspectRatio(ratio = imageRatio)
                                     .fillMaxWidth()
-                                    .background(brush = ShimmerEffectBrush()),
+                                    .background(brush = ShimmerEffectBrush())
+                                    .alsoIf(imageRatio != 1f, Modifier.aspectRatio(ratio = imageRatio)),
                             )
                         }
 
@@ -136,9 +137,10 @@ internal fun TackleImage(
                     Image(
                         painter = painter,
                         contentDescription = contentDescription,
+                        contentScale = contentScale,
                         modifier = modifier
-                            .aspectRatio(ratio = imageRatio)
-                            .fillMaxSize(),
+                            .fillMaxSize()
+                            .alsoIf(imageRatio != 1f, Modifier.aspectRatio(ratio = imageRatio)),
                     )
                 }
             }
