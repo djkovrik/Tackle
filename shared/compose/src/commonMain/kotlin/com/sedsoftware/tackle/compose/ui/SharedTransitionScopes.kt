@@ -5,6 +5,7 @@ import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.runtime.compositionLocalOf
 
+@Suppress("CompositionLocalAllowlist")
 @OptIn(ExperimentalSharedTransitionApi::class)
 internal object SharedTransitionScopes {
     val LocalNavAnimatedVisibilityScope = compositionLocalOf<AnimatedVisibilityScope?> { null }

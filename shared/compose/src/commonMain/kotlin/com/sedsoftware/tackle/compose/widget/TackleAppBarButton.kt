@@ -15,9 +15,9 @@ import org.jetbrains.compose.resources.stringResource
 internal fun TackleAppBarButton(
     iconRes: DrawableResource,
     contentDescriptionRes: StringResource,
+    modifier: Modifier = Modifier,
     enabled: Boolean = true,
     onClick: () -> Unit = {},
-    modifier: Modifier = Modifier,
 ) {
     IconButton(
         onClick = onClick,

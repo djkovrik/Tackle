@@ -26,7 +26,7 @@ import com.github.panpf.sketch.AsyncImageState
 import com.github.panpf.sketch.PainterState
 import com.github.panpf.sketch.SubcomposeAsyncImage
 import com.github.panpf.sketch.rememberAsyncImageState
-import com.sedsoftware.tackle.compose.custom.ShimmerEffectBrush
+import com.sedsoftware.tackle.compose.custom.shimmerEffectBrush
 import com.sedsoftware.tackle.compose.extension.alsoIf
 import com.sedsoftware.tackle.compose.model.TackleImageParams
 import com.sedsoftware.tackle.utils.extension.orZero
@@ -96,7 +96,7 @@ internal fun TackleImage(
                             Box(
                                 modifier = modifier
                                     .fillMaxWidth()
-                                    .background(brush = ShimmerEffectBrush())
+                                    .background(brush = shimmerEffectBrush())
                                     .alsoIf(imageRatio != 1f, Modifier.aspectRatio(ratio = imageRatio)),
                             )
                         }

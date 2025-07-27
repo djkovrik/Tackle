@@ -43,9 +43,9 @@ internal fun EditorPollContent(
     checkboxColor: Color = MaterialTheme.colorScheme.primary,
     onAddNewItem: () -> Unit = {},
     onDeleteItem: (String) -> Unit = {},
-    onMultiselectEnabled: (Boolean) -> Unit = {},
-    onHideTotalsEnabled: (Boolean) -> Unit = {},
-    onDurationSelected: (PollDuration) -> Unit = {},
+    onMultiselectEnable: (Boolean) -> Unit = {},
+    onHideTotalsEnable: (Boolean) -> Unit = {},
+    onDurationSelect: (PollDuration) -> Unit = {},
     onTextInput: (String, String) -> Unit = { _, _ -> },
     onDurationPickerCall: () -> Unit = {},
     onDurationPickerClose: () -> Unit = {},
@@ -82,11 +82,11 @@ internal fun EditorPollContent(
                 modifier = Modifier
                     .height(height = 42.dp)
                     .clip(shape = MaterialTheme.shapes.extraLarge)
-                    .clickable(onClick = onDurationPickerCall)
                     .background(
                         color = containerColor,
                         shape = MaterialTheme.shapes.extraLarge
-                    ),
+                    )
+                    .clickable(onClick = onDurationPickerCall),
             ) {
                 Text(
                     text = stringResource(resource = model.duration.getTitle()),
@@ -103,7 +103,7 @@ internal fun EditorPollContent(
         ) {
             Checkbox(
                 checked = model.multiselectEnabled,
-                onCheckedChange = onMultiselectEnabled,
+                onCheckedChange = onMultiselectEnable,
                 colors = CheckboxDefaults.colors(
                     checkedColor = checkboxColor,
                     uncheckedColor = checkboxColor,
@@ -125,7 +125,7 @@ internal fun EditorPollContent(
         ) {
             Checkbox(
                 checked = model.hideTotalsEnabled,
-                onCheckedChange = onHideTotalsEnabled,
+                onCheckedChange = onHideTotalsEnable,
                 colors = CheckboxDefaults.colors(
                     checkedColor = checkboxColor,
                     uncheckedColor = checkboxColor,
@@ -148,7 +148,7 @@ internal fun EditorPollContent(
             model = model,
             modifier = Modifier,
             onDismiss = onDurationPickerClose,
-            onConfirmation = onDurationSelected,
+            onConfirmation = onDurationSelect,
         )
     }
 }

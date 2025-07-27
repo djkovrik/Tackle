@@ -23,9 +23,9 @@ import tackle.shared.compose.generated.resources.editor_close
 @Composable
 internal fun ScheduledPostDate(
     text: String,
+    modifier: Modifier = Modifier,
     containerColor: Color = MaterialTheme.colorScheme.primaryContainer,
     contentColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
-    modifier: Modifier = Modifier,
     onClose: () -> Unit = {},
 ) {
     Row(

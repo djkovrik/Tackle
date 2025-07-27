@@ -28,6 +28,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -75,7 +76,7 @@ internal fun AttachedFileContent(
     previewImage: @Composable (() -> Unit)? = null,
 ) {
     var imageData: ByteArray by remember { mutableStateOf(ByteArray(0)) }
-    var progress: Float by remember { mutableStateOf(0.0f) }
+    var progress: Float by remember { mutableFloatStateOf(0.0f) }
     var showProcessingLabel: Boolean by remember { mutableStateOf(false) }
 
     val animatedProgress: Float by animateFloatAsState(

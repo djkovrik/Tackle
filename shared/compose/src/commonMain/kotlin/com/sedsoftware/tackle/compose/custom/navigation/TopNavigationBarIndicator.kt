@@ -17,7 +17,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterStart
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
@@ -45,9 +44,10 @@ internal fun TopNavigationBarIndicator(
     ) {}
 }
 
+@Composable
 internal fun Modifier.topNavigationBarIndicatorOffset(
     currentTabPosition: TabPosition,
-): Modifier = composed {
+): Modifier {
     val currentTabWidth: Dp by animateDpAsState(
         targetValue = currentTabPosition.width,
         animationSpec = tween(durationMillis = 250, easing = FastOutSlowInEasing)
@@ -56,7 +56,8 @@ internal fun Modifier.topNavigationBarIndicatorOffset(
         targetValue = currentTabPosition.left,
         animationSpec = tween(durationMillis = 500, easing = FastOutSlowInEasing)
     )
-    wrapContentSize(CenterStart)
+    return this then Modifier
+        .wrapContentSize(CenterStart)
         .offset(x = indicatorOffset)
         .width(currentTabWidth)
 }

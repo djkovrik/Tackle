@@ -24,6 +24,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.movableContentOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -81,6 +82,7 @@ internal fun StatusContentWrapper(
 ) {
     val simplifiedDate: Pair<Int, StringResource> = remember { model.status.createdAtShort.getSimplifiedDate() }
     var expanded: Boolean by remember { mutableStateOf(model.status.spoilerText.isEmpty()) }
+    val content: @Composable (() -> Unit) = remember { movableContentOf { content() } }
 
     Column(
         modifier = modifier
