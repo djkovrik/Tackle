@@ -51,7 +51,7 @@ internal fun AttachedImageFocusSelector(
 
     BoxWithConstraints(
         contentAlignment = Alignment.Center,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .aspectRatio(
                 ratio = imageParams.ratio
@@ -77,7 +77,7 @@ internal fun AttachedImageFocusSelector(
                 ratio = imageParams.ratio,
             ),
             contentDescription = null,
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxSize()
                 .clip(shape = MaterialTheme.shapes.extraSmall),
         )

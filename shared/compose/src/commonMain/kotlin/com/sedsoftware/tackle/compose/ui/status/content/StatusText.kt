@@ -32,11 +32,10 @@ internal fun StatusText(
     inlinedContent: @Composable (String) -> Unit = {},
 ) {
     if (model.translation != null && model.translationDisplayed) {
-        Column {
+        Column(modifier = modifier) {
             TackleStatusRichText(
                 content = model.translation?.content.orEmpty(),
                 emojis = model.status.emojis,
-                modifier = modifier,
                 style = style,
                 textColor = textColor,
                 highlightColor = highlightColor,
@@ -54,7 +53,7 @@ internal fun StatusText(
                 text = "${stringResource(resource = Res.string.status_translated)} ${model.translation?.provider.orEmpty()}",
                 color = MaterialTheme.colorScheme.secondary,
                 style = MaterialTheme.typography.bodySmall,
-                modifier = modifier.padding(top = 4.dp),
+                modifier = Modifier.padding(top = 4.dp),
             )
         }
     } else {
@@ -62,7 +61,6 @@ internal fun StatusText(
             TackleStatusRichText(
                 content = model.status.contentAsPlainText,
                 emojis = model.status.emojis,
-                modifier = modifier,
                 style = style,
                 textColor = textColor,
                 highlightColor = highlightColor,
@@ -83,7 +81,7 @@ internal fun StatusText(
                     text = stringResource(resource = Res.string.status_translating),
                     color = MaterialTheme.colorScheme.secondary,
                     style = MaterialTheme.typography.bodySmall,
-                    modifier = modifier.padding(top = 4.dp),
+                    modifier = Modifier.padding(top = 4.dp),
                 )
             }
         }

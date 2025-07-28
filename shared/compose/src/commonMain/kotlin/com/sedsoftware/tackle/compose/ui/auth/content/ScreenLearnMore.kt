@@ -35,25 +35,25 @@ internal fun ScreenLearnMore(
             text = stringResource(resource = Res.string.mastodon_title),
             color = MaterialTheme.colorScheme.primary,
             style = MaterialTheme.typography.headlineMedium,
-            modifier = modifier.padding(bottom = 8.dp),
+            modifier = Modifier.padding(bottom = 8.dp),
         )
 
         Text(
             text = stringResource(resource = Res.string.auth_mastodon_description),
             color = MaterialTheme.colorScheme.onBackground,
             style = MaterialTheme.typography.bodyLarge,
-            modifier = modifier.padding(bottom = 16.dp),
+            modifier = Modifier.padding(bottom = 16.dp),
         )
 
         Text(
             text = stringResource(resource = Res.string.auth_server_description),
             color = MaterialTheme.colorScheme.onBackground,
             style = MaterialTheme.typography.bodyLarge,
-            modifier = modifier.padding(bottom = 8.dp),
+            modifier = Modifier.padding(bottom = 8.dp),
         )
 
         Row(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 16.dp)
         ) {
@@ -61,7 +61,7 @@ internal fun ScreenLearnMore(
                 text = stringResource(resource = Res.string.auth_no_account),
                 color = MaterialTheme.colorScheme.onBackground,
                 style = MaterialTheme.typography.bodyLarge,
-                modifier = modifier.padding(top = 8.dp, bottom = 8.dp, end = 8.dp),
+                modifier = Modifier.padding(top = 8.dp, bottom = 8.dp, end = 8.dp),
             )
 
             Text(
@@ -69,7 +69,7 @@ internal fun ScreenLearnMore(
                 textDecoration = TextDecoration.Underline,
                 color = MaterialTheme.colorScheme.primary,
                 style = MaterialTheme.typography.bodyLarge,
-                modifier = modifier
+                modifier = Modifier
                     .padding(vertical = 8.dp)
                     .clickable(onClick = onJoinMastodonClick),
             )

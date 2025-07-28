@@ -78,7 +78,7 @@ internal fun StatusAttachmentSingleImage(
                         contentDescription = displayedAttachment.description,
                         showProgress = true,
                         progressSize = 32.dp,
-                        modifier = modifier
+                        modifier = Modifier
                             .clickableOnce(onClick = onImageClick)
                             .fillMaxWidth(),
                     )
@@ -86,7 +86,7 @@ internal fun StatusAttachmentSingleImage(
                     BlurHashImage(
                         hash = displayedAttachmentParams.blurhash,
                         contentDescription = "",
-                        modifier = modifier
+                        modifier = Modifier
                             .aspectRatio(ratio = displayedAttachmentParams.ratio)
                             .fillMaxWidth(),
                     )

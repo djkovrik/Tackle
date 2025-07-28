@@ -88,13 +88,13 @@ internal fun TackleImage(
                             BlurHashImage(
                                 hash = blurhash,
                                 contentDescription = "",
-                                modifier = modifier
+                                modifier = Modifier
                                     .fillMaxWidth()
                                     .alsoIf(imageRatio != 1f, Modifier.aspectRatio(ratio = imageRatio)),
                             )
                         } else {
                             Box(
-                                modifier = modifier
+                                modifier = Modifier
                                     .fillMaxWidth()
                                     .background(brush = shimmerEffectBrush())
                                     .alsoIf(imageRatio != 1f, Modifier.aspectRatio(ratio = imageRatio)),
@@ -119,7 +119,7 @@ internal fun TackleImage(
 
                 is PainterState.Error -> {
                     Box(
-                        modifier = modifier
+                        modifier = Modifier
                             .fillMaxSize()
                             .background(color = MaterialTheme.colorScheme.errorContainer),
                         contentAlignment = Alignment.Center,
@@ -138,7 +138,7 @@ internal fun TackleImage(
                         painter = painter,
                         contentDescription = contentDescription,
                         contentScale = contentScale,
-                        modifier = modifier
+                        modifier = Modifier
                             .fillMaxSize()
                             .alsoIf(imageRatio != 1f, Modifier.aspectRatio(ratio = imageRatio)),
                     )

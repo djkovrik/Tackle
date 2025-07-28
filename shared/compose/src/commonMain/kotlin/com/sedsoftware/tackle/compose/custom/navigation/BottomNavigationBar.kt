@@ -54,12 +54,11 @@ internal fun BottomNavigationBar(
             ),
         )
 
-        Column(modifier = modifier.navigationBarsPadding()) {
+        Column(modifier = Modifier.navigationBarsPadding()) {
             NavigationBar(
                 containerColor = config.containerColor,
                 contentColor = config.containerColor,
                 tonalElevation = 0.dp,
-                modifier = modifier,
             ) {
                 BottomNavigationBarItem(
                     baseTab = MainScreenTab.HOME,

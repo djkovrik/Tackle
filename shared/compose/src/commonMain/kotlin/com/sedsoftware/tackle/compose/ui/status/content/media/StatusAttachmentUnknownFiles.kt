@@ -66,7 +66,7 @@ internal fun StatusAttachmentUnknownFiles(
                     text = "${stringResource(resource = Res.string.editor_attachment_unknown)} #$index",
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     style = MaterialTheme.typography.bodyMedium,
-                    modifier = modifier.padding(horizontal = 8.dp, vertical = 16.dp),
+                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 16.dp),
                 )
             }
 

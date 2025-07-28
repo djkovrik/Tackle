@@ -84,13 +84,13 @@ internal fun StatusAttachmentVideo(
                         imageUrl = displayedAttachment.previewUrl,
                         imageParams = displayedAttachmentParams,
                         contentDescription = displayedAttachment.description,
-                        modifier = modifier.fillMaxWidth(),
+                        modifier = Modifier.fillMaxWidth(),
                     )
                 } else {
                     BlurHashImage(
                         hash = displayedAttachmentParams.blurhash,
                         contentDescription = "",
-                        modifier = modifier
+                        modifier = Modifier
                             .aspectRatio(ratio = displayedAttachmentParams.ratio)
                             .fillMaxWidth(),
                     )
@@ -154,7 +154,7 @@ internal fun StatusAttachmentVideo(
             } else {
                 IconButton(
                     onClick = onVideoClick,
-                    modifier = modifier
+                    modifier = Modifier
                         .clip(shape = CircleShape)
                         .background(
                             color = MaterialTheme.colorScheme.inverseSurface.copy(

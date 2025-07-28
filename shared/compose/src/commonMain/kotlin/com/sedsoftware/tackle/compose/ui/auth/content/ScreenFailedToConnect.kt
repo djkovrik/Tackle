@@ -44,17 +44,16 @@ internal fun ScreenFailedToConnect(
     ) {
         Box(
             contentAlignment = Alignment.BottomCenter,
-            modifier = modifier.weight(weight = 0.5f)
+            modifier = Modifier.weight(weight = 0.5f)
         ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = modifier
             ) {
                 Image(
                     painter = painterResource(resource = Res.drawable.auth_retry),
                     contentDescription = null,
                     contentScale = ContentScale.FillBounds,
-                    modifier = modifier.size(size = 128.dp),
+                    modifier = Modifier.size(size = 128.dp),
                 )
 
                 Text(
@@ -62,18 +61,17 @@ internal fun ScreenFailedToConnect(
                     color = MaterialTheme.colorScheme.primary,
                     style = MaterialTheme.typography.bodyLarge,
                     textAlign = TextAlign.Right,
-                    modifier = modifier.padding(all = 32.dp),
+                    modifier = Modifier.padding(all = 32.dp),
                 )
             }
         }
 
         Box(
             contentAlignment = Alignment.BottomCenter,
-            modifier = modifier.weight(weight = 0.5f)
+            modifier = Modifier.weight(weight = 0.5f)
         ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = modifier,
             ) {
                 AnimatedVisibility(
                     visible = isRetrying,
@@ -83,7 +81,6 @@ internal fun ScreenFailedToConnect(
                     LoadingDotsText(
                         text = stringResource(resource = Res.string.common_retrying),
                         color = MaterialTheme.colorScheme.secondary,
-                        modifier = modifier
                     )
                 }
 
@@ -91,7 +88,7 @@ internal fun ScreenFailedToConnect(
                     text = stringResource(resource = Res.string.common_retry),
                     enabled = !isRetrying,
                     onClick = onRetryClick,
-                    modifier = modifier
+                    modifier = Modifier
                         .padding(all = 16.dp)
                         .navigationBarsPadding(),
                 )

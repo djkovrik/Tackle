@@ -82,7 +82,7 @@ internal fun StatusContentWrapper(
 ) {
     val simplifiedDate: Pair<Int, StringResource> = remember { model.status.createdAtShort.getSimplifiedDate() }
     var expanded: Boolean by remember { mutableStateOf(model.status.spoilerText.isEmpty()) }
-    val content: @Composable (() -> Unit) = remember { movableContentOf { content() } }
+    val content = remember { movableContentOf { content() } }
 
     Column(
         modifier = modifier
@@ -275,12 +275,12 @@ internal fun StatusContentWrapper(
             TackleWarningContainer(
                 indicatorWidth = 6.dp,
                 indicatorColor = MaterialTheme.colorScheme.secondary,
-                modifier = modifier
+                modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 8.dp)
             ) {
                 Column(
-                    modifier = modifier
+                    modifier = Modifier
                         .fillMaxWidth()
                         .background(color = MaterialTheme.colorScheme.secondaryContainer)
                         .clickableOnce { expanded = !expanded }
@@ -305,7 +305,7 @@ internal fun StatusContentWrapper(
             }
 
             Box(
-                modifier = modifier
+                modifier = Modifier
                     .animateContentSize()
                     .alsoIf(!expanded, Modifier.height(height = 0.dp))
             ) {
@@ -380,7 +380,7 @@ internal fun StatusContentWrapper(
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
-            modifier = modifier
+            modifier = Modifier
                 .padding(top = 16.dp)
                 .fillMaxWidth()
         ) {

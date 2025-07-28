@@ -71,7 +71,7 @@ internal fun ScreenAuthorize(
         Column(
             verticalArrangement = Arrangement.SpaceEvenly,
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .weight(weight = 0.5f)
         ) {
@@ -79,25 +79,25 @@ internal fun ScreenAuthorize(
                 text = stringResource(resource = Res.string.app_label),
                 color = MaterialTheme.colorScheme.primary,
                 style = MaterialTheme.typography.headlineLarge,
-                modifier = modifier.padding(all = 32.dp),
+                modifier = Modifier.padding(all = 32.dp),
             )
 
             Image(
                 painter = painterResource(resource = Res.drawable.auth_logo),
                 contentDescription = null,
                 contentScale = ContentScale.FillBounds,
-                modifier = modifier.size(size = 128.dp),
+                modifier = Modifier.size(size = 128.dp),
             )
         }
 
         Column(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .weight(weight = 0.5f)
         ) {
-            Column(modifier = modifier.width(width = inputAndInfoWidth)) {
+            Column(modifier = Modifier.width(width = inputAndInfoWidth)) {
                 TackleTextField(
                     value = model.textInput,
                     onValueChange = onTextInput,
@@ -116,7 +116,7 @@ internal fun ScreenAuthorize(
                                 MaterialTheme.colorScheme.error
                             },
                             style = MaterialTheme.typography.labelMedium,
-                            modifier = modifier
+                            modifier = Modifier
                                 .background(color = MaterialTheme.colorScheme.background)
                                 .padding(horizontal = 8.dp)
                         )
@@ -131,18 +131,18 @@ internal fun ScreenAuthorize(
                             hideKeyboard.invoke()
                         }
                     ),
-                    modifier = modifier
+                    modifier = Modifier
                         .fillMaxWidth()
                         .height(height = 46.dp)
                 )
 
-                Row(modifier = modifier.fillMaxWidth()) {
+                Row(modifier = Modifier.fillMaxWidth()) {
                     Text(
                         text = stringResource(resource = Res.string.auth_server_recommended),
                         color = MaterialTheme.colorScheme.secondary,
                         style = MaterialTheme.typography.labelLarge,
                         textAlign = TextAlign.Left,
-                        modifier = modifier
+                        modifier = Modifier
                             .padding(all = 8.dp)
                             .weight(weight = 0.5f)
                             .clickable(onClick = { onTextInput.invoke(defaultServer) }),
@@ -153,7 +153,7 @@ internal fun ScreenAuthorize(
                         color = MaterialTheme.colorScheme.secondary,
                         style = MaterialTheme.typography.labelLarge,
                         textAlign = TextAlign.Right,
-                        modifier = modifier
+                        modifier = Modifier
                             .padding(all = 8.dp)
                             .weight(weight = 0.5f)
                             .clickable(onClick = onLearnMoreClick),
@@ -165,7 +165,6 @@ internal fun ScreenAuthorize(
                 LoadingDotsText(
                     text = stringResource(resource = Res.string.auth_server_info_fetch),
                     color = MaterialTheme.colorScheme.secondary,
-                    modifier = modifier,
                 )
             }
 
@@ -178,13 +177,13 @@ internal fun ScreenAuthorize(
                 ServerInfo(
                     name = model.serverName,
                     description = model.serverDescription,
-                    modifier = modifier
+                    modifier = Modifier
                         .width(width = inputAndInfoWidth)
                         .padding(vertical = 8.dp),
                 )
             }
 
-            Spacer(modifier = modifier.weight(weight = 1f))
+            Spacer(modifier = Modifier.weight(weight = 1f))
 
             AnimatedVisibility(
                 visible = model.isOauthFlowActive,
@@ -194,7 +193,6 @@ internal fun ScreenAuthorize(
                 LoadingDotsText(
                     text = stringResource(resource = Res.string.common_redirecting),
                     color = MaterialTheme.colorScheme.secondary,
-                    modifier = modifier,
                 )
             }
 
@@ -202,7 +200,7 @@ internal fun ScreenAuthorize(
                 text = stringResource(resource = Res.string.common_continue),
                 enabled = model.isServerInfoLoaded && !model.isOauthFlowActive,
                 onClick = onAuthenticateClick,
-                modifier = modifier
+                modifier = Modifier
                     .padding(all = 16.dp)
                     .navigationBarsPadding(),
             )

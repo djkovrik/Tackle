@@ -76,7 +76,7 @@ internal fun StatusAttachmentImageGalleryItem(
                 BlurHashImage(
                     hash = galleryItemParams.blurhash,
                     contentDescription = "",
-                    modifier = modifier
+                    modifier = Modifier
                         .height(height = 64.dp)
                         .aspectRatio(ratio = galleryItemParams.ratio),
                 )

@@ -36,7 +36,6 @@ internal fun InputHintAccount(
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = modifier,
         ) {
             TackleImage(
                 imageUrl = hint.avatar,
@@ -73,7 +72,6 @@ internal fun InputHintEmoji(
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = modifier
         ) {
             TackleImage(
                 imageUrl = hint.url,

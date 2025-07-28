@@ -206,7 +206,7 @@ internal fun EditorContent(
             // Scrollable part
             LazyColumn(
                 verticalArrangement = Arrangement.Top,
-                modifier = modifier.weight(weight = 1f, fill = true),
+                modifier = Modifier.weight(weight = 1f, fill = true),
             ) {
                 // Warning
                 item {
@@ -303,7 +303,7 @@ internal fun EditorContent(
             // Hints
             AnimatedVisibility(visible = editorModel.suggestions.isNotEmpty()) {
                 LazyRow(
-                    modifier = modifier
+                    modifier = Modifier
                         .padding(horizontal = 16.dp)
                         .fillMaxWidth()
                 ) {

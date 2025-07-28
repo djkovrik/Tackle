@@ -49,12 +49,13 @@ internal fun RowScope.BottomNavigationBarItem(
                 painter = painterResource(resource = iconRes),
                 contentDescription = stringResource(resource = contentDescriptionRes),
                 tint = animatedIconColor,
-                modifier = modifier.size(size = animatedIconSize),
+                modifier = Modifier.size(size = animatedIconSize),
             )
         },
         colors = NavigationBarItemDefaults.colors(indicatorColor = config.containerColor),
         selected = activeTab == baseTab,
         onClick = { onTabClick.invoke(baseTab) },
         alwaysShowLabel = false,
+        modifier = modifier,
     )
 }

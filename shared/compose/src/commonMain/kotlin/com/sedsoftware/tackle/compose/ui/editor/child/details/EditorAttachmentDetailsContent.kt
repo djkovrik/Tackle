@@ -75,8 +75,9 @@ internal fun EditorAttachmentDetailsContent(
                 enabled = model.dataChanged,
             )
         },
+        modifier = modifier,
     ) {
-        LazyColumn(modifier = modifier.fillMaxSize()) {
+        LazyColumn(modifier = Modifier.fillMaxSize()) {
             item {
                 Text(
                     text = stringResource(resource = Res.string.editor_attachment_alternate_text_description),

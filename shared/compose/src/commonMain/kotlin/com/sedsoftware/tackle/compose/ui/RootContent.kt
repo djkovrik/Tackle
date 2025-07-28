@@ -56,7 +56,7 @@ fun RootContent(
     val alternateTextDialog: ChildSlot<*, AlternateTextComponent> by component.alternateTextDialog.subscribeAsState()
     val bottomSheetState: SheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
-    Scaffold { paddingValues: PaddingValues ->
+    Scaffold(modifier = modifier) { paddingValues: PaddingValues ->
 
         LaunchedEffect(component) {
             component.errorMessages.collect { exception ->
@@ -66,8 +66,8 @@ fun RootContent(
             }
         }
 
-        Box(modifier = modifier.fillMaxSize()) {
-            SharedTransitionLayout(modifier = modifier) {
+        Box(modifier = Modifier.fillMaxSize()) {
+            SharedTransitionLayout {
                 CompositionLocalProvider(LocalSharedTransitionScope provides this) {
                     ChildStack(
                         stack = component.childStack,
@@ -81,7 +81,7 @@ fun RootContent(
                                 )
                             }
                         ),
-                        modifier = modifier.fillMaxSize(),
+                        modifier = Modifier.fillMaxSize(),
                     ) {
                         CompositionLocalProvider(LocalNavAnimatedVisibilityScope provides this) {
                             when (val child = it.instance) {
@@ -98,14 +98,13 @@ fun RootContent(
 
             SnackbarHost(
                 hostState = snackbarHostState,
-                modifier = modifier
+                modifier = Modifier
                     .align(alignment = Alignment.TopCenter)
                     .padding(paddingValues = paddingValues)
                     .padding(all = 16.dp),
             ) { snackbarData: SnackbarData ->
                 TackleSnackbar(
                     message = snackbarData.visuals.message,
-                    modifier = modifier,
                 )
             }
         }

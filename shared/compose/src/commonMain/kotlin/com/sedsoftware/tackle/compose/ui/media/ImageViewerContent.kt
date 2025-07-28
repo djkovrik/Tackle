@@ -104,7 +104,6 @@ internal fun ImageViewerContent(
                     actionIconContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
                 ),
                 actions = {},
-                modifier = modifier,
             )
         },
         containerColor = MaterialTheme.colorScheme.surface,
@@ -113,7 +112,7 @@ internal fun ImageViewerContent(
     ) { paddingValues: PaddingValues ->
         with(sharedTransitionScope) {
             Box(
-                modifier = modifier
+                modifier = Modifier
                     .padding(paddingValues = paddingValues)
                     .fillMaxSize()
             ) {
@@ -121,7 +120,7 @@ internal fun ImageViewerContent(
                     state = lazyListState,
                     flingBehavior = rememberSnapFlingBehavior(lazyListState = lazyListState),
                     verticalAlignment = Alignment.CenterVertically,
-                    modifier = modifier
+                    modifier = Modifier
                         .sharedBounds(
                             rememberSharedContentState(key = displayedAttachment.id),
                             animatedVisibilityScope = animatedVisibilityScope,
@@ -143,7 +142,7 @@ internal fun ImageViewerContent(
 
                         Box(
                             contentAlignment = Alignment.Center,
-                            modifier = modifier
+                            modifier = Modifier
                                 .fillParentMaxWidth()
                                 .fillMaxHeight()
                         ) {
@@ -155,14 +154,14 @@ internal fun ImageViewerContent(
                                 contentDescription = null,
                                 state = imageState,
                                 contentScale = ContentScale.FillWidth,
-                                modifier = modifier.fillMaxSize()
+                                modifier = Modifier.fillMaxSize()
                             )
 
                             if (imageState.loadState is LoadState.Started) {
                                 BlurHashImage(
                                     hash = displayedAttachmentParams.blurhash,
                                     contentDescription = "",
-                                    modifier = modifier
+                                    modifier = Modifier
                                         .aspectRatio(ratio = displayedAttachmentParams.ratio)
                                         .fillMaxWidth()
                                 )
@@ -186,7 +185,7 @@ internal fun ImageViewerContent(
                 }
 
                 Column(
-                    modifier = modifier
+                    modifier = Modifier
                         .fillMaxWidth()
                         .heightIn(min = 64.dp, max = 160.dp)
                         .verticalScroll(state = rememberScrollState())

@@ -125,7 +125,7 @@ internal fun AttachedFilePlaceholder(
                     alpha = 0.5f,
                 )
             ),
-            modifier = modifier.size(size = imageSize),
+            modifier = Modifier.size(size = imageSize),
         )
     }
 }

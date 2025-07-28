@@ -11,7 +11,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,11 +39,11 @@ internal fun TackleFileProgress(
     onCancelClick: () -> Unit = {},
     onDoneClick: () -> Unit = {},
 ) {
-    val progressVisible: Boolean by derivedStateOf { progress > 0f && progress < 1f }
-    val downloadVisible: Boolean by derivedStateOf { progress == 0f }
-    val cancelVisible: Boolean by derivedStateOf { progress > 0f && progress < 1f }
-    val doneVisible: Boolean by derivedStateOf { progress >= 1f }
-    val progressValue: Float by derivedStateOf { progress.roundToDecimals(1) }
+    val progressVisible: Boolean = progress > 0f && progress < 1f
+    val downloadVisible: Boolean = progress == 0f
+    val cancelVisible: Boolean = progress > 0f && progress < 1f
+    val doneVisible: Boolean = progress >= 1f
+    val progressValue: Float = progress.roundToDecimals(1)
 
     val progressAlpha: Float by animateFloatAsState(
         targetValue = if (progressVisible) 1f else 0f,

@@ -29,7 +29,6 @@ internal fun StatusAttachmentImageGallery(
             displayedAttachment = displayedAttachment,
             hasSensitiveContent = hasSensitiveContent,
             hideSensitiveContent = hideSensitiveContent,
-            modifier = modifier,
             onImageClick = onImageClick,
             onImageAltClick = onImageAltClick,
             onSensitiveClick = onSensitiveClick,

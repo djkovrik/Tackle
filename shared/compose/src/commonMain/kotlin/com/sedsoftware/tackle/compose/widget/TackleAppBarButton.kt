@@ -22,12 +22,12 @@ internal fun TackleAppBarButton(
     IconButton(
         onClick = onClick,
         enabled = enabled,
-        modifier = Modifier,
+        modifier = modifier,
     ) {
         Icon(
             painter = painterResource(resource = iconRes),
             contentDescription = stringResource(resource = contentDescriptionRes),
-            modifier = modifier.size(size = 24.dp)
+            modifier = Modifier.size(size = 24.dp)
         )
     }
 }

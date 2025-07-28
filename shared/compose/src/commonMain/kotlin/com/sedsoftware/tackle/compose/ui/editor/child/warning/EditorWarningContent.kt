@@ -37,7 +37,7 @@ internal fun EditorWarningContent(
     onTextClear: () -> Unit = {},
 ) {
 
-    TackleWarningContainer(modifier = modifier,) {
+    TackleWarningContainer(modifier = modifier) {
         TackleTextField(
             value = text,
             onValueChange = onTextInput,

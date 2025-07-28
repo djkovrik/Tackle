@@ -127,7 +127,7 @@ private fun StatusPollOption(
     onClick: () -> Unit = {},
 ) {
     Box(
-        modifier = Modifier.height(intrinsicSize = IntrinsicSize.Min)
+        modifier = modifier.height(intrinsicSize = IntrinsicSize.Min)
     ) {
         val optionFraction = (votesCount.toFloat() / votesTotal.toFloat()).takeIf { it > POLL_MIN_FRACTION }
             ?: POLL_MIN_FRACTION
@@ -138,7 +138,7 @@ private fun StatusPollOption(
         )
 
         Box(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxWidth(fraction = currentFraction)
                 .fillMaxHeight()
                 .padding(horizontal = 8.dp, vertical = 4.dp)
@@ -204,13 +204,13 @@ private fun StatusPollOption(
                 inlinedContent = {
                     Box(
                         contentAlignment = Alignment.Center,
-                        modifier = modifier.fillMaxSize(),
+                        modifier = Modifier.fillMaxSize(),
                     ) {
                         Image(
                             painter = rememberAsyncImagePainter(uri = it),
                             contentDescription = null,
                             contentScale = ContentScale.Fit,
-                            modifier = modifier.fillMaxSize(),
+                            modifier = Modifier.fillMaxSize(),
                         )
                     }
                 }

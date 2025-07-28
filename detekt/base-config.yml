@@ -838,6 +838,7 @@ Compose:
     active: true
   MultipleEmitters:
     active: true
+    contentEmittersDenylist: CustomPollDurationDialog, LanguageSelectorDialog, VisibilitySelectorDialog, ScheduleDatePickerDialog, ScheduleTimePickerDialog
   MutableParams:
     active: true
   MutableStateAutoboxing:

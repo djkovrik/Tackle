@@ -74,7 +74,6 @@ internal fun VideoViewerContent(
                     actionIconContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
                 ),
                 actions = {},
-                modifier = modifier,
             )
         },
         containerColor = MaterialTheme.colorScheme.surface,
@@ -82,7 +81,7 @@ internal fun VideoViewerContent(
         modifier = modifier,
     ) { paddingValues: PaddingValues ->
         Box(
-            modifier = modifier
+            modifier = Modifier
                 .padding(paddingValues = paddingValues)
                 .clip(shape = MaterialTheme.shapes.extraSmall)
                 .fillMaxSize()
@@ -109,7 +108,7 @@ internal fun VideoViewerContent(
             }
 
             Column(
-                modifier = modifier
+                modifier = Modifier
                     .fillMaxWidth()
                     .heightIn(min = 64.dp, max = 160.dp)
                     .verticalScroll(state = rememberScrollState())

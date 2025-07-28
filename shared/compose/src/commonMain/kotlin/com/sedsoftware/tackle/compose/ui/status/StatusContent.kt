@@ -32,13 +32,13 @@ internal fun StatusContent(
     inlinedContent: @Composable (String) -> Unit = {
         Box(
             contentAlignment = Alignment.Center,
-            modifier = modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize(),
         ) {
             Image(
                 painter = rememberAsyncImagePainter(uri = it),
                 contentDescription = null,
                 contentScale = ContentScale.Fit,
-                modifier = modifier.fillMaxSize(),
+                modifier = Modifier.fillMaxSize(),
             )
         }
     },
@@ -60,7 +60,6 @@ internal fun StatusContent(
         if (model.status.content.isNotEmpty() || !model.translation?.content.isNullOrEmpty()) {
             StatusText(
                 model = model,
-                modifier = modifier,
                 onHashTagClick = component::onHashTagClick,
                 onMentionClick = component::onMentionClick,
                 onUrlClick = component::onUrlClick,
@@ -74,7 +73,6 @@ internal fun StatusContent(
                 translation = model.translation,
                 onSelect = component::onPollSelect,
                 onVote = component::onVoteClick,
-                modifier = modifier,
             )
         }
 
@@ -89,7 +87,6 @@ internal fun StatusContent(
                 onSensitiveClick = component::onSensitiveContentToggle,
                 onDownloadClick = {},
                 onCancelClick = {},
-                modifier = modifier,
             )
         }
 
@@ -97,7 +94,6 @@ internal fun StatusContent(
             StatusPreviewCard(
                 card = previewCard,
                 onUrlClick = component::onUrlClick,
-                modifier = modifier,
             )
         }
     }

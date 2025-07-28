@@ -26,14 +26,14 @@ internal fun AlternateTextContent(
             text = stringResource(resource = Res.string.status_image_alt_header),
             color = MaterialTheme.colorScheme.primary,
             style = MaterialTheme.typography.titleMedium,
-            modifier = modifier.padding(bottom = 8.dp),
+            modifier = Modifier.padding(bottom = 8.dp),
         )
 
         Text(
             text = text,
             color = MaterialTheme.colorScheme.onBackground,
             style = MaterialTheme.typography.bodyLarge,
-            modifier = modifier.padding(bottom = 16.dp),
+            modifier = Modifier.padding(bottom = 16.dp),
         )
     }
 }

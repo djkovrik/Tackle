@@ -23,7 +23,6 @@ internal fun ScreenGenericSplash(
             text = stringResource(resource = Res.string.common_wait),
             color = MaterialTheme.colorScheme.onBackground,
             style = MaterialTheme.typography.bodyLarge,
-            modifier = modifier,
         )
     }
 }

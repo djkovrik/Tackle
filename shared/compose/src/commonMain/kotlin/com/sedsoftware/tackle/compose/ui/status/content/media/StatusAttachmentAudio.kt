@@ -20,7 +20,7 @@ internal fun StatusAttachmentAudio(
 ) {
     Box(
         contentAlignment = Alignment.Center,
-        modifier = Modifier
+        modifier = modifier
             .padding(top = 8.dp)
             .fillMaxWidth()
             .height(height = 132.dp)
@@ -31,7 +31,7 @@ internal fun StatusAttachmentAudio(
             )
     ) {
         MediaPlayer(
-            modifier = modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
             url = displayedAttachment.url,
             startTime = MaterialTheme.colorScheme.onSurface,
             endTime =  MaterialTheme.colorScheme.onSurface,

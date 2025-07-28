@@ -51,7 +51,7 @@ private fun CustomPollDurationDialogContent(
     onConfirmation: (PollDuration) -> Unit = {},
 ) {
     Card(
-        modifier = Modifier.padding(all = 16.dp),
+        modifier = modifier.padding(all = 16.dp),
         shape = MaterialTheme.shapes.small
     ) {
         Column(modifier = Modifier.width(width = 260.dp)) {
@@ -63,7 +63,7 @@ private fun CustomPollDurationDialogContent(
             )
 
             LazyColumn(
-                modifier = modifier
+                modifier = Modifier
                     .wrapContentWidth()
                     .padding(horizontal = 16.dp, vertical = 8.dp)
             ) {
