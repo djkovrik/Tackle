@@ -27,6 +27,7 @@
     <string name="common_error_attachments_limit">Max possible attachments already</string>
     <string name="common_error_schedule_date">Date must be at least 10 minutes ahead</string>
     <string name="common_error_attachment_type">Attached files must have the same type</string>
+    <string name="common_error_empty_download">Unable to download the file</string>
     <string name="common_error_unknown">Something went wrong</string>
     <string name="common_time_now">now</string>
     <string name="common_time_seconds">sec</string>

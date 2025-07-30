@@ -48,4 +48,14 @@ interface UnauthorizedApi {
      * @see <a href="https://docs.joinmastodon.org/methods/custom_emojis/#get">View all custom emoji</a>
      */
     suspend fun getServerEmojis(): List<CustomEmoji>
+
+    /**
+     * Direct file download by given url
+     *
+     * @param url Target file url
+     * @param onProgress Download progress callback
+     *
+     * @return Downloaded file byte array
+     */
+    suspend fun downloadFile(url: String, onProgress: (Float) -> Unit): ByteArray
 }
