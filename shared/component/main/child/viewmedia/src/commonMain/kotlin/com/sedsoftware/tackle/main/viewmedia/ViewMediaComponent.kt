@@ -7,6 +7,7 @@ interface ViewMediaComponent {
     val model: Value<Model>
 
     fun onBack()
+    fun onDownload()
 
     data class Model(
         val attachments: List<MediaAttachment>,

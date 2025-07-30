@@ -20,4 +20,8 @@ class ViewMediaComponentDefault(
     override fun onBack() {
         onBackClicked()
     }
+
+    override fun onDownload() {
+        TODO("Not yet implemented")
+    }
 }

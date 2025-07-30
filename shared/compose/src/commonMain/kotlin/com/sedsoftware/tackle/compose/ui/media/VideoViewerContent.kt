@@ -1,11 +1,14 @@
 package com.sedsoftware.tackle.compose.ui.media
 
 import VideoPlayer
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,6 +20,7 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -33,11 +37,14 @@ import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.sedsoftware.tackle.compose.ui.SharedTransitionScopes.LocalNavAnimatedVisibilityScope
 import com.sedsoftware.tackle.compose.ui.SharedTransitionScopes.LocalSharedTransitionScope
-import com.sedsoftware.tackle.compose.widget.TackleIconButton
+import com.sedsoftware.tackle.compose.widget.TackleAppBarButton
 import com.sedsoftware.tackle.domain.model.MediaAttachment
 import com.sedsoftware.tackle.main.viewmedia.ViewMediaComponent
 import tackle.shared.compose.generated.resources.Res
+import tackle.shared.compose.generated.resources.attachment_download_alt
 import tackle.shared.compose.generated.resources.editor_close
+import tackle.shared.compose.generated.resources.status_content_description_back
+import tackle.shared.compose.generated.resources.status_content_description_download
 
 @Composable
 @OptIn(ExperimentalSharedTransitionApi::class)
@@ -59,10 +66,9 @@ internal fun VideoViewerContent(
             TopAppBar(
                 title = {},
                 navigationIcon = {
-                    TackleIconButton(
+                    TackleAppBarButton(
                         iconRes = Res.drawable.editor_close,
-                        containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                        contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        contentDescriptionRes = Res.string.status_content_description_back,
                         onClick = component::onBack,
                         modifier = Modifier.padding(start = 8.dp)
                     )
@@ -73,7 +79,13 @@ internal fun VideoViewerContent(
                     titleContentColor = MaterialTheme.colorScheme.surfaceVariant,
                     actionIconContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
                 ),
-                actions = {},
+                actions = {
+                    TackleAppBarButton(
+                        iconRes = Res.drawable.attachment_download_alt,
+                        contentDescriptionRes = Res.string.status_content_description_download,
+                        onClick = component::onDownload,
+                    )
+                },
             )
         },
         containerColor = MaterialTheme.colorScheme.surface,
@@ -86,6 +98,22 @@ internal fun VideoViewerContent(
                 .clip(shape = MaterialTheme.shapes.extraSmall)
                 .fillMaxSize()
         ) {
+            AnimatedVisibility(
+                visible = true,
+                enter = fadeIn() + slideInVertically { it },
+                exit = fadeOut() + slideOutVertically { it },
+                modifier = Modifier.align(Alignment.TopCenter)
+            ) {
+                LinearProgressIndicator(
+                    progress = { 0.75f },  // TODO
+                    color = MaterialTheme.colorScheme.primary,
+                    trackColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.25f),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
+                )
+            }
+
             with(sharedTransitionScope) {
                 VideoPlayer(
                     url = displayedAttachment.url,

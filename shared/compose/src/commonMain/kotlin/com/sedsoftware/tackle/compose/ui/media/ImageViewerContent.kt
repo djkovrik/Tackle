@@ -1,11 +1,14 @@
 package com.sedsoftware.tackle.compose.ui.media
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.Box
@@ -23,6 +26,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -49,13 +53,16 @@ import com.github.panpf.zoomimage.SketchZoomAsyncImage
 import com.sedsoftware.tackle.compose.model.TackleImageParams
 import com.sedsoftware.tackle.compose.ui.SharedTransitionScopes.LocalNavAnimatedVisibilityScope
 import com.sedsoftware.tackle.compose.ui.SharedTransitionScopes.LocalSharedTransitionScope
-import com.sedsoftware.tackle.compose.widget.TackleIconButton
+import com.sedsoftware.tackle.compose.widget.TackleAppBarButton
 import com.sedsoftware.tackle.compose.widget.TackleImageProgress
 import com.sedsoftware.tackle.domain.model.MediaAttachment
 import com.sedsoftware.tackle.main.viewmedia.ViewMediaComponent
 import com.sedsoftware.tackle.utils.extension.orZero
 import tackle.shared.compose.generated.resources.Res
+import tackle.shared.compose.generated.resources.attachment_download_alt
 import tackle.shared.compose.generated.resources.editor_close
+import tackle.shared.compose.generated.resources.status_content_description_back
+import tackle.shared.compose.generated.resources.status_content_description_download
 
 @Composable
 @OptIn(ExperimentalSharedTransitionApi::class)
@@ -89,10 +96,9 @@ internal fun ImageViewerContent(
             TopAppBar(
                 title = {},
                 navigationIcon = {
-                    TackleIconButton(
+                    TackleAppBarButton(
                         iconRes = Res.drawable.editor_close,
-                        containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                        contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        contentDescriptionRes = Res.string.status_content_description_back,
                         onClick = component::onBack,
                         modifier = Modifier.padding(start = 8.dp)
                     )
@@ -103,7 +109,13 @@ internal fun ImageViewerContent(
                     titleContentColor = MaterialTheme.colorScheme.surfaceVariant,
                     actionIconContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
                 ),
-                actions = {},
+                actions = {
+                    TackleAppBarButton(
+                        iconRes = Res.drawable.attachment_download_alt,
+                        contentDescriptionRes = Res.string.status_content_description_download,
+                        onClick = component::onDownload,
+                    )
+                },
             )
         },
         containerColor = MaterialTheme.colorScheme.surface,
@@ -116,6 +128,22 @@ internal fun ImageViewerContent(
                     .padding(paddingValues = paddingValues)
                     .fillMaxSize()
             ) {
+                AnimatedVisibility(
+                    visible = true,
+                    enter = fadeIn() + slideInVertically { it },
+                    exit = fadeOut() + slideOutVertically { it },
+                    modifier = Modifier.align(Alignment.TopCenter)
+                ) {
+                    LinearProgressIndicator(
+                        progress = { 0.75f }, // TODO
+                        color = MaterialTheme.colorScheme.primary,
+                        trackColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.25f),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
+                    )
+                }
+
                 LazyRow(
                     state = lazyListState,
                     flingBehavior = rememberSnapFlingBehavior(lazyListState = lazyListState),

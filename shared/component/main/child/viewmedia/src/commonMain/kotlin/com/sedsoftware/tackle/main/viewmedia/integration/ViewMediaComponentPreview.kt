@@ -12,4 +12,5 @@ class ViewMediaComponentPreview(
 ) : ViewMediaComponent {
     override val model: Value<Model> = MutableValue(Model(attachments, selectedIndex))
     override fun onBack() = Unit
+    override fun onDownload() = Unit
 }
