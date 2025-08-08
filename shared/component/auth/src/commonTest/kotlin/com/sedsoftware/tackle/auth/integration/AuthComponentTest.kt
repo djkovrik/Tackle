@@ -174,7 +174,7 @@ class AuthComponentTest : ComponentTest<AuthComponent>() {
             settings = settings,
             tools = tools,
             dispatchers = testDispatchers,
-            output = { componentOutput.add(it) }
+            authOutput = { componentOutput.add(it) }
         )
 
     private fun asAuthorized() {

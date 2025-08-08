@@ -32,6 +32,11 @@ import io.ktor.http.contentType
 import io.ktor.http.isSuccess
 import io.ktor.utils.io.ByteReadChannel
 import io.ktor.utils.io.readAvailable
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.channels.trySendBlocking
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
 import kotlin.time.Duration.Companion.minutes
 
 internal class TackleUnauthorizedApi(
@@ -98,50 +103,58 @@ internal class TackleUnauthorizedApi(
             responseMapper = CustomEmojiMapper::map,
         )
 
-    override suspend fun downloadFile(url: String, onProgress: (Float) -> Unit): ByteArray {
-        return httpClient.prepareGet(
-            urlString = url,
-            block = {
-                val timeout = 10.minutes.inWholeMilliseconds
-                timeout {
-                    requestTimeoutMillis = timeout
-                    connectTimeoutMillis = timeout
-                    socketTimeoutMillis = timeout
+    override suspend fun downloadFile(url: String, onDone: suspend (ByteArray) -> Unit): Flow<Float> {
+        val fileName = url.substringAfterLast("/")
+        return callbackFlow {
+            httpClient.prepareGet(
+                urlString = url,
+                block = {
+                    val timeout = 10.minutes.inWholeMilliseconds
+                    timeout {
+                        requestTimeoutMillis = timeout
+                        connectTimeoutMillis = timeout
+                        socketTimeoutMillis = timeout
+                    }
+
+                    onDownload { bytesReceived: Long, contentLength: Long? ->
+                        val received = bytesReceived.toFloat()
+                        val length = contentLength?.toFloat()
+                        val progress = length?.let { received / it } ?: 0f
+                        Napier.d(tag = "network_debug", message = "${fileName}: received $received bytes from total $length")
+                        trySendBlocking(progress)
+                    }
+                },
+            ).execute { response: HttpResponse ->
+                if (!response.status.isSuccess()) {
+                    cancel()
+                    throw TackleException.RemoteServerException(
+                        message = response.remoteErrorDetails()?.error,
+                        description = response.remoteErrorDetails()?.errorDescription,
+                        code = response.status.value,
+                    )
                 }
 
-                onDownload { bytesReceived: Long, contentLength: Long? ->
-                    val received = bytesReceived.toFloat()
-                    val length = contentLength?.toFloat()
-                    val progress = length?.let { received / it } ?: 0f
-                    Napier.d(tag = "network_debug", message = "Received $received bytes from total $length")
-                    onProgress(progress)
+                val byteReadChannel: ByteReadChannel = response.bodyAsChannel()
+                val contentLength = response.contentLength()?.toInt().orZero()
+                if (contentLength == 0) {
+                    cancel()
+                    throw TackleException.DownloadableFileEmpty
                 }
-            },
-        ).execute { response: HttpResponse ->
-            if (!response.status.isSuccess()) {
-                throw TackleException.RemoteServerException(
-                    message = response.remoteErrorDetails()?.error,
-                    description = response.remoteErrorDetails()?.errorDescription,
-                    code = response.status.value,
-                )
+
+                val result = ByteArray(contentLength)
+                var offset = 0
+
+                do {
+                    val currentRead = byteReadChannel.readAvailable(result, offset, result.size)
+                    Napier.d(tag = "network_debug", message = "${fileName}: read $currentRead bytes from total $contentLength")
+                    offset += currentRead
+                } while (currentRead > 0)
+
+                onDone.invoke(result)
+                channel.close()
             }
 
-            val byteReadChannel: ByteReadChannel = response.bodyAsChannel()
-            val contentLength = response.contentLength()?.toInt().orZero()
-            if (contentLength == 0) {
-                throw TackleException.DownloadableFileEmpty
-            }
-
-            val result = ByteArray(contentLength)
-            var offset = 0
-
-            do {
-                val currentRead = byteReadChannel.readAvailable(result, offset, result.size)
-                Napier.d(tag = "network_debug", message = "Read $currentRead bytes from total $contentLength")
-                offset += currentRead
-            } while (currentRead > 0)
-
-            return@execute result
+            awaitClose {}
         }
     }
 }

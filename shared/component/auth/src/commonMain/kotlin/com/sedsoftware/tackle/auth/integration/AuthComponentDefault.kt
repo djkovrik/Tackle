@@ -29,7 +29,7 @@ class AuthComponentDefault(
     private val settings: AuthComponentGateways.Settings,
     private val tools: AuthComponentGateways.Tools,
     private val dispatchers: TackleDispatchers,
-    private val output: (ComponentOutput) -> Unit,
+    private val authOutput: (ComponentOutput) -> Unit,
 ) : AuthComponent, ComponentContext by componentContext {
 
     private val store: AuthStore =
@@ -48,8 +48,8 @@ class AuthComponentDefault(
         scope.launch {
             store.labels.collect { label ->
                 when (label) {
-                    is Label.NavigateToMainScreen -> output(ComponentOutput.Auth.AuthFlowCompleted)
-                    is Label.ErrorCaught -> output(ComponentOutput.Common.ErrorCaught(label.exception))
+                    is Label.NavigateToMainScreen -> authOutput(ComponentOutput.Auth.AuthFlowCompleted)
+                    is Label.ErrorCaught -> authOutput(ComponentOutput.Common.ErrorCaught(label.exception))
                 }
             }
         }

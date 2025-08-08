@@ -47,6 +47,7 @@ import com.sedsoftware.tackle.root.gateway.editor.EditorTabComponentApi
 import com.sedsoftware.tackle.root.gateway.editor.EditorTabComponentDatabase
 import com.sedsoftware.tackle.root.gateway.editor.EditorTabComponentSettings
 import com.sedsoftware.tackle.root.gateway.editor.EditorTabComponentTools
+import com.sedsoftware.tackle.root.gateway.media.ViewMediaComponentApi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.Flow
@@ -58,7 +59,7 @@ class RootComponentDefault internal constructor(
     private val authComponent: (ComponentContext, (ComponentOutput) -> Unit) -> AuthComponent,
     private val mainComponent: (ComponentContext, (ComponentOutput) -> Unit) -> MainComponent,
     private val editorComponent: (ComponentContext, (ComponentOutput) -> Unit) -> EditorComponent,
-    private val viewMediaComponent: (ComponentContext, List<MediaAttachment>, Int, () -> Unit) -> ViewMediaComponent,
+    private val mediaComponent: (ComponentContext, List<MediaAttachment>, Int, () -> Unit, (ComponentOutput) -> Unit) -> ViewMediaComponent,
 ) : RootComponent, ComponentContext by componentContext {
 
     constructor(
@@ -83,7 +84,7 @@ class RootComponentDefault internal constructor(
                 settings = AuthComponentSettings(settings),
                 tools = AuthComponentTools(platformTools),
                 dispatchers = dispatchers,
-                output = output,
+                authOutput = output,
             )
         },
         mainComponent = { childContext, output ->
@@ -94,7 +95,7 @@ class RootComponentDefault internal constructor(
                 settings = settings,
                 platformTools = platformTools,
                 dispatchers = dispatchers,
-                mainComponentOutput = output,
+                mainOutput = output,
             )
         },
         editorComponent = { childContext, componentOutput ->
@@ -109,12 +110,16 @@ class RootComponentDefault internal constructor(
                 editorOutput = componentOutput,
             )
         },
-        viewMediaComponent = { childContext, attachments, index, onBackClicked ->
+        mediaComponent = { childContext, attachments, index, onBackClicked, componentOutput ->
             ViewMediaComponentDefault(
                 componentContext = childContext,
+                storeFactory = storeFactory,
+                api = ViewMediaComponentApi(unauthorizedApi),
                 attachments = attachments,
                 selectedIndex = index,
-                onBackClicked = onBackClicked
+                onBackClicked = onBackClicked,
+                dispatchers = dispatchers,
+                viewMediaOutput = componentOutput,
             )
         },
     )
@@ -127,15 +132,13 @@ class RootComponentDefault internal constructor(
         }
     }
 
-    private val childStackNavigation: StackNavigation<Config> =
-        StackNavigation()
+    private val childNavigation: StackNavigation<Config> = StackNavigation()
 
-    private val alternateTextSlotNavigation: SlotNavigation<AlternateTextConfig> =
-        SlotNavigation<AlternateTextConfig>()
+    private val alternateTextSlotNavigation: SlotNavigation<AlternateTextConfig> = SlotNavigation<AlternateTextConfig>()
 
     private val stack: Value<ChildStack<Config, Child>> =
         childStack(
-            source = childStackNavigation,
+            source = childNavigation,
             serializer = Config.serializer(),
             initialConfiguration = Config.Auth,
             handleBackButton = true,
@@ -158,42 +161,42 @@ class RootComponentDefault internal constructor(
         }
     private val exceptionHandler: TackleExceptionHandler =
         TackleExceptionHandler(
-            logoutAction = { childStackNavigation.replaceCurrent(Config.Auth) }
+            logoutAction = { childNavigation.replaceCurrent(Config.Auth) }
         )
 
     override val errorMessages: Flow<TackleException>
         get() = exceptionHandler.messaging
 
     override fun onBack() {
-        childStackNavigation.pop()
+        childNavigation.pop()
     }
 
     private fun createChild(config: Config, componentContext: ComponentContext): Child =
         when (config) {
             is Config.Auth ->
-                Child.Auth(authComponent(componentContext, ::onComponentOutput))
+                Child.Auth(authComponent(componentContext, ::onChildOutput))
 
             is Config.Main ->
-                Child.Main(mainComponent(componentContext, ::onComponentOutput))
+                Child.Main(mainComponent(componentContext, ::onChildOutput))
 
             is Config.Editor ->
-                Child.Editor(editorComponent(componentContext, ::onComponentOutput))
+                Child.Editor(editorComponent(componentContext, ::onChildOutput))
 
             is Config.ViewImage ->
-                Child.ViewImage(viewMediaComponent(componentContext, config.attachments, config.index, childStackNavigation::pop))
+                Child.ViewImage(mediaComponent(componentContext, config.attachments, config.index, childNavigation::pop, ::onChildOutput))
 
             is Config.ViewVideo ->
-                Child.ViewVideo(viewMediaComponent(componentContext, listOf(config.attachment), 0, childStackNavigation::pop))
+                Child.ViewVideo(mediaComponent(componentContext, listOf(config.attachment), 0, childNavigation::pop, ::onChildOutput))
         }
 
-    private fun onComponentOutput(output: ComponentOutput) {
+    private fun onChildOutput(output: ComponentOutput) {
         when (output) {
             is ComponentOutput.Auth.AuthFlowCompleted -> {
-                childStackNavigation.replaceCurrent(Config.Main)
+                childNavigation.replaceCurrent(Config.Main)
             }
 
             is ComponentOutput.HomeTab.EditorRequested -> {
-                childStackNavigation.pushNew(Config.Editor)
+                childNavigation.pushNew(Config.Editor)
             }
 
             is ComponentOutput.HomeTab.ScheduledStatusesRequested -> {
@@ -201,16 +204,16 @@ class RootComponentDefault internal constructor(
             }
 
             is ComponentOutput.StatusEditor.BackButtonClicked -> {
-                childStackNavigation.pop()
+                childNavigation.pop()
             }
 
             is ComponentOutput.StatusEditor.StatusPublished -> {
-                childStackNavigation.pop()
+                childNavigation.pop()
                 (stack.active.instance as? Child.Main)?.component?.showCreatedStatus(output.status)
             }
 
             is ComponentOutput.StatusEditor.ScheduledStatusPublished -> {
-                childStackNavigation.pop()
+                childNavigation.pop()
             }
 
             is ComponentOutput.Common.ErrorCaught -> {
@@ -222,11 +225,11 @@ class RootComponentDefault internal constructor(
             }
 
             is ComponentOutput.SingleStatus.ViewImage -> {
-                childStackNavigation.pushNew(Config.ViewImage(output.attachments, output.selectedIndex))
+                childNavigation.pushNew(Config.ViewImage(output.attachments, output.selectedIndex))
             }
 
             is ComponentOutput.SingleStatus.ViewVideo -> {
-                childStackNavigation.pushNew(Config.ViewVideo(output.attachment))
+                childNavigation.pushNew(Config.ViewVideo(output.attachment))
             }
 
             else -> Unit

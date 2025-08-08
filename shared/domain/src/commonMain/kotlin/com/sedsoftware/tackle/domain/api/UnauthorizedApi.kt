@@ -4,6 +4,7 @@ import com.sedsoftware.tackle.domain.model.Application
 import com.sedsoftware.tackle.domain.model.CustomEmoji
 import com.sedsoftware.tackle.domain.model.Instance
 import com.sedsoftware.tackle.domain.model.Token
+import kotlinx.coroutines.flow.Flow
 
 interface UnauthorizedApi {
 
@@ -53,9 +54,9 @@ interface UnauthorizedApi {
      * Direct file download by given url
      *
      * @param url Target file url
-     * @param onProgress Download progress callback
+     * @param onDone Download completion callback
      *
-     * @return Downloaded file byte array
+     * @return Download progress flow
      */
-    suspend fun downloadFile(url: String, onProgress: (Float) -> Unit): ByteArray
+    suspend fun downloadFile(url: String, onDone: suspend (ByteArray) -> Unit): Flow<Float>
 }

@@ -49,10 +49,10 @@ class MainComponentDefault internal constructor(
         settings: TackleSettings,
         platformTools: TacklePlatformTools,
         dispatchers: TackleDispatchers,
-        mainComponentOutput: (ComponentOutput) -> Unit,
+        mainOutput: (ComponentOutput) -> Unit,
     ) : this(
         componentContext = componentContext,
-        mainComponentOutput = mainComponentOutput,
+        mainComponentOutput = mainOutput,
         homeTabComponent = { childContext, componentOutput ->
             HomeTabComponentDefault(
                 componentContext = childContext,

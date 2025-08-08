@@ -43,7 +43,7 @@ internal fun TackleFileProgress(
     val downloadVisible: Boolean = progress == 0f
     val cancelVisible: Boolean = progress > 0f && progress < 1f
     val doneVisible: Boolean = progress >= 1f
-    val progressValue: Float = progress.roundToDecimals(1)
+    val progressValue: Float = progress.roundToDecimals(2)
 
     val progressAlpha: Float by animateFloatAsState(
         targetValue = if (progressVisible) 1f else 0f,
