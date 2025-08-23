@@ -20,8 +20,8 @@ import androidx.compose.ui.unit.dp
 import com.brys.compose.blurhash.BlurHashImage
 import com.sedsoftware.tackle.compose.extension.clickableOnce
 import com.sedsoftware.tackle.compose.model.TackleImageParams
-import com.sedsoftware.tackle.compose.ui.SharedTransitionScopes.LocalNavAnimatedVisibilityScope
-import com.sedsoftware.tackle.compose.ui.SharedTransitionScopes.LocalSharedTransitionScope
+import com.sedsoftware.tackle.compose.ui.CompositionLocalProviders.LocalNavAnimatedVisibilityScope
+import com.sedsoftware.tackle.compose.ui.CompositionLocalProviders.LocalSharedTransitionScope
 import com.sedsoftware.tackle.compose.ui.status.StatusContentLabel
 import com.sedsoftware.tackle.compose.widget.TackleImage
 import com.sedsoftware.tackle.domain.model.MediaAttachment

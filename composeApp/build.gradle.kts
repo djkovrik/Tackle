@@ -52,6 +52,7 @@ kotlin {
             implementation(libs.ark.mvikotlin.core)
             implementation(libs.ark.essenty)
 
+            implementation(libs.lib.fileKit.compose)
             implementation(libs.oidc.appsupport)
             implementation(libs.ktor.core)
         }

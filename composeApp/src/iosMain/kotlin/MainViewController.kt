@@ -1,3 +1,4 @@
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.window.ComposeUIViewController
 import com.arkivanov.decompose.DefaultComponentContext
 import com.arkivanov.essenty.lifecycle.LifecycleRegistry
@@ -11,14 +12,17 @@ import com.github.panpf.sketch.http.KtorStack
 import com.sedsoftware.tackle.DefaultDispatchers
 import com.sedsoftware.tackle.PlatformToolsFactory
 import com.sedsoftware.tackle.compose.theme.TackleTheme
+import com.sedsoftware.tackle.compose.ui.CompositionLocalProviders.LocalFileKitDialogSettings
 import com.sedsoftware.tackle.compose.ui.RootContent
 import com.sedsoftware.tackle.root.RootComponent
 import com.sedsoftware.tackle.root.RootComponentFactory
+import io.github.vinceglb.filekit.dialogs.FileKitDialogSettings
 import io.ktor.client.HttpClient
 import org.publicvalue.multiplatform.oidc.appsupport.IosCodeAuthFlowFactory
 import platform.UIKit.UIViewController
 
 private val lifecycle: LifecycleRegistry = LifecycleRegistry()
+private val dialogSettings: FileKitDialogSettings = createDialogSettings()
 private val root: RootComponent = RootComponentFactory(
     componentContext = DefaultComponentContext(lifecycle),
     platformTools = PlatformToolsFactory(),
@@ -47,7 +51,13 @@ fun MainViewController(): UIViewController {
 
     return ComposeUIViewController {
         TackleTheme {
-            RootContent(component = root)
+            CompositionLocalProvider(LocalFileKitDialogSettings provides dialogSettings) {
+                RootContent(component = root)
+            }
         }
     }
+}
+
+private fun createDialogSettings(): FileKitDialogSettings {
+    return FileKitDialogSettings.createDefault()
 }

@@ -1,14 +1,11 @@
 package com.sedsoftware.tackle.compose.ui.media
 
 import VideoPlayer
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,26 +17,33 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
-import com.sedsoftware.tackle.compose.ui.SharedTransitionScopes.LocalNavAnimatedVisibilityScope
-import com.sedsoftware.tackle.compose.ui.SharedTransitionScopes.LocalSharedTransitionScope
+import com.sedsoftware.tackle.compose.ui.CompositionLocalProviders.LocalFileKitDialogSettings
+import com.sedsoftware.tackle.compose.ui.CompositionLocalProviders.LocalNavAnimatedVisibilityScope
+import com.sedsoftware.tackle.compose.ui.CompositionLocalProviders.LocalSharedTransitionScope
 import com.sedsoftware.tackle.compose.widget.TackleAppBarButton
 import com.sedsoftware.tackle.domain.model.MediaAttachment
 import com.sedsoftware.tackle.main.viewmedia.ViewMediaComponent
+import io.github.vinceglb.filekit.FileKit
+import io.github.vinceglb.filekit.PlatformFile
+import io.github.vinceglb.filekit.dialogs.FileKitDialogSettings
+import io.github.vinceglb.filekit.dialogs.openFileSaver
+import kotlinx.coroutines.delay
 import tackle.shared.compose.generated.resources.Res
 import tackle.shared.compose.generated.resources.attachment_download_alt
 import tackle.shared.compose.generated.resources.editor_close
@@ -60,6 +64,30 @@ internal fun VideoViewerContent(
 
     val animatedVisibilityScope: AnimatedVisibilityScope =
         LocalNavAnimatedVisibilityScope.current ?: error("No AnimatedVisibility found")
+
+    val dialogSettings: FileKitDialogSettings =
+        LocalFileKitDialogSettings.current ?: error("No dialog settings found")
+
+    val fullName = remember { displayedAttachment.url.substringAfterLast("/") }
+    val (name, extension) = fullName.split(".")
+    var dialogVisible: Boolean by remember { mutableStateOf(false) }
+
+    LaunchedEffect(dialogVisible) {
+        if (dialogVisible) {
+            val file: PlatformFile? = FileKit.openFileSaver(
+                suggestedName = name,
+                extension = extension,
+                dialogSettings = dialogSettings,
+            )
+
+            if (file != null) {
+                component.onDownload(file)
+            }
+
+            delay(DIALOG_DEBOUNCE_MS)
+            dialogVisible = false
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -83,7 +111,7 @@ internal fun VideoViewerContent(
                     TackleAppBarButton(
                         iconRes = Res.drawable.attachment_download_alt,
                         contentDescriptionRes = Res.string.status_content_description_download,
-                        onClick = component::onDownload,
+                        onClick = { dialogVisible = true },
                     )
                 },
             )
@@ -98,22 +126,6 @@ internal fun VideoViewerContent(
                 .clip(shape = MaterialTheme.shapes.extraSmall)
                 .fillMaxSize()
         ) {
-            AnimatedVisibility(
-                visible = true,
-                enter = fadeIn() + slideInVertically { it },
-                exit = fadeOut() + slideOutVertically { it },
-                modifier = Modifier.align(Alignment.TopCenter)
-            ) {
-                LinearProgressIndicator(
-                    progress = { 0.75f },  // TODO
-                    color = MaterialTheme.colorScheme.primary,
-                    trackColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.25f),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
-                )
-            }
-
             with(sharedTransitionScope) {
                 VideoPlayer(
                     url = displayedAttachment.url,
@@ -153,3 +165,5 @@ internal fun VideoViewerContent(
         }
     }
 }
+
+private const val DIALOG_DEBOUNCE_MS = 250L

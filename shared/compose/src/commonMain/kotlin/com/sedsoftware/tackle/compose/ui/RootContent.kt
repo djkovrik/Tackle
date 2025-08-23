@@ -33,8 +33,8 @@ import com.arkivanov.decompose.extensions.compose.stack.animation.predictiveback
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.arkivanov.decompose.router.slot.ChildSlot
 import com.sedsoftware.tackle.compose.core.exceptionToString
-import com.sedsoftware.tackle.compose.ui.SharedTransitionScopes.LocalNavAnimatedVisibilityScope
-import com.sedsoftware.tackle.compose.ui.SharedTransitionScopes.LocalSharedTransitionScope
+import com.sedsoftware.tackle.compose.ui.CompositionLocalProviders.LocalNavAnimatedVisibilityScope
+import com.sedsoftware.tackle.compose.ui.CompositionLocalProviders.LocalSharedTransitionScope
 import com.sedsoftware.tackle.compose.ui.alternatetext.AlternateTextContent
 import com.sedsoftware.tackle.compose.ui.auth.AuthContent
 import com.sedsoftware.tackle.compose.ui.editor.EditorContent
