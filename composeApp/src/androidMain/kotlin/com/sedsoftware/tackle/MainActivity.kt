@@ -10,13 +10,16 @@ import com.sedsoftware.tackle.compose.ui.CompositionLocalProviders.LocalFileKitD
 import com.sedsoftware.tackle.compose.ui.RootContent
 import com.sedsoftware.tackle.root.RootComponent
 import com.sedsoftware.tackle.root.RootComponentFactory
+import io.github.vinceglb.filekit.FileKit
 import io.github.vinceglb.filekit.dialogs.FileKitDialogSettings
+import io.github.vinceglb.filekit.dialogs.init
 import org.publicvalue.multiplatform.oidc.appsupport.AndroidCodeAuthFlowFactory
 
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        FileKit.init(this)
 
         val authFlowFactory = AndroidCodeAuthFlowFactory(useWebView = false)
         val dialogSettings = createDialogSettings()

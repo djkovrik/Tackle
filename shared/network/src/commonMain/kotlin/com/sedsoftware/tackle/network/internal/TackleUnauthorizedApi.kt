@@ -17,6 +17,7 @@ import com.sedsoftware.tackle.network.response.CustomEmojiResponse
 import com.sedsoftware.tackle.network.response.InstanceResponse
 import com.sedsoftware.tackle.network.response.TokenResponse
 import com.sedsoftware.tackle.utils.extension.orZero
+import com.sedsoftware.tackle.utils.extension.roundToDecimals
 import io.github.aakira.napier.DebugAntilog
 import io.github.aakira.napier.Napier
 import io.ktor.client.plugins.onDownload
@@ -117,11 +118,13 @@ internal class TackleUnauthorizedApi(
                     }
 
                     onDownload { bytesReceived: Long, contentLength: Long? ->
-                        val received = bytesReceived.toFloat()
-                        val length = contentLength?.toFloat()
-                        val progress = length?.let { received / it } ?: 0f
-                        Napier.d(tag = "network_debug", message = "${fileName}: received $received bytes from total $length")
-                        trySendBlocking(progress)
+                        if (contentLength != null) {
+                            val received = bytesReceived.toFloat()
+                            val length = contentLength.toFloat()
+                            val progress = (received / length).roundToDecimals(2)
+                            Napier.d(tag = "network_debug", message = "${fileName}: got $received bytes from $length, progress $progress")
+                            trySendBlocking(progress)
+                        }
                     }
                 },
             ).execute { response: HttpResponse ->
@@ -145,7 +148,7 @@ internal class TackleUnauthorizedApi(
                 var offset = 0
 
                 do {
-                    val currentRead = byteReadChannel.readAvailable(result, offset, result.size)
+                    val currentRead = byteReadChannel.readAvailable(result, offset)
                     Napier.d(tag = "network_debug", message = "${fileName}: read $currentRead bytes from total $contentLength")
                     offset += currentRead
                 } while (currentRead > 0)
