@@ -1,5 +1,6 @@
 package com.sedsoftware.tackle.compose.ui.media
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
@@ -23,6 +24,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -39,6 +41,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.brys.compose.blurhash.BlurHashImage
@@ -60,11 +63,13 @@ import io.github.vinceglb.filekit.PlatformFile
 import io.github.vinceglb.filekit.dialogs.FileKitDialogSettings
 import io.github.vinceglb.filekit.dialogs.openFileSaver
 import kotlinx.coroutines.delay
+import org.jetbrains.compose.resources.stringResource
 import tackle.shared.compose.generated.resources.Res
 import tackle.shared.compose.generated.resources.attachment_download_alt
 import tackle.shared.compose.generated.resources.editor_close
 import tackle.shared.compose.generated.resources.status_content_description_back
 import tackle.shared.compose.generated.resources.status_content_description_download
+import tackle.shared.compose.generated.resources.status_content_downloaded
 
 @Composable
 @OptIn(ExperimentalSharedTransitionApi::class)
@@ -73,6 +78,9 @@ internal fun ImageViewerContent(
     modifier: Modifier = Modifier,
 ) {
     val model: ViewMediaComponent.Model by component.model.subscribeAsState()
+    val downloadInProgress = model.downloadInProgress[model.selectedIndex]
+    val downloadCompleted = model.downloadCompleted[model.selectedIndex]
+    val currentProgress = model.downloadProgress[model.selectedIndex]
     var displayedAttachment: MediaAttachment by remember { mutableStateOf(model.attachments[model.selectedIndex]) }
     val lazyListState: LazyListState = rememberLazyListState()
     val visibleItemIndex: Int by lazyListState.visibleItemIndex()
@@ -139,6 +147,7 @@ internal fun ImageViewerContent(
                     TackleAppBarButton(
                         iconRes = Res.drawable.attachment_download_alt,
                         contentDescriptionRes = Res.string.status_content_description_download,
+                        enabled = !downloadInProgress && !downloadCompleted,
                         onClick = { dialogVisible = true },
                     )
                 },
@@ -154,6 +163,37 @@ internal fun ImageViewerContent(
                     .padding(paddingValues = paddingValues)
                     .fillMaxSize()
             ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .align(alignment = Alignment.TopCenter)
+                        .animateContentSize()
+                        .background(color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
+                ) {
+                    AnimatedVisibility(visible = downloadInProgress || downloadCompleted) {
+                        LinearProgressIndicator(
+                            progress = { currentProgress },
+                            color = MaterialTheme.colorScheme.primary,
+                            trackColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.25f),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 16.dp),
+                        )
+                    }
+
+                    AnimatedVisibility(visible = downloadCompleted) {
+                        Text(
+                            text = stringResource(resource = Res.string.status_content_downloaded),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            style = MaterialTheme.typography.bodyMedium,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(all = 16.dp)
+                        )
+                    }
+                }
+
                 LazyRow(
                     state = lazyListState,
                     flingBehavior = rememberSnapFlingBehavior(lazyListState = lazyListState),

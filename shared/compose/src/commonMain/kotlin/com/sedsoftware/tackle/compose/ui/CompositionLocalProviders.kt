@@ -7,6 +7,7 @@ import androidx.compose.runtime.compositionLocalOf
 import io.github.vinceglb.filekit.dialogs.FileKitDialogSettings
 
 @OptIn(ExperimentalSharedTransitionApi::class)
+@Suppress("CompositionLocalAllowlist")
 object CompositionLocalProviders {
     val LocalNavAnimatedVisibilityScope = compositionLocalOf<AnimatedVisibilityScope?> { null }
     val LocalSharedTransitionScope = compositionLocalOf<SharedTransitionScope?> { null }

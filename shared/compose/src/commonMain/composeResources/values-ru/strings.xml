@@ -72,7 +72,7 @@
     <string name="editor_content_description_send">Отправить</string>
     <string name="editor_content_description_warning">Чувствительный контент</string>
     <string name="editor_content_description_schedule">Отложенный пост</string>
-    <string name="editor_no_category">No category</string>
+    <string name="editor_no_category">Без категории</string>
 
     <!-- Editor poll -->
     <string name="editor_poll_option">Вариант</string>
@@ -128,6 +128,7 @@
     <string name="status_preview_card_author">Автор</string>
     <string name="status_content_description_back">Закрыть экран</string>
     <string name="status_content_description_download">Скачать вложение</string>
+    <string name="status_content_downloaded">Скачивание завершено</string>
     <!-- Status context menu -->
     <string name="status_menu_translate">Перевести</string>
     <string name="status_menu_show_original">Показать оригинал</string>

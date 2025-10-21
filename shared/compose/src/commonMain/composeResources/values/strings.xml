@@ -131,6 +131,7 @@
     <string name="status_preview_card_author">Author</string>
     <string name="status_content_description_back">Close screen</string>
     <string name="status_content_description_download">Download attachment</string>
+    <string name="status_content_downloaded">Download completed</string>
     <!-- Status context menu -->
     <string name="status_menu_translate">Translate</string>
     <string name="status_menu_show_original">Show original</string>
