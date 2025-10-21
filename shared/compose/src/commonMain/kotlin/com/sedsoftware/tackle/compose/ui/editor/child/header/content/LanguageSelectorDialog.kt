@@ -56,7 +56,7 @@ private fun LanguageSelectorDialogContent(
     onConfirmation: (AppLocale) -> Unit = {},
 ) {
     Card(
-        modifier = Modifier
+        modifier = modifier
             .wrapContentWidth()
             .height(height = 440.dp)
             .padding(all = 16.dp),
@@ -64,10 +64,10 @@ private fun LanguageSelectorDialogContent(
     ) {
         Column(
             horizontalAlignment = Alignment.End,
-            modifier = modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize()
         ) {
             LazyColumn(
-                modifier = modifier
+                modifier = Modifier
                     .fillMaxWidth()
                     .weight(weight = 1f, false)
                     .padding(horizontal = 16.dp, vertical = 8.dp)

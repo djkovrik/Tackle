@@ -70,6 +70,7 @@ dependencies {
         }
     }
 
+    detektPlugins("io.nlopez.compose.rules:detekt:0.4.26")
     detektPlugins("io.github.ajiekcx.detekt:decompose-detekt-rules:0.2.0")
 }
 

@@ -17,10 +17,12 @@ import com.sedsoftware.tackle.editor.attachments.extension.updateProgress
 import com.sedsoftware.tackle.editor.attachments.extension.updateServerCopy
 import com.sedsoftware.tackle.editor.attachments.extension.updateStatus
 import com.sedsoftware.tackle.editor.attachments.model.AttachedFile
+import com.sedsoftware.tackle.editor.attachments.model.AttachedFileType
 import com.sedsoftware.tackle.editor.attachments.model.UploadProgress
 import com.sedsoftware.tackle.editor.attachments.store.EditorAttachmentsStore.Intent
 import com.sedsoftware.tackle.editor.attachments.store.EditorAttachmentsStore.Label
 import com.sedsoftware.tackle.editor.attachments.store.EditorAttachmentsStore.State
+import com.sedsoftware.tackle.utils.extension.isImage
 import com.sedsoftware.tackle.utils.extension.unwrap
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.catch
@@ -96,25 +98,31 @@ internal class EditorAttachmentsStoreProvider(
 
                 onIntent<Intent.OnFilesSelected> {
                     val currentSelectionSize = state().selectedFiles.size
-                    val limit = state().config.statuses.maxMediaAttachments
+                    var limit = state().config.statuses.maxMediaAttachments
                     var newSelectionSize = it.files.size
                     val total = currentSelectionSize + newSelectionSize
+                    val imagesCount = it.files.count { file -> file.type == AttachedFileType.IMAGE }
+                    val nonImagesCount = it.files.count { file -> file.type != AttachedFileType.IMAGE }
 
                     when {
-                        // no attachments + selected multiple
-                        currentSelectionSize == 0 && it.files.size > 1 -> {
-                            val firstFileType = it.files.first().type
-                            if (it.files.count { file -> file.type != firstFileType } > 0) {
-                                publish(Label.ErrorCaught(TackleException.AttachmentDifferentType))
-                                return@onIntent
-                            }
+                        // No attachments + selected multiple different files
+                        currentSelectionSize == 0 && it.files.size > 1 && imagesCount > 0 && nonImagesCount > 0 -> {
+                            publish(Label.ErrorCaught(TackleException.AttachmentDifferentType))
+                            return@onIntent
                         }
 
-                        // something already attached
+                        // No attachments + selected multiple non-images
+                        currentSelectionSize == 0 && imagesCount == 0 && nonImagesCount > 1 -> {
+                            dispatch(Msg.AttachmentsAtLimit)
+                            limit = 1
+                        }
+
+                        // Something already attached and different file type selected
                         currentSelectionSize != 0 -> {
                             val firstFileType = state().selectedFiles.first().file.type
                             if (it.files.count { file -> file.type != firstFileType } > 0) {
                                 publish(Label.ErrorCaught(TackleException.AttachmentDifferentType))
+                                dispatch(Msg.AttachmentsAtLimit)
                                 return@onIntent
                             }
                         }
@@ -182,7 +190,7 @@ internal class EditorAttachmentsStoreProvider(
 
                     is Msg.AttachmentPrepared -> copy(
                         selectedFiles = selectedFiles + listOf(msg.attachment),
-                        attachmentsAtLimit = (selectedFiles.size + 1) >= config.statuses.maxMediaAttachments,
+                        attachmentsAtLimit = !msg.attachment.file.isImage || selectedFiles.size + 1 >= config.statuses.maxMediaAttachments,
                     )
 
                     is Msg.FileDeleted -> copy(
@@ -196,6 +204,10 @@ internal class EditorAttachmentsStoreProvider(
 
                     is Msg.AttachmentLoaded -> copy(
                         selectedFiles = selectedFiles.updateServerCopy(msg.id, msg.serverAttachment)
+                    )
+
+                    is Msg.AttachmentsAtLimit -> copy(
+                        attachmentsAtLimit = true,
                     )
                 }
             }
@@ -215,5 +227,6 @@ internal class EditorAttachmentsStoreProvider(
         data class FileDeleted(val id: String) : Msg
         data class AttachmentStatusChanged(val id: String, val status: AttachedFile.Status) : Msg
         data class AttachmentLoaded(val id: String, val serverAttachment: MediaAttachment) : Msg
+        data object AttachmentsAtLimit : Msg
     }
 }

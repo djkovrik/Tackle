@@ -60,7 +60,7 @@ internal fun HomeTabContent(
     ) {
         StatusListContent(
             component = component.homeTimeline,
-            modifier = modifier.padding(top = 16.dp),
+            modifier = Modifier.padding(top = 16.dp),
         )
     }
 }

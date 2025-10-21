@@ -21,8 +21,12 @@ import com.sedsoftware.tackle.editor.attachments.store.EditorAttachmentsStore
 import com.sedsoftware.tackle.editor.attachments.store.EditorAttachmentsStore.Label
 import com.sedsoftware.tackle.editor.attachments.store.EditorAttachmentsStoreProvider
 import com.sedsoftware.tackle.utils.extension.asValue
-import io.github.vinceglb.filekit.core.PlatformFile
-import io.github.vinceglb.filekit.core.extension
+import io.github.vinceglb.filekit.PlatformFile
+import io.github.vinceglb.filekit.extension
+import io.github.vinceglb.filekit.name
+import io.github.vinceglb.filekit.path
+import io.github.vinceglb.filekit.readBytes
+import io.github.vinceglb.filekit.size
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
@@ -69,12 +73,16 @@ class EditorAttachmentsComponentDefault(
     override val model: Value<Model> = store.asValue().map(stateToModel)
 
     override fun onFilesSelect(files: List<PlatformFile>) {
-        val wrapped: List<PlatformFileWrapper> = files.map { wrap(it.name, it.extension, it.path, it::getSize, it::readBytes) }
-        store.accept(EditorAttachmentsStore.Intent.OnFilesSelected(wrapped))
+        val wrapped: List<PlatformFileWrapper> = files.map { wrap(it.name, it.extension, it.path, it::size, it::readBytes) }
+        if (wrapped.isNotEmpty()) {
+            store.accept(EditorAttachmentsStore.Intent.OnFilesSelected(wrapped))
+        }
     }
 
     override fun onWrappedFilesSelect(files: List<PlatformFileWrapper>) {
-        store.accept(EditorAttachmentsStore.Intent.OnFilesSelected(files))
+        if (files.isNotEmpty()) {
+            store.accept(EditorAttachmentsStore.Intent.OnFilesSelected(files))
+        }
     }
 
     override fun onFileDelete(id: String) {

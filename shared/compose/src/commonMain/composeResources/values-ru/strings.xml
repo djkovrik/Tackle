@@ -24,6 +24,7 @@
     <string name="common_error_attachments_limit">Достигнуто максимальное количество вложений</string>
     <string name="common_error_schedule_date">Дата должна быть хотя бы на 10 минут впереди</string>
     <string name="common_error_attachment_type">Вложенные файлы должны быть одного типа</string>
+    <string name="common_error_empty_download">Не удалось скачать файл</string>
     <string name="common_error_unknown">Что-то пошло не так</string>
     <string name="common_time_now">сейчас</string>
     <string name="common_time_seconds">сек</string>
@@ -71,7 +72,7 @@
     <string name="editor_content_description_send">Отправить</string>
     <string name="editor_content_description_warning">Чувствительный контент</string>
     <string name="editor_content_description_schedule">Отложенный пост</string>
-    <string name="editor_no_category">No category</string>
+    <string name="editor_no_category">Без категории</string>
 
     <!-- Editor poll -->
     <string name="editor_poll_option">Вариант</string>
@@ -108,7 +109,7 @@
     <string name="home_new_post">Новый пост</string>
 
     <!-- Status -->
-    <string name="status_sensitive_image">Деликатный контент</string>
+    <string name="status_sensitive_content">Деликатный\nконтент</string>
     <string name="status_info_created">Создан</string>
     <string name="status_info_edited">Отредактирован</string>
     <string name="status_translating">Перевод</string>
@@ -122,6 +123,12 @@
     <string name="status_sensitive_show">Показать</string>
     <string name="status_sensitive_hide">Скрыть</string>
     <string name="status_image_alt">ALT</string>
+    <string name="status_image_alt_header">Альтернативный текст</string>
+    <string name="status_image_gif">GIF</string>
+    <string name="status_preview_card_author">Автор</string>
+    <string name="status_content_description_back">Закрыть экран</string>
+    <string name="status_content_description_download">Скачать вложение</string>
+    <string name="status_content_downloaded">Скачивание завершено</string>
     <!-- Status context menu -->
     <string name="status_menu_translate">Перевести</string>
     <string name="status_menu_show_original">Показать оригинал</string>

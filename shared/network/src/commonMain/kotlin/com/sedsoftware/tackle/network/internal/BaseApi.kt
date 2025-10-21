@@ -5,6 +5,8 @@ import com.sedsoftware.tackle.network.response.RemoteErrorResponse
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.ClientRequestException
+import io.ktor.client.plugins.HttpTimeout
+import io.ktor.client.plugins.ServerResponseException
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.headers
@@ -29,14 +31,15 @@ internal abstract class BaseApi(
     protected val instanceUrl: String
         get() = domainProvider.invoke()
 
-    private val json: Json = Json {
+    protected val json: Json = Json {
         coerceInputValues = true
         ignoreUnknownKeys = true
         useAlternativeNames = false
     }
 
-    private val httpClient: HttpClient = HttpClient {
+    protected val httpClient: HttpClient = HttpClient {
         install(ContentNegotiation) { json(json) }
+        install(HttpTimeout)
     }
 
     @Throws(Exception::class)
@@ -80,8 +83,10 @@ internal abstract class BaseApi(
             throw TackleException.SerializationException(exception)
         } catch (exception: IOException) {
             throw TackleException.NetworkException(exception)
+        } catch (exception: ServerResponseException) {
+            throw TackleException.NetworkException(exception)
         } catch (exception: ClientRequestException) {
-            throw TackleException.Unknown(exception)
+            throw TackleException.NetworkException(exception)
         }
     }
 

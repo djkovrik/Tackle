@@ -2,7 +2,7 @@ package com.sedsoftware.tackle.main.gateway
 
 import com.sedsoftware.tackle.domain.api.TacklePlatformTools
 import com.sedsoftware.tackle.domain.model.AppLocale
-import com.sedsoftware.tackle.status.StatusComponentGateways
+import com.sedsoftware.tackle.main.StatusComponentGateways
 
 internal class StatusComponentTools(
     private val platformTools: TacklePlatformTools,

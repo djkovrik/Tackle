@@ -79,7 +79,7 @@ internal fun TackleScreenTemplate(
                     actionIconContentColor = colors.headerContentColor,
                 ),
                 actions = actions,
-                modifier = modifier.padding(horizontal = 16.dp),
+                modifier = Modifier.padding(horizontal = 16.dp),
             )
         },
         floatingActionButton = floatingActionButton,
@@ -90,7 +90,7 @@ internal fun TackleScreenTemplate(
         Surface(
             shape = if (hasColoredHeader) RoundedCornerShape(topStart = cornerRadius, topEnd = cornerRadius) else RectangleShape,
             color = colors.bodyContainerColor,
-            modifier = modifier.padding(paddingValues = paddingValues)
+            modifier = Modifier.padding(paddingValues = paddingValues)
         ) {
             content()
         }

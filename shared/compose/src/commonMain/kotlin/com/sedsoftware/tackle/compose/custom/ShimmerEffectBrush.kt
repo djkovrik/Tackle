@@ -17,7 +17,7 @@ import androidx.compose.ui.graphics.ShaderBrush
 import androidx.compose.ui.graphics.TileMode
 
 @Composable
-fun ShimmerEffectBrush(): ShaderBrush {
+internal fun shimmerEffectBrush(): ShaderBrush {
     val infiniteTransition: InfiniteTransition = rememberInfiniteTransition(label = "Shimmer transition")
 
     val offset: Float by infiniteTransition.animateFloat(

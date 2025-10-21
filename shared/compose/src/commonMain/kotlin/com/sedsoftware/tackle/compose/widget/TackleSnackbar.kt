@@ -39,7 +39,6 @@ internal fun TackleSnackbar(
             Text(
                 text = message,
                 style = MaterialTheme.typography.bodyMedium,
-                modifier = modifier
             )
         }
     }

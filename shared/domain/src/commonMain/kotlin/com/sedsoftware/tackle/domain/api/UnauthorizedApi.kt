@@ -4,6 +4,7 @@ import com.sedsoftware.tackle.domain.model.Application
 import com.sedsoftware.tackle.domain.model.CustomEmoji
 import com.sedsoftware.tackle.domain.model.Instance
 import com.sedsoftware.tackle.domain.model.Token
+import kotlinx.coroutines.flow.Flow
 
 interface UnauthorizedApi {
 
@@ -48,4 +49,14 @@ interface UnauthorizedApi {
      * @see <a href="https://docs.joinmastodon.org/methods/custom_emojis/#get">View all custom emoji</a>
      */
     suspend fun getServerEmojis(): List<CustomEmoji>
+
+    /**
+     * Direct file download by given url
+     *
+     * @param url Target file url
+     * @param onDone Download completion callback
+     *
+     * @return Download progress flow
+     */
+    suspend fun downloadFile(url: String, onDone: suspend (ByteArray) -> Unit): Flow<Float>
 }

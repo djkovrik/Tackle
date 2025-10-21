@@ -11,11 +11,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import com.sedsoftware.tackle.compose.platform.toImageBitmap
 import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
 import com.sedsoftware.tackle.compose.widget.TackleImage
 import com.sedsoftware.tackle.domain.model.PlatformFileWrapper
@@ -38,19 +45,25 @@ internal fun AttachedFileImageThumbnail(
     imageData: ByteArray,
     modifier: Modifier = Modifier,
 ) {
-    if (imageData.isNotEmpty()) {
-        TackleImage(
-            data = imageData,
-            contentScale = ContentScale.Crop,
-            contentDescription = null,
-            modifier = modifier,
-        )
-    } else {
-        AttachedFilePlaceholder(
-            resource = Res.drawable.editor_file_image,
-            modifier = modifier,
-        )
+    var imageBitmap: ImageBitmap? by remember { mutableStateOf(null) }
+
+    LaunchedEffect(imageData) {
+        if (imageData.isNotEmpty()) {
+            imageBitmap = imageData.toImageBitmap()
+        }
     }
+
+    imageBitmap?.let { bitmap ->
+        Image(
+            bitmap = bitmap,
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            modifier = modifier,
+        )
+    } ?: AttachedFilePlaceholder(
+        resource = Res.drawable.editor_file_image,
+        modifier = modifier,
+    )
 }
 
 @Composable
@@ -60,7 +73,8 @@ internal fun AttachedFileVideoThumbnail(
 ) {
     if (url.isNotEmpty()) {
         TackleImage(
-            data = url,
+            imageUrl = url,
+            imageParams = null,
             contentDescription = null,
             contentScale = ContentScale.Crop,
             modifier = modifier.fillMaxSize(),
@@ -111,7 +125,7 @@ internal fun AttachedFilePlaceholder(
                     alpha = 0.5f,
                 )
             ),
-            modifier = modifier.size(size = imageSize),
+            modifier = Modifier.size(size = imageSize),
         )
     }
 }

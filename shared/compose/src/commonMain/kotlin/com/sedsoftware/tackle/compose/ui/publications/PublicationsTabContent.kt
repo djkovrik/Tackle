@@ -51,7 +51,7 @@ internal fun PublicationsTabContent(
         ),
         modifier = modifier.consumeWindowInsets(insets = WindowInsets.navigationBars),
     ) {
-        Column(modifier = modifier) {
+        Column {
             TopNavigationBar(
                 selectedTabIndex = activeTab.index,
                 tabs = listOf(
@@ -65,12 +65,11 @@ internal fun PublicationsTabContent(
                     )
                 ),
                 indicatorColor = MaterialTheme.colorScheme.secondaryContainer,
-                modifier = modifier,
             )
 
             ChildrenContent(
                 component = component,
-                modifier = modifier.weight(weight = 1f),
+                modifier = Modifier.weight(weight = 1f),
             )
         }
     }

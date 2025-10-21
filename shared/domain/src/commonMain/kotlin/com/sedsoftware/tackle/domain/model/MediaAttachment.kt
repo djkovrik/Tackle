@@ -1,7 +1,9 @@
 package com.sedsoftware.tackle.domain.model
 
 import com.sedsoftware.tackle.domain.model.type.MediaAttachmentType
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class MediaAttachment(
     val id: String,
     val type: MediaAttachmentType,
@@ -13,6 +15,7 @@ data class MediaAttachment(
     val meta: MediaAttachmentMeta?,
 )
 
+@Serializable
 data class MediaAttachmentMeta(
     val length: String,
     val duration: Float,
@@ -29,6 +32,7 @@ data class MediaAttachmentMeta(
     val focus: MediaAttachmentFocus?,
 )
 
+@Serializable
 data class MediaAttachmentInfo(
     val width: Int,
     val height: Int,
@@ -39,6 +43,7 @@ data class MediaAttachmentInfo(
     val bitrate: Long,
 )
 
+@Serializable
 data class MediaAttachmentFocus(
     val x: Float,
     val y: Float,

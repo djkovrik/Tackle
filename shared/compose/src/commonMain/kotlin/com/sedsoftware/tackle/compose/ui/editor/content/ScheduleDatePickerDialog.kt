@@ -48,7 +48,6 @@ internal fun ScheduleDatePickerDialog(
     ) {
         DatePicker(
             state = datePickerState,
-            modifier = modifier,
         )
     }
 }

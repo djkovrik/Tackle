@@ -6,7 +6,7 @@ import com.sedsoftware.tackle.domain.model.Status
 import com.sedsoftware.tackle.domain.model.Translation
 import com.sedsoftware.tackle.domain.model.params.ParamsContent
 import com.sedsoftware.tackle.domain.model.params.ParamsPagination
-import com.sedsoftware.tackle.status.StatusComponentGateways
+import com.sedsoftware.tackle.main.StatusComponentGateways
 
 internal class StatusComponentApi(
     private val authorizedApi: AuthorizedApi,

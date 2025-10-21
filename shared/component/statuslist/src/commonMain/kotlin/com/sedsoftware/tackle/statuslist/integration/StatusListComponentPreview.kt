@@ -5,8 +5,8 @@ import com.arkivanov.decompose.router.items.LazyChildItems
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
 import com.sedsoftware.tackle.domain.model.Status
-import com.sedsoftware.tackle.status.StatusComponent
-import com.sedsoftware.tackle.status.integration.StatusComponentPreview
+import com.sedsoftware.tackle.main.StatusComponent
+import com.sedsoftware.tackle.main.integration.StatusComponentPreview
 import com.sedsoftware.tackle.statuslist.StatusListComponent
 
 @OptIn(ExperimentalDecomposeApi::class)

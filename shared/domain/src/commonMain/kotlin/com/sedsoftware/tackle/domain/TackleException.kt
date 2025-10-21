@@ -47,6 +47,8 @@ sealed class TackleException(
 
     data object AttachmentDifferentType : TackleException(action = Action.SHOW_MESSAGE)
 
+    data object DownloadableFileEmpty : TackleException(action = Action.SHOW_MESSAGE)
+
     class Unknown(
         cause: Throwable,
     ) : TackleException(

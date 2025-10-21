@@ -30,9 +30,9 @@ internal fun AttachedFileUploadFailed(
         contentAlignment = Alignment.Center,
         modifier = modifier
             .size(size = indicatorSize)
-            .clickable(onClick = onClick)
             .clip(shape = CircleShape)
             .background(color = MaterialTheme.colorScheme.outline.copy(alpha = 0.4f))
+            .clickable(onClick = onClick)
     ) {
 
         Icon(

@@ -38,7 +38,7 @@ import com.sedsoftware.tackle.compose.ui.status.StatusContent
 import com.sedsoftware.tackle.compose.ui.status.StatusPreviewStubs
 import com.sedsoftware.tackle.compose.ui.statuslist.content.StatusLoadMoreIndicator
 import com.sedsoftware.tackle.domain.model.Status
-import com.sedsoftware.tackle.status.StatusComponent
+import com.sedsoftware.tackle.main.StatusComponent
 import com.sedsoftware.tackle.statuslist.StatusListComponent
 import com.sedsoftware.tackle.statuslist.integration.StatusListComponentPreview
 import org.jetbrains.compose.resources.stringResource

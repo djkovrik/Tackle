@@ -12,7 +12,6 @@ import com.sedsoftware.tackle.domain.model.SearchRequestBundle
 import com.sedsoftware.tackle.domain.model.Status
 import com.sedsoftware.tackle.editor.EditorComponentGateways
 
-@Suppress("UnusedPrivateProperty")
 internal class EditorTabComponentApi(
     private val unauthorizedApi: UnauthorizedApi,
     private val authorizedApi: AuthorizedApi,

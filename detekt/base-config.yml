@@ -169,7 +169,7 @@ complexity:
   TooManyFunctions:
     active: true
     excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/androidUnitTest/**', '**/androidInstrumentedTest/**', '**/generated/**', '**/iosTest/**']
-    thresholdInFiles: 15
+    thresholdInFiles: 25
     thresholdInClasses: 15
     thresholdInInterfaces: 15
     thresholdInObjects: 15
@@ -789,3 +789,77 @@ style:
     active: true
     excludeImports:
       - 'java.util.*'
+
+DecomposeRuleSet:
+  DecomposeComponentContextRule:
+    active: true
+  SerializableDiscriminatorRule:
+    active: true
+    classDiscriminator: 'type'
+
+Compose:
+  ComposableAnnotationNaming:
+    active: true
+  ComposableNaming:
+    active: true
+  ComposableParamOrder:
+    active: true
+  CompositionLocalAllowlist:
+    active: true
+  CompositionLocalNaming:
+    active: true
+  ContentEmitterReturningValues:
+    active: true
+  ContentTrailingLambda:
+    active: true
+  ContentSlotReused:
+    active: true
+  DefaultsVisibility:
+    active: true
+  LambdaParameterEventTrailing:
+    active: true
+  LambdaParameterInRestartableEffect:
+    active: true
+  Material2:
+    active: false
+  ModifierClickableOrder:
+    active: true
+  ModifierComposed:
+    active: true
+  ModifierMissing:
+    active: true
+  ModifierNaming:
+    active: true
+  ModifierNotUsedAtRoot:
+    active: true
+  ModifierReused:
+    active: true
+  ModifierWithoutDefault:
+    active: true
+  MultipleEmitters:
+    active: true
+    contentEmittersDenylist: CustomPollDurationDialog, LanguageSelectorDialog, VisibilitySelectorDialog, ScheduleDatePickerDialog, ScheduleTimePickerDialog
+  MutableParams:
+    active: true
+  MutableStateAutoboxing:
+    active: true
+  MutableStateParam:
+    active: true
+  ParameterNaming:
+    active: true
+  PreviewAnnotationNaming:
+    active: true
+  PreviewNaming:
+    active: false
+  PreviewPublic:
+    active: true
+  RememberMissing:
+    active: true
+  RememberContentMissing:
+    active: true
+  UnstableCollections:
+    active: false
+  ViewModelForwarding:
+    active: true
+  ViewModelInjection:
+    active: true

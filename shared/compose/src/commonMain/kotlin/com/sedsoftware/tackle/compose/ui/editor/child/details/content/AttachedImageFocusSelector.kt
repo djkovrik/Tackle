@@ -16,7 +16,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -51,7 +51,7 @@ internal fun AttachedImageFocusSelector(
 
     BoxWithConstraints(
         contentAlignment = Alignment.Center,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .aspectRatio(
                 ratio = imageParams.ratio
@@ -63,23 +63,21 @@ internal fun AttachedImageFocusSelector(
         val middlePointY: Float = remember { parentHeight / 2f }
 
         val indicatorWidthPx: Float = with(LocalDensity.current) { indicatorSize.toPx() }
-        var offsetX: Float by remember { mutableStateOf(0f) }
-        var offsetY: Float by remember { mutableStateOf(0f) }
+        var offsetX: Float by remember { mutableFloatStateOf(0f) }
+        var offsetY: Float by remember { mutableFloatStateOf(0f) }
 
         val initialOffset = focus.focusToOffset(middlePointX, middlePointY)
         offsetX = initialOffset.first
         offsetY = initialOffset.second
 
         TackleImage(
-            data = url,
-            contentDescription = null,
-            params = TackleImageParams(
+            imageUrl = url,
+            imageParams = TackleImageParams(
                 blurhash = imageParams.blurhash,
-                width = imageParams.width,
-                height = imageParams.height,
                 ratio = imageParams.ratio,
             ),
-            modifier = modifier
+            contentDescription = null,
+            modifier = Modifier
                 .fillMaxSize()
                 .clip(shape = MaterialTheme.shapes.extraSmall),
         )

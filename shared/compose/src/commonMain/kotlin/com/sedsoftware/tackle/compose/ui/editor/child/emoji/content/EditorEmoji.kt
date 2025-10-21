@@ -33,7 +33,7 @@ internal fun EditorEmoji(
             painter = painter,
             contentDescription = null,
             contentScale = ContentScale.Fit,
-            modifier = modifier.padding(all = 6.dp),
+            modifier = Modifier.padding(all = 6.dp),
         )
     }
 }

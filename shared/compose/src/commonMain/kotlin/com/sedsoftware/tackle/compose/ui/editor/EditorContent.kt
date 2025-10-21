@@ -82,10 +82,10 @@ import com.sedsoftware.tackle.editor.poll.model.PollDuration
 import com.sedsoftware.tackle.editor.warning.EditorWarningComponent
 import com.sedsoftware.tackle.utils.TackleRegex
 import com.sedsoftware.tackle.utils.extension.orZero
-import io.github.vinceglb.filekit.compose.PickerResultLauncher
-import io.github.vinceglb.filekit.compose.rememberFilePickerLauncher
-import io.github.vinceglb.filekit.core.PickerMode
-import io.github.vinceglb.filekit.core.PlatformFile
+import io.github.vinceglb.filekit.PlatformFile
+import io.github.vinceglb.filekit.dialogs.FileKitMode
+import io.github.vinceglb.filekit.dialogs.compose.PickerResultLauncher
+import io.github.vinceglb.filekit.dialogs.compose.rememberFilePickerLauncher
 import kotlinx.datetime.Clock.System
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
@@ -118,7 +118,7 @@ internal fun EditorContent(
 
     val attachmentDetailsSlot: ChildSlot<*, EditorAttachmentDetailsComponent> by component.attachmentDetailsDialog.subscribeAsState()
 
-    val launcher: PickerResultLauncher = rememberFilePickerLauncher(mode = PickerMode.Multiple()) { files: List<PlatformFile>? ->
+    val launcher: PickerResultLauncher = rememberFilePickerLauncher(mode = FileKitMode.Multiple()) { files: List<PlatformFile>? ->
         files?.let { component.attachments.onFilesSelect(it) }
     }
 
@@ -206,7 +206,7 @@ internal fun EditorContent(
             // Scrollable part
             LazyColumn(
                 verticalArrangement = Arrangement.Top,
-                modifier = modifier.weight(weight = 1f, fill = true),
+                modifier = Modifier.weight(weight = 1f, fill = true),
             ) {
                 // Warning
                 item {
@@ -289,9 +289,9 @@ internal fun EditorContent(
                             checkboxColor = MaterialTheme.colorScheme.secondary,
                             onAddNewItem = component.poll::onAddPollOptionClick,
                             onDeleteItem = component.poll::onDeletePollOptionClick,
-                            onMultiselectEnabled = component.poll::onMultiselectEnable,
-                            onHideTotalsEnabled = component.poll::onHideTotalsEnable,
-                            onDurationSelected = component.poll::onDurationSelect,
+                            onMultiselectEnable = component.poll::onMultiselectEnable,
+                            onHideTotalsEnable = component.poll::onHideTotalsEnable,
+                            onDurationSelect = component.poll::onDurationSelect,
                             onTextInput = component.poll::onTextInput,
                             onDurationPickerCall = { component.poll.onDurationPickerRequest(true) },
                             onDurationPickerClose = { component.poll.onDurationPickerRequest(false) },
@@ -303,7 +303,7 @@ internal fun EditorContent(
             // Hints
             AnimatedVisibility(visible = editorModel.suggestions.isNotEmpty()) {
                 LazyRow(
-                    modifier = modifier
+                    modifier = Modifier
                         .padding(horizontal = 16.dp)
                         .fillMaxWidth()
                 ) {

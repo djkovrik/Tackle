@@ -1,6 +1,7 @@
 package com.sedsoftware.tackle.compose.ui.status.content
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -9,6 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -16,6 +18,9 @@ import com.sedsoftware.tackle.compose.extension.clickableOnce
 import com.sedsoftware.tackle.compose.model.TackleImageParams
 import com.sedsoftware.tackle.compose.widget.TackleImage
 import com.sedsoftware.tackle.domain.model.PreviewCard
+import org.jetbrains.compose.resources.stringResource
+import tackle.shared.compose.generated.resources.Res
+import tackle.shared.compose.generated.resources.status_preview_card_author
 
 @Composable
 internal fun StatusPreviewCard(
@@ -35,33 +40,42 @@ internal fun StatusPreviewCard(
             Text(
                 text = card.title,
                 color = MaterialTheme.colorScheme.onTertiaryContainer,
-                style = MaterialTheme.typography.titleSmall,
+                style = MaterialTheme.typography.bodyLarge,
                 modifier = Modifier.padding(bottom = 8.dp),
             )
 
-            Text(
-                text = card.providerName,
-                color = MaterialTheme.colorScheme.onTertiaryContainer.copy(alpha = 0.75f),
-                style = MaterialTheme.typography.bodyLarge,
-                fontWeight = FontWeight.Medium,
-                modifier = Modifier.padding(bottom = 8.dp),
-            )
+            if (card.authorName.isNotEmpty()) {
+                Text(
+                    text = "${stringResource(resource = Res.string.status_preview_card_author)}: ${card.authorName}",
+                    color = MaterialTheme.colorScheme.onTertiaryContainer.copy(alpha = 0.75f),
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.Medium,
+                    modifier = Modifier.padding(bottom = 8.dp),
+                )
+            }
 
             if (card.image.isNotEmpty()) {
                 TackleImage(
-                    data = card.image,
-                    contentDescription = null,
-                    params = TackleImageParams(
+                    imageUrl = card.image,
+                    imageParams = TackleImageParams(
                         blurhash = card.blurhash,
-                        width = card.width,
-                        height = card.height,
-                        ratio = if (card.height != 0) {
-                            card.width / card.height.toFloat()
-                        } else {
-                            1f
-                        },
+                        ratio = 1f,
                     ),
-                    modifier = Modifier.clip(shape = MaterialTheme.shapes.small),
+                    contentDescription = null,
+                    contentScale = ContentScale.FillWidth,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(shape = MaterialTheme.shapes.extraSmall)
+                )
+            }
+
+            if (card.providerName.isNotEmpty()) {
+                Text(
+                    text = card.providerName,
+                    color = MaterialTheme.colorScheme.onTertiaryContainer.copy(alpha = 0.75f),
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.Medium,
+                    modifier = Modifier.padding(top = 8.dp),
                 )
             }
 

@@ -3,7 +3,7 @@ package com.sedsoftware.tackle.statuslist.domain
 import assertk.assertThat
 import assertk.assertions.isTrue
 import com.sedsoftware.tackle.domain.model.type.Timeline
-import com.sedsoftware.tackle.status.StatusComponentGateways
+import com.sedsoftware.tackle.main.StatusComponentGateways
 import com.sedsoftware.tackle.statuslist.Responses
 import dev.mokkery.answering.returns
 import dev.mokkery.everySuspend

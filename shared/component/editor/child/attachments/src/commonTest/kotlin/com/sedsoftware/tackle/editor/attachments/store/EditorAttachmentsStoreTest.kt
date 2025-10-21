@@ -308,10 +308,95 @@ internal class EditorAttachmentsStoreTest : StoreTest<EditorAttachmentsStore.Int
         // then
         assertThat(labels.count { it is EditorAttachmentsStore.Label.ErrorCaught }).isEqualTo(0)
         // and when
-        // then
         store.accept(EditorAttachmentsStore.Intent.OnFilesSelected(files2))
+        // then
+        assertThat(store.state.attachmentsAtLimit).isTrue()
         assertThat(labels.count { it is EditorAttachmentsStore.Label.ErrorCaught }).isEqualTo(1)
         assertThat(labels.contains(EditorAttachmentsStore.Label.ErrorCaught(TackleException.AttachmentDifferentType)))
+    }
+
+    @Test
+    fun `first loaded audio should disable further selection`() = runTest {
+        // given
+        val files = listOf(Instances.audio)
+        // when
+        store.init()
+        store.accept(EditorAttachmentsStore.Intent.UpdateInstanceConfig(Instances.config))
+        store.accept(EditorAttachmentsStore.Intent.OnFilesSelected(files))
+        // then
+        assertThat(store.state.attachmentsAtLimit).isTrue()
+    }
+
+    @Test
+    fun `first loaded video should disable further selection`() = runTest {
+        // given
+        val files = listOf(Instances.videoNormal)
+        // when
+        store.init()
+        store.accept(EditorAttachmentsStore.Intent.UpdateInstanceConfig(Instances.config))
+        store.accept(EditorAttachmentsStore.Intent.OnFilesSelected(files))
+        // then
+        assertThat(store.state.attachmentsAtLimit).isTrue()
+    }
+
+    @Test
+    fun `first loaded other file should disable further selection`() = runTest {
+        // given
+        val files = listOf(Instances.fileMisc)
+        // when
+        store.init()
+        store.accept(EditorAttachmentsStore.Intent.UpdateInstanceConfig(Instances.config))
+        store.accept(EditorAttachmentsStore.Intent.OnFilesSelected(files))
+        // then
+        assertThat(store.state.attachmentsAtLimit).isTrue()
+    }
+
+    @Test
+    fun `multiple selected audios should upload only the first one`() = runTest {
+        // given
+        val files = listOf(
+            Instances.audio.copy(name = "test1.mp3"),
+            Instances.audio.copy(name = "test2.mp3"),
+        )
+        // when
+        store.init()
+        store.accept(EditorAttachmentsStore.Intent.UpdateInstanceConfig(Instances.config))
+        store.accept(EditorAttachmentsStore.Intent.OnFilesSelected(files))
+        // then
+        assertThat(store.state.selectedFiles.size).isEqualTo(1)
+        assertThat(store.state.attachmentsAtLimit).isTrue()
+    }
+
+    @Test
+    fun `multiple selected videos should upload only the first one`() = runTest {
+        // given
+        val files = listOf(
+            Instances.videoNormal.copy(name = "test1.mp4"),
+            Instances.videoNormal.copy(name = "test2.mp4"),
+        )
+        // when
+        store.init()
+        store.accept(EditorAttachmentsStore.Intent.UpdateInstanceConfig(Instances.config))
+        store.accept(EditorAttachmentsStore.Intent.OnFilesSelected(files))
+        // then
+        assertThat(store.state.selectedFiles.size).isEqualTo(1)
+        assertThat(store.state.attachmentsAtLimit).isTrue()
+    }
+
+    @Test
+    fun `multiple selected misc files should upload only the first one`() = runTest {
+        // given
+        val files = listOf(
+            Instances.fileMisc.copy(name = "test1.xls"),
+            Instances.fileMisc.copy(name = "test2.xls"),
+        )
+        // when
+        store.init()
+        store.accept(EditorAttachmentsStore.Intent.UpdateInstanceConfig(Instances.config))
+        store.accept(EditorAttachmentsStore.Intent.OnFilesSelected(files))
+        // then
+        assertThat(store.state.selectedFiles.size).isEqualTo(1)
+        assertThat(store.state.attachmentsAtLimit).isTrue()
     }
 
     override fun createStore(): Store<EditorAttachmentsStore.Intent, EditorAttachmentsStore.State, EditorAttachmentsStore.Label> =

@@ -44,12 +44,11 @@ private fun ScheduleTimePickerDialogContent(
     onConfirmation: () -> Unit = {},
 ) {
     Card(
-        modifier = Modifier.padding(all = 16.dp),
+        modifier = modifier.padding(all = 16.dp),
         shape = MaterialTheme.shapes.small,
     ) {
         Column(
             horizontalAlignment = Alignment.End,
-            modifier = modifier
         ) {
             TimeInput(
                 state = timePickerState,

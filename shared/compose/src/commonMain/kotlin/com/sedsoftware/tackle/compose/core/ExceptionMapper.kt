@@ -24,6 +24,7 @@ internal suspend fun exceptionToString(e: TackleException): String = when (e) {
     is TackleException.AttachmentsLimitExceeded -> "${getString(Res.string.common_error_attachments_limit)}: ${e.limit}"
     is TackleException.ScheduleDateTooShort -> getString(Res.string.common_error_schedule_date)
     is TackleException.AttachmentDifferentType -> getString(Res.string.common_error_attachment_type)
+    is TackleException.DownloadableFileEmpty -> getString(Res.string.common_error_attachment_type)
     is TackleException.Unknown -> getString(Res.string.common_error_unknown)
     is TackleException.MissedRegistrationData -> ""
 }

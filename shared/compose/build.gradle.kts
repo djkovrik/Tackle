@@ -23,6 +23,8 @@ kotlin {
             implementation(project(":shared:component:root"))
             implementation(project(":shared:component:auth"))
             implementation(project(":shared:component:main"))
+            implementation(project(":shared:component:main:child:alternatetext"))
+            implementation(project(":shared:component:main:child:viewmedia"))
             implementation(project(":shared:component:status"))
             implementation(project(":shared:component:statuslist"))
 
@@ -53,14 +55,28 @@ kotlin {
             implementation(libs.ark.decompose.core)
             implementation(libs.ark.decompose.extensions)
 
+            implementation(libs.lib.fileKit.core)
             implementation(libs.lib.fileKit.compose)
-            implementation(libs.lib.imageLoader)
             implementation(libs.lib.blurhash)
+            implementation(libs.lib.zoomImage)
+            implementation(libs.lib.sketch.compose)
+            implementation(libs.lib.sketch.compose.extensions)
+            implementation(libs.lib.sketch.ktor3)
+            implementation(libs.lib.sketch.gif)
+            implementation(libs.lib.mediaPlayer)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
         }
     }
+}
+
+composeCompiler {
+    reportsDestination = layout.buildDirectory.dir("compose_compiler")
+
+    stabilityConfigurationFiles.addAll(
+        project.layout.projectDirectory.file("compose_compiler_config.conf"),
+    )
 }
 
 dependencies {

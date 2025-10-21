@@ -34,7 +34,7 @@ internal fun TackleToolbarButton(
     Box(modifier = modifier.alpha(alpha = if (isEnabled) 1f else 0.5f)) {
         IconButton(
             onClick = { if (isEnabled) onClick.invoke() },
-            modifier = modifier
+            modifier = Modifier
                 .clip(shape = CircleShape)
                 .background(
                     color = if (isActive)

@@ -56,7 +56,7 @@ internal fun VisibilitySelectorItem(
         )
 
         Column(
-            modifier = modifier
+            modifier = Modifier
                 .weight(weight = 1f, false)
                 .padding(horizontal = 16.dp, vertical = 8.dp)
         ) {

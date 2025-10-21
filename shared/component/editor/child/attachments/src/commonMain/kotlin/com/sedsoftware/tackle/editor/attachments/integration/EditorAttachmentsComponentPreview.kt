@@ -8,7 +8,7 @@ import com.sedsoftware.tackle.domain.model.PlatformFileWrapper
 import com.sedsoftware.tackle.editor.attachments.EditorAttachmentsComponent
 import com.sedsoftware.tackle.editor.attachments.EditorAttachmentsComponent.Model
 import com.sedsoftware.tackle.editor.attachments.model.AttachedFile
-import io.github.vinceglb.filekit.core.PlatformFile
+import io.github.vinceglb.filekit.PlatformFile
 
 class EditorAttachmentsComponentPreview(
     attachments: List<AttachedFile> = emptyList(),

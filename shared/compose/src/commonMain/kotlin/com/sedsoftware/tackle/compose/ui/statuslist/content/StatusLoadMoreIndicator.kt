@@ -22,7 +22,7 @@ internal fun StatusLoadMoreIndicator(
         modifier = modifier.fillMaxWidth()
     ) {
         CircularProgressIndicator(
-            modifier = modifier.width(width = 16.dp),
+            modifier = Modifier.width(width = 16.dp),
             color = color,
             trackColor = trackColor,
             strokeWidth = 2.dp,

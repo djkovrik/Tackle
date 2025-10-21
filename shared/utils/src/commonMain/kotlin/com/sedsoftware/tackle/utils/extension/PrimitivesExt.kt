@@ -45,7 +45,30 @@ fun Int?.orZero(): Int = this ?: 0
 
 fun Float?.orZero(): Float = this ?: 0f
 
-fun Boolean?.orFalse(): Boolean = this ?: false
+fun Boolean?.orFalse(): Boolean = this == true
+
+fun Float.toVideoDuration(): String {
+    val totalSeconds = this.toInt()
+    val hours = totalSeconds / 3600
+    val minutes = (totalSeconds % 3600) / 60
+    val seconds = totalSeconds % 60
+
+    return when {
+        hours > 0 -> {
+            "${hours.toDurationFormat()}:${minutes.toDurationFormat()}:${seconds.toDurationFormat()}"
+        }
+
+        minutes > 0 -> {
+            "${minutes.toDurationFormat()}:${seconds.toDurationFormat()}"
+        }
+
+        else -> {
+            seconds.toDurationFormat()
+        }
+    }
+}
+
+fun Int.toDurationFormat(defaultDivider: Int = 10): String = if (this > defaultDivider) "${this.toInt()}" else "0${this.toInt()}"
 
 fun Long?.toHumanReadableSize(useBinary: Boolean = false): String {
     if (this == null) return ""

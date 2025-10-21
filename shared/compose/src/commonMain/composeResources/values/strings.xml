@@ -27,6 +27,7 @@
     <string name="common_error_attachments_limit">Max possible attachments already</string>
     <string name="common_error_schedule_date">Date must be at least 10 minutes ahead</string>
     <string name="common_error_attachment_type">Attached files must have the same type</string>
+    <string name="common_error_empty_download">Unable to download the file</string>
     <string name="common_error_unknown">Something went wrong</string>
     <string name="common_time_now">now</string>
     <string name="common_time_seconds">sec</string>
@@ -111,7 +112,7 @@
     <string name="home_new_post">New post</string>
 
     <!-- Status -->
-    <string name="status_sensitive_image">Sensitive content</string>
+    <string name="status_sensitive_content">Sensitive\ncontent</string>
     <string name="status_info_created">Created</string>
     <string name="status_info_edited">Edited</string>
     <string name="status_translating">Translating</string>
@@ -125,6 +126,12 @@
     <string name="status_sensitive_show">Show</string>
     <string name="status_sensitive_hide">Hide</string>
     <string name="status_image_alt">ALT</string>
+    <string name="status_image_alt_header">Alternate text</string>
+    <string name="status_image_gif">GIF</string>
+    <string name="status_preview_card_author">Author</string>
+    <string name="status_content_description_back">Close screen</string>
+    <string name="status_content_description_download">Download attachment</string>
+    <string name="status_content_downloaded">Download completed</string>
     <!-- Status context menu -->
     <string name="status_menu_translate">Translate</string>
     <string name="status_menu_show_original">Show original</string>

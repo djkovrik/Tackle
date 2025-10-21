@@ -24,6 +24,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.movableContentOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -44,8 +45,8 @@ import com.sedsoftware.tackle.compose.extension.getTitle
 import com.sedsoftware.tackle.compose.widget.TackleImage
 import com.sedsoftware.tackle.compose.widget.TackleStatusButton
 import com.sedsoftware.tackle.compose.widget.TackleWarningContainer
-import com.sedsoftware.tackle.status.StatusComponent
-import com.sedsoftware.tackle.status.model.StatusContextAction
+import com.sedsoftware.tackle.main.StatusComponent
+import com.sedsoftware.tackle.main.model.StatusContextAction
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -81,6 +82,7 @@ internal fun StatusContentWrapper(
 ) {
     val simplifiedDate: Pair<Int, StringResource> = remember { model.status.createdAtShort.getSimplifiedDate() }
     var expanded: Boolean by remember { mutableStateOf(model.status.spoilerText.isEmpty()) }
+    val content = remember { movableContentOf { content() } }
 
     Column(
         modifier = modifier
@@ -119,7 +121,8 @@ internal fun StatusContentWrapper(
         ) {
             // Avatar
             TackleImage(
-                data = model.status.account.avatar,
+                imageUrl = model.status.account.avatar,
+                imageParams = null,
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -272,12 +275,12 @@ internal fun StatusContentWrapper(
             TackleWarningContainer(
                 indicatorWidth = 6.dp,
                 indicatorColor = MaterialTheme.colorScheme.secondary,
-                modifier = modifier
+                modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 8.dp)
             ) {
                 Column(
-                    modifier = modifier
+                    modifier = Modifier
                         .fillMaxWidth()
                         .background(color = MaterialTheme.colorScheme.secondaryContainer)
                         .clickableOnce { expanded = !expanded }
@@ -302,7 +305,7 @@ internal fun StatusContentWrapper(
             }
 
             Box(
-                modifier = modifier
+                modifier = Modifier
                     .animateContentSize()
                     .alsoIf(!expanded, Modifier.height(height = 0.dp))
             ) {
@@ -377,7 +380,7 @@ internal fun StatusContentWrapper(
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
-            modifier = modifier
+            modifier = Modifier
                 .padding(top = 16.dp)
                 .fillMaxWidth()
         ) {

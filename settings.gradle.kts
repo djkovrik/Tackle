@@ -25,6 +25,8 @@ include(
     ":shared:component:root",
     ":shared:component:auth",
     ":shared:component:main",
+    ":shared:component:main:child:alternatetext",
+    ":shared:component:main:child:viewmedia",
     ":shared:component:editor",
     ":shared:component:editor:child:attachments",
     ":shared:component:editor:child:details",

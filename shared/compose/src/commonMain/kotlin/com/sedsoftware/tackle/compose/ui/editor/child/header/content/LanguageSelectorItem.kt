@@ -45,11 +45,10 @@ internal fun LanguageSelectorItem(
                 uncheckedColor = MaterialTheme.colorScheme.primary,
                 checkmarkColor = MaterialTheme.colorScheme.onPrimary,
             ),
-            modifier = Modifier,
         )
 
         Column(
-            modifier = modifier
+            modifier = Modifier
                 .weight(weight = 1f, true)
                 .clickable(onClick = onClick)
         ) {

@@ -4,7 +4,7 @@ import com.arkivanov.decompose.ExperimentalDecomposeApi
 import com.arkivanov.decompose.router.items.LazyChildItems
 import com.arkivanov.decompose.value.Value
 import com.sedsoftware.tackle.domain.model.Status
-import com.sedsoftware.tackle.status.StatusComponent
+import com.sedsoftware.tackle.main.StatusComponent
 
 @OptIn(ExperimentalDecomposeApi::class)
 interface StatusListComponent {

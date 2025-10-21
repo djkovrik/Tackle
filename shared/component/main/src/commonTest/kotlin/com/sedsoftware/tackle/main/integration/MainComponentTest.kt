@@ -93,6 +93,6 @@ class MainComponentTest : ComponentTest<MainComponent>() {
             settings = settings,
             platformTools = platformTools,
             dispatchers = testDispatchers,
-            mainComponentOutput = {}
+            mainOutput = {}
         )
 }

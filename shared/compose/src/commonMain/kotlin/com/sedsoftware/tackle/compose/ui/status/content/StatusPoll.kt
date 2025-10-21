@@ -27,13 +27,13 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.github.panpf.sketch.rememberAsyncImagePainter
 import com.sedsoftware.tackle.compose.widget.TackleButton
 import com.sedsoftware.tackle.compose.widget.TackleCheckbox
 import com.sedsoftware.tackle.compose.widget.TackleStatusRichText
 import com.sedsoftware.tackle.domain.model.CustomEmoji
 import com.sedsoftware.tackle.domain.model.Poll
 import com.sedsoftware.tackle.domain.model.Translation
-import com.seiko.imageloader.rememberImagePainter
 import org.jetbrains.compose.resources.stringResource
 import tackle.shared.compose.generated.resources.Res
 import tackle.shared.compose.generated.resources.status_poll_active_till
@@ -127,7 +127,7 @@ private fun StatusPollOption(
     onClick: () -> Unit = {},
 ) {
     Box(
-        modifier = Modifier.height(intrinsicSize = IntrinsicSize.Min)
+        modifier = modifier.height(intrinsicSize = IntrinsicSize.Min)
     ) {
         val optionFraction = (votesCount.toFloat() / votesTotal.toFloat()).takeIf { it > POLL_MIN_FRACTION }
             ?: POLL_MIN_FRACTION
@@ -138,7 +138,7 @@ private fun StatusPollOption(
         )
 
         Box(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxWidth(fraction = currentFraction)
                 .fillMaxHeight()
                 .padding(horizontal = 8.dp, vertical = 4.dp)
@@ -204,13 +204,13 @@ private fun StatusPollOption(
                 inlinedContent = {
                     Box(
                         contentAlignment = Alignment.Center,
-                        modifier = modifier.fillMaxSize(),
+                        modifier = Modifier.fillMaxSize(),
                     ) {
                         Image(
-                            painter = rememberImagePainter(url = it),
+                            painter = rememberAsyncImagePainter(uri = it),
                             contentDescription = null,
                             contentScale = ContentScale.Fit,
-                            modifier = modifier.fillMaxSize(),
+                            modifier = Modifier.fillMaxSize(),
                         )
                     }
                 }

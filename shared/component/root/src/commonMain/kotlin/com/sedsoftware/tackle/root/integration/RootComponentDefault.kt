@@ -1,6 +1,11 @@
 package com.sedsoftware.tackle.root.integration
 
 import com.arkivanov.decompose.ComponentContext
+import com.arkivanov.decompose.router.slot.ChildSlot
+import com.arkivanov.decompose.router.slot.SlotNavigation
+import com.arkivanov.decompose.router.slot.activate
+import com.arkivanov.decompose.router.slot.childSlot
+import com.arkivanov.decompose.router.slot.dismiss
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.active
@@ -23,10 +28,15 @@ import com.sedsoftware.tackle.domain.api.TackleDispatchers
 import com.sedsoftware.tackle.domain.api.TacklePlatformTools
 import com.sedsoftware.tackle.domain.api.TackleSettings
 import com.sedsoftware.tackle.domain.api.UnauthorizedApi
+import com.sedsoftware.tackle.domain.model.MediaAttachment
 import com.sedsoftware.tackle.editor.EditorComponent
 import com.sedsoftware.tackle.editor.integration.EditorComponentDefault
 import com.sedsoftware.tackle.main.MainComponent
+import com.sedsoftware.tackle.main.alternatetext.AlternateTextComponent
+import com.sedsoftware.tackle.main.alternatetext.integration.AlternateTextComponentDefault
 import com.sedsoftware.tackle.main.integration.MainComponentDefault
+import com.sedsoftware.tackle.main.viewmedia.ViewMediaComponent
+import com.sedsoftware.tackle.main.viewmedia.integration.ViewMediaComponentDefault
 import com.sedsoftware.tackle.root.RootComponent
 import com.sedsoftware.tackle.root.RootComponent.Child
 import com.sedsoftware.tackle.root.gateway.auth.AuthComponentApi
@@ -37,6 +47,7 @@ import com.sedsoftware.tackle.root.gateway.editor.EditorTabComponentApi
 import com.sedsoftware.tackle.root.gateway.editor.EditorTabComponentDatabase
 import com.sedsoftware.tackle.root.gateway.editor.EditorTabComponentSettings
 import com.sedsoftware.tackle.root.gateway.editor.EditorTabComponentTools
+import com.sedsoftware.tackle.root.gateway.media.ViewMediaComponentApi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.Flow
@@ -48,6 +59,7 @@ class RootComponentDefault internal constructor(
     private val authComponent: (ComponentContext, (ComponentOutput) -> Unit) -> AuthComponent,
     private val mainComponent: (ComponentContext, (ComponentOutput) -> Unit) -> MainComponent,
     private val editorComponent: (ComponentContext, (ComponentOutput) -> Unit) -> EditorComponent,
+    private val mediaComponent: (ComponentContext, List<MediaAttachment>, Int, () -> Unit, (ComponentOutput) -> Unit) -> ViewMediaComponent,
 ) : RootComponent, ComponentContext by componentContext {
 
     constructor(
@@ -72,7 +84,7 @@ class RootComponentDefault internal constructor(
                 settings = AuthComponentSettings(settings),
                 tools = AuthComponentTools(platformTools),
                 dispatchers = dispatchers,
-                output = output,
+                authOutput = output,
             )
         },
         mainComponent = { childContext, output ->
@@ -83,7 +95,7 @@ class RootComponentDefault internal constructor(
                 settings = settings,
                 platformTools = platformTools,
                 dispatchers = dispatchers,
-                mainComponentOutput = output,
+                mainOutput = output,
             )
         },
         editorComponent = { childContext, componentOutput ->
@@ -98,6 +110,18 @@ class RootComponentDefault internal constructor(
                 editorOutput = componentOutput,
             )
         },
+        mediaComponent = { childContext, attachments, index, onBackClicked, componentOutput ->
+            ViewMediaComponentDefault(
+                componentContext = childContext,
+                storeFactory = storeFactory,
+                api = ViewMediaComponentApi(unauthorizedApi),
+                attachments = attachments,
+                selectedIndex = index,
+                onBackClicked = onBackClicked,
+                dispatchers = dispatchers,
+                viewMediaOutput = componentOutput,
+            )
+        },
     )
 
     private val scope: CoroutineScope = CoroutineScope(dispatchers.main)
@@ -108,11 +132,13 @@ class RootComponentDefault internal constructor(
         }
     }
 
-    private val navigation: StackNavigation<Config> = StackNavigation()
+    private val childNavigation: StackNavigation<Config> = StackNavigation()
+
+    private val alternateTextSlotNavigation: SlotNavigation<AlternateTextConfig> = SlotNavigation<AlternateTextConfig>()
 
     private val stack: Value<ChildStack<Config, Child>> =
         childStack(
-            source = navigation,
+            source = childNavigation,
             serializer = Config.serializer(),
             initialConfiguration = Config.Auth,
             handleBackButton = true,
@@ -121,29 +147,56 @@ class RootComponentDefault internal constructor(
 
     override val childStack: Value<ChildStack<*, Child>> = stack
 
+    override val alternateTextDialog: Value<ChildSlot<*, AlternateTextComponent>> =
+        childSlot(
+            source = alternateTextSlotNavigation,
+            serializer = AlternateTextConfig.serializer(),
+            handleBackButton = true,
+        ) { config, childComponentContext ->
+            AlternateTextComponentDefault(
+                componentContext = childComponentContext,
+                text = config.text,
+                onDismissed = alternateTextSlotNavigation::dismiss,
+            )
+        }
     private val exceptionHandler: TackleExceptionHandler =
         TackleExceptionHandler(
-            logoutAction = { navigation.replaceCurrent(Config.Auth) }
+            logoutAction = { childNavigation.replaceCurrent(Config.Auth) }
         )
 
     override val errorMessages: Flow<TackleException>
         get() = exceptionHandler.messaging
 
+    override fun onBack() {
+        childNavigation.pop()
+    }
+
     private fun createChild(config: Config, componentContext: ComponentContext): Child =
         when (config) {
-            is Config.Auth -> Child.Auth(authComponent(componentContext, ::onComponentOutput))
-            is Config.Main -> Child.Main(mainComponent(componentContext, ::onComponentOutput))
-            is Config.Editor -> Child.Editor(editorComponent(componentContext, ::onComponentOutput))
+            is Config.Auth ->
+                Child.Auth(authComponent(componentContext, ::onChildOutput))
+
+            is Config.Main ->
+                Child.Main(mainComponent(componentContext, ::onChildOutput))
+
+            is Config.Editor ->
+                Child.Editor(editorComponent(componentContext, ::onChildOutput))
+
+            is Config.ViewImage ->
+                Child.ViewImage(mediaComponent(componentContext, config.attachments, config.index, childNavigation::pop, ::onChildOutput))
+
+            is Config.ViewVideo ->
+                Child.ViewVideo(mediaComponent(componentContext, listOf(config.attachment), 0, childNavigation::pop, ::onChildOutput))
         }
 
-    private fun onComponentOutput(output: ComponentOutput) {
+    private fun onChildOutput(output: ComponentOutput) {
         when (output) {
             is ComponentOutput.Auth.AuthFlowCompleted -> {
-                navigation.replaceCurrent(Config.Main)
+                childNavigation.replaceCurrent(Config.Main)
             }
 
             is ComponentOutput.HomeTab.EditorRequested -> {
-                navigation.pushNew(Config.Editor)
+                childNavigation.pushNew(Config.Editor)
             }
 
             is ComponentOutput.HomeTab.ScheduledStatusesRequested -> {
@@ -151,20 +204,32 @@ class RootComponentDefault internal constructor(
             }
 
             is ComponentOutput.StatusEditor.BackButtonClicked -> {
-                navigation.pop()
+                childNavigation.pop()
             }
 
             is ComponentOutput.StatusEditor.StatusPublished -> {
-                navigation.pop()
+                childNavigation.pop()
                 (stack.active.instance as? Child.Main)?.component?.showCreatedStatus(output.status)
             }
 
             is ComponentOutput.StatusEditor.ScheduledStatusPublished -> {
-                navigation.pop()
+                childNavigation.pop()
             }
 
             is ComponentOutput.Common.ErrorCaught -> {
                 exceptionHandler.consume(output.throwable, scope)
+            }
+
+            is ComponentOutput.SingleStatus.AlternateTextClicked -> {
+                alternateTextSlotNavigation.activate(AlternateTextConfig(text = output.text))
+            }
+
+            is ComponentOutput.SingleStatus.ViewImage -> {
+                childNavigation.pushNew(Config.ViewImage(output.attachments, output.selectedIndex))
+            }
+
+            is ComponentOutput.SingleStatus.ViewVideo -> {
+                childNavigation.pushNew(Config.ViewVideo(output.attachment))
             }
 
             else -> Unit
@@ -182,5 +247,16 @@ class RootComponentDefault internal constructor(
 
         @Serializable
         data object Editor : Config
+
+        @Serializable
+        data class ViewImage(val attachments: List<MediaAttachment>, val index: Int) : Config
+
+        @Serializable
+        data class ViewVideo(val attachment: MediaAttachment) : Config
     }
+
+    @Serializable
+    private data class AlternateTextConfig(
+        val text: String,
+    )
 }

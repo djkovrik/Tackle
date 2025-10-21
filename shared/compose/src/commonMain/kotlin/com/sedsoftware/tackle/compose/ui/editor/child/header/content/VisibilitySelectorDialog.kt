@@ -46,15 +46,14 @@ private fun VisibilitySelectorDialogContent(
     onConfirmation: (StatusVisibility) -> Unit = {},
 ) {
     Card(
-        modifier = Modifier.padding(all = 16.dp),
+        modifier = modifier.padding(all = 16.dp),
         shape = MaterialTheme.shapes.small,
     ) {
         Column(
             horizontalAlignment = Alignment.End,
-            modifier = modifier
         ) {
             LazyColumn(
-                modifier = modifier
+                modifier = Modifier
                     .wrapContentWidth()
                     .padding(horizontal = 16.dp, vertical = 8.dp)
             ) {

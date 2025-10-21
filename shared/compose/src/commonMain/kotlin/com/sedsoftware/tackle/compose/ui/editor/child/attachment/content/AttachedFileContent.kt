@@ -28,6 +28,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -50,6 +51,9 @@ import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
 import com.sedsoftware.tackle.domain.model.PlatformFileWrapper
 import com.sedsoftware.tackle.editor.attachments.model.AttachedFile
 import com.sedsoftware.tackle.utils.extension.isImage
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
+import kotlinx.coroutines.withContext
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -72,7 +76,7 @@ internal fun AttachedFileContent(
     previewImage: @Composable (() -> Unit)? = null,
 ) {
     var imageData: ByteArray by remember { mutableStateOf(ByteArray(0)) }
-    var progress: Float by remember { mutableStateOf(0.0f) }
+    var progress: Float by remember { mutableFloatStateOf(0.0f) }
     var showProcessingLabel: Boolean by remember { mutableStateOf(false) }
 
     val animatedProgress: Float by animateFloatAsState(
@@ -110,7 +114,9 @@ internal fun AttachedFileContent(
 
     LaunchedEffect(attachment.id) {
         if (attachment.file.isImage) {
-            imageData = attachment.file.readBytes.invoke()
+            withContext(Dispatchers.IO) {
+                imageData = attachment.file.readBytes.invoke()
+            }
         }
     }
 

@@ -1,23 +1,15 @@
 package com.sedsoftware.tackle.compose.widget
 
-import androidx.compose.animation.Crossfade
-import androidx.compose.animation.core.FiniteAnimationSpec
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.key
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,163 +18,137 @@ import androidx.compose.ui.graphics.DefaultAlpha
 import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.graphics.drawscope.DrawScope.Companion.DefaultFilterQuality
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.sedsoftware.tackle.compose.custom.BlurHashView
-import com.sedsoftware.tackle.compose.custom.ShimmerEffectBrush
+import com.brys.compose.blurhash.BlurHashImage
+import com.github.panpf.sketch.AsyncImagePainter
+import com.github.panpf.sketch.AsyncImageState
+import com.github.panpf.sketch.PainterState
+import com.github.panpf.sketch.SubcomposeAsyncImage
+import com.github.panpf.sketch.rememberAsyncImageState
+import com.sedsoftware.tackle.compose.custom.shimmerEffectBrush
 import com.sedsoftware.tackle.compose.extension.alsoIf
 import com.sedsoftware.tackle.compose.model.TackleImageParams
-import com.sedsoftware.tackle.compose.model.TackleImageState
-import com.seiko.imageloader.model.ImageAction
-import com.seiko.imageloader.model.ImageRequest
-import com.seiko.imageloader.rememberImageAction
-import com.seiko.imageloader.rememberImageActionPainter
-import com.seiko.imageloader.rememberImagePainter
+import com.sedsoftware.tackle.utils.extension.orZero
 import org.jetbrains.compose.resources.painterResource
 import tackle.shared.compose.generated.resources.Res
 import tackle.shared.compose.generated.resources.editor_attachment_broken
 
+/**
+ * Image wrapper with LCE views and loading progress indicator.
+ *
+ * @param imageUrl Image url to load.
+ * @param imageParams Image parameters wrapper containing ration and blurhash
+ * @param contentDescription Text used by accessibility services to describe what this image
+ *  represents. This should always be provided unless this image is used for decorative purposes,
+ *  and does not represent a meaningful action that a user can take.
+ * @param modifier Modifier used to adjust the layout algorithm or draw decoration content.
+ * @param showProgress If true then image will display loading progress indicator
+ * @param progressSize Loading progress indicator size
+ * @param alignment Optional alignment parameter used to place the [AsyncImagePainter] in the given
+ *  bounds defined by the width and height.
+ * @param contentScale Optional scale parameter used to determine the aspect ratio scaling to be
+ *  used if the bounds are a different size from the intrinsic size of the [AsyncImagePainter].
+ * @param alpha Optional opacity to be applied to the [AsyncImagePainter] when it is rendered
+ *  onscreen.
+ * @param colorFilter Optional [ColorFilter] to apply for the [AsyncImagePainter] when it is
+ *  rendered onscreen.
+ * @param filterQuality Sampling algorithm applied to a bitmap when it is scaled and drawn into the
+ *  destination.
+ */
 @Composable
 internal fun TackleImage(
-    data: Any,
+    imageUrl: String,
+    imageParams: TackleImageParams?,
     contentDescription: String?,
     modifier: Modifier = Modifier,
-    errorModifier: Modifier = modifier,
+    showProgress: Boolean = false,
+    progressSize: Dp = 32.dp,
     alignment: Alignment = Alignment.Center,
     contentScale: ContentScale = ContentScale.Fit,
-    contentAlignment: Alignment = Alignment.Center,
-    animationSpec: FiniteAnimationSpec<Float>? = tween(),
     alpha: Float = DefaultAlpha,
     colorFilter: ColorFilter? = null,
     filterQuality: FilterQuality = DefaultFilterQuality,
-    params: TackleImageParams? = null,
-    sensitive: Boolean = false,
-    onLoading: (@Composable BoxScope.() -> Unit) = {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(brush = ShimmerEffectBrush())
-                .alsoIf(
-                    condition = params?.ratio != null,
-                    other = Modifier.aspectRatio(ratio = params?.ratio ?: 1f)
-                ),
-        )
-    },
-    onFailure: (@Composable BoxScope.(Throwable) -> Unit) = {
-        Box(
-            modifier = errorModifier then Modifier
-                .fillMaxSize()
-                .background(color = MaterialTheme.colorScheme.errorContainer)
-                .alsoIf(
-                    condition = params?.ratio != null,
-                    other = Modifier.aspectRatio(ratio = params?.ratio ?: 1f)
-                ),
-            contentAlignment = Alignment.Center,
-        ) {
-            Icon(
-                painter = painterResource(resource = Res.drawable.editor_attachment_broken),
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.error,
-                modifier = Modifier.size(size = 24.dp),
-            )
-        }
-    },
 ) {
-    key(data) {
-        val request: ImageRequest = remember { ImageRequest(data = data) }
-        if (animationSpec != null) {
-            val imageAction: ImageAction by rememberImageAction(request = request)
-            val error: MutableState<Throwable?> = remember { mutableStateOf(null) }
+    val blurhash: String = remember { imageParams?.blurhash.orEmpty() }
+    val imageRatio: Float = remember { imageParams.takeIf { it != null }?.ratio ?: 1f }
+    val state: AsyncImageState = rememberAsyncImageState()
+    val progress: Float = state.progress?.decimalProgress.orZero()
 
-            val state by derivedStateOf {
-                val action = imageAction
-                when {
-                    action is ImageAction.Failure -> {
-                        error.value = action.error
-                        TackleImageState.FAILURE
-                    }
+    SubcomposeAsyncImage(
+        uri = imageUrl,
+        state = state,
+        contentDescription = contentDescription,
+        modifier = modifier.alsoIf(imageRatio != 1f, Modifier.aspectRatio(ratio = imageRatio)),
+        content = {
+            when (state.painterState) {
+                is PainterState.Loading -> {
+                    Box {
+                        if (blurhash.isNotEmpty()) {
+                            BlurHashImage(
+                                hash = blurhash,
+                                contentDescription = "",
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .alsoIf(imageRatio != 1f, Modifier.aspectRatio(ratio = imageRatio)),
+                            )
+                        } else {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .background(brush = shimmerEffectBrush())
+                                    .alsoIf(imageRatio != 1f, Modifier.aspectRatio(ratio = imageRatio)),
+                            )
+                        }
 
-                    action is ImageAction.Loading && !params?.blurhash.isNullOrEmpty() -> {
-                        TackleImageState.LOADING_BLURHASH
-                    }
-
-                    action is ImageAction.Success && sensitive && !params?.blurhash.isNullOrEmpty() -> {
-                        TackleImageState.SUCCESS_SENSITIVE
-                    }
-
-                    action is ImageAction.Success && !sensitive -> {
-                        TackleImageState.SUCCESS
-                    }
-
-                    else -> {
-                        TackleImageState.LOADING
-                    }
-                }
-            }
-
-            val imageRatio: Float = if (params?.ratio != null && params.ratio > 0f) params.ratio else 1f
-
-            Crossfade(
-                targetState = state,
-                animationSpec = animationSpec,
-                modifier = modifier.aspectRatio(ratio = imageRatio),
-            ) { imageState: TackleImageState ->
-                Box(
-                    contentAlignment = contentAlignment,
-                    modifier = Modifier.fillMaxSize(),
-                ) {
-                    when (imageState) {
-                        TackleImageState.SUCCESS ->
-                            Image(
-                                painter = rememberImageActionPainter(
-                                    action = imageAction,
-                                    filterQuality = filterQuality,
+                        if (showProgress) {
+                            TackleImageProgress(
+                                progress = progress,
+                                progressSize = progressSize,
+                                modifier = Modifier.align(Alignment.Center),
+                                indicatorColor = MaterialTheme.colorScheme.inverseOnSurface.copy(
+                                    alpha = 0.75f
                                 ),
-                                contentDescription = contentDescription,
-                                modifier = Modifier.fillMaxSize(),
-                                alignment = alignment,
-                                contentScale = contentScale,
-                                alpha = alpha,
-                                colorFilter = colorFilter,
+                                containerColor = MaterialTheme.colorScheme.inverseSurface.copy(
+                                    alpha = 0.5f
+                                ),
                             )
-
-                        TackleImageState.LOADING ->
-                            onLoading()
-
-                        TackleImageState.SUCCESS_SENSITIVE,
-                        TackleImageState.LOADING_BLURHASH,
-                            ->
-                            BlurHashView(
-                                blurhash = params!!.blurhash,
-                                width = params.width,
-                                height = params.height,
-                            )
-
-                        TackleImageState.FAILURE ->
-                            onFailure(error.value ?: return@Crossfade)
+                        }
                     }
                 }
+
+                is PainterState.Error -> {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(color = MaterialTheme.colorScheme.errorContainer),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        Icon(
+                            painter = painterResource(resource = Res.drawable.editor_attachment_broken),
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.error,
+                            modifier = Modifier.size(size = 24.dp),
+                        )
+                    }
+                }
+
+                else -> {
+                    Image(
+                        painter = painter,
+                        contentDescription = contentDescription,
+                        contentScale = contentScale,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .alsoIf(imageRatio != 1f, Modifier.aspectRatio(ratio = imageRatio)),
+                    )
+                }
             }
-        } else {
-            Box(
-                contentAlignment = contentAlignment,
-                modifier = modifier.alsoIf(
-                    condition = params?.ratio != null,
-                    other = Modifier.aspectRatio(ratio = params?.ratio ?: 1f)
-                ),
-            ) {
-                Image(
-                    painter = rememberImagePainter(
-                        request = request,
-                        filterQuality = filterQuality
-                    ),
-                    contentDescription = contentDescription,
-                    modifier = Modifier.fillMaxSize(),
-                    alignment = alignment,
-                    contentScale = contentScale,
-                    alpha = alpha,
-                    colorFilter = colorFilter,
-                )
-            }
-        }
-    }
+        },
+        alignment = alignment,
+        alpha = alpha,
+        contentScale = contentScale,
+        colorFilter = colorFilter,
+        filterQuality = filterQuality,
+    )
 }

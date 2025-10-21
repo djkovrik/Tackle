@@ -12,7 +12,7 @@ import com.sedsoftware.tackle.domain.api.TackleDispatchers
 import com.sedsoftware.tackle.domain.model.type.Timeline
 import com.sedsoftware.tackle.publications.PublicationsTabComponent
 import com.sedsoftware.tackle.publications.PublicationsTabComponent.Child
-import com.sedsoftware.tackle.status.StatusComponentGateways
+import com.sedsoftware.tackle.main.StatusComponentGateways
 import com.sedsoftware.tackle.statuslist.integration.StatusListComponentDefault
 import kotlinx.serialization.Serializable
 

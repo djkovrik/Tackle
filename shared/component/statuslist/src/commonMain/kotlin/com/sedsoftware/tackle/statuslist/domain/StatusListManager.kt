@@ -4,7 +4,7 @@ import com.sedsoftware.tackle.domain.model.Status
 import com.sedsoftware.tackle.domain.model.params.ParamsContent
 import com.sedsoftware.tackle.domain.model.params.ParamsPagination
 import com.sedsoftware.tackle.domain.model.type.Timeline
-import com.sedsoftware.tackle.status.StatusComponentGateways
+import com.sedsoftware.tackle.main.StatusComponentGateways
 
 internal class StatusListManager(
     private val timeline: Timeline,

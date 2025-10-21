@@ -11,18 +11,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
+import com.github.panpf.sketch.rememberAsyncImagePainter
 import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
-import com.sedsoftware.tackle.compose.ui.status.content.StatusAttachments
+import com.sedsoftware.tackle.compose.ui.status.content.StatusAttachment
 import com.sedsoftware.tackle.compose.ui.status.content.StatusPoll
 import com.sedsoftware.tackle.compose.ui.status.content.StatusPreviewCard
 import com.sedsoftware.tackle.compose.ui.status.content.StatusText
 import com.sedsoftware.tackle.domain.model.Poll
 import com.sedsoftware.tackle.domain.model.PreviewCard
 import com.sedsoftware.tackle.domain.model.Translation
-import com.sedsoftware.tackle.status.StatusComponent
-import com.sedsoftware.tackle.status.integration.StatusComponentPreview
-import com.sedsoftware.tackle.status.model.StatusAction
-import com.seiko.imageloader.rememberImagePainter
+import com.sedsoftware.tackle.main.StatusComponent
+import com.sedsoftware.tackle.main.integration.StatusComponentPreview
+import com.sedsoftware.tackle.main.model.StatusAction
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -32,13 +32,13 @@ internal fun StatusContent(
     inlinedContent: @Composable (String) -> Unit = {
         Box(
             contentAlignment = Alignment.Center,
-            modifier = modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize(),
         ) {
             Image(
-                painter = rememberImagePainter(url = it),
+                painter = rememberAsyncImagePainter(uri = it),
                 contentDescription = null,
                 contentScale = ContentScale.Fit,
-                modifier = modifier.fillMaxSize(),
+                modifier = Modifier.fillMaxSize(),
             )
         }
     },
@@ -60,7 +60,6 @@ internal fun StatusContent(
         if (model.status.content.isNotEmpty() || !model.translation?.content.isNullOrEmpty()) {
             StatusText(
                 model = model,
-                modifier = modifier,
                 onHashTagClick = component::onHashTagClick,
                 onMentionClick = component::onMentionClick,
                 onUrlClick = component::onUrlClick,
@@ -74,19 +73,20 @@ internal fun StatusContent(
                 translation = model.translation,
                 onSelect = component::onPollSelect,
                 onVote = component::onVoteClick,
-                modifier = modifier,
             )
         }
 
         if (model.status.mediaAttachments.isNotEmpty()) {
             // TODO Attachment management
-            StatusAttachments(
+            StatusAttachment(
                 attachments = model.status.mediaAttachments,
                 hasSensitiveContent = model.status.sensitive,
+                hideSensitiveContent = model.hideSensitiveContent,
+                onContentClick = component::onAttachmentClick,
+                onContentAltClick = component::onAlternateTextRequest,
+                onSensitiveClick = component::onSensitiveContentToggle,
                 onDownloadClick = {},
                 onCancelClick = {},
-                onDoneClick = {},
-                modifier = modifier,
             )
         }
 
@@ -94,7 +94,6 @@ internal fun StatusContent(
             StatusPreviewCard(
                 card = previewCard,
                 onUrlClick = component::onUrlClick,
-                modifier = modifier,
             )
         }
     }
