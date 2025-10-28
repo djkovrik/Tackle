@@ -45,6 +45,21 @@ object StringUtils {
         return KsoupEntities.decodeHtml(resultingString)
     }
 
+    fun extractYoutubeId(videoUrl: String): String {
+        val regex = YOUTUBE_REGEX.toRegex()
+        val matchResult = regex.find(videoUrl)
+        matchResult?.groups?.forEach { group ->
+            if (group?.value?.length == YOUTUBE_ID_LENGTH) {
+                return group.value
+            }
+        }
+
+        return ""
+    }
+
     private const val LINE_BREAK = "br"
     private const val PARAGRAPH = "p"
+    private const val YOUTUBE_ID_LENGTH = 11
+    private const val YOUTUBE_REGEX = "^(?:https?:\\/\\/)?(?:www\\.)?(?:youtube\\.com\\/watch\\?v=([a-zA-Z0-9_]+)" +
+            "|youtu\\.be\\/([a-zA-Z\\d_]+))(?:&.*)?\$"
 }

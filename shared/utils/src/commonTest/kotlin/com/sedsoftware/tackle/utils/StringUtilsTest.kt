@@ -4,6 +4,7 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
+import kotlin.test.assertEquals
 
 class StringUtilsTest {
 
@@ -54,6 +55,52 @@ class StringUtilsTest {
         val result = StringUtils.decodeHtml(content)
         // then
         assertThat(result.isNotEmpty())
+    }
+
+    @Test
+    fun `extractYoutubeId should extract video ids`() = runTest {
+        // given
+        val url1 = "http://www.youtube.com/watch?v=p72I7gRXpgA"
+        val url2 = "http://youtube.com/watch?v=bQVoAWSP7k4"
+        val url3 = "http://www.youtube.com/watch?v=bQVoAWSP7k4"
+        val url4 = "https://www.youtube.com/watch?v=6WZoMAVCggM&feature=youtu.be"
+        val url5 = "http://www.youtube.com/watch?v=6WZoMAVCggM&"
+        val url6 = "http://www.youtube.com/watch?v=bQVoAWSP7k4&feature=popular"
+        val url7 = "http://www.youtube.com/watch?v=McNqjYiFmyQ&feature=related&bhablah"
+        val url8 = "www.youtube.com/watch?v=McNqjYiFmyQ&feature=related&bhablah"
+        val url9 = "http://youtu.be/6WZoMAVCggM"
+        val url10 = "youtube.com/watch?v=bQVoAWSP7k4"
+        val url11 = "http://youtube.com/watch?v=bQVoAWSP7k4"
+        val url12 = "http://youtu.be/bQVoAWSP7k4"
+        val url13 = "https://nonvalidurl.com"
+        // when
+        val result1 = StringUtils.extractYoutubeId(url1)
+        val result2 = StringUtils.extractYoutubeId(url2)
+        val result3 = StringUtils.extractYoutubeId(url3)
+        val result4 = StringUtils.extractYoutubeId(url4)
+        val result5 = StringUtils.extractYoutubeId(url5)
+        val result6 = StringUtils.extractYoutubeId(url6)
+        val result7 = StringUtils.extractYoutubeId(url7)
+        val result8 = StringUtils.extractYoutubeId(url8)
+        val result9 = StringUtils.extractYoutubeId(url9)
+        val result10 = StringUtils.extractYoutubeId(url10)
+        val result11 = StringUtils.extractYoutubeId(url11)
+        val result12 = StringUtils.extractYoutubeId(url12)
+        val result13 = StringUtils.extractYoutubeId(url13)
+        // then
+        assertEquals(result1, "p72I7gRXpgA")
+        assertEquals(result2, "bQVoAWSP7k4")
+        assertEquals(result3, "bQVoAWSP7k4")
+        assertEquals(result4, "6WZoMAVCggM")
+        assertEquals(result5, "6WZoMAVCggM")
+        assertEquals(result6, "bQVoAWSP7k4")
+        assertEquals(result7, "McNqjYiFmyQ")
+        assertEquals(result8, "McNqjYiFmyQ")
+        assertEquals(result9, "6WZoMAVCggM")
+        assertEquals(result10, "bQVoAWSP7k4")
+        assertEquals(result11, "bQVoAWSP7k4")
+        assertEquals(result12, "bQVoAWSP7k4")
+        assertEquals(result13, "")
     }
 
 }

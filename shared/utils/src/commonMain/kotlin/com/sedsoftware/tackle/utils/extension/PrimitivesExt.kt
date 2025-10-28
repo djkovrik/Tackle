@@ -39,6 +39,13 @@ fun String.isValidUrl(): Boolean {
     return TackleRegex.url.containsMatchIn(this)
 }
 
+fun String.toYoutubeThumbnail(): String =
+    if (this.isNotEmpty()) {
+        "https://img.youtube.com/vi/$this/0.jpg"
+    } else {
+        ""
+    }
+
 fun Long?.orZero(): Long = this ?: 0L
 
 fun Int?.orZero(): Int = this ?: 0
