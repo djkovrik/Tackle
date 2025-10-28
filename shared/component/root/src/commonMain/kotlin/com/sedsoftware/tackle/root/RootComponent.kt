@@ -10,6 +10,7 @@ import com.sedsoftware.tackle.editor.EditorComponent
 import com.sedsoftware.tackle.main.MainComponent
 import com.sedsoftware.tackle.main.alternatetext.AlternateTextComponent
 import com.sedsoftware.tackle.main.viewmedia.ViewMediaComponent
+import com.sedsoftware.tackle.statuslist.StatusListComponent
 import kotlinx.coroutines.flow.Flow
 
 interface RootComponent : BackHandlerOwner {
@@ -28,5 +29,6 @@ interface RootComponent : BackHandlerOwner {
         data class Editor(val component: EditorComponent) : Child()
         data class ViewImage(val component: ViewMediaComponent) : Child()
         data class ViewVideo(val component: ViewMediaComponent) : Child()
+        data class ViewHashTagTimeline(val component: StatusListComponent): Child()
     }
 }

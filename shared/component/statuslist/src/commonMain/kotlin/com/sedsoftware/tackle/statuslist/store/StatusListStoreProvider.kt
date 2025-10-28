@@ -28,7 +28,7 @@ internal class StatusListStoreProvider(
     fun create(autoInit: Boolean = true): StatusListStore =
         object : StatusListStore, Store<Intent, State, Label> by storeFactory.create<Intent, Action, Msg, State, Label>(
             name = "StatusListStore_$timeline",
-            initialState = State(),
+            initialState = State(timeline),
             autoInit = autoInit,
             bootstrapper = coroutineBootstrapper(mainContext) {
                 dispatch(Action.LoadNextTimelinePage(forceRefresh = true))

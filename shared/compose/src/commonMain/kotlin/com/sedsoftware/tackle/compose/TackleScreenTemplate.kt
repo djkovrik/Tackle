@@ -22,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.sedsoftware.tackle.compose.theme.TackleScreenPreview
@@ -40,7 +41,8 @@ import tackle.shared.compose.generated.resources.editor_title
 internal fun TackleScreenTemplate(
     modifier: Modifier = Modifier,
     cornerRadius: Dp = 8.dp,
-    title: StringResource? = null,
+    titleResource: StringResource? = null,
+    titleString: String? = null,
     navigationIcon: DrawableResource? = null,
     onNavigationClick: () -> Unit = {},
     colors: TackleScreenColors = TackleScreenDefaults.colors(),
@@ -54,11 +56,22 @@ internal fun TackleScreenTemplate(
         topBar = {
             TopAppBar(
                 title = {
-                    if (title != null) {
+                    if (titleResource != null) {
                         Text(
-                            text = stringResource(resource = title),
+                            text = stringResource(resource = titleResource),
                             color = colors.headerContentColor,
                             style = MaterialTheme.typography.titleSmall,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                        )
+                    }
+                    if (titleString != null) {
+                        Text(
+                            text = titleString,
+                            color = colors.headerContentColor,
+                            style = MaterialTheme.typography.titleSmall,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
                         )
                     }
                 },
@@ -171,7 +184,7 @@ private fun TackleScreenTemplatePreviewContent(
 ) {
     TackleScreenTemplate(
         cornerRadius = cornerRadius,
-        title = Res.string.editor_title,
+        titleResource = Res.string.editor_title,
         navigationIcon = navigationIcon,
         colors = colors,
         actions = {

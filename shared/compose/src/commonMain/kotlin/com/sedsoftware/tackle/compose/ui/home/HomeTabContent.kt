@@ -33,7 +33,7 @@ internal fun HomeTabContent(
     modifier: Modifier = Modifier,
 ) {
     TackleScreenTemplate(
-        title = Res.string.main_tab_home,
+        titleResource = Res.string.main_tab_home,
         colors = TackleScreenDefaults.colors(
             headerContainerColor = MaterialTheme.colorScheme.surfaceVariant,
             headerContentColor = MaterialTheme.colorScheme.onSurfaceVariant,

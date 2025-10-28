@@ -4,6 +4,7 @@ import com.arkivanov.decompose.ExperimentalDecomposeApi
 import com.arkivanov.decompose.router.items.LazyChildItems
 import com.arkivanov.decompose.value.Value
 import com.sedsoftware.tackle.domain.model.Status
+import com.sedsoftware.tackle.domain.model.type.Timeline
 import com.sedsoftware.tackle.main.StatusComponent
 
 @OptIn(ExperimentalDecomposeApi::class)
@@ -13,11 +14,13 @@ interface StatusListComponent {
 
     val items: LazyChildItems<Status, StatusComponent>
 
+    fun onBack()
     fun onPullToRefresh()
     fun onLoadMoreRequest()
     fun showCreatedStatus(status: Status)
 
     data class Model(
+        val timeline: Timeline,
         val initialProgressVisible: Boolean,
         val loadMoreProgressVisible: Boolean,
         val emptyPlaceholderVisible: Boolean,

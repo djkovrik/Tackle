@@ -176,6 +176,7 @@ class StatusListComponentTest : ComponentTest<StatusListComponent>() {
             tools = tools,
             dispatchers = testDispatchers,
             output = { componentOutput.add(it) },
+            onBackClicked = {},
             timeline = timeline,
         )
 }

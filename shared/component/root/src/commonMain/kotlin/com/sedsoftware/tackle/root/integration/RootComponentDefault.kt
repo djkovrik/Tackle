@@ -12,6 +12,7 @@ import com.arkivanov.decompose.router.stack.active
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.pushNew
+import com.arkivanov.decompose.router.stack.pushToFront
 import com.arkivanov.decompose.router.stack.replaceCurrent
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.lifecycle.doOnDestroy
@@ -29,11 +30,15 @@ import com.sedsoftware.tackle.domain.api.TacklePlatformTools
 import com.sedsoftware.tackle.domain.api.TackleSettings
 import com.sedsoftware.tackle.domain.api.UnauthorizedApi
 import com.sedsoftware.tackle.domain.model.MediaAttachment
+import com.sedsoftware.tackle.domain.model.type.Timeline
 import com.sedsoftware.tackle.editor.EditorComponent
 import com.sedsoftware.tackle.editor.integration.EditorComponentDefault
 import com.sedsoftware.tackle.main.MainComponent
 import com.sedsoftware.tackle.main.alternatetext.AlternateTextComponent
 import com.sedsoftware.tackle.main.alternatetext.integration.AlternateTextComponentDefault
+import com.sedsoftware.tackle.main.gateway.StatusComponentApi
+import com.sedsoftware.tackle.main.gateway.StatusComponentSettings
+import com.sedsoftware.tackle.main.gateway.StatusComponentTools
 import com.sedsoftware.tackle.main.integration.MainComponentDefault
 import com.sedsoftware.tackle.main.viewmedia.ViewMediaComponent
 import com.sedsoftware.tackle.main.viewmedia.integration.ViewMediaComponentDefault
@@ -48,6 +53,8 @@ import com.sedsoftware.tackle.root.gateway.editor.EditorTabComponentDatabase
 import com.sedsoftware.tackle.root.gateway.editor.EditorTabComponentSettings
 import com.sedsoftware.tackle.root.gateway.editor.EditorTabComponentTools
 import com.sedsoftware.tackle.root.gateway.media.ViewMediaComponentApi
+import com.sedsoftware.tackle.statuslist.StatusListComponent
+import com.sedsoftware.tackle.statuslist.integration.StatusListComponentDefault
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.Flow
@@ -60,6 +67,7 @@ class RootComponentDefault internal constructor(
     private val mainComponent: (ComponentContext, (ComponentOutput) -> Unit) -> MainComponent,
     private val editorComponent: (ComponentContext, (ComponentOutput) -> Unit) -> EditorComponent,
     private val mediaComponent: (ComponentContext, List<MediaAttachment>, Int, () -> Unit, (ComponentOutput) -> Unit) -> ViewMediaComponent,
+    private val timelineComponent: (ComponentContext, String, () -> Unit, (ComponentOutput) -> Unit) -> StatusListComponent,
 ) : RootComponent, ComponentContext by componentContext {
 
     constructor(
@@ -122,6 +130,19 @@ class RootComponentDefault internal constructor(
                 viewMediaOutput = componentOutput,
             )
         },
+        timelineComponent = { childContext, hashTag, onBackClicked, componentOutput ->
+            StatusListComponentDefault(
+                componentContext = childContext,
+                storeFactory = storeFactory,
+                api = StatusComponentApi(authorizedApi),
+                settings = StatusComponentSettings(settings),
+                tools = StatusComponentTools(platformTools),
+                dispatchers = dispatchers,
+                output = componentOutput,
+                onBackClicked = onBackClicked,
+                timeline = Timeline.HashTag(hashTag),
+            )
+        }
     )
 
     private val scope: CoroutineScope = CoroutineScope(dispatchers.main)
@@ -187,6 +208,9 @@ class RootComponentDefault internal constructor(
 
             is Config.ViewVideo ->
                 Child.ViewVideo(mediaComponent(componentContext, listOf(config.attachment), 0, childNavigation::pop, ::onChildOutput))
+
+            is Config.ViewHashTagTimeline ->
+                Child.ViewHashTagTimeline(timelineComponent(componentContext, config.hashTag, ::onBack, ::onChildOutput))
         }
 
     private fun onChildOutput(output: ComponentOutput) {
@@ -225,11 +249,15 @@ class RootComponentDefault internal constructor(
             }
 
             is ComponentOutput.SingleStatus.ViewImage -> {
-                childNavigation.pushNew(Config.ViewImage(output.attachments, output.selectedIndex))
+                childNavigation.pushToFront(Config.ViewImage(output.attachments, output.selectedIndex))
             }
 
             is ComponentOutput.SingleStatus.ViewVideo -> {
-                childNavigation.pushNew(Config.ViewVideo(output.attachment))
+                childNavigation.pushToFront(Config.ViewVideo(output.attachment))
+            }
+
+            is ComponentOutput.SingleStatus.HashTagClicked -> {
+                childNavigation.pushToFront(Config.ViewHashTagTimeline(output.hashTag))
             }
 
             else -> Unit
@@ -253,6 +281,9 @@ class RootComponentDefault internal constructor(
 
         @Serializable
         data class ViewVideo(val attachment: MediaAttachment) : Config
+
+        @Serializable
+        data class ViewHashTagTimeline(val hashTag: String) : Config
     }
 
     @Serializable

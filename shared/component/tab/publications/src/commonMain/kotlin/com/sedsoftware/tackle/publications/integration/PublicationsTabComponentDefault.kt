@@ -59,6 +59,7 @@ class PublicationsTabComponentDefault(
                         tools = tools,
                         dispatchers = dispatchers,
                         output = output,
+                        onBackClicked = {},
                         timeline = Timeline.Public(true),
                     )
                 )
@@ -73,6 +74,7 @@ class PublicationsTabComponentDefault(
                         tools = tools,
                         dispatchers = dispatchers,
                         output = output,
+                        onBackClicked = {},
                         timeline = Timeline.Public(false),
                     )
                 )
