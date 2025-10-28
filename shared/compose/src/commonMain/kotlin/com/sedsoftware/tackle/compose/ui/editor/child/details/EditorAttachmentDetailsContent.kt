@@ -48,7 +48,7 @@ internal fun EditorAttachmentDetailsContent(
     val model: EditorAttachmentDetailsComponent.Model by component.model.subscribeAsState()
 
     TackleScreenTemplate(
-        title = null,
+        titleResource = null,
         navigationIcon = Res.drawable.editor_back,
         onNavigationClick = component::onBackButtonClick,
         colors = TackleScreenDefaults.colors(

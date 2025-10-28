@@ -4,7 +4,7 @@ import com.sedsoftware.tackle.domain.api.TacklePlatformTools
 import com.sedsoftware.tackle.domain.model.AppLocale
 import com.sedsoftware.tackle.main.StatusComponentGateways
 
-internal class StatusComponentTools(
+class StatusComponentTools(
     private val platformTools: TacklePlatformTools,
 ) : StatusComponentGateways.Tools {
 

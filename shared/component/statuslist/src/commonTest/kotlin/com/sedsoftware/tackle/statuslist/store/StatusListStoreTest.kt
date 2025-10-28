@@ -9,10 +9,12 @@ import assertk.assertions.isTrue
 import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import com.sedsoftware.tackle.domain.model.Status
+import com.sedsoftware.tackle.domain.model.params.ParamsPagination
 import com.sedsoftware.tackle.domain.model.type.Timeline
 import com.sedsoftware.tackle.main.StatusComponentGateways
 import com.sedsoftware.tackle.statuslist.Responses
 import com.sedsoftware.tackle.statuslist.domain.StatusListManager
+import com.sedsoftware.tackle.utils.generateUUID
 import com.sedsoftware.tackle.utils.test.StoreTest
 import dev.mokkery.answering.returns
 import dev.mokkery.answering.throws
@@ -108,6 +110,10 @@ class StatusListStoreTest : StoreTest<StatusListStore.Intent, StatusListStore.St
     fun `OnLoadMoreRequested should append items list`() = runTest {
         // given
         store.init()
+        val params = ParamsPagination(maxId = "24", limit = StatusListStoreProvider.DEFAULT_PAGE_SIZE )
+        everySuspend { api.homeTimeline(params) } returns List(StatusListStoreProvider.DEFAULT_PAGE_SIZE) {
+            Responses.status.copy(id = generateUUID())
+        }
         // when
         store.accept(StatusListStore.Intent.OnLoadMoreRequested)
         // then

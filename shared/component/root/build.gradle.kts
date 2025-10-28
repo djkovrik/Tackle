@@ -17,6 +17,8 @@ kotlin {
                 implementation(project(":shared:component:main:child:alternatetext"))
                 implementation(project(":shared:component:main:child:viewmedia"))
                 implementation(project(":shared:component:editor"))
+                implementation(project(":shared:component:status"))
+                implementation(project(":shared:component:statuslist"))
 
                 implementation(libs.ark.decompose.core)
                 implementation(libs.ark.decompose.extensions)

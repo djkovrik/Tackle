@@ -28,7 +28,7 @@ internal class StatusListStoreProvider(
     fun create(autoInit: Boolean = true): StatusListStore =
         object : StatusListStore, Store<Intent, State, Label> by storeFactory.create<Intent, Action, Msg, State, Label>(
             name = "StatusListStore_$timeline",
-            initialState = State(),
+            initialState = State(timeline),
             autoInit = autoInit,
             bootstrapper = coroutineBootstrapper(mainContext) {
                 dispatch(Action.LoadNextTimelinePage(forceRefresh = true))
@@ -94,7 +94,7 @@ internal class StatusListStoreProvider(
                     is Msg.NextTimelinePageLoaded -> copy(
                         initialProgressVisible = false,
                         loadMoreProgressVisible = false,
-                        items = items + msg.items,
+                        items = (items + msg.items).distinctBy { it.id },
                         hasMoreItems = msg.items.size == DEFAULT_PAGE_SIZE,
                         lastLoadedItemId = msg.items.lastOrNull()?.id.orEmpty(),
                     )

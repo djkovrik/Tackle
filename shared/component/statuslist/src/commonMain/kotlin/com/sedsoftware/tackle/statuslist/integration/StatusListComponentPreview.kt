@@ -5,6 +5,7 @@ import com.arkivanov.decompose.router.items.LazyChildItems
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
 import com.sedsoftware.tackle.domain.model.Status
+import com.sedsoftware.tackle.domain.model.type.Timeline
 import com.sedsoftware.tackle.main.StatusComponent
 import com.sedsoftware.tackle.main.integration.StatusComponentPreview
 import com.sedsoftware.tackle.statuslist.StatusListComponent
@@ -20,6 +21,7 @@ class StatusListComponentPreview(
     override val model: Value<StatusListComponent.Model> =
         MutableValue(
             initialValue = StatusListComponent.Model(
+                timeline = Timeline.Home,
                 initialProgressVisible = initialProgressVisible,
                 loadMoreProgressVisible = loadMoreProgressVisible,
                 emptyPlaceholderVisible = emptyPlaceholderVisible,
@@ -33,6 +35,7 @@ class StatusListComponentPreview(
                 .associateBy { component -> component.status }
         )
 
+    override fun onBack() = Unit
     override fun onPullToRefresh() = Unit
     override fun onLoadMoreRequest() = Unit
     override fun showCreatedStatus(status: Status) = Unit

@@ -44,6 +44,7 @@ class StatusListComponentDefault(
     private val tools: StatusComponentGateways.Tools,
     private val dispatchers: TackleDispatchers,
     private val output: (ComponentOutput) -> Unit,
+    private val onBackClicked: () -> Unit,
     private val timeline: Timeline,
 ) : StatusListComponent, ComponentContext by componentContext {
 
@@ -96,6 +97,10 @@ class StatusListComponentDefault(
             childFactory = ::createChild,
         )
 
+    override fun onBack() {
+        onBackClicked()
+    }
+
     override fun onPullToRefresh() {
         store.accept(StatusListStore.Intent.OnPullToRefreshCalled)
     }
@@ -110,6 +115,7 @@ class StatusListComponentDefault(
 
     private fun stateToModel(from: StatusListStore.State): Model =
         Model(
+            timeline = from.timeline,
             initialProgressVisible = from.initialProgressVisible,
             loadMoreProgressVisible = from.loadMoreProgressVisible,
             emptyPlaceholderVisible = from.emptyPlaceholderVisible,

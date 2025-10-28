@@ -31,6 +31,7 @@ class HomeTabComponentDefault(
             tools = tools,
             dispatchers = dispatchers,
             output = output,
+            onBackClicked = {},
             timeline = Timeline.Home,
         )
 

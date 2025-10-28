@@ -2,6 +2,7 @@ package com.sedsoftware.tackle.statuslist.store
 
 import com.arkivanov.mvikotlin.core.store.Store
 import com.sedsoftware.tackle.domain.model.Status
+import com.sedsoftware.tackle.domain.model.type.Timeline
 import com.sedsoftware.tackle.statuslist.store.StatusListStore.Intent
 import com.sedsoftware.tackle.statuslist.store.StatusListStore.Label
 import com.sedsoftware.tackle.statuslist.store.StatusListStore.State
@@ -16,6 +17,7 @@ interface StatusListStore : Store<Intent, State, Label> {
     }
 
     data class State(
+        val timeline: Timeline,
         val items: List<Status> = emptyList(),
         val initialProgressVisible: Boolean = true,
         val loadMoreProgressVisible: Boolean = false,

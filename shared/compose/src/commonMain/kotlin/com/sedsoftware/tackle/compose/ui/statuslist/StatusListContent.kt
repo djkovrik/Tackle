@@ -5,6 +5,8 @@ package com.sedsoftware.tackle.compose.ui.statuslist
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -129,7 +131,8 @@ internal fun StatusListContent(
 
                 AnimatedVisibility(
                     visible = model.loadMoreProgressVisible,
-                    modifier = Modifier,
+                    enter = fadeIn() + slideInVertically { it },
+                    exit = fadeOut() + slideOutVertically { it },
                 ) {
                     StatusLoadMoreIndicator()
                 }

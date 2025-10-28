@@ -44,7 +44,7 @@ internal fun PublicationsTabContent(
         }
 
     TackleScreenTemplate(
-        title = Res.string.main_tab_publications,
+        titleResource = Res.string.main_tab_publications,
         colors = TackleScreenDefaults.colors(
             headerContainerColor = MaterialTheme.colorScheme.surfaceVariant,
             headerContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
