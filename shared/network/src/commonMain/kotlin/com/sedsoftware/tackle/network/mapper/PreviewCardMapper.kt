@@ -4,6 +4,8 @@ import com.sedsoftware.tackle.domain.model.PreviewCard
 import com.sedsoftware.tackle.domain.model.PreviewCardAuthor
 import com.sedsoftware.tackle.domain.model.type.PreviewCardType
 import com.sedsoftware.tackle.network.response.PreviewCardResponse
+import com.sedsoftware.tackle.utils.StringUtils
+import com.sedsoftware.tackle.utils.extension.toYoutubeThumbnail
 
 internal object PreviewCardMapper {
 
@@ -28,8 +30,19 @@ internal object PreviewCardMapper {
             html = from.html,
             width = from.width,
             height = from.height,
-            image = from.image,
+            image = populateImageUrl(originalImage = from.image, contentUrl = from.url, contentProvider = from.providerName),
             embedUrl = from.embedUrl,
             blurhash = from.blurhash,
         )
+
+    private fun populateImageUrl(originalImage: String, contentUrl: String, contentProvider: String): String {
+        if (originalImage.isNotEmpty() || contentProvider.lowercase() != YOUTUBE_PROVIDER) {
+            return originalImage
+        }
+
+        val videoId = StringUtils.extractYoutubeId(contentUrl)
+        return videoId.toYoutubeThumbnail()
+    }
+
+    private const val YOUTUBE_PROVIDER = "youtube"
 }

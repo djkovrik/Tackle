@@ -1,6 +1,7 @@
 package com.sedsoftware.tackle.compose.ui.status.content
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
@@ -14,6 +15,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.brys.compose.blurhash.BlurHashImage
 import com.sedsoftware.tackle.compose.extension.clickableOnce
 import com.sedsoftware.tackle.compose.model.TackleImageParams
 import com.sedsoftware.tackle.compose.widget.TackleImage
@@ -28,6 +30,13 @@ internal fun StatusPreviewCard(
     onUrlClick: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val cardAspectRatio: Float =
+        if (card.height != 0) {
+            card.width.toFloat() / card.height.toFloat()
+        } else {
+            1f
+        }
+
     Card(
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.tertiaryContainer,
@@ -54,18 +63,26 @@ internal fun StatusPreviewCard(
                 )
             }
 
-            if (card.image.isNotEmpty()) {
+            if (card.image.isNotBlank()) {
                 TackleImage(
                     imageUrl = card.image,
                     imageParams = TackleImageParams(
                         blurhash = card.blurhash,
-                        ratio = 1f,
+                        ratio = cardAspectRatio,
                     ),
-                    contentDescription = null,
+                    contentDescription = card.providerName,
                     contentScale = ContentScale.FillWidth,
                     modifier = Modifier
                         .fillMaxWidth()
                         .clip(shape = MaterialTheme.shapes.extraSmall)
+                )
+            } else if (card.blurhash.isNotEmpty()) {
+                BlurHashImage(
+                    hash = card.blurhash,
+                    contentDescription = card.providerName,
+                    modifier = Modifier
+                        .aspectRatio(ratio = cardAspectRatio)
+                        .fillMaxWidth()
                 )
             }
 

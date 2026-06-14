@@ -22,9 +22,11 @@ import com.sedsoftware.tackle.utils.extension.toHumanReadableSize
 import com.sedsoftware.tackle.utils.extension.toLocalDateCustom
 import com.sedsoftware.tackle.utils.extension.toLocalDateTimeCustom
 import com.sedsoftware.tackle.utils.extension.toNormalizedUrl
+import com.sedsoftware.tackle.utils.extension.toYoutubeThumbnail
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.TimeZone
 import kotlin.test.Test
+import kotlin.test.assertEquals
 
 class ExtensionsTest {
 
@@ -329,5 +331,15 @@ class ExtensionsTest {
         assertThat(result5).isEqualTo("01:00:01")
         assertThat(result6).isEqualTo("01:01:02")
         assertThat(result7).isEqualTo("01:45:23")
+    }
+
+    @Test
+    fun `toYoutubeThumbnail should create thumbnail url`() = runTest {
+        // given
+        val id = "wL8DVHuWI7Y"
+        // when
+        val thumbnail = id.toYoutubeThumbnail()
+        // then
+        assertEquals(thumbnail, "https://img.youtube.com/vi/wL8DVHuWI7Y/0.jpg")
     }
 }
