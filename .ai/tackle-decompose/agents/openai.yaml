@@ -1,0 +1,4 @@
+interface:
+  display_name: "Tackle Decompose"
+  short_description: "Create Decompose components for Tackle"
+  default_prompt: "Use $tackle-decompose to add or update a Decompose component in Tackle."

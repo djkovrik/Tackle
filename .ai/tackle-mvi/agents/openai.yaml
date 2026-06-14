@@ -1,0 +1,4 @@
+interface:
+  display_name: "Tackle MVI"
+  short_description: "Create MVIKotlin stores for Tackle"
+  default_prompt: "Use $tackle-mvi to add or update a MVIKotlin store in Tackle."

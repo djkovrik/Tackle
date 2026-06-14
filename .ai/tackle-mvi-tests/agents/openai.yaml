@@ -1,0 +1,4 @@
+interface:
+  display_name: "Tackle MVI Tests"
+  short_description: "Test Tackle MVIKotlin stores"
+  default_prompt: "Use $tackle-mvi-tests to write or update MVIKotlin store tests in Tackle."
