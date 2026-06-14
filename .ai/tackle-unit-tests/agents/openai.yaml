@@ -1,0 +1,4 @@
+interface:
+  display_name: "Tackle Unit Tests"
+  short_description: "Test Tackle domain and data code"
+  default_prompt: "Use $tackle-unit-tests to write or update non-component unit tests in Tackle."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Tackle Component Tests"
+  short_description: "Test Tackle Decompose components"
+  default_prompt: "Use $tackle-component-tests to write or update Decompose component tests in Tackle."
